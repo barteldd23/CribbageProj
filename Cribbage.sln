@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cribbage.BL", "Cribbage.BL\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cribbage.BL.Models", "Cribbage.BL.Models\Cribbage.BL.Models.csproj", "{6E4C2A1A-4818-4165-9480-915480E3D1EE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cribbage.UI", "Cribbage.UI\Cribbage.UI.csproj", "{A17ECAAD-11C2-4EDA-818A-B8F8B848FF6C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{6E4C2A1A-4818-4165-9480-915480E3D1EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E4C2A1A-4818-4165-9480-915480E3D1EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E4C2A1A-4818-4165-9480-915480E3D1EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A17ECAAD-11C2-4EDA-818A-B8F8B848FF6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A17ECAAD-11C2-4EDA-818A-B8F8B848FF6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A17ECAAD-11C2-4EDA-818A-B8F8B848FF6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A17ECAAD-11C2-4EDA-818A-B8F8B848FF6C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
