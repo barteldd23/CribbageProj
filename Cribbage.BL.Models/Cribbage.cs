@@ -9,7 +9,7 @@ namespace Cribbage.BL.Models
 {
     public class Cribbage
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public int Dealer { get; set; } = 1;
         public Deck Deck { get; set; }
         public List<Card> Crib { get; set; }

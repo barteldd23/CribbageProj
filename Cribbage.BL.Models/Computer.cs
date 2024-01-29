@@ -8,7 +8,6 @@ namespace Cribbage.BL.Models
 {
     public class Computer
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public List<Card> Hand { get; set; }
         public List<Card> PlayedCards { get; set; }
