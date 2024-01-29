@@ -6,9 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Cribbage.BL.Models\Cribbage.BL.Models.csproj" />
-    <ProjectReference Include="..\Cribbage.PL\Cribbage.PL.csproj" />
-  </ItemGroup>
-
 </Project>
