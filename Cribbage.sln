@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cribbage.BL.Test", "Cribbag
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cribbage.PL.Test", "Cribbage.PL.Test\Cribbage.PL.Test.csproj", "{BCF21AF6-B6CE-4916-854B-6763E44E69BC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cribbage.MigrationHandler", "Cribbage.MigrationHandler\Cribbage.MigrationHandler.csproj", "{A88369F5-D5D2-4A0C-8608-9CABC328BD34}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{BCF21AF6-B6CE-4916-854B-6763E44E69BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BCF21AF6-B6CE-4916-854B-6763E44E69BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BCF21AF6-B6CE-4916-854B-6763E44E69BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A88369F5-D5D2-4A0C-8608-9CABC328BD34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A88369F5-D5D2-4A0C-8608-9CABC328BD34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A88369F5-D5D2-4A0C-8608-9CABC328BD34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A88369F5-D5D2-4A0C-8608-9CABC328BD34}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
