@@ -1,0 +1,9 @@
+Package Manager Console > Default Project > PL:
+
+Install-Package Microsoft.EntityFrameworkCore.SqlServer 
+Install-Package Microsoft.EntityFrameworkCore.Tools
+Install-Package Microsoft.VisualStudio.Web.CodeGeneration.Design
+
+Migration First:
+Add-Migration CreateDatabase
+Update-Database 
