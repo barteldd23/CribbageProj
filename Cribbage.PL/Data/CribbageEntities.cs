@@ -9,6 +9,8 @@ namespace Cribbage.PL.Data
 {
     public class CribbageEntities : DbContext
     {
+        // Do you think these are just setting up arrays for default data? -Dean
+
         //Guid[] userId = new Guid[3];
         //Guid[] formatId = new Guid[4];
         //Guid[] customerId = new Guid[3];

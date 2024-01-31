@@ -14,6 +14,11 @@ namespace Cribbage.PL.Entities
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Password { get; set; }
+        public int GamesStarted { get; set; }
+        public int Wins { get; set; }
+        public int Losses { get; set; }
+        public double AvgPtsPerGame { get; set; }
+        public int WinStreak { get; set; }
 
     }
 }
