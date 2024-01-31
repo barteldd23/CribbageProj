@@ -37,6 +37,6 @@ namespace Cribbage.BL.Models
 
         public Suits suit { get; set;}
 
-        public int value { get { if (value < 10) return value; else return 10; } }
+        public int value { get { if ((int)face < 10) return value; else return 10; } }
     }
 }
