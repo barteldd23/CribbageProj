@@ -204,10 +204,20 @@ namespace Cribbage.BL.Models
                 Deck.Cards.RemoveAt(0);
                 Player_1.Hand.Add(Deck.Cards[0]);
                 Deck.Cards.RemoveAt(0);
+
+                Player_2.Hand.Add(Deck.Cards[0]);
+                Deck.Cards.RemoveAt(0);
+                Player_1.Hand.Add(Deck.Cards[0]);
+                Deck.Cards.RemoveAt(0);
             }
             else
             {
                 //Player 2 Deals. Player 1 gets the first card.
+                Player_1.Hand.Add(Deck.Cards[0]);
+                Deck.Cards.RemoveAt(0);
+                Player_2.Hand.Add(Deck.Cards[0]);
+                Deck.Cards.RemoveAt(0);
+
                 Player_1.Hand.Add(Deck.Cards[0]);
                 Deck.Cards.RemoveAt(0);
                 Player_2.Hand.Add(Deck.Cards[0]);
