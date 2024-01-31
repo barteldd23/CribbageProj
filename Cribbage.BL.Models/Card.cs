@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Cribbage.BL.Models
 {
-    public enum Values
+    public enum Faces
     {
         Ace = 1,
         Two = 2,
@@ -33,8 +33,10 @@ namespace Cribbage.BL.Models
 
     public class Card
     {
-        public Values value { get; set; }
+        public Faces face { get; set; }
 
-        public Suits suits { get; set;}
+        public Suits suit { get; set;}
+
+        public int value { get { if (value < 10) return value; else return 10; } }
     }
 }
