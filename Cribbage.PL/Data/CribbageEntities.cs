@@ -1,11 +1,6 @@
 ﻿using Cribbage.PL.Entities;
 using Microsoft.EntityFrameworkCore;
-using NuGet.Protocol.Plugins;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
 
 namespace Cribbage.PL.Data
 {
@@ -15,8 +10,6 @@ namespace Cribbage.PL.Data
         // Yes, I'll start setting this up - Rachel
 
         Guid[] gameId = new Guid[4];
-        Guid[] player_1_Id = new Guid[4];
-        Guid[] player_2_Id = new Guid[4];
         Guid[] userId = new Guid[4];
 
         public virtual DbSet<tblUser> tblUsers { get; set; }
@@ -27,6 +20,13 @@ namespace Cribbage.PL.Data
 
         public CribbageEntities(DbContextOptions<CribbageEntities> options) : base(options)
         {
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder
+                .EnableSensitiveDataLogging()
+                .UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=Test");
         }
 
         public CribbageEntities()
@@ -50,7 +50,7 @@ namespace Cribbage.PL.Data
 
                 entity.ToTable("tblUserGames");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
 
                 entity.HasOne(d => d.User)
                  .WithMany(p => p.tblUserGames)
@@ -65,10 +65,10 @@ namespace Cribbage.PL.Data
 
             List<tblUserGame> UserGames = new List<tblUserGame>
             {
-                new tblUserGame {Id = Guid.NewGuid(), GameId = gameId[2], UserId = userId[0]},
-                new tblUserGame {Id = Guid.NewGuid(), GameId = gameId[3], UserId = userId[0]},
-                new tblUserGame {Id = Guid.NewGuid(), GameId = gameId[4], UserId = userId[0]},
-                new tblUserGame {Id = Guid.NewGuid(), GameId = gameId[1], UserId = userId[1]},
+                new tblUserGame {GameId = gameId[0], UserId = userId[1]}, 
+                new tblUserGame {GameId = gameId[1], UserId = userId[3]},
+                new tblUserGame {GameId = gameId[2], UserId = userId[2]},
+                new tblUserGame {GameId = gameId[3], UserId = userId[0]}
             };
 
             modelBuilder.Entity<tblUserGame>().HasData(UserGames);
@@ -94,44 +94,44 @@ namespace Cribbage.PL.Data
             modelBuilder.Entity<tblGame>().HasData(new tblGame
             {
                 Id = gameId[0],
-                Player_1_Id = player_1_Id[1],
-                Player_2_Id = player_2_Id[2],
+                Player_1_Id = userId[1],
+                Player_2_Id = userId[2],
                 Player_1_Score = 121,
                 Player_2_Score = 70,
-                Winner = player_1_Id[1],
+                Winner = userId[1],
                 Date = new DateTime(2023, 10, 6)
             });
 
             modelBuilder.Entity<tblGame>().HasData(new tblGame
             {
                 Id = gameId[0],
-                Player_1_Id = player_1_Id[2],
-                Player_2_Id = player_2_Id[3],
+                Player_1_Id = userId[2],
+                Player_2_Id = userId[3],
                 Player_1_Score = 90,
                 Player_2_Score = 121,
-                Winner = player_2_Id[3],
+                Winner = userId[3],
                 Date = new DateTime(2023, 11, 14)
             });
 
             modelBuilder.Entity<tblGame>().HasData(new tblGame
             {
                 Id = gameId[0],
-                Player_1_Id = player_1_Id[2],
-                Player_2_Id = player_2_Id[1],
+                Player_1_Id = userId[2],
+                Player_2_Id = userId[1],
                 Player_1_Score = 121,
                 Player_2_Score = 85,
-                Winner = player_1_Id[2],
+                Winner = userId[2],
                 Date = new DateTime(2023, 12, 20)
             });
 
             modelBuilder.Entity<tblGame>().HasData(new tblGame
             {
                 Id = gameId[0],
-                Player_1_Id = player_1_Id[0],
-                Player_2_Id = player_2_Id[2],
+                Player_1_Id = userId[0],
+                Player_2_Id = userId[2],
                 Player_1_Score = 121,
                 Player_2_Score = 50,
-                Winner = player_1_Id[0],
+                Winner = userId[0],
                 Date = new DateTime(2024, 1, 12)
             });
         }
