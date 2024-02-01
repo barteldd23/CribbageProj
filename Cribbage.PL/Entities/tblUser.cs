@@ -19,6 +19,6 @@ namespace Cribbage.PL.Entities
         public int Losses { get; set; }
         public double AvgPtsPerGame { get; set; }
         public int WinStreak { get; set; }
-
+        public virtual ICollection<tblUserGame> tblUserGames { get; set; }
     }
 }
