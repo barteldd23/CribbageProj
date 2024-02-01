@@ -31,7 +31,7 @@ namespace Cribbage.BL.Models
 
         public void ShuffleDeck()
         {
-            // Go through each card twice. Randomaly switch it with a different Index Location
+            // Go through each card twice. Randomly switch it with a different Index Location
 
             Random rnd = new Random();
             for (int j = 0; j < 2; j++)
@@ -47,7 +47,7 @@ namespace Cribbage.BL.Models
         }
         public bool PlayCard(Card card)
         {
-            // Return true if the given card could be played. Return false if it cant be played.
+            // Return true if the given card could be played. Return false if it can't be played.
             // It can be played if the card value added to the current count is <= 31.
             // Check if played card gets points with being 15 total, a pair, or a run.
             // add 2 points if total is 31.
@@ -88,7 +88,7 @@ namespace Cribbage.BL.Models
         {
             // Can only check for a run if 3 or more cards have been played. End method if not.
             // Check by checking if all the cards make a run. Sort and check if faces are sequential. 
-            // if all the cards dont make a run... then check for all but first played card and so on.
+            // If all the cards don't make a run... then check for all but first played card and so on.
 
             //if (PlayedCards.Count < 3) return;
 
@@ -98,7 +98,7 @@ namespace Cribbage.BL.Models
             
             while( cardsSorted.Count >= 3)
             {
-                // checks for the maximum length run possible first then continues looping until the minimum lenght run possible.
+                // checks for the maximum length run possible first then continues looping until the minimum length run possible.
 
                 int attempt = 1;
                 bool run = true;
@@ -136,8 +136,8 @@ namespace Cribbage.BL.Models
                 if (PlayedCards[i].face == PlayedCards[i-1].face)
                 {
                     // First match, add 2 points.
-                    // Second match(3 of a kind or 3pairs) add 4 more points
-                    // Third match(4 of a kind or 6pairs) add 6 more points
+                    // Second match (3 of a kind or 3 pairs) add 4 more points
+                    // Third match (4 of a kind or 6 pairs) add 6 more points
                     pts_To_Add += 2*i;
                 }
                 else
@@ -160,7 +160,7 @@ namespace Cribbage.BL.Models
         private bool Check15()
         {
 
-            // If current total is 15, add 2 points to current players score.
+            // If current total is 15, add 2 points to current player score.
 
             if(CurrentCount == 15)
             {
@@ -175,7 +175,7 @@ namespace Cribbage.BL.Models
 
         public void Deal()
         {
-            // Add the top card of the deck to the Players hand. Then Remove that card from the Deck. 
+            // Add the top card of the deck to the Players hand. Then remove that card from the Deck. 
 
             if(Dealer == 1)
             {
@@ -362,7 +362,7 @@ namespace Cribbage.BL.Models
 
             while (cardsSorted.Count >= 3)
             {
-                // checks for the maximum length run possible first then continues looping until the minimum lenght run possible.
+                // checks for the maximum length run possible first then continues looping until the minimum length run possible.
 
                 bool run = true;
 

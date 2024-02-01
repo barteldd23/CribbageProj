@@ -7,13 +7,11 @@ using System.Threading.Tasks;
 
 namespace Cribbage.BL.Models
 {
-    public class Player
+    public class Player : User
     {
-        public string Name { get; set; }
-        public int Score { get; set; }
         public List<Card> Hand { get; set; }
         public List<Card> PlayedCards { get; set; }
         public int HandPoints { get; set; }
-
+        public int Score { get; set; }
     }
 }
