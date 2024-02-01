@@ -6,8 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container. -- AddDbContextPool
-builder.Services.AddDbContext<CribbageEntities>(options =>
+// Add services to the container.
+builder.Services.AddDbContextPool<CribbageEntities>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DatabaseConnection"), builder => {
     builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
 }));
