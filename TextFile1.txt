@@ -9,6 +9,18 @@ Add-Migration CreateDatabase
 Update-Database 
 
 
-Add-Migration SQLScript_Migration
+Stored Procedure: 
 
 Add-migration sp-GetUsers
+
+            var sp = @"CREATE PROCEDURE [dbo].[GetUsers]
+                    @FirstName varchar(50)
+                AS
+                BEGIN
+                    SET NOCOUNT ON;
+                    select * from Users where FirstName like @FirstName +'%'
+                END";
+
+            migrationBuilder.Sql(sp);
+
+Update-Database 
