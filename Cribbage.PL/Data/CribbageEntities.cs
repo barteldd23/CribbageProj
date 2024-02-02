@@ -6,9 +6,6 @@ namespace Cribbage.PL.Data
 {
     public class CribbageEntities : DbContext
     {
-        // Do you think these are just setting up arrays for default data? -Dean
-        // Yes, I'll start setting this up - Rachel
-
         Guid[] gameId = new Guid[4];
         Guid[] userId = new Guid[4];
 
@@ -187,22 +184,19 @@ namespace Cribbage.PL.Data
             {
                 entity.HasKey(e => e.Id).HasName("PK_tblUserGame_Id");
 
-                //entity.HasNoKey();
-
                 entity.ToTable("tblUserGame");
 
-                //entity.Property(e => e.Id).ValueGeneratedNever();
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();
 
                 entity.HasOne(d => d.User)
                  .WithMany(p => p.tblUserGames)
                  .HasForeignKey(d => d.UserId)
-                 .HasConstraintName("tblUserGame_UserId");
+                 .HasConstraintName("fk_tblUserGame_UserId");
 
                 entity.HasOne(d => d.Game)
                 .WithMany(p => p.tblUserGames)
                 .HasForeignKey(d => d.GameId)
-                .HasConstraintName("tblUserGame_GameId");
+                .HasConstraintName("fk_tblUserGame_GameId");
             });
 
             List<tblUserGame> UserGames = new List<tblUserGame>

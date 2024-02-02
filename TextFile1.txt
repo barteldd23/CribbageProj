@@ -7,3 +7,8 @@ Install-Package Microsoft.VisualStudio.Web.CodeGeneration.Design
 Migration First:
 Add-Migration CreateDatabase
 Update-Database 
+
+
+Add-Migration SQLScript_Migration
+
+Add-migration sp-GetUsers
