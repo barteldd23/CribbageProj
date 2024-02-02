@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cribbage.PL.Migrations
 {
     [DbContext(typeof(CribbageEntities))]
-    [Migration("20240202162530_sp-GetUsers")]
-    partial class spGetUsers
+    [Migration("20240202164857_CreateDatabase")]
+    partial class CreateDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -56,43 +56,43 @@ namespace Cribbage.PL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("4f513ed2-a3b1-4161-9eab-66b16fbde479"),
+                            Id = new Guid("41ebb35f-6aac-4777-b9f2-7a957174cc82"),
                             Date = new DateTime(2023, 10, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Player_1_Id = new Guid("20425efd-8ece-47c9-90b7-e2e9a0df1686"),
+                            Player_1_Id = new Guid("b17eef8c-98f6-40d4-892a-e6eaf69fb981"),
                             Player_1_Score = 121,
-                            Player_2_Id = new Guid("329ae371-22b0-420e-be50-248157a2b083"),
+                            Player_2_Id = new Guid("1f9c4ba8-3fd3-47e0-994b-d770561f6759"),
                             Player_2_Score = 70,
-                            Winner = new Guid("20425efd-8ece-47c9-90b7-e2e9a0df1686")
+                            Winner = new Guid("b17eef8c-98f6-40d4-892a-e6eaf69fb981")
                         },
                         new
                         {
-                            Id = new Guid("bf356195-3c43-4285-b54e-22587b1ea7e2"),
+                            Id = new Guid("eb62f38d-4e79-4616-9bae-f4a061206009"),
                             Date = new DateTime(2023, 11, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Player_1_Id = new Guid("329ae371-22b0-420e-be50-248157a2b083"),
+                            Player_1_Id = new Guid("1f9c4ba8-3fd3-47e0-994b-d770561f6759"),
                             Player_1_Score = 90,
-                            Player_2_Id = new Guid("022920f8-16d2-4050-8d65-c104b8d3e637"),
+                            Player_2_Id = new Guid("4f80cec3-f8da-4264-b048-644b5ad75916"),
                             Player_2_Score = 121,
-                            Winner = new Guid("022920f8-16d2-4050-8d65-c104b8d3e637")
+                            Winner = new Guid("4f80cec3-f8da-4264-b048-644b5ad75916")
                         },
                         new
                         {
-                            Id = new Guid("4bd2973f-07a5-42d3-ac81-99411ef2facd"),
+                            Id = new Guid("1e3bf796-4f18-49c5-8378-e185d41b8990"),
                             Date = new DateTime(2023, 12, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Player_1_Id = new Guid("329ae371-22b0-420e-be50-248157a2b083"),
+                            Player_1_Id = new Guid("1f9c4ba8-3fd3-47e0-994b-d770561f6759"),
                             Player_1_Score = 121,
-                            Player_2_Id = new Guid("20425efd-8ece-47c9-90b7-e2e9a0df1686"),
+                            Player_2_Id = new Guid("b17eef8c-98f6-40d4-892a-e6eaf69fb981"),
                             Player_2_Score = 85,
-                            Winner = new Guid("329ae371-22b0-420e-be50-248157a2b083")
+                            Winner = new Guid("1f9c4ba8-3fd3-47e0-994b-d770561f6759")
                         },
                         new
                         {
-                            Id = new Guid("239f90bb-f639-43ca-b0e6-eb26218656df"),
+                            Id = new Guid("4667fe20-59da-4ad8-8c7f-075b45fdf640"),
                             Date = new DateTime(2024, 1, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Player_1_Id = new Guid("8767e911-ae32-48ab-a0ce-9e3c2ad07c1d"),
+                            Player_1_Id = new Guid("d58ab8af-84fb-417f-af19-6a2d6ae36619"),
                             Player_1_Score = 121,
-                            Player_2_Id = new Guid("329ae371-22b0-420e-be50-248157a2b083"),
+                            Player_2_Id = new Guid("1f9c4ba8-3fd3-47e0-994b-d770561f6759"),
                             Player_2_Score = 50,
-                            Winner = new Guid("8767e911-ae32-48ab-a0ce-9e3c2ad07c1d")
+                            Winner = new Guid("d58ab8af-84fb-417f-af19-6a2d6ae36619")
                         });
                 });
 
@@ -144,7 +144,7 @@ namespace Cribbage.PL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("8767e911-ae32-48ab-a0ce-9e3c2ad07c1d"),
+                            Id = new Guid("d58ab8af-84fb-417f-af19-6a2d6ae36619"),
                             AvgPtsPerGame = 121.0,
                             DisplayName = "CardMaster",
                             Email = "cribbage@game.com",
@@ -158,7 +158,7 @@ namespace Cribbage.PL.Migrations
                         },
                         new
                         {
-                            Id = new Guid("20425efd-8ece-47c9-90b7-e2e9a0df1686"),
+                            Id = new Guid("b17eef8c-98f6-40d4-892a-e6eaf69fb981"),
                             AvgPtsPerGame = 103.0,
                             DisplayName = "CribbageBox",
                             Email = "fun@yahoo.com",
@@ -172,7 +172,7 @@ namespace Cribbage.PL.Migrations
                         },
                         new
                         {
-                            Id = new Guid("329ae371-22b0-420e-be50-248157a2b083"),
+                            Id = new Guid("1f9c4ba8-3fd3-47e0-994b-d770561f6759"),
                             AvgPtsPerGame = 82.75,
                             DisplayName = "GamesRCool",
                             Email = "cards@me.com",
@@ -186,7 +186,7 @@ namespace Cribbage.PL.Migrations
                         },
                         new
                         {
-                            Id = new Guid("022920f8-16d2-4050-8d65-c104b8d3e637"),
+                            Id = new Guid("4f80cec3-f8da-4264-b048-644b5ad75916"),
                             AvgPtsPerGame = 121.0,
                             DisplayName = "Testing",
                             Email = "tester@gmail.com",
@@ -227,26 +227,26 @@ namespace Cribbage.PL.Migrations
                         new
                         {
                             Id = -99,
-                            GameId = new Guid("4f513ed2-a3b1-4161-9eab-66b16fbde479"),
-                            UserId = new Guid("20425efd-8ece-47c9-90b7-e2e9a0df1686")
+                            GameId = new Guid("41ebb35f-6aac-4777-b9f2-7a957174cc82"),
+                            UserId = new Guid("b17eef8c-98f6-40d4-892a-e6eaf69fb981")
                         },
                         new
                         {
                             Id = -98,
-                            GameId = new Guid("bf356195-3c43-4285-b54e-22587b1ea7e2"),
-                            UserId = new Guid("022920f8-16d2-4050-8d65-c104b8d3e637")
+                            GameId = new Guid("eb62f38d-4e79-4616-9bae-f4a061206009"),
+                            UserId = new Guid("4f80cec3-f8da-4264-b048-644b5ad75916")
                         },
                         new
                         {
                             Id = -97,
-                            GameId = new Guid("4bd2973f-07a5-42d3-ac81-99411ef2facd"),
-                            UserId = new Guid("329ae371-22b0-420e-be50-248157a2b083")
+                            GameId = new Guid("1e3bf796-4f18-49c5-8378-e185d41b8990"),
+                            UserId = new Guid("1f9c4ba8-3fd3-47e0-994b-d770561f6759")
                         },
                         new
                         {
                             Id = -96,
-                            GameId = new Guid("239f90bb-f639-43ca-b0e6-eb26218656df"),
-                            UserId = new Guid("8767e911-ae32-48ab-a0ce-9e3c2ad07c1d")
+                            GameId = new Guid("4667fe20-59da-4ad8-8c7f-075b45fdf640"),
+                            UserId = new Guid("d58ab8af-84fb-417f-af19-6a2d6ae36619")
                         });
                 });
 
