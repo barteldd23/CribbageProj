@@ -11,13 +11,12 @@ namespace Cribbage.PL.Data
 
         Guid[] gameId = new Guid[4];
         Guid[] userId = new Guid[4];
-       // Guid[] userGameId = new Guid[4];
 
         public virtual DbSet<tblUser> tblUsers { get; set; }
 
         public virtual DbSet<tblGame> tblGames { get; set; }
 
-        //public virtual DbSet<tblUserGame> tblUserGames { get; set; }
+        public virtual DbSet<tblUserGame> tblUserGames { get; set; }
 
         public CribbageEntities(DbContextOptions<CribbageEntities> options) : base(options)
         {
@@ -40,7 +39,7 @@ namespace Cribbage.PL.Data
 
             CreateUsers(modelBuilder);
             CreateGames(modelBuilder);
-           // CreateUserGames(modelBuilder);
+            CreateUserGames(modelBuilder);
         }
 
         private void CreateGames(ModelBuilder modelBuilder)
@@ -182,38 +181,40 @@ namespace Cribbage.PL.Data
             });
         }
 
-        //private void CreateUserGames(ModelBuilder modelBuilder)
-        //{
-        //    modelBuilder.Entity<tblUserGame>(entity =>
-        //    {
-        //        entity.HasKey(e => e.Id).HasName("PK_tblUserGame_Id");
+        private void CreateUserGames(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<tblUserGame>(entity =>
+            {
+                entity.HasKey(e => e.Id).HasName("PK_tblUserGame_Id");
 
-        //        entity.ToTable("tblUserGame");
+                //entity.HasNoKey();
 
-        //        entity.Property(e => e.Id).ValueGeneratedNever();
-        //        //entity.Property(e => e.Id).ValueGeneratedOnAdd();
+                entity.ToTable("tblUserGame");
 
-        //        entity.HasOne(d => d.User)
-        //         .WithMany(p => p.tblUserGames)
-        //         .HasForeignKey(d => d.UserId)
-        //         .HasConstraintName("tblUserGame_UserId");
+                //entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
 
-        //        entity.HasOne(d => d.Game)
-        //        .WithMany(p => p.tblUserGames)
-        //        .HasForeignKey(d => d.GameId)
-        //        .HasConstraintName("tblUserGame_GameId");
-        //    });
+                entity.HasOne(d => d.User)
+                 .WithMany(p => p.tblUserGames)
+                 .HasForeignKey(d => d.UserId)
+                 .HasConstraintName("tblUserGame_UserId");
 
-        //    List<tblUserGame> UserGames = new List<tblUserGame>
-        //    {
-        //        new tblUserGame {Id = userGameId[0], GameId = gameId[0], UserId = userId[1]},
-        //        new tblUserGame {Id = userGameId[1], GameId = gameId[1], UserId = userId[3]},
-        //        new tblUserGame {Id = userGameId[2], GameId = gameId[2], UserId = userId[2]},
-        //        new tblUserGame {Id = userGameId[3], GameId = gameId[3], UserId = userId[0]}
-        //    };
+                entity.HasOne(d => d.Game)
+                .WithMany(p => p.tblUserGames)
+                .HasForeignKey(d => d.GameId)
+                .HasConstraintName("tblUserGame_GameId");
+            });
 
-        //    modelBuilder.Entity<tblUserGame>().HasData(UserGames);
-        //}
+            List<tblUserGame> UserGames = new List<tblUserGame>
+            {
+                new tblUserGame {Id = -99, GameId = gameId[0], UserId = userId[1]},
+                new tblUserGame {Id = -98, GameId = gameId[1], UserId = userId[3]},
+                new tblUserGame {Id = -97, GameId = gameId[2], UserId = userId[2]},
+                new tblUserGame {Id = -96, GameId = gameId[3], UserId = userId[0]}
+            };
+
+            modelBuilder.Entity<tblUserGame>().HasData(UserGames);
+        }
 
         private static string GetHash(string Password)
         {
