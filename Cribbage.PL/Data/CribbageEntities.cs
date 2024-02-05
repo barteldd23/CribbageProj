@@ -6,8 +6,8 @@ namespace Cribbage.PL.Data
 {
     public class CribbageEntities : DbContext
     {
-        Guid[] gameId = new Guid[4];
-        Guid[] userId = new Guid[4];
+        Guid[] gameId = new Guid[5];
+        Guid[] userId = new Guid[5];
 
         public virtual DbSet<tblUser> tblUsers { get; set; }
 
@@ -99,6 +99,17 @@ namespace Cribbage.PL.Data
                 Winner = userId[0],
                 Date = new DateTime(2024, 1, 12)
             });
+
+            modelBuilder.Entity<tblGame>().HasData(new tblGame
+            {
+                Id = gameId[4],
+                Player_1_Id = userId[0],
+                Player_2_Id = userId[4],
+                Player_1_Score = 121,
+                Player_2_Score = 50,
+                Winner = userId[0],
+                Date = new DateTime(2024, 2, 4)
+            });
         }
 
         private void CreateUsers(ModelBuilder modelBuilder)
@@ -126,10 +137,10 @@ namespace Cribbage.PL.Data
                 LastName = "Smith",
                 Password = GetHash("maple"),
                 GamesStarted = 1,
-                Wins = 1,
+                Wins = 2,
                 Losses = 0,
                 AvgPtsPerGame = 121,
-                WinStreak = 1
+                WinStreak = 2
             });
 
             modelBuilder.Entity<tblUser>().HasData(new tblUser
@@ -176,6 +187,21 @@ namespace Cribbage.PL.Data
                 AvgPtsPerGame = 121,
                 WinStreak = 1
             });
+
+            modelBuilder.Entity<tblUser>().HasData(new tblUser
+            {
+                Id = userId[4],
+                Email = "computer@computer.com",
+                DisplayName = "Computer",
+                FirstName = "Computer",
+                LastName = "Computer",
+                Password = GetHash("maple"),
+                GamesStarted = 1,
+                Wins = 0,
+                Losses = 0,
+                AvgPtsPerGame = 50,
+                WinStreak = 0
+            });
         }
 
         private void CreateUserGames(ModelBuilder modelBuilder)
@@ -204,7 +230,8 @@ namespace Cribbage.PL.Data
                 new tblUserGame {Id = -99, GameId = gameId[0], UserId = userId[1]},
                 new tblUserGame {Id = -98, GameId = gameId[1], UserId = userId[3]},
                 new tblUserGame {Id = -97, GameId = gameId[2], UserId = userId[2]},
-                new tblUserGame {Id = -96, GameId = gameId[3], UserId = userId[0]}
+                new tblUserGame {Id = -96, GameId = gameId[3], UserId = userId[0]},
+                new tblUserGame {Id = -95, GameId = gameId[4], UserId = userId[0]}
             };
 
             modelBuilder.Entity<tblUserGame>().HasData(UserGames);

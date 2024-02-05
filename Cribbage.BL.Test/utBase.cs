@@ -1,7 +1,7 @@
-namespace Cribbage.PL.Test
+namespace Cribbage.BL.Test
 {
     [TestClass]
-    public class UnitTest1
+    public class utBase
     {
         [TestMethod]
         public void TestMethod1()

@@ -82,10 +82,11 @@ namespace Cribbage.PL.Migrations
                 columns: new[] { "Id", "Date", "Player_1_Id", "Player_1_Score", "Player_2_Id", "Player_2_Score", "Winner" },
                 values: new object[,]
                 {
-                    { new Guid("1e3bf796-4f18-49c5-8378-e185d41b8990"), new DateTime(2023, 12, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("1f9c4ba8-3fd3-47e0-994b-d770561f6759"), 121, new Guid("b17eef8c-98f6-40d4-892a-e6eaf69fb981"), 85, new Guid("1f9c4ba8-3fd3-47e0-994b-d770561f6759") },
-                    { new Guid("41ebb35f-6aac-4777-b9f2-7a957174cc82"), new DateTime(2023, 10, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("b17eef8c-98f6-40d4-892a-e6eaf69fb981"), 121, new Guid("1f9c4ba8-3fd3-47e0-994b-d770561f6759"), 70, new Guid("b17eef8c-98f6-40d4-892a-e6eaf69fb981") },
-                    { new Guid("4667fe20-59da-4ad8-8c7f-075b45fdf640"), new DateTime(2024, 1, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("d58ab8af-84fb-417f-af19-6a2d6ae36619"), 121, new Guid("1f9c4ba8-3fd3-47e0-994b-d770561f6759"), 50, new Guid("d58ab8af-84fb-417f-af19-6a2d6ae36619") },
-                    { new Guid("eb62f38d-4e79-4616-9bae-f4a061206009"), new DateTime(2023, 11, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("1f9c4ba8-3fd3-47e0-994b-d770561f6759"), 90, new Guid("4f80cec3-f8da-4264-b048-644b5ad75916"), 121, new Guid("4f80cec3-f8da-4264-b048-644b5ad75916") }
+                    { new Guid("1079eb15-54df-47fd-b40f-c71cbbcbfc3b"), new DateTime(2023, 12, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("834fc2c5-1638-4593-a5e9-dea5d5d2d143"), 121, new Guid("501efe9c-fb72-4037-bb0f-feca082ba20b"), 85, new Guid("834fc2c5-1638-4593-a5e9-dea5d5d2d143") },
+                    { new Guid("59f97341-0c60-4bb8-92b2-cedf364e4a77"), new DateTime(2023, 10, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("501efe9c-fb72-4037-bb0f-feca082ba20b"), 121, new Guid("834fc2c5-1638-4593-a5e9-dea5d5d2d143"), 70, new Guid("501efe9c-fb72-4037-bb0f-feca082ba20b") },
+                    { new Guid("696ed53e-5341-4474-a720-d0744adf43f7"), new DateTime(2024, 2, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("9a6a1873-0111-472e-aa05-12577d2cb9ae"), 121, new Guid("b0f1e70f-76e4-4206-ad5e-786c291ca264"), 50, new Guid("9a6a1873-0111-472e-aa05-12577d2cb9ae") },
+                    { new Guid("b9f9a5a7-44bd-44ec-8ed6-65ce70242e1c"), new DateTime(2024, 1, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("9a6a1873-0111-472e-aa05-12577d2cb9ae"), 121, new Guid("834fc2c5-1638-4593-a5e9-dea5d5d2d143"), 50, new Guid("9a6a1873-0111-472e-aa05-12577d2cb9ae") },
+                    { new Guid("d8848963-8adb-4f7d-b531-61fadfac947e"), new DateTime(2023, 11, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("834fc2c5-1638-4593-a5e9-dea5d5d2d143"), 90, new Guid("29436414-985b-4181-9cf8-787bd3204d87"), 121, new Guid("29436414-985b-4181-9cf8-787bd3204d87") }
                 });
 
             migrationBuilder.InsertData(
@@ -93,10 +94,11 @@ namespace Cribbage.PL.Migrations
                 columns: new[] { "Id", "AvgPtsPerGame", "DisplayName", "Email", "FirstName", "GamesStarted", "LastName", "Losses", "Password", "WinStreak", "Wins" },
                 values: new object[,]
                 {
-                    { new Guid("1f9c4ba8-3fd3-47e0-994b-d770561f6759"), 82.75, "GamesRCool", "cards@me.com", "Kelly", 4, "Bot", 3, "pYfdnNb8sO0FgS4H0MRSwLGOIME=", 1, 1 },
-                    { new Guid("4f80cec3-f8da-4264-b048-644b5ad75916"), 121.0, "Testing", "tester@gmail.com", "Test", 1, "Tester", 0, "pYfdnNb8sO0FgS4H0MRSwLGOIME=", 1, 1 },
-                    { new Guid("b17eef8c-98f6-40d4-892a-e6eaf69fb981"), 103.0, "CribbageBox", "fun@yahoo.com", "Peter", 2, "Parker", 1, "pYfdnNb8sO0FgS4H0MRSwLGOIME=", 1, 1 },
-                    { new Guid("d58ab8af-84fb-417f-af19-6a2d6ae36619"), 121.0, "CardMaster", "cribbage@game.com", "Joe", 1, "Smith", 0, "pYfdnNb8sO0FgS4H0MRSwLGOIME=", 1, 1 }
+                    { new Guid("29436414-985b-4181-9cf8-787bd3204d87"), 121.0, "Testing", "tester@gmail.com", "Test", 1, "Tester", 0, "pYfdnNb8sO0FgS4H0MRSwLGOIME=", 1, 1 },
+                    { new Guid("501efe9c-fb72-4037-bb0f-feca082ba20b"), 103.0, "CribbageBox", "fun@yahoo.com", "Peter", 2, "Parker", 1, "pYfdnNb8sO0FgS4H0MRSwLGOIME=", 1, 1 },
+                    { new Guid("834fc2c5-1638-4593-a5e9-dea5d5d2d143"), 82.75, "GamesRCool", "cards@me.com", "Kelly", 4, "Bot", 3, "pYfdnNb8sO0FgS4H0MRSwLGOIME=", 1, 1 },
+                    { new Guid("9a6a1873-0111-472e-aa05-12577d2cb9ae"), 121.0, "CardMaster", "cribbage@game.com", "Joe", 1, "Smith", 0, "pYfdnNb8sO0FgS4H0MRSwLGOIME=", 2, 2 },
+                    { new Guid("b0f1e70f-76e4-4206-ad5e-786c291ca264"), 50.0, "Computer", "computer@computer.com", "Computer", 1, "Computer", 0, "pYfdnNb8sO0FgS4H0MRSwLGOIME=", 0, 0 }
                 });
 
             migrationBuilder.InsertData(
@@ -104,10 +106,11 @@ namespace Cribbage.PL.Migrations
                 columns: new[] { "Id", "GameId", "UserId" },
                 values: new object[,]
                 {
-                    { -99, new Guid("41ebb35f-6aac-4777-b9f2-7a957174cc82"), new Guid("b17eef8c-98f6-40d4-892a-e6eaf69fb981") },
-                    { -98, new Guid("eb62f38d-4e79-4616-9bae-f4a061206009"), new Guid("4f80cec3-f8da-4264-b048-644b5ad75916") },
-                    { -97, new Guid("1e3bf796-4f18-49c5-8378-e185d41b8990"), new Guid("1f9c4ba8-3fd3-47e0-994b-d770561f6759") },
-                    { -96, new Guid("4667fe20-59da-4ad8-8c7f-075b45fdf640"), new Guid("d58ab8af-84fb-417f-af19-6a2d6ae36619") }
+                    { -99, new Guid("59f97341-0c60-4bb8-92b2-cedf364e4a77"), new Guid("501efe9c-fb72-4037-bb0f-feca082ba20b") },
+                    { -98, new Guid("d8848963-8adb-4f7d-b531-61fadfac947e"), new Guid("29436414-985b-4181-9cf8-787bd3204d87") },
+                    { -97, new Guid("1079eb15-54df-47fd-b40f-c71cbbcbfc3b"), new Guid("834fc2c5-1638-4593-a5e9-dea5d5d2d143") },
+                    { -96, new Guid("b9f9a5a7-44bd-44ec-8ed6-65ce70242e1c"), new Guid("9a6a1873-0111-472e-aa05-12577d2cb9ae") },
+                    { -95, new Guid("696ed53e-5341-4474-a720-d0744adf43f7"), new Guid("9a6a1873-0111-472e-aa05-12577d2cb9ae") }
                 });
 
             migrationBuilder.CreateIndex(
