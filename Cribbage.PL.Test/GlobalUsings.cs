@@ -5,3 +5,5 @@ global using Microsoft.EntityFrameworkCore.Storage;
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.EntityFrameworkCore;
 global using System.IO;
+global using System.Collections.Generic;
+global using System.Linq;
