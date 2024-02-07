@@ -18,12 +18,9 @@ namespace Cribbage.PL.Test
         {
             tblGame newRow = new tblGame();
             newRow.Id = Guid.NewGuid();
-            newRow.Player_1_Id = dc.tblGames.FirstOrDefault().Player_1_Id;
-            newRow.Player_2_Id = dc.tblGames.FirstOrDefault().Player_2_Id;
-            newRow.Player_1_Score = 121;
-            newRow.Player_2_Score = 20;
-            newRow.Winner = newRow.Player_1_Id;
+            newRow.Winner = dc.tblGames.FirstOrDefault().Winner;
             newRow.Date = DateTime.Now;
+            newRow.Complete = true;
 
             dc.tblGames.Add(newRow);
 
@@ -38,7 +35,7 @@ namespace Cribbage.PL.Test
 
             if (row != null)
             {
-                row.Player_1_Score = 0;
+                row.Complete = !row.Complete;
                 int rowsAffected = UpdateTest(row);
                 Assert.AreEqual(1, rowsAffected);
             }

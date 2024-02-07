@@ -8,6 +8,7 @@ namespace Cribbage.PL.Data
     {
         Guid[] gameId = new Guid[5];
         Guid[] userId = new Guid[5];
+        Guid[] userGameId = new Guid[10];
 
         public virtual DbSet<tblUser> tblUsers { get; set; }
 
@@ -59,56 +60,41 @@ namespace Cribbage.PL.Data
             modelBuilder.Entity<tblGame>().HasData(new tblGame
             {
                 Id = gameId[0],
-                Player_1_Id = userId[1],
-                Player_2_Id = userId[2],
-                Player_1_Score = 121,
-                Player_2_Score = 70,
                 Winner = userId[1],
-                Date = new DateTime(2023, 10, 6)
+                Date = new DateTime(2023, 10, 6),
+                Complete = true
             });
 
             modelBuilder.Entity<tblGame>().HasData(new tblGame
             {
                 Id = gameId[1],
-                Player_1_Id = userId[2],
-                Player_2_Id = userId[3],
-                Player_1_Score = 90,
-                Player_2_Score = 121,
                 Winner = userId[3],
-                Date = new DateTime(2023, 11, 14)
+                Date = new DateTime(2023, 11, 14),
+                Complete = true
             });
 
             modelBuilder.Entity<tblGame>().HasData(new tblGame
             {
                 Id = gameId[2],
-                Player_1_Id = userId[2],
-                Player_2_Id = userId[1],
-                Player_1_Score = 121,
-                Player_2_Score = 85,
                 Winner = userId[2],
-                Date = new DateTime(2023, 12, 20)
+                Date = new DateTime(2023, 12, 20),
+                Complete = true
             });
 
             modelBuilder.Entity<tblGame>().HasData(new tblGame
             {
                 Id = gameId[3],
-                Player_1_Id = userId[0],
-                Player_2_Id = userId[2],
-                Player_1_Score = 121,
-                Player_2_Score = 50,
                 Winner = userId[0],
-                Date = new DateTime(2024, 1, 12)
+                Date = new DateTime(2024, 1, 12),
+                Complete = true
             });
 
             modelBuilder.Entity<tblGame>().HasData(new tblGame
             {
-                Id = gameId[4],
-                Player_1_Id = userId[0],
-                Player_2_Id = userId[4],
-                Player_1_Score = 121,
-                Player_2_Score = 50,
+                Id = gameId[4], 
                 Winner = userId[0],
-                Date = new DateTime(2024, 2, 4)
+                Date = new DateTime(2024, 2, 4),
+                Complete = true
             });
         }
 
@@ -206,17 +192,22 @@ namespace Cribbage.PL.Data
 
         private void CreateUserGames(ModelBuilder modelBuilder)
         {
+            for (int i = 0; i < userGameId.Length; i++)
+            {
+                userGameId[i] = Guid.NewGuid();
+            }
+
             modelBuilder.Entity<tblUserGame>(entity =>
             {
                 entity.HasKey(e => e.Id).HasName("PK_tblUserGame_Id");
 
                 entity.ToTable("tblUserGame");
 
-                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+                entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.HasOne(d => d.User)
                  .WithMany(p => p.tblUserGames)
-                 .HasForeignKey(d => d.UserId)
+                 .HasForeignKey(d => d.PlayerId)
                  .HasConstraintName("fk_tblUserGame_UserId");
 
                 entity.HasOne(d => d.Game)
@@ -227,11 +218,16 @@ namespace Cribbage.PL.Data
 
             List<tblUserGame> UserGames = new List<tblUserGame>
             {
-                new tblUserGame {Id = -99, GameId = gameId[0], UserId = userId[1]},
-                new tblUserGame {Id = -98, GameId = gameId[1], UserId = userId[3]},
-                new tblUserGame {Id = -97, GameId = gameId[2], UserId = userId[2]},
-                new tblUserGame {Id = -96, GameId = gameId[3], UserId = userId[0]},
-                new tblUserGame {Id = -95, GameId = gameId[4], UserId = userId[0]}
+                new tblUserGame {Id = userGameId[0], GameId = gameId[0], PlayerId = userId[1], PlayerScore = 121},
+                new tblUserGame {Id = userGameId[1], GameId = gameId[0], PlayerId = userId[2], PlayerScore = 70},
+                new tblUserGame {Id = userGameId[2], GameId = gameId[1], PlayerId = userId[2], PlayerScore = 90},
+                new tblUserGame {Id = userGameId[3], GameId = gameId[1], PlayerId = userId[3], PlayerScore = 121},
+                new tblUserGame {Id = userGameId[4], GameId = gameId[2], PlayerId = userId[2], PlayerScore = 121},
+                new tblUserGame {Id = userGameId[5], GameId = gameId[2], PlayerId = userId[1], PlayerScore = 85},
+                new tblUserGame {Id = userGameId[6], GameId = gameId[3], PlayerId = userId[0], PlayerScore = 121},
+                new tblUserGame {Id = userGameId[7], GameId = gameId[3], PlayerId = userId[2], PlayerScore = 50},
+                new tblUserGame {Id = userGameId[8], GameId = gameId[4], PlayerId = userId[0], PlayerScore = 121},
+                new tblUserGame {Id = userGameId[9], GameId = gameId[4], PlayerId = userId[4], PlayerScore = 50},
             };
 
             modelBuilder.Entity<tblUserGame>().HasData(UserGames);
