@@ -23,12 +23,25 @@ namespace Cribbage.BL.Models
         public List<Card> Crib { get; set; } = new List<Card>();
         public Card CutCard { get; set; }
         public List<Card> PlayedCards { get; set; } = new List<Card>();
-        public int CurrentCount { get; set; } = 0;
+        public int CurrentCount { get { return getCount(); } } 
 
         [DisplayName("Team 1 Score")] 
         public int Team1_Score { get; set; }
         [DisplayName("Team 2 Score")]
         public int Team2_Score { get; set;}
+
+        public int getCount()
+        {
+            int count = 0;
+            if (PlayedCards.Count > 0)
+            {
+                foreach(Card card in PlayedCards)
+                {
+                    count += card.value;
+                }
+            }
+            return count;
+        }
         #endregion
 
         #region "Starting the game methods"
@@ -147,7 +160,6 @@ namespace Cribbage.BL.Models
 
             if (card.value + CurrentCount <= 31)
             {
-                CurrentCount += card.value;
                 PlayedCards.Add(card);
                 Check15();
                 CheckPair();
@@ -171,7 +183,6 @@ namespace Cribbage.BL.Models
 
         private void EndCountingRally()
         {
-            CurrentCount = 0;
             PlayedCards = null;
             PlayedCards = new List<Card>();
 
@@ -188,12 +199,14 @@ namespace Cribbage.BL.Models
             // Need to test this. Also check that PlayedCards list is not changed.
             // make sure it is sorting by enum number instead of enum word.
             var cardsSorted = PlayedCards.OrderBy(c => c.face).ToList();
-            
-            while( cardsSorted.Count >= 3)
+            int attempt = 1;
+            while ( cardsSorted.Count >= 3)
             {
+                
+
                 // checks for the maximum length run possible first then continues looping until the minimum length run possible.
 
-                int attempt = 1;
+                
                 bool run = true;
                 
                 for(int i = 0; i < cardsSorted.Count -1; i++) 
@@ -224,9 +237,9 @@ namespace Cribbage.BL.Models
         {
             // Check if Last 2 cards are a match. keep checking. When not a match, break out and add the points to players score.
             int pts_To_Add = 0;
-            for(int i = PlayedCards.Count - 1; i > 0; i--)
+            for(int i = 1; i < PlayedCards.Count; i++)
             {
-                if (PlayedCards[i].face == PlayedCards[i-1].face)
+                if (PlayedCards[PlayedCards.Count - i].face == PlayedCards[PlayedCards.Count - i - 1].face)
                 {
                     // First match, add 2 points.
                     // Second match (3 of a kind or 3 pairs) add 4 more points
