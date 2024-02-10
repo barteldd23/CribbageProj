@@ -9,6 +9,7 @@ namespace Cribbage.BL.Models
 {
     public class Cribbage
     {
+        #region "Properties"
         public Guid Id { get; set; }
         public Player Player_1 { get; set; }
         public Player Player_2 { get; set; }
@@ -28,7 +29,9 @@ namespace Cribbage.BL.Models
         public int Team1_Score { get; set; }
         [DisplayName("Team 2 Score")]
         public int Team2_Score { get; set;}
+        #endregion
 
+        #region "Starting the game methods"
         public void ShuffleDeck()
         {
             // Go through each card twice. Randomly switch it with a different Index Location
@@ -45,6 +48,96 @@ namespace Cribbage.BL.Models
                 }
             }
         }
+        public void Deal()
+        {
+            // Add the top card of the deck to the Players hand. Then remove that card from the Deck. 
+
+            if (Dealer == 1)
+            {
+                // Player 1 deals, Player 2 gets the first card.
+                Player_2.Hand.Add(Deck.Cards[0]);
+                Deck.Cards.RemoveAt(0);
+                Player_1.Hand.Add(Deck.Cards[0]);
+                Deck.Cards.RemoveAt(0);
+
+                Player_2.Hand.Add(Deck.Cards[0]);
+                Deck.Cards.RemoveAt(0);
+                Player_1.Hand.Add(Deck.Cards[0]);
+                Deck.Cards.RemoveAt(0);
+
+                Player_2.Hand.Add(Deck.Cards[0]);
+                Deck.Cards.RemoveAt(0);
+                Player_1.Hand.Add(Deck.Cards[0]);
+                Deck.Cards.RemoveAt(0);
+
+                Player_2.Hand.Add(Deck.Cards[0]);
+                Deck.Cards.RemoveAt(0);
+                Player_1.Hand.Add(Deck.Cards[0]);
+                Deck.Cards.RemoveAt(0);
+
+                Player_2.Hand.Add(Deck.Cards[0]);
+                Deck.Cards.RemoveAt(0);
+                Player_1.Hand.Add(Deck.Cards[0]);
+                Deck.Cards.RemoveAt(0);
+
+                Player_2.Hand.Add(Deck.Cards[0]);
+                Deck.Cards.RemoveAt(0);
+                Player_1.Hand.Add(Deck.Cards[0]);
+                Deck.Cards.RemoveAt(0);
+            }
+            else
+            {
+                //Player 2 Deals. Player 1 gets the first card.
+                Player_1.Hand.Add(Deck.Cards[0]);
+                Deck.Cards.RemoveAt(0);
+                Player_2.Hand.Add(Deck.Cards[0]);
+                Deck.Cards.RemoveAt(0);
+
+                Player_1.Hand.Add(Deck.Cards[0]);
+                Deck.Cards.RemoveAt(0);
+                Player_2.Hand.Add(Deck.Cards[0]);
+                Deck.Cards.RemoveAt(0);
+
+                Player_1.Hand.Add(Deck.Cards[0]);
+                Deck.Cards.RemoveAt(0);
+                Player_2.Hand.Add(Deck.Cards[0]);
+                Deck.Cards.RemoveAt(0);
+
+                Player_1.Hand.Add(Deck.Cards[0]);
+                Deck.Cards.RemoveAt(0);
+                Player_2.Hand.Add(Deck.Cards[0]);
+                Deck.Cards.RemoveAt(0);
+
+                Player_1.Hand.Add(Deck.Cards[0]);
+                Deck.Cards.RemoveAt(0);
+                Player_2.Hand.Add(Deck.Cards[0]);
+                Deck.Cards.RemoveAt(0);
+
+                Player_1.Hand.Add(Deck.Cards[0]);
+                Deck.Cards.RemoveAt(0);
+                Player_2.Hand.Add(Deck.Cards[0]);
+                Deck.Cards.RemoveAt(0);
+            }
+        }
+
+        public void Cut()
+        {
+            // choose a random index position to be the cut card.
+            Random rnd = new Random();
+            int index = rnd.Next(10, 31);
+            CutCard = Deck.Cards[index];
+        }
+        
+        public void Give_To_Crib(List<Card> cards)
+        {
+            foreach (Card card in cards)
+            {
+                Crib.Add(card);
+            }
+        }
+        #endregion
+
+        #region "Methods for counting rally"
         public bool PlayCard(Card card)
         {
             // Return true if the given card could be played. Return false if it can't be played.
@@ -172,82 +265,9 @@ namespace Cribbage.BL.Models
                 return false;
             }
         }
-
-        public void Deal()
-        {
-            // Add the top card of the deck to the Players hand. Then remove that card from the Deck. 
-
-            if(Dealer == 1)
-            {
-                // Player 1 deals, Player 2 gets the first card.
-                Player_2.Hand.Add(Deck.Cards[0]);
-                Deck.Cards.RemoveAt(0);
-                Player_1.Hand.Add(Deck.Cards[0]);
-                Deck.Cards.RemoveAt(0);
-
-                Player_2.Hand.Add(Deck.Cards[0]);
-                Deck.Cards.RemoveAt(0);
-                Player_1.Hand.Add(Deck.Cards[0]);
-                Deck.Cards.RemoveAt(0);
-
-                Player_2.Hand.Add(Deck.Cards[0]);
-                Deck.Cards.RemoveAt(0);
-                Player_1.Hand.Add(Deck.Cards[0]);
-                Deck.Cards.RemoveAt(0);
-
-                Player_2.Hand.Add(Deck.Cards[0]);
-                Deck.Cards.RemoveAt(0);
-                Player_1.Hand.Add(Deck.Cards[0]);
-                Deck.Cards.RemoveAt(0);
-
-                Player_2.Hand.Add(Deck.Cards[0]);
-                Deck.Cards.RemoveAt(0);
-                Player_1.Hand.Add(Deck.Cards[0]);
-                Deck.Cards.RemoveAt(0);
-
-                Player_2.Hand.Add(Deck.Cards[0]);
-                Deck.Cards.RemoveAt(0);
-                Player_1.Hand.Add(Deck.Cards[0]);
-                Deck.Cards.RemoveAt(0);
-            }
-            else
-            {
-                //Player 2 Deals. Player 1 gets the first card.
-                Player_1.Hand.Add(Deck.Cards[0]);
-                Deck.Cards.RemoveAt(0);
-                Player_2.Hand.Add(Deck.Cards[0]);
-                Deck.Cards.RemoveAt(0);
-
-                Player_1.Hand.Add(Deck.Cards[0]);
-                Deck.Cards.RemoveAt(0);
-                Player_2.Hand.Add(Deck.Cards[0]);
-                Deck.Cards.RemoveAt(0);
-
-                Player_1.Hand.Add(Deck.Cards[0]);
-                Deck.Cards.RemoveAt(0);
-                Player_2.Hand.Add(Deck.Cards[0]);
-                Deck.Cards.RemoveAt(0);
-
-                Player_1.Hand.Add(Deck.Cards[0]);
-                Deck.Cards.RemoveAt(0);
-                Player_2.Hand.Add(Deck.Cards[0]);
-                Deck.Cards.RemoveAt(0);
-
-                Player_1.Hand.Add(Deck.Cards[0]);
-                Deck.Cards.RemoveAt(0);
-                Player_2.Hand.Add(Deck.Cards[0]);
-                Deck.Cards.RemoveAt(0);
-
-                Player_1.Hand.Add(Deck.Cards[0]);
-                Deck.Cards.RemoveAt(0);
-                Player_2.Hand.Add(Deck.Cards[0]);
-                Deck.Cards.RemoveAt(0);
-            }
-        }
-
         public void Go()
         {
-            
+
             if (GoCount == 0)
             {
                 GoCount++;
@@ -268,11 +288,11 @@ namespace Cribbage.BL.Models
             // checks to see if the current player has any cards in their hand that can be played with out going over 31.
             // purpose to check if the 'GO' option should be available.
 
-            if(PlayerTurn.Hand.Count > 0) 
+            if (PlayerTurn.Hand.Count > 0)
             {
                 foreach (Card card in PlayerTurn.Hand)
                 {
-                    if( card.value + CurrentCount <= 31) return true;
+                    if (card.value + CurrentCount <= 31) return true;
                 }
                 return false;
             }
@@ -281,64 +301,52 @@ namespace Cribbage.BL.Models
                 return false;
             }
         }
+        #endregion
 
-        public void Cut()
-        {
-            // choose a random index position to be the cut card.
-            Random rnd = new Random();
-            int index = rnd.Next(10, 31);
-            CutCard = Deck.Cards[index];
-        }
+        
 
+        #region "Count Hand Points"
         public int CountHand(List<Card> hand, bool crib = false)
         {
             hand.Add(CutCard);
             int points_to_add = 0;
 
-            //Check for pairs and 15's with 2 cards
-            for (int i = 0; i < hand.Count - 1; i++)
+            // Check for Pairs and 15s
+            points_to_add += Count_15s_and_Pairs(hand);
+
+            // Check for a Flush
+            points_to_add += CountFlush(hand, crib);
+
+            // Check for Runs
+            points_to_add += CountRuns(hand);
+
+            // check for knobs
+            points_to_add += CountKnobs(hand);
+
+            return points_to_add;
+
+        }
+
+        private int CountKnobs(List<Card> hand)
+        {
+            int points_to_add = 0;
+            if (CutCard.face != Faces.Jack)
             {
-                for (int j = i + 1; j < hand.Count; j++)
+                foreach (Card card in hand)
                 {
-                    if (hand[i].face == hand[j].face) points_to_add += 2;
-                    if (hand[i].value + hand[j].value == 15) points_to_add += 2;
+                    if (card.face == Faces.Jack) points_to_add++;
                 }
             }
 
-            // check for 15's with 3 cards
-            for (int i = 0; i < hand.Count - 2; i++)
-            {
-                for (int j = i+1; j < hand.Count - 1; j++)
-                {
-                    for (int k = j + 1; k < hand.Count; k++)
-                    {
-                        if (hand[i].value + hand[j].value + hand[k].value == 15) points_to_add += 2;
-                    }
-                }
-            }
+            return points_to_add;
+        }
 
-            // check for 15's with 4 cards
-            for (int i = 0; i < hand.Count - 3; i++)
-            {
-                for (int j = i + 1; j < hand.Count - 2; j++)
-                {
-                    for (int k = j + 1; k < hand.Count -1; k++)
-                    {
-                        for (int l = k + 1; l < hand.Count; l++)
-                        {
-                            if (hand[i].value + hand[j].value + hand[k].value + hand[l].value == 15) points_to_add += 2;
-                        }
-                        
-                    }
-                }
-            }
-
-            // check for 15's with 5 cards
-            if (hand[0].value + hand[1].value + hand[2].value + hand[3].value + hand[4].value == 15) points_to_add += 2;
-
+        private static int CountFlush(List<Card> hand, bool crib)
+        {
             // Check for flush
             // If a crib hand. all 5 cards need to be same suit.
             // if not crib hand. 4 of your original cards same suit or all 5 same suit.
+            int points_to_add = 0;
             if (crib)
             {
                 if (hand[0].suit == hand[1].suit &&
@@ -357,43 +365,125 @@ namespace Cribbage.BL.Models
                           hand[0].suit == hand[3].suit) points_to_add += 4;
             }
 
-            // Check for Runs
-            var cardsSorted = hand.OrderBy(c => c.face).ToList();
+            return points_to_add;
+        }
 
-            while (cardsSorted.Count >= 3)
+        private static int Count_15s_and_Pairs(List<Card> hand)
+        {
+            int points_to_add = 0;
+            //Check for pairs and 15's with 2 cards
+            for (int i = 0; i < hand.Count - 1; i++)
             {
-                // checks for the maximum length run possible first then continues looping until the minimum length run possible.
-
-                bool run = true;
-
-                for (int i = 0; i < cardsSorted.Count - 1; i++)
+                for (int j = i + 1; j < hand.Count; j++)
                 {
-                    if (cardsSorted[i].face + 1 != cardsSorted[i + 1].face)
+                    if (hand[i].face == hand[j].face) points_to_add += 2;
+                    if (hand[i].value + hand[j].value == 15) points_to_add += 2;
+                }
+            }
+
+            // check for 15's with 3 cards
+            for (int i = 0; i < hand.Count - 2; i++)
+            {
+                for (int j = i + 1; j < hand.Count - 1; j++)
+                {
+                    for (int k = j + 1; k < hand.Count; k++)
                     {
-                        run = false; break;
+                        if (hand[i].value + hand[j].value + hand[k].value == 15) points_to_add += 2;
                     }
                 }
-                if (run)
-                {
-                    points_to_add += cardsSorted.Count;
-                    break;
-                }
-
-                // Makes a new sorted list but after you remove the first card(s) played.
-                cardsSorted.RemoveAt(0);
             }
 
-            // check for knobs
-            if(CutCard.face != Faces.Jack)
+            // check for 15's with 4 cards
+            for (int i = 0; i < hand.Count - 3; i++)
             {
-                foreach( Card card in hand)
+                for (int j = i + 1; j < hand.Count - 2; j++)
                 {
-                    if (card.face == Faces.Jack) points_to_add++;
+                    for (int k = j + 1; k < hand.Count - 1; k++)
+                    {
+                        for (int l = k + 1; l < hand.Count; l++)
+                        {
+                            if (hand[i].value + hand[j].value + hand[k].value + hand[l].value == 15) points_to_add += 2;
+                        }
+
+                    }
                 }
             }
 
+            // check for 15's with 5 cards
+            if (hand[0].value + hand[1].value + hand[2].value + hand[3].value + hand[4].value == 15) points_to_add += 2;
             return points_to_add;
-
         }
+
+        private int CountRuns(List<Card> hand)
+        {
+            int runPoints = 0;
+            bool hasRun = true;
+
+            var cardsSorted = hand.OrderBy(c => c.face).ToList();
+
+            // Check for a run of 5. if run of 5. Do not need to check for more runs. return 5 points.
+            for (int i = 0; i < cardsSorted.Count - 1; i++)
+            {
+                if (cardsSorted[i].face + 1 != cardsSorted[i + 1].face)
+                {
+                    hasRun = false; break;
+                }
+            }
+
+            if (hasRun)
+            {
+                runPoints = 5;
+                return runPoints;
+            }
+
+            // runs with 4 cards. Start with hasRun = false to know if there is a run of 4
+            // if run of 4, return the points because we dont want to count any runs of 3.
+            hasRun = false;
+            for (int i = 0; i < hand.Count - 3; i++)
+            {
+                for (int j = i + 1; j < hand.Count - 2; j++)
+                {
+                    for (int k = j + 1; k < hand.Count - 1; k++)
+                    {
+                        for (int l = k + 1; l < hand.Count; l++)
+                        {
+                            if (hand[i].value == hand[j].value -1 &&
+                                hand[j].value == hand[k].value -1 &&
+                                hand[k].value == hand[l].value -1 )
+                            {
+                                hasRun = true;
+                                runPoints += 4;
+                            }
+                        }
+
+                    }
+                }
+            }
+            if (hasRun)
+            { 
+                return runPoints; 
+            }
+
+            // check for runs with 3 cards
+            for (int i = 0; i < hand.Count - 2; i++)
+            {
+                for (int j = i + 1; j < hand.Count - 1; j++)
+                {
+                    for (int k = j + 1; k < hand.Count; k++)
+                    {
+                        if (hand[i].value == hand[j].value - 1 &&
+                            hand[j].value == hand[k].value - 1 )
+                        {
+                            hasRun = true;
+                            runPoints += 3;
+                        }
+                    }
+                }
+            }
+
+            // Can not be any more runs. Return 0,3,6, or 9
+            return runPoints;
+        }
+        #endregion
     }
 }
