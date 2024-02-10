@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Cribbage.BL.Models
 {
-    public class Cribbage
+    public class CribbageGame
     {
         #region "Properties"
         public Guid Id { get; set; }
@@ -311,8 +311,11 @@ namespace Cribbage.BL.Models
             hand.Add(CutCard);
             int points_to_add = 0;
 
-            // Check for Pairs and 15s
-            points_to_add += Count_15s_and_Pairs(hand);
+            //Check for pairs with 2 cards
+            points_to_add += CountPairs(hand);
+
+            //Check for 15s
+            points_to_add += Count15s(hand);
 
             // Check for a Flush
             points_to_add += CountFlush(hand, crib);
@@ -327,21 +330,21 @@ namespace Cribbage.BL.Models
 
         }
 
-        private int CountKnobs(List<Card> hand)
+        public int CountKnobs(List<Card> hand)
         {
             int points_to_add = 0;
             if (CutCard.face != Faces.Jack)
             {
                 foreach (Card card in hand)
                 {
-                    if (card.face == Faces.Jack) points_to_add++;
+                    if (card.face == Faces.Jack && card.suit == CutCard.suit) points_to_add++;
                 }
             }
 
             return points_to_add;
         }
 
-        private static int CountFlush(List<Card> hand, bool crib)
+        public int CountFlush(List<Card> hand, bool crib = false)
         {
             // Check for flush
             // If a crib hand. all 5 cards need to be same suit.
@@ -368,15 +371,14 @@ namespace Cribbage.BL.Models
             return points_to_add;
         }
 
-        private static int Count_15s_and_Pairs(List<Card> hand)
+        public int Count15s(List<Card> hand)
         {
             int points_to_add = 0;
-            //Check for pairs and 15's with 2 cards
+            //Check for 15s with 2 cards
             for (int i = 0; i < hand.Count - 1; i++)
             {
                 for (int j = i + 1; j < hand.Count; j++)
                 {
-                    if (hand[i].face == hand[j].face) points_to_add += 2;
                     if (hand[i].value + hand[j].value == 15) points_to_add += 2;
                 }
             }
@@ -414,7 +416,21 @@ namespace Cribbage.BL.Models
             return points_to_add;
         }
 
-        private int CountRuns(List<Card> hand)
+        public int CountPairs(List<Card> hand)
+        {
+            int points_to_add = 0;
+            for (int i = 0; i < hand.Count - 1; i++)
+            {
+                for (int j = i + 1; j < hand.Count; j++)
+                {
+                    if (hand[i].face == hand[j].face) points_to_add += 2;
+                }
+            }
+
+            return points_to_add;
+        }
+
+        public int CountRuns(List<Card> hand)
         {
             int runPoints = 0;
             bool hasRun = true;
@@ -439,17 +455,17 @@ namespace Cribbage.BL.Models
             // runs with 4 cards. Start with hasRun = false to know if there is a run of 4
             // if run of 4, return the points because we dont want to count any runs of 3.
             hasRun = false;
-            for (int i = 0; i < hand.Count - 3; i++)
+            for (int i = 0; i < cardsSorted.Count - 3; i++)
             {
-                for (int j = i + 1; j < hand.Count - 2; j++)
+                for (int j = i + 1; j < cardsSorted.Count - 2; j++)
                 {
-                    for (int k = j + 1; k < hand.Count - 1; k++)
+                    for (int k = j + 1; k < cardsSorted.Count - 1; k++)
                     {
-                        for (int l = k + 1; l < hand.Count; l++)
+                        for (int l = k + 1; l < cardsSorted.Count; l++)
                         {
-                            if (hand[i].value == hand[j].value -1 &&
-                                hand[j].value == hand[k].value -1 &&
-                                hand[k].value == hand[l].value -1 )
+                            if (cardsSorted[i].face + 1 == cardsSorted[j].face &&
+                                cardsSorted[j].face + 1 == cardsSorted[k].face &&
+                                cardsSorted[k].face + 1 == cardsSorted[l].face)
                             {
                                 hasRun = true;
                                 runPoints += 4;
@@ -465,14 +481,14 @@ namespace Cribbage.BL.Models
             }
 
             // check for runs with 3 cards
-            for (int i = 0; i < hand.Count - 2; i++)
+            for (int i = 0; i < cardsSorted.Count - 2; i++)
             {
-                for (int j = i + 1; j < hand.Count - 1; j++)
+                for (int j = i + 1; j < cardsSorted.Count - 1; j++)
                 {
-                    for (int k = j + 1; k < hand.Count; k++)
+                    for (int k = j + 1; k < cardsSorted.Count; k++)
                     {
-                        if (hand[i].value == hand[j].value - 1 &&
-                            hand[j].value == hand[k].value - 1 )
+                        if (cardsSorted[i].face == cardsSorted[j].face - 1 &&
+                            cardsSorted[j].face == cardsSorted[k].face - 1 )
                         {
                             hasRun = true;
                             runPoints += 3;
