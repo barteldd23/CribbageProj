@@ -48,12 +48,12 @@ namespace Cribbage.Prototype
 
             foreach(Card card in cribbageGame.Player_1.Hand)
             {
-                card.imgPath = "../images/card" + card.suit.ToString() + "_" + card.face.ToString();
+                card.imgPath = "../images/card" + card.suit.ToString() + "_" + card.face.ToString() + ".png";
             }
 
             foreach (Card card in cribbageGame.Player_2.Hand)
             {
-                card.imgPath = "../images/card" + card.suit.ToString() + "_" + card.face.ToString();
+                card.imgPath = "../images/card" + card.suit.ToString() + "_" + card.face.ToString() + ".png";
             }
             ptbP1_C1.Image = Image.FromFile(cribbageGame.Player_1.Hand[0].imgPath);
             ptbP2_C1.Image = Image.FromFile(cribbageGame.Player_2.Hand[0].imgPath);
