@@ -9,6 +9,7 @@ namespace Cribbage.PL.Entities
     public class tblGame
     {
         public Guid Id { get; set; }
+        public string GameName { get; set; }
         public Guid Winner { get; set; }
         public DateTime Date { get; set; }
         public bool Complete { get; set; }

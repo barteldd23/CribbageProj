@@ -1,6 +1,7 @@
 ﻿using Cribbage.PL.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
+using System.ComponentModel.DataAnnotations;
 
 namespace Cribbage.PL.Data
 {
@@ -60,6 +61,7 @@ namespace Cribbage.PL.Data
             modelBuilder.Entity<tblGame>().HasData(new tblGame
             {
                 Id = gameId[0],
+                GameName = "Test1",
                 Winner = userId[1],
                 Date = new DateTime(2023, 10, 6),
                 Complete = true
@@ -68,6 +70,7 @@ namespace Cribbage.PL.Data
             modelBuilder.Entity<tblGame>().HasData(new tblGame
             {
                 Id = gameId[1],
+                GameName = "Test2",
                 Winner = userId[3],
                 Date = new DateTime(2023, 11, 14),
                 Complete = true
@@ -76,6 +79,7 @@ namespace Cribbage.PL.Data
             modelBuilder.Entity<tblGame>().HasData(new tblGame
             {
                 Id = gameId[2],
+                GameName = "Test3",
                 Winner = userId[2],
                 Date = new DateTime(2023, 12, 20),
                 Complete = true
@@ -84,6 +88,7 @@ namespace Cribbage.PL.Data
             modelBuilder.Entity<tblGame>().HasData(new tblGame
             {
                 Id = gameId[3],
+                GameName = "Test4",
                 Winner = userId[0],
                 Date = new DateTime(2024, 1, 12),
                 Complete = true
@@ -91,7 +96,8 @@ namespace Cribbage.PL.Data
 
             modelBuilder.Entity<tblGame>().HasData(new tblGame
             {
-                Id = gameId[4], 
+                Id = gameId[4],
+                GameName = "Test5",
                 Winner = userId[0],
                 Date = new DateTime(2024, 2, 4),
                 Complete = true
@@ -112,6 +118,8 @@ namespace Cribbage.PL.Data
                 entity.ToTable("tblUser");
 
                 entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.HasIndex(e => e.Email).IsUnique();
             });
 
             modelBuilder.Entity<tblUser>().HasData(new tblUser
