@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
 namespace Cribbage.BL.Models
 {
@@ -315,9 +310,7 @@ namespace Cribbage.BL.Models
             }
         }
         #endregion
-
-        
-
+               
         #region "Count Hand Points"
         public int CountHand(List<Card> hand, bool crib = false)
         {

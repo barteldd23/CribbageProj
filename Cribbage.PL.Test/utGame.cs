@@ -1,5 +1,3 @@
-using System;
-
 namespace Cribbage.PL.Test
 {
     [TestClass]

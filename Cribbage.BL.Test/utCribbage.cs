@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Cribbage.BL.Models;
-
-namespace Cribbage.BL.Test
+﻿namespace Cribbage.BL.Test
 {
     [TestClass]
     public class utCribbage
