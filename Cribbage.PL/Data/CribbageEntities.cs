@@ -131,10 +131,11 @@ namespace Cribbage.PL.Data
                 LastName = "Smith",
                 Password = GetHash("maple"),
                 GamesStarted = 1,
-                Wins = 2,
-                Losses = 0,
+                GamesWon = 2,
+                GamesLost = 0,
+                WinStreak = 2,
                 AvgPtsPerGame = 121,
-                WinStreak = 2
+                AvgHandScore = 15
             });
 
             modelBuilder.Entity<tblUser>().HasData(new tblUser
@@ -146,10 +147,11 @@ namespace Cribbage.PL.Data
                 LastName = "Parker",
                 Password = GetHash("maple"),
                 GamesStarted = 2,
-                Wins = 1,
-                Losses = 1,
+                GamesWon = 1,
+                GamesLost = 1,
+                WinStreak = 1,
                 AvgPtsPerGame = 103,
-                WinStreak = 1
+                AvgHandScore = 10
             });
 
             modelBuilder.Entity<tblUser>().HasData(new tblUser
@@ -161,10 +163,11 @@ namespace Cribbage.PL.Data
                 LastName = "Bot",
                 Password = GetHash("maple"),
                 GamesStarted = 4,
-                Wins = 1,
-                Losses = 3,
+                GamesWon = 1,
+                GamesLost = 3,
+                WinStreak = 1,
                 AvgPtsPerGame = 82.75,
-                WinStreak = 1
+                AvgHandScore = 8
             });
 
             modelBuilder.Entity<tblUser>().HasData(new tblUser
@@ -176,10 +179,11 @@ namespace Cribbage.PL.Data
                 LastName = "Tester",
                 Password = GetHash("maple"),
                 GamesStarted = 1,
-                Wins = 1,
-                Losses = 0,
+                GamesWon = 1,
+                GamesLost = 0,
+                WinStreak = 1,
                 AvgPtsPerGame = 121,
-                WinStreak = 1
+                AvgHandScore = 20
             });
 
             modelBuilder.Entity<tblUser>().HasData(new tblUser
@@ -191,10 +195,11 @@ namespace Cribbage.PL.Data
                 LastName = "Computer",
                 Password = GetHash("maple"),
                 GamesStarted = 1,
-                Wins = 0,
-                Losses = 0,
+                GamesWon = 0,
+                GamesLost = 0,
+                WinStreak = 0,
                 AvgPtsPerGame = 50,
-                WinStreak = 0
+                AvgHandScore = 5
             });
         }
 

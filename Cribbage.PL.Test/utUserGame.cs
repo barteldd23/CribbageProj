@@ -19,8 +19,8 @@ namespace Cribbage.PL.Test
         {
             tblUserGame newRow = new tblUserGame();
             newRow.Id = Guid.NewGuid();
-            newRow.GameId = dc.tblGames.FirstOrDefault().Id;
             newRow.PlayerId = dc.tblUsers.FirstOrDefault().Id;
+            newRow.GameId = dc.tblGames.FirstOrDefault().Id;
             newRow.PlayerScore = 15;
 
             dc.tblUserGames.Add(newRow);

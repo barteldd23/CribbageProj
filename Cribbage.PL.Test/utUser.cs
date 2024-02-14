@@ -24,8 +24,8 @@ namespace Cribbage.PL.Test
             newRow.LastName = "TestLastName";
             newRow.DisplayName = "TestingCribbage";
             newRow.GamesStarted = 0;
-            newRow.Wins = 0;
-            newRow.Losses = 0;
+            newRow.GamesWon = 0;
+            newRow.GamesLost = 0;
             newRow.AvgPtsPerGame = 0;
             newRow.WinStreak = 0;
 

@@ -15,10 +15,11 @@ namespace Cribbage.PL.Entities
         public string LastName { get; set; }
         public string Password { get; set; }
         public int GamesStarted { get; set; }
-        public int Wins { get; set; }
-        public int Losses { get; set; }
-        public double AvgPtsPerGame { get; set; }
+        public int GamesWon { get; set; }
+        public int GamesLost { get; set; }
         public int WinStreak { get; set; }
+        public double AvgPtsPerGame { get; set; }
+        public double AvgHandScore { get; set; }
         public virtual ICollection<tblUserGame> tblUserGames { get; set; }
     }
 }
