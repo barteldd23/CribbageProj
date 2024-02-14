@@ -240,7 +240,7 @@ namespace Cribbage.PL.Data
                 new tblUserGame {Id = userGameId[6], GameId = gameId[3], PlayerId = userId[0], PlayerScore = 121},
                 new tblUserGame {Id = userGameId[7], GameId = gameId[3], PlayerId = userId[2], PlayerScore = 50},
                 new tblUserGame {Id = userGameId[8], GameId = gameId[4], PlayerId = userId[0], PlayerScore = 121},
-                new tblUserGame {Id = userGameId[9], GameId = gameId[4], PlayerId = userId[4], PlayerScore = 50},
+                new tblUserGame {Id = userGameId[9], GameId = gameId[4], PlayerId = userId[4], PlayerScore = 50}
             };
 
             modelBuilder.Entity<tblUserGame>().HasData(UserGames);

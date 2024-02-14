@@ -16,9 +16,9 @@ namespace Cribbage.PL.Test
         {
             tblGame newRow = new tblGame();
             newRow.Id = Guid.NewGuid();
-            newRow.GameName = "InsertTest";
             newRow.Winner = dc.tblGames.FirstOrDefault().Winner;
             newRow.Date = DateTime.Now;
+            newRow.GameName = "InsertTest";
             newRow.Complete = true;
 
             dc.tblGames.Add(newRow);
