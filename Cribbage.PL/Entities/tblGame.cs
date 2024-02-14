@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Cribbage.PL.Entities
 {
-    public class tblGame
+    public class tblGame : IEntity
     {
         public Guid Id { get; set; }
         public string GameName { get; set; }

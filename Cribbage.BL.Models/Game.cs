@@ -2,7 +2,7 @@
 
 namespace Cribbage.BL.Models
 {
-    public class CribbageGame
+    public class Game
     {
         #region "Properties"
         public Guid Id { get; set; }
