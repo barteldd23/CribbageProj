@@ -115,7 +115,45 @@ namespace Cribbage.BL
         {
             try
             {
-                return 1;
+                int results;
+                using (CribbageEntities dc = new CribbageEntities()) 
+                {
+                    // Check if the email exists (can't have duplicates)
+                    bool inUse = dc.tblUsers.Any(u => u.Email.Trim().ToUpper() == user.Email.Trim().ToUpper());
+
+                    if (inUse && rollback == false) 
+                    {
+                        throw new Exception("The provided email is already associated with an account.");
+                    }
+                    else
+                    {
+                        IDbContextTransaction transaction = null;
+                        if (rollback) transaction = dc.Database.BeginTransaction();
+
+                        tblUser newUser = new tblUser();
+
+                        newUser.Id = Guid.NewGuid();
+                        newUser.Email = user.Email;
+                        newUser.DisplayName = user.DisplayName;
+                        newUser.FirstName = user.FirstName;
+                        newUser.LastName = user.LastName;
+                        newUser.Password = user.Password;
+                        newUser.GamesStarted = user.GamesStarted;
+                        newUser.GamesWon = user.GamesWon;
+                        newUser.GamesLost = user.GamesLost;
+                        newUser.WinStreak = user.WinStreak;
+                        newUser.AvgPtsPerGame = user.AvgPtsPerGame;
+                        newUser.AvgHandScore = user.AvgHandScore;
+
+                        user.Id = newUser.Id;
+
+                        dc.tblUsers.Add(newUser);
+
+                        results = dc.SaveChanges();
+                        if (rollback) transaction.Rollback();
+                    }
+                }
+                return results;
             }
             catch (Exception e)
             {
@@ -130,6 +168,44 @@ namespace Cribbage.BL
         {
             try
             {
+                int results;
+
+                using (CribbageEntities dc =  new CribbageEntities())
+                {
+                    // Check if the email already exists - can't have duplicate emails listed
+                    tblUser existingUser = dc.tblUsers.Where(u => u.Email.Trim().ToUpper() == user.Email.Trim().ToUpper()).FirstOrDefault();
+                    
+                    if (existingUser != null && existingUser.Id != user.Id && rollback == false)
+                    {
+                        throw new Exception("The provided email is already associated with an account.");
+                    }
+                    else
+                    {
+                        IDbContextTransaction transaction = null;
+                        if (rollback) transaction = dc.Database.BeginTransaction();
+
+                        tblUser updateRow = dc.tblUsers.FirstOrDefault(r => r.Id == user.Id);
+
+                        if (updateRow != null)
+                        {
+                            updateRow.Email = user.Email.Trim();
+                            updateRow.Password = GetHash(user.Password.Trim());
+                            updateRow.FirstName = user.FirstName.Trim();
+                            updateRow.LastName = user.LastName.Trim();
+
+                            dc.tblUsers.Update(updateRow);
+
+                            results = dc.SaveChanges();
+
+                            if (rollback) transaction.Rollback();
+                        }
+                        else
+                        {
+                            throw new Exception("Row not found.");
+                        }
+                    }
+                }
+
                 return 1;
             }
             catch (Exception e)
@@ -140,11 +216,44 @@ namespace Cribbage.BL
 
         }
 
-        public int Delete(User user, bool rollback = false)
+        public int Delete(Guid id, bool rollback = false)
         {
             try
             {
-                return 1;
+                int results;
+
+                using (CribbageEntities dc = new CribbageEntities())
+                {
+                    // Check if the user is associated with a game - do not delete 
+                    bool inUse = dc.tblUserGames.Any(u => u.Id == id);
+
+                    if (inUse)
+                    {
+                        throw new Exception("This user is associated with a game, and cannot be deleted.");
+                    }
+                    else
+                    {
+                        IDbContextTransaction transaction = null;
+                        if (rollback) transaction = dc.Database.BeginTransaction();
+
+                        tblUser deleteRow = dc.tblUsers.FirstOrDefault(r => r.Id == id);
+
+                        if (deleteRow != null)
+                        {
+                            dc.tblUsers.Remove(deleteRow);
+
+                            results= dc.SaveChanges();
+
+                            if (rollback) transaction.Rollback();
+                        }
+                        else
+                        {
+                            throw new Exception("Row not found.");
+                        }
+                    }
+                }
+
+                return results;
             }
             catch (Exception e)
             {
@@ -154,11 +263,30 @@ namespace Cribbage.BL
 
         }
 
-        public int Load(User user, bool rollback = false)
+        public List<User> Load(User user, bool rollback = false)
         {
             try
             {
-                return 1;
+                List<User> users = new List<User>();
+
+                base.Load()
+                    .ForEach(u => users
+                    .Add(new User
+                    {
+                        Id = u.Id,
+                        Email = u.Email,
+                        DisplayName = u.DisplayName,
+                        FirstName = u.FirstName,
+                        LastName = u.LastName,
+                        Password = u.Password,
+                        GamesStarted = u.GamesStarted,
+                        GamesWon = u.GamesWon,
+                        GamesLost = u.GamesLost,
+                        WinStreak = u.WinStreak,
+                        AvgPtsPerGame = u.AvgPtsPerGame,
+                        AvgHandScore = u.AvgHandScore
+                    }));
+                return users;
             }
             catch (Exception e)
             {
@@ -168,11 +296,33 @@ namespace Cribbage.BL
 
         }
 
-        public int LoadById(User user, bool rollback = false)
+        public User LoadById(Guid id)
         {
             try
             {
-                return 1;
+                User user = new User();
+
+                using (CribbageEntities dc = new CribbageEntities())
+                {
+                    user = (from u in dc.tblUsers
+                            where u.Id == id
+                            select new User
+                            {
+                                Id = u.Id,
+                                Email = u.Email,
+                                DisplayName = u.DisplayName,
+                                FirstName = u.FirstName,
+                                LastName = u.LastName,
+                                Password = u.Password,
+                                GamesStarted = u.GamesStarted,
+                                GamesWon = u.GamesWon,
+                                GamesLost = u.GamesLost,
+                                WinStreak = u.WinStreak,
+                                AvgPtsPerGame = u.AvgPtsPerGame,
+                                AvgHandScore = u.AvgHandScore
+                            }).FirstOrDefault();
+                }
+                return user;
             }
             catch (Exception e)
             {
@@ -181,6 +331,5 @@ namespace Cribbage.BL
             }
 
         }
-
     }
 }
