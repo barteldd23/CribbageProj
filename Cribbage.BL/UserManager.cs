@@ -29,27 +29,6 @@ namespace Cribbage.BL
             }
         }
 
-        public void Seed()
-        {
-            List<User> users = new List<User>();
-
-            foreach (User user in users)
-            {
-                if (user.Password.Length != 28)
-                {
-                    Update(user);
-                }
-            }
-
-            if (users.Count == 0)
-            {
-                Insert(new User { Email = "test1@test.com", FirstName = "Test1", LastName = "Testing1", Password = "test" });
-                Insert(new User { Email = "test2@test.com", FirstName = "Test2", LastName = "Testing2", Password = "test" });
-                Insert(new User { Email = "computer@test.com", FirstName = "Computer", LastName = "Testing", Password = "test" });
-
-            }
-        }
-
         public bool Login(User user)
         {
             try

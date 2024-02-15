@@ -8,10 +8,24 @@ namespace Cribbage.BL
         {
         }
 
-        public int Insert(Game cribbage, bool rollback = false)
+        public int Insert(Game game, bool rollback = false)
         {
             try
             {
+                //int results;
+
+                //using (CribbageEntities dc = new CribbageEntities(options))
+                //{
+                //    IDbContextTransaction transaction = null;
+                //    if (rollback) transaction = dc.Database.BeginTransaction();
+
+                //    tblGame newRow = new tblGame();
+
+                //    newRow.Id = Guid.NewGuid();
+                //    newRow.Winner = game.Winner;
+
+                //}
+
                 return 1;
             }
             catch (Exception e)
