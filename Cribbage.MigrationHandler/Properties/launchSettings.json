@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "RG.DVDCentral.MigrationHandler": {
+    "Cribbage.MigrationHandler": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
