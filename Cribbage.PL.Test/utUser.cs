@@ -28,6 +28,7 @@ namespace Cribbage.PL.Test
             newRow.GamesLost = 0;
             newRow.AvgPtsPerGame = 0;
             newRow.WinStreak = 0;
+            //newRow.AvgHandScore = 0;
 
             dc.tblUsers.Add(newRow);
 

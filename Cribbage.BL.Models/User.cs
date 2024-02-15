@@ -15,6 +15,6 @@
         public int GamesLost { get; set;}
         public int WinStreak { get; set; }
         public double AvgPtsPerGame { get; set; }
-        public double AvgHandScore { get; set; }
+        //public double AvgHandScore { get; set; }
     }
 }

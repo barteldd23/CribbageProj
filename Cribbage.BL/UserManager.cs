@@ -58,7 +58,7 @@ namespace Cribbage.BL
                                     user.GamesLost = userrow.GamesLost;
                                     user.WinStreak = userrow.WinStreak;
                                     user.AvgPtsPerGame = userrow.AvgPtsPerGame;
-                                    user.AvgHandScore = userrow.AvgHandScore;
+                                    //user.AvgHandScore = userrow.AvgHandScore;
 
                                     return true;
                                 }
@@ -117,12 +117,12 @@ namespace Cribbage.BL
                         newUser.FirstName = user.FirstName;
                         newUser.LastName = user.LastName;
                         newUser.Password = user.Password;
-                        newUser.GamesStarted = user.GamesStarted;
-                        newUser.GamesWon = user.GamesWon;
-                        newUser.GamesLost = user.GamesLost;
-                        newUser.WinStreak = user.WinStreak;
-                        newUser.AvgPtsPerGame = user.AvgPtsPerGame;
-                        newUser.AvgHandScore = user.AvgHandScore;
+                        newUser.GamesStarted = 0;
+                        newUser.GamesWon = 0;
+                        newUser.GamesLost = 0;
+                        newUser.WinStreak = 0;
+                        newUser.AvgPtsPerGame = 0;
+                        //newUser.AvgHandScore = 0;
 
                         user.Id = newUser.Id;
 
@@ -171,6 +171,12 @@ namespace Cribbage.BL
                             updateRow.Password = GetHash(user.Password.Trim());
                             updateRow.FirstName = user.FirstName.Trim();
                             updateRow.LastName = user.LastName.Trim();
+                            updateRow.GamesStarted = user.GamesStarted;
+                            updateRow.GamesWon = user.GamesWon;
+                            updateRow.GamesLost = user.GamesLost;
+                            updateRow.WinStreak = user.WinStreak;
+                            updateRow.AvgPtsPerGame = user.AvgPtsPerGame;
+                            //updateRow.AvgHandScore = user.AvgHandScore;
 
                             dc.tblUsers.Update(updateRow);
 
@@ -263,7 +269,7 @@ namespace Cribbage.BL
                         GamesLost = u.GamesLost,
                         WinStreak = u.WinStreak,
                         AvgPtsPerGame = u.AvgPtsPerGame,
-                        AvgHandScore = u.AvgHandScore
+                        //AvgHandScore = u.AvgHandScore
                     }));
                 return users;
             }
@@ -298,7 +304,7 @@ namespace Cribbage.BL
                                 GamesLost = u.GamesLost,
                                 WinStreak = u.WinStreak,
                                 AvgPtsPerGame = u.AvgPtsPerGame,
-                                AvgHandScore = u.AvgHandScore
+                                //AvgHandScore = u.AvgHandScore
                             }).FirstOrDefault();
                 }
                 return user;
@@ -308,7 +314,41 @@ namespace Cribbage.BL
 
                 throw e;
             }
+        }
 
+        public User LoadByEmail(String email)
+        {
+            try
+            {
+                User user = new User();
+
+                using (CribbageEntities dc = new CribbageEntities())
+                {
+                    user = (from u in dc.tblUsers
+                            where u.Email == email
+                            select new User
+                            {
+                                Id = u.Id,
+                                Email = u.Email,
+                                DisplayName = u.DisplayName,
+                                FirstName = u.FirstName,
+                                LastName = u.LastName,
+                                Password = u.Password,
+                                GamesStarted = u.GamesStarted,
+                                GamesWon = u.GamesWon,
+                                GamesLost = u.GamesLost,
+                                WinStreak = u.WinStreak,
+                                AvgPtsPerGame = u.AvgPtsPerGame,
+                                //AvgHandScore = u.AvgHandScore
+                            }).FirstOrDefault();
+                }
+                return user;
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
         }
     }
 }

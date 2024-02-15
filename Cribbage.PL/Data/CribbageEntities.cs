@@ -135,7 +135,7 @@ namespace Cribbage.PL.Data
                 GamesLost = 0,
                 WinStreak = 2,
                 AvgPtsPerGame = 121,
-                AvgHandScore = 15
+                //AvgHandScore = 15
             });
 
             modelBuilder.Entity<tblUser>().HasData(new tblUser
@@ -151,7 +151,7 @@ namespace Cribbage.PL.Data
                 GamesLost = 1,
                 WinStreak = 1,
                 AvgPtsPerGame = 103,
-                AvgHandScore = 10
+                //AvgHandScore = 10
             });
 
             modelBuilder.Entity<tblUser>().HasData(new tblUser
@@ -167,7 +167,7 @@ namespace Cribbage.PL.Data
                 GamesLost = 3,
                 WinStreak = 1,
                 AvgPtsPerGame = 82.75,
-                AvgHandScore = 8
+                //AvgHandScore = 8
             });
 
             modelBuilder.Entity<tblUser>().HasData(new tblUser
@@ -183,7 +183,7 @@ namespace Cribbage.PL.Data
                 GamesLost = 0,
                 WinStreak = 1,
                 AvgPtsPerGame = 121,
-                AvgHandScore = 20
+                //AvgHandScore = 20
             });
 
             modelBuilder.Entity<tblUser>().HasData(new tblUser
@@ -199,7 +199,7 @@ namespace Cribbage.PL.Data
                 GamesLost = 0,
                 WinStreak = 0,
                 AvgPtsPerGame = 50,
-                AvgHandScore = 5
+                //AvgHandScore = 5
             });
         }
 
