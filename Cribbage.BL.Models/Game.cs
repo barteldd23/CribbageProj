@@ -134,6 +134,11 @@ namespace Cribbage.BL.Models
             Random rnd = new Random();
             int index = rnd.Next(10, 31);
             CutCard = Deck.Cards[index];
+            if(CutCard.face == Faces.Jack)
+            {
+                if (Dealer == 1) Player_1.Score += 2;
+                else Player_2.Score += 2;
+            }
         }
         
         public void Give_To_Crib(List<Card> cards)
