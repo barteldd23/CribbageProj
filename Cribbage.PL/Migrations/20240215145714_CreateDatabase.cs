@@ -81,11 +81,11 @@ namespace Cribbage.PL.Migrations
                 columns: new[] { "Id", "Complete", "Date", "GameName", "Winner" },
                 values: new object[,]
                 {
-                    { new Guid("3ce83c42-2d6c-43d3-93d3-c29e0f455067"), true, new DateTime(2024, 1, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test4", new Guid("361b8dab-0966-4f5b-af46-56dd34de727b") },
-                    { new Guid("4e639a75-9603-491f-8fe2-63922c146c30"), true, new DateTime(2023, 12, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test3", new Guid("d5c0c33f-8456-4113-9044-54b2cb904f37") },
-                    { new Guid("8592b201-79f5-4c8e-9b6c-c4a8fe577e76"), true, new DateTime(2023, 11, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test2", new Guid("8622d459-75d3-425b-8d15-e7834ca26be9") },
-                    { new Guid("90a91d1c-b521-4e7c-a0c5-ed1f60204541"), true, new DateTime(2024, 2, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test5", new Guid("361b8dab-0966-4f5b-af46-56dd34de727b") },
-                    { new Guid("f900b97b-6bfa-48ba-9ba2-0a11a3baf555"), true, new DateTime(2023, 10, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test1", new Guid("3285898c-cb80-4292-8ebd-e7a872d7ad78") }
+                    { new Guid("33db8313-0441-4e40-9096-dce7d7c097a2"), true, new DateTime(2024, 2, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test5", new Guid("bbec4de0-524c-440e-8598-3cda26b298bc") },
+                    { new Guid("776a75b7-1a9a-474d-bd41-8626ea2cc461"), true, new DateTime(2023, 12, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test3", new Guid("08fc2f13-754c-46ae-adea-9188877593d2") },
+                    { new Guid("8122b07d-74f4-47f2-b10b-3feb6f0a9e7a"), true, new DateTime(2023, 10, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test1", new Guid("bb6a24a9-2aab-43e3-bc3d-3c0235a45ae6") },
+                    { new Guid("c332ff9d-cd0f-4c33-8041-f27d8f80fd12"), true, new DateTime(2024, 1, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test4", new Guid("bbec4de0-524c-440e-8598-3cda26b298bc") },
+                    { new Guid("f3753036-2b1c-47e0-9fa2-df8d043ef5e4"), true, new DateTime(2023, 11, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test2", new Guid("975a40e0-9331-4f27-9154-d3f09f28e403") }
                 });
 
             migrationBuilder.InsertData(
@@ -93,11 +93,11 @@ namespace Cribbage.PL.Migrations
                 columns: new[] { "Id", "AvgHandScore", "AvgPtsPerGame", "DisplayName", "Email", "FirstName", "GamesLost", "GamesStarted", "GamesWon", "LastName", "Password", "WinStreak" },
                 values: new object[,]
                 {
-                    { new Guid("3285898c-cb80-4292-8ebd-e7a872d7ad78"), 10.0, 103.0, "CribbageBox", "fun@yahoo.com", "Peter", 1, 2, 1, "Parker", "pYfdnNb8sO0FgS4H0MRSwLGOIME=", 1 },
-                    { new Guid("361b8dab-0966-4f5b-af46-56dd34de727b"), 15.0, 121.0, "CardMaster", "cribbage@game.com", "Joe", 0, 1, 2, "Smith", "pYfdnNb8sO0FgS4H0MRSwLGOIME=", 2 },
-                    { new Guid("7be3bf63-9002-4311-8406-0a9ffbb86b63"), 5.0, 50.0, "Computer", "computer@computer.com", "Computer", 0, 1, 0, "Computer", "pYfdnNb8sO0FgS4H0MRSwLGOIME=", 0 },
-                    { new Guid("8622d459-75d3-425b-8d15-e7834ca26be9"), 20.0, 121.0, "Testing", "tester@gmail.com", "Test", 0, 1, 1, "Tester", "pYfdnNb8sO0FgS4H0MRSwLGOIME=", 1 },
-                    { new Guid("d5c0c33f-8456-4113-9044-54b2cb904f37"), 8.0, 82.75, "GamesRCool", "cards@me.com", "Kelly", 3, 4, 1, "Bot", "pYfdnNb8sO0FgS4H0MRSwLGOIME=", 1 }
+                    { new Guid("05258f2e-a384-49a9-920a-14ff7db49cec"), 5.0, 50.0, "Computer", "computer@computer.com", "Computer", 0, 1, 0, "Computer", "pYfdnNb8sO0FgS4H0MRSwLGOIME=", 0 },
+                    { new Guid("08fc2f13-754c-46ae-adea-9188877593d2"), 8.0, 82.75, "GamesRCool", "cards@me.com", "Kelly", 3, 4, 1, "Bot", "pYfdnNb8sO0FgS4H0MRSwLGOIME=", 1 },
+                    { new Guid("975a40e0-9331-4f27-9154-d3f09f28e403"), 20.0, 121.0, "Testing", "tester@gmail.com", "Test", 0, 1, 1, "Tester", "pYfdnNb8sO0FgS4H0MRSwLGOIME=", 1 },
+                    { new Guid("bb6a24a9-2aab-43e3-bc3d-3c0235a45ae6"), 10.0, 103.0, "CribbageBox", "fun@yahoo.com", "Peter", 1, 2, 1, "Parker", "pYfdnNb8sO0FgS4H0MRSwLGOIME=", 1 },
+                    { new Guid("bbec4de0-524c-440e-8598-3cda26b298bc"), 15.0, 121.0, "CardMaster", "cribbage@game.com", "Joe", 0, 1, 2, "Smith", "pYfdnNb8sO0FgS4H0MRSwLGOIME=", 2 }
                 });
 
             migrationBuilder.InsertData(
@@ -105,16 +105,16 @@ namespace Cribbage.PL.Migrations
                 columns: new[] { "Id", "GameId", "PlayerId", "PlayerScore" },
                 values: new object[,]
                 {
-                    { new Guid("056b3725-1c04-41e4-b29b-fd659dd55586"), new Guid("3ce83c42-2d6c-43d3-93d3-c29e0f455067"), new Guid("d5c0c33f-8456-4113-9044-54b2cb904f37"), 50 },
-                    { new Guid("34f5dead-980f-4fd1-b541-120ce80da46c"), new Guid("90a91d1c-b521-4e7c-a0c5-ed1f60204541"), new Guid("7be3bf63-9002-4311-8406-0a9ffbb86b63"), 50 },
-                    { new Guid("482f351f-6e01-4506-babc-0f47e380deac"), new Guid("f900b97b-6bfa-48ba-9ba2-0a11a3baf555"), new Guid("d5c0c33f-8456-4113-9044-54b2cb904f37"), 70 },
-                    { new Guid("5ad6de29-2ed3-472f-95f1-f468fa513f29"), new Guid("90a91d1c-b521-4e7c-a0c5-ed1f60204541"), new Guid("361b8dab-0966-4f5b-af46-56dd34de727b"), 121 },
-                    { new Guid("68555fa8-5342-4d0e-a40d-dacb7c2b28d0"), new Guid("4e639a75-9603-491f-8fe2-63922c146c30"), new Guid("d5c0c33f-8456-4113-9044-54b2cb904f37"), 121 },
-                    { new Guid("71e2ae3e-70d7-49a3-a05d-d06b50f1b92b"), new Guid("f900b97b-6bfa-48ba-9ba2-0a11a3baf555"), new Guid("3285898c-cb80-4292-8ebd-e7a872d7ad78"), 121 },
-                    { new Guid("9eab3f87-13fd-4df9-9128-f16007b99f19"), new Guid("8592b201-79f5-4c8e-9b6c-c4a8fe577e76"), new Guid("d5c0c33f-8456-4113-9044-54b2cb904f37"), 90 },
-                    { new Guid("b8c5287d-bdca-4543-8cb4-bb529f3eef85"), new Guid("4e639a75-9603-491f-8fe2-63922c146c30"), new Guid("3285898c-cb80-4292-8ebd-e7a872d7ad78"), 85 },
-                    { new Guid("cdc3a664-9222-481d-b927-f03f129979a7"), new Guid("8592b201-79f5-4c8e-9b6c-c4a8fe577e76"), new Guid("8622d459-75d3-425b-8d15-e7834ca26be9"), 121 },
-                    { new Guid("fc872e76-5ff0-43c1-83db-a71fb9230bbc"), new Guid("3ce83c42-2d6c-43d3-93d3-c29e0f455067"), new Guid("361b8dab-0966-4f5b-af46-56dd34de727b"), 121 }
+                    { new Guid("147f71fa-6cef-4673-b975-9e223ccf472b"), new Guid("8122b07d-74f4-47f2-b10b-3feb6f0a9e7a"), new Guid("bb6a24a9-2aab-43e3-bc3d-3c0235a45ae6"), 121 },
+                    { new Guid("1d1887e5-5d78-46db-abc5-22dd14000bc0"), new Guid("c332ff9d-cd0f-4c33-8041-f27d8f80fd12"), new Guid("bbec4de0-524c-440e-8598-3cda26b298bc"), 121 },
+                    { new Guid("3b3a9d10-88bf-4fb3-9874-9196799c5771"), new Guid("33db8313-0441-4e40-9096-dce7d7c097a2"), new Guid("bbec4de0-524c-440e-8598-3cda26b298bc"), 121 },
+                    { new Guid("3fec4814-36b9-46ff-9fc6-8bdfcc7291ed"), new Guid("8122b07d-74f4-47f2-b10b-3feb6f0a9e7a"), new Guid("08fc2f13-754c-46ae-adea-9188877593d2"), 70 },
+                    { new Guid("62e36f09-4d6e-444e-b44e-766a55e86585"), new Guid("776a75b7-1a9a-474d-bd41-8626ea2cc461"), new Guid("08fc2f13-754c-46ae-adea-9188877593d2"), 121 },
+                    { new Guid("70b7534c-76f7-4af9-81c0-2867a9c0b8b1"), new Guid("c332ff9d-cd0f-4c33-8041-f27d8f80fd12"), new Guid("08fc2f13-754c-46ae-adea-9188877593d2"), 50 },
+                    { new Guid("7e53c97e-1ad9-4d4a-a2b8-9bb3df845c87"), new Guid("33db8313-0441-4e40-9096-dce7d7c097a2"), new Guid("05258f2e-a384-49a9-920a-14ff7db49cec"), 50 },
+                    { new Guid("c4e91afc-d4b5-4534-ad45-510e756708dc"), new Guid("776a75b7-1a9a-474d-bd41-8626ea2cc461"), new Guid("bb6a24a9-2aab-43e3-bc3d-3c0235a45ae6"), 85 },
+                    { new Guid("e08b33dc-8b5e-452e-9e97-2a72b7658e87"), new Guid("f3753036-2b1c-47e0-9fa2-df8d043ef5e4"), new Guid("08fc2f13-754c-46ae-adea-9188877593d2"), 90 },
+                    { new Guid("f2e31867-214f-4aa9-9678-bc6b50dc2313"), new Guid("f3753036-2b1c-47e0-9fa2-df8d043ef5e4"), new Guid("975a40e0-9331-4f27-9154-d3f09f28e403"), 121 }
                 });
 
             migrationBuilder.CreateIndex(
