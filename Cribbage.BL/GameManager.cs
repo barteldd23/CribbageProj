@@ -1,13 +1,10 @@
 ﻿using Cribbage.BL.Models;
-using System.Reflection;
 
 namespace Cribbage.BL
 {
     public class GameManager : GenericManager<tblGame>
     {
-        public GameManager(DbContextOptions<CribbageEntities> options) : base(options)
-        {
-        }
+        public GameManager(DbContextOptions<CribbageEntities> options) : base(options) { }
 
         public int Insert(Game game, bool rollback = false)
         {
@@ -122,7 +119,7 @@ namespace Cribbage.BL
             }
         }
 
-        public List<Game> Load(Game game)
+        public List<Game> Load()
         {
             try
             {

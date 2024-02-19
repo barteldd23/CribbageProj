@@ -1,7 +1,5 @@
 ﻿using Cribbage.PL.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
-using System.ComponentModel.DataAnnotations;
 
 namespace Cribbage.PL.Data
 {
