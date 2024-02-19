@@ -52,3 +52,4 @@ namespace Cribbage.BL.Test
             Assert.IsTrue(new GameManager(options).Delete(game.Id, true) > 0);
         }
     }
+}

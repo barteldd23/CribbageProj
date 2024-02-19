@@ -3,22 +3,20 @@ using System.Security.Cryptography;
 
 namespace Cribbage.BL
 {
+    public class LoginFailureException : Exception
+    {
+        public LoginFailureException() : base("Cannot log in with the provided credentials.")
+        {
+        }
+
+        public LoginFailureException(string message) : base(message)
+        {
+        }
+    }
+
     public class UserManager : GenericManager<tblUser>
     {
-        public class LoginFailureException : Exception
-        {
-            public LoginFailureException() : base("Cannot log in with the provided credentials.")
-            {
-            }
-
-            public LoginFailureException(string message) : base(message)
-            {
-            }
-        }
-
-        public UserManager(DbContextOptions<CribbageEntities> options) : base(options)
-        {
-        }
+        public UserManager(DbContextOptions<CribbageEntities> options) : base(options) { }
 
         private string GetHash(string Password)
         {
@@ -244,7 +242,7 @@ namespace Cribbage.BL
 
         }
 
-        public List<User> Load(User user, bool rollback = false)
+        public List<User> Load()
         {
             try
             {
@@ -279,30 +277,35 @@ namespace Cribbage.BL
         public User LoadById(Guid id)
         {
             try
-            {
-                User user = new User();
-
+            { 
                 using (CribbageEntities dc = new CribbageEntities())
                 {
-                    user = (from u in dc.tblUsers
-                            where u.Id == id
-                            select new User
-                            {
-                                Id = u.Id,
-                                Email = u.Email,
-                                DisplayName = u.DisplayName,
-                                FirstName = u.FirstName,
-                                LastName = u.LastName,
-                                Password = u.Password,
-                                GamesStarted = u.GamesStarted,
-                                GamesWon = u.GamesWon,
-                                GamesLost = u.GamesLost,
-                                WinStreak = u.WinStreak,
-                                AvgPtsPerGame = u.AvgPtsPerGame,
-                                //AvgHandScore = u.AvgHandScore
-                            }).FirstOrDefault();
+                    tblUser row = dc.tblUsers.FirstOrDefault(u => u.Id == id);
+
+                    if (row != null)
+                    {
+                        User user = new User
+                        {
+                            Id = row.Id,
+                            Email = row.Email,
+                            DisplayName = row.DisplayName,
+                            FirstName = row.FirstName,
+                            LastName = row.LastName,
+                            Password = row.Password,
+                            GamesStarted = row.GamesStarted,
+                            GamesWon = row.GamesWon,
+                            GamesLost = row.GamesLost,
+                            WinStreak = row.WinStreak,
+                            AvgPtsPerGame = row.AvgPtsPerGame,
+                            //AvgHandScore = row.AvgHandScore
+                        };
+                        return user;
+                    }
+                    else
+                    {
+                        throw new Exception("Row not found.");
+                    }
                 }
-                return user;
             }
             catch (Exception e)
             {
@@ -314,29 +317,34 @@ namespace Cribbage.BL
         {
             try
             {
-                User user = new User();
-
                 using (CribbageEntities dc = new CribbageEntities())
                 {
-                    user = (from u in dc.tblUsers
-                            where u.Email == email
-                            select new User
-                            {
-                                Id = u.Id,
-                                Email = u.Email,
-                                DisplayName = u.DisplayName,
-                                FirstName = u.FirstName,
-                                LastName = u.LastName,
-                                Password = u.Password,
-                                GamesStarted = u.GamesStarted,
-                                GamesWon = u.GamesWon,
-                                GamesLost = u.GamesLost,
-                                WinStreak = u.WinStreak,
-                                AvgPtsPerGame = u.AvgPtsPerGame,
-                                //AvgHandScore = u.AvgHandScore
-                            }).FirstOrDefault();
+                    tblUser row = dc.tblUsers.FirstOrDefault(u => u.Email == email);
+
+                    if (row != null)
+                    {
+                        User user = new User
+                        {
+                            Id = row.Id,
+                            Email = row.Email,
+                            DisplayName = row.DisplayName,
+                            FirstName = row.FirstName,
+                            LastName = row.LastName,
+                            Password = row.Password,
+                            GamesStarted = row.GamesStarted,
+                            GamesWon = row.GamesWon,
+                            GamesLost = row.GamesLost,
+                            WinStreak = row.WinStreak,
+                            AvgPtsPerGame = row.AvgPtsPerGame,
+                            //AvgHandScore = row.AvgHandScore
+                        };
+                        return user;
+                    }
+                    else
+                    {
+                        throw new Exception("Row not found.");
+                    }
                 }
-                return user;
             }
             catch (Exception e)
             {
