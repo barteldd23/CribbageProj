@@ -17,10 +17,9 @@
                     .Set<T>()
                     .ToList<T>();
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
-                throw;
+                throw e;
             }
         }
 
@@ -30,10 +29,9 @@
             {
                 return new CribbageEntities(options).Set<T>().Where(t => t.Id == id).FirstOrDefault();
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
-                throw;
+                throw e;
             }
         }
 
@@ -61,10 +59,9 @@
                 return results;
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
-                throw;
+                throw e;
             }
         }
 
@@ -88,10 +85,9 @@
 
                 return results;
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
-                throw;
+                throw e;
             }
         }
 
@@ -117,17 +113,13 @@
                     {
                         throw new Exception("Row does not exist.");
                     }
-
                 }
-
                 return results;
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
-                throw;
+                throw e;
             }
         }
-
     }
 }

@@ -8,8 +8,10 @@ namespace Cribbage.BL.Models
         public Guid Id { get; set; }
         public Player Player_1 { get; set; }
         public Player Player_2 { get; set; }
-        public Player Winner { get; set; } 
-        public DateTime Date { get; set; } 
+        public Guid Winner { get; set; } 
+        public DateTime Date { get; set; }
+        public string? GameName { get; set; }
+        public bool Complete { get; set; }
         public int Dealer { get; set; } = 1;
         public Player PlayerTurn { get; set; }
         public int GoCount { get; set; } = 0;

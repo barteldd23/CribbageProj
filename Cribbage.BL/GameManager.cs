@@ -1,4 +1,5 @@
 ﻿using Cribbage.BL.Models;
+using System.Reflection;
 
 namespace Cribbage.BL
 {
@@ -12,85 +13,174 @@ namespace Cribbage.BL
         {
             try
             {
-                //int results;
+                int results;
 
-                //using (CribbageEntities dc = new CribbageEntities(options))
-                //{
-                //    IDbContextTransaction transaction = null;
-                //    if (rollback) transaction = dc.Database.BeginTransaction();
+                using (CribbageEntities dc = new CribbageEntities(options))
+                {
+                    IDbContextTransaction transaction = null;
+                    if (rollback) transaction = dc.Database.BeginTransaction();
 
-                //    tblGame newRow = new tblGame();
+                    tblGame newRow = new tblGame();
 
-                //    newRow.Id = Guid.NewGuid();
-                //    newRow.Winner = game.Winner;
+                    newRow.Id = Guid.NewGuid();
+                    newRow.Winner = game.Winner;
+                    newRow.Date = game.Date;
+                    newRow.GameName = game.GameName;
+                    newRow.Complete = game.Complete;
 
-                //}
+                    game.Id = newRow.Id;
 
-                return 1;
+                    dc.tblGames.Add(newRow);
+                    results = dc.SaveChanges();
+
+                    if (rollback) transaction.Rollback();
+                }
+                return results;
             }
             catch (Exception e)
             {
-
                 throw e;
             }
-
         }
 
 
-        public int Update(Game cribbage, bool rollback = false)
+        public int Update(Game game, bool rollback = false)
         {
             try
             {
-                return 1;
+                int results;
+
+                using (CribbageEntities dc = new CribbageEntities(options))
+                {
+                    IDbContextTransaction transaction = null;
+                    if (rollback) transaction = dc.Database.BeginTransaction();
+
+                    tblGame updateRow = dc.tblGames.FirstOrDefault(g => g.Id == game.Id);
+
+                    if (updateRow != null)
+                    {
+                        updateRow.Winner = game.Winner;
+                        updateRow.Date = game.Date;
+                        updateRow.GameName = game.GameName;
+                        updateRow.Complete = game.Complete;
+
+                        dc.tblGames.Update(updateRow);
+
+                        results = dc.SaveChanges();
+
+                        if (rollback) transaction.Rollback();
+                    }
+                    else
+                    {
+                        throw new Exception("Row not found.");
+                    }
+                }
+                return results;
             }
             catch (Exception e)
             {
-
                 throw e;
             }
-
         }
 
-        public int Delete(Game cribbage, bool rollback = false)
+        public int Delete(Guid id, bool rollback = false)
         {
             try
             {
-                return 1;
+                int results;
+
+                using (CribbageEntities dc = new CribbageEntities(options))
+                {
+                    IDbContextTransaction transaction = null;
+                    if (rollback) transaction = dc.Database.BeginTransaction();
+
+                    tblGame deleteRow = dc.tblGames.FirstOrDefault(g => g.Id == id);
+
+                    if (deleteRow != null)
+                    {
+                        // remove the row from tblUserGame
+                        var userGame = dc.tblUserGames.Where(g => g.GameId == id);
+                        dc.tblUserGames.RemoveRange(userGame);
+
+                        // remove the game from tblGame
+                        dc.tblGames.Remove(deleteRow);
+
+                        results = dc.SaveChanges();
+
+                        if (rollback) transaction.Rollback();
+                    }
+                    else
+                    {
+                        throw new Exception("Row not found.");
+                    }
+                }
+                return results;
             }
             catch (Exception e)
             {
-
                 throw e;
             }
-
         }
 
-        public int Load(Game cribbage, bool rollback = false)
+        public List<Game> Load(Game game)
         {
             try
             {
-                return 1;
+                List<Game> games = new List<Game>();
+
+                using (CribbageEntities dc = new CribbageEntities(options))
+                {
+                    games = (from g in dc.tblGames
+                             select new Game
+                             {
+                                 Id = g.Id,
+                                 Winner = g.Winner,
+                                 Date = g.Date,
+                                 GameName = g.GameName,
+                                 Complete = g.Complete
+                             }
+                             )
+                             .OrderBy(g => g.GameName)
+                             .ToList();
+                }
+                return games;
             }
             catch (Exception e)
             {
-
                 throw e;
             }
-
         }
 
-        public int LoadById(Game cribbage, bool rollback = false)
+        public Game LoadById(Guid id)
         {
             try
             {
-                return 1;
+                using (CribbageEntities dc = new CribbageEntities(options))
+                {
+                    tblGame row = dc.tblGames.FirstOrDefault(g => g.Id == id);
+
+                    if (row != null)
+                    {
+                        Game game = new Game
+                        {
+                            Id = row.Id,
+                            Winner = row.Winner,
+                            Date = row.Date,
+                            GameName = row.GameName,
+                            Complete = row.Complete
+                        };
+                        return game;
+                    }
+                    else
+                    {
+                        throw new Exception("Row not found");
+                    }
+                }
             }
             catch (Exception e)
             {
-
                 throw e;
             }
-
         }
     }
 }

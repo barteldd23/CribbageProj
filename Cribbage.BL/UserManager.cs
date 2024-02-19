@@ -85,7 +85,6 @@ namespace Cribbage.BL
             }
             catch (Exception e)
             {
-
                 throw e;
             }
         }
@@ -136,7 +135,6 @@ namespace Cribbage.BL
             }
             catch (Exception e)
             {
-
                 throw e;
             }
 
@@ -195,7 +193,6 @@ namespace Cribbage.BL
             }
             catch (Exception e)
             {
-
                 throw e;
             }
 
@@ -242,7 +239,6 @@ namespace Cribbage.BL
             }
             catch (Exception e)
             {
-
                 throw e;
             }
 
@@ -275,7 +271,6 @@ namespace Cribbage.BL
             }
             catch (Exception e)
             {
-
                 throw e;
             }
 
@@ -311,7 +306,6 @@ namespace Cribbage.BL
             }
             catch (Exception e)
             {
-
                 throw e;
             }
         }
@@ -346,7 +340,6 @@ namespace Cribbage.BL
             }
             catch (Exception e)
             {
-
                 throw e;
             }
         }

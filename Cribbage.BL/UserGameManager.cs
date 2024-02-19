@@ -34,10 +34,8 @@ namespace Cribbage.BL
             }
             catch (Exception e)
             {
-
                 throw e;
             }
-
         }
 
 
@@ -72,10 +70,8 @@ namespace Cribbage.BL
             }
             catch (Exception e)
             {
-
                 throw e;
             }
-
         }
 
         public int Delete(Guid gameId, Guid playerId, int playerScore, bool rollback = false)
@@ -105,10 +101,8 @@ namespace Cribbage.BL
                 }
             catch (Exception e)
             {
-
                 throw e;
             }
-
         }
 
         public int Delete(Guid id, bool rollback = false)
@@ -138,7 +132,6 @@ namespace Cribbage.BL
             }
             catch (Exception e)
             {
-
                 throw e;
             }
 
