@@ -1,0 +1,92 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="bin\Debug\images\background_1.png" />
+    <None Include="bin\Debug\images\background_2.png" />
+    <None Include="bin\Debug\images\background_3.png" />
+    <None Include="bin\Debug\images\cardBackBlue.png" />
+    <None Include="bin\Debug\images\cardBackGreen.png" />
+    <None Include="bin\Debug\images\cardBackRed.png" />
+    <None Include="bin\Debug\images\cardClubs_Ace.png" />
+    <None Include="bin\Debug\images\cardClubs_Eight.png" />
+    <None Include="bin\Debug\images\cardClubs_Five.png" />
+    <None Include="bin\Debug\images\cardClubs_Four.png" />
+    <None Include="bin\Debug\images\cardClubs_Jack.png" />
+    <None Include="bin\Debug\images\cardClubs_King.png" />
+    <None Include="bin\Debug\images\cardClubs_Nine.png" />
+    <None Include="bin\Debug\images\cardClubs_Queen.png" />
+    <None Include="bin\Debug\images\cardClubs_Seven.png" />
+    <None Include="bin\Debug\images\cardClubs_Six.png" />
+    <None Include="bin\Debug\images\cardClubs_Ten.png" />
+    <None Include="bin\Debug\images\cardClubs_Three.png" />
+    <None Include="bin\Debug\images\cardClubs_two.png" />
+    <None Include="bin\Debug\images\cardDiamonds_Ace.png" />
+    <None Include="bin\Debug\images\cardDiamonds_Eight.png" />
+    <None Include="bin\Debug\images\cardDiamonds_Five.png" />
+    <None Include="bin\Debug\images\cardDiamonds_Four.png" />
+    <None Include="bin\Debug\images\cardDiamonds_Jack.png" />
+    <None Include="bin\Debug\images\cardDiamonds_King.png" />
+    <None Include="bin\Debug\images\cardDiamonds_Nine.png" />
+    <None Include="bin\Debug\images\cardDiamonds_Queen.png" />
+    <None Include="bin\Debug\images\cardDiamonds_Seven.png" />
+    <None Include="bin\Debug\images\cardDiamonds_Six.png" />
+    <None Include="bin\Debug\images\cardDiamonds_Ten.png" />
+    <None Include="bin\Debug\images\cardDiamonds_Three.png" />
+    <None Include="bin\Debug\images\cardDiamonds_two.png" />
+    <None Include="bin\Debug\images\cardHearts_Ace.png" />
+    <None Include="bin\Debug\images\cardHearts_Eight.png" />
+    <None Include="bin\Debug\images\cardHearts_Five.png" />
+    <None Include="bin\Debug\images\cardHearts_Four.png" />
+    <None Include="bin\Debug\images\cardHearts_Jack.png" />
+    <None Include="bin\Debug\images\cardHearts_King.png" />
+    <None Include="bin\Debug\images\cardHearts_Nine.png" />
+    <None Include="bin\Debug\images\cardHearts_Queen.png" />
+    <None Include="bin\Debug\images\cardHearts_Seven.png" />
+    <None Include="bin\Debug\images\cardHearts_Six.png" />
+    <None Include="bin\Debug\images\cardHearts_Ten.png" />
+    <None Include="bin\Debug\images\cardHearts_Three.png" />
+    <None Include="bin\Debug\images\cardHearts_two.png" />
+    <None Include="bin\Debug\images\cardSpades_Ace.png" />
+    <None Include="bin\Debug\images\cardSpades_Eight.png" />
+    <None Include="bin\Debug\images\cardSpades_Five.png" />
+    <None Include="bin\Debug\images\cardSpades_Four.png" />
+    <None Include="bin\Debug\images\cardSpades_Jack.png" />
+    <None Include="bin\Debug\images\cardSpades_King.png" />
+    <None Include="bin\Debug\images\cardSpades_Nine.png" />
+    <None Include="bin\Debug\images\cardSpades_Queen.png" />
+    <None Include="bin\Debug\images\cardSpades_Seven.png" />
+    <None Include="bin\Debug\images\cardSpades_Six.png" />
+    <None Include="bin\Debug\images\cardSpades_Ten.png" />
+    <None Include="bin\Debug\images\cardSpades_Three.png" />
+    <None Include="bin\Debug\images\cardSpades_two.png" />
+    <None Include="bin\Debug\images\cribbageboard.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Cribbage.BL.Models\Cribbage.BL.Models.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>
