@@ -4,7 +4,7 @@ namespace Cribbage.Prototype
 {
     public partial class Form1 : Form
     {
-        CribbageGame cribbageGame = new CribbageGame();
+        Game cribbageGame = new Game();
         int cribCount = 0;
         bool computerGo = true;
         public Form1()
@@ -94,7 +94,7 @@ namespace Cribbage.Prototype
 
         }
 
-        private void refreshCards(CribbageGame cribbageGame)
+        private void refreshCards(Game cribbageGame)
         {
             lstP1_Cards.DataSource = null;
             lstPlayed_Cards.DataSource = null;
