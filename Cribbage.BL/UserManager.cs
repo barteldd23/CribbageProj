@@ -92,7 +92,7 @@ namespace Cribbage.BL
             try
             {
                 int results;
-                using (CribbageEntities dc = new CribbageEntities()) 
+                using (CribbageEntities dc = new CribbageEntities(options)) 
                 {
                     // Check if the email exists (can't have duplicates)
                     bool inUse = dc.tblUsers.Any(u => u.Email.Trim().ToUpper() == user.Email.Trim().ToUpper());
@@ -145,7 +145,7 @@ namespace Cribbage.BL
             {
                 int results;
 
-                using (CribbageEntities dc =  new CribbageEntities())
+                using (CribbageEntities dc =  new CribbageEntities(options))
                 {
                     // Check if the email already exists - can't have duplicate emails listed
                     tblUser existingUser = dc.tblUsers.Where(u => u.Email.Trim().ToUpper() == user.Email.Trim().ToUpper()).FirstOrDefault();
@@ -202,7 +202,7 @@ namespace Cribbage.BL
             {
                 int results;
 
-                using (CribbageEntities dc = new CribbageEntities())
+                using (CribbageEntities dc = new CribbageEntities(options))
                 {
                     // Check if the user is associated with a game - do not delete 
                     bool inUse = dc.tblUserGames.Any(u => u.Id == id);
@@ -278,7 +278,7 @@ namespace Cribbage.BL
         {
             try
             { 
-                using (CribbageEntities dc = new CribbageEntities())
+                using (CribbageEntities dc = new CribbageEntities(options))
                 {
                     tblUser row = dc.tblUsers.FirstOrDefault(u => u.Id == id);
 
@@ -317,7 +317,7 @@ namespace Cribbage.BL
         {
             try
             {
-                using (CribbageEntities dc = new CribbageEntities())
+                using (CribbageEntities dc = new CribbageEntities(options))
                 {
                     tblUser row = dc.tblUsers.FirstOrDefault(u => u.Email == email);
 

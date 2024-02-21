@@ -19,12 +19,12 @@ namespace Cribbage.PL.Data
         {
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            //optionsBuilder
-            //    .EnableSensitiveDataLogging()
-            //    .UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=Test");
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    //optionsBuilder
+        //    //    .EnableSensitiveDataLogging()
+        //    //    .UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=Test");
+        //}
 
         public CribbageEntities()
         {
@@ -148,7 +148,7 @@ namespace Cribbage.PL.Data
                 GamesWon = 1,
                 GamesLost = 1,
                 WinStreak = 1,
-                AvgPtsPerGame = 103,
+                AvgPtsPerGame = 103
                 //AvgHandScore = 10
             });
 
@@ -164,7 +164,7 @@ namespace Cribbage.PL.Data
                 GamesWon = 1,
                 GamesLost = 3,
                 WinStreak = 1,
-                AvgPtsPerGame = 82.75,
+                AvgPtsPerGame = 82.75
                 //AvgHandScore = 8
             });
 
@@ -180,7 +180,7 @@ namespace Cribbage.PL.Data
                 GamesWon = 1,
                 GamesLost = 0,
                 WinStreak = 1,
-                AvgPtsPerGame = 121,
+                AvgPtsPerGame = 121
                 //AvgHandScore = 20
             });
 
@@ -196,7 +196,7 @@ namespace Cribbage.PL.Data
                 GamesWon = 0,
                 GamesLost = 0,
                 WinStreak = 0,
-                AvgPtsPerGame = 50,
+                AvgPtsPerGame = 50
                 //AvgHandScore = 5
             });
         }

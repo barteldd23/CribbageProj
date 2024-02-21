@@ -21,7 +21,7 @@ namespace Cribbage.BL.Test
         public void LoadByEmailTest()
         {
             User user = new UserManager(options).Load().FirstOrDefault();
-            Assert.AreEqual(new UserManager(options).LoadById(user.Id).Email, user.Email);
+            Assert.AreEqual(new UserManager(options).LoadByEmail(user.Email).Id, user.Id);
         }
 
         [TestMethod]
