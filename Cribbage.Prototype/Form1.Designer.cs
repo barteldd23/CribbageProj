@@ -29,6 +29,17 @@
         private void InitializeComponent()
         {
             splitContainer1 = new SplitContainer();
+            lstCrib_Cards = new ListBox();
+            lstP2_Cards = new ListBox();
+            lstP1_Cards = new ListBox();
+            btnGo = new Button();
+            btnSendToCrib = new Button();
+            btnPlayCard = new Button();
+            btnPlayStop = new Button();
+            lblCount = new Label();
+            lblCurrentCount = new Label();
+            ptbP2_Played8 = new PictureBox();
+            ptbP1_Played8 = new PictureBox();
             ptbCrib1 = new PictureBox();
             ptbCrib2 = new PictureBox();
             ptbCrib3 = new PictureBox();
@@ -60,23 +71,18 @@
             ptbP2_C1 = new PictureBox();
             ptbP1_C1 = new PictureBox();
             ptbDeck = new PictureBox();
-            ptbP1_Played8 = new PictureBox();
-            ptbP2_Played8 = new PictureBox();
-            lblCurrentCount = new Label();
-            lblCount = new Label();
-            btnPlayStop = new Button();
-            pictureBox1 = new PictureBox();
-            lblPlayer1 = new Label();
-            lblScore_P1 = new Label();
             lblScore_P2 = new Label();
             lblPlayer2 = new Label();
-            btnPlayCard = new Button();
-            btnSendToCrib = new Button();
-            btnGo = new Button();
+            lblScore_P1 = new Label();
+            lblPlayer1 = new Label();
+            pictureBox1 = new PictureBox();
+            lstPlayed_Cards = new ListBox();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
             splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)ptbP2_Played8).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)ptbP1_Played8).BeginInit();
             ((System.ComponentModel.ISupportInitialize)ptbCrib1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)ptbCrib2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)ptbCrib3).BeginInit();
@@ -108,8 +114,6 @@
             ((System.ComponentModel.ISupportInitialize)ptbP2_C1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)ptbP1_C1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)ptbDeck).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)ptbP1_Played8).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)ptbP2_Played8).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -121,6 +125,10 @@
             // 
             // splitContainer1.Panel1
             // 
+            splitContainer1.Panel1.Controls.Add(lstPlayed_Cards);
+            splitContainer1.Panel1.Controls.Add(lstCrib_Cards);
+            splitContainer1.Panel1.Controls.Add(lstP2_Cards);
+            splitContainer1.Panel1.Controls.Add(lstP1_Cards);
             splitContainer1.Panel1.Controls.Add(btnGo);
             splitContainer1.Panel1.Controls.Add(btnSendToCrib);
             splitContainer1.Panel1.Controls.Add(btnPlayCard);
@@ -172,6 +180,113 @@
             splitContainer1.Size = new Size(937, 635);
             splitContainer1.SplitterDistance = 655;
             splitContainer1.TabIndex = 0;
+            // 
+            // lstCrib_Cards
+            // 
+            lstCrib_Cards.FormattingEnabled = true;
+            lstCrib_Cards.ItemHeight = 15;
+            lstCrib_Cards.Location = new Point(525, 186);
+            lstCrib_Cards.Name = "lstCrib_Cards";
+            lstCrib_Cards.Size = new Size(136, 109);
+            lstCrib_Cards.TabIndex = 41;
+            // 
+            // lstP2_Cards
+            // 
+            lstP2_Cards.FormattingEnabled = true;
+            lstP2_Cards.ItemHeight = 15;
+            lstP2_Cards.Location = new Point(541, 6);
+            lstP2_Cards.Name = "lstP2_Cards";
+            lstP2_Cards.Size = new Size(136, 109);
+            lstP2_Cards.TabIndex = 40;
+            // 
+            // lstP1_Cards
+            // 
+            lstP1_Cards.FormattingEnabled = true;
+            lstP1_Cards.ItemHeight = 15;
+            lstP1_Cards.Location = new Point(541, 341);
+            lstP1_Cards.Name = "lstP1_Cards";
+            lstP1_Cards.SelectionMode = SelectionMode.MultiSimple;
+            lstP1_Cards.Size = new Size(136, 184);
+            lstP1_Cards.TabIndex = 39;
+            // 
+            // btnGo
+            // 
+            btnGo.Location = new Point(436, 500);
+            btnGo.Name = "btnGo";
+            btnGo.Size = new Size(99, 55);
+            btnGo.TabIndex = 38;
+            btnGo.Text = "Go";
+            btnGo.UseVisualStyleBackColor = true;
+            // 
+            // btnSendToCrib
+            // 
+            btnSendToCrib.Location = new Point(290, 500);
+            btnSendToCrib.Name = "btnSendToCrib";
+            btnSendToCrib.Size = new Size(99, 55);
+            btnSendToCrib.TabIndex = 37;
+            btnSendToCrib.Text = "Send To Crib";
+            btnSendToCrib.UseVisualStyleBackColor = true;
+            btnSendToCrib.Click += btnSendToCrib_Click;
+            // 
+            // btnPlayCard
+            // 
+            btnPlayCard.Location = new Point(148, 500);
+            btnPlayCard.Name = "btnPlayCard";
+            btnPlayCard.Size = new Size(99, 55);
+            btnPlayCard.TabIndex = 36;
+            btnPlayCard.Text = "Play Card";
+            btnPlayCard.UseVisualStyleBackColor = true;
+            btnPlayCard.Click += btnPlayCard_Click;
+            // 
+            // btnPlayStop
+            // 
+            btnPlayStop.Location = new Point(14, 575);
+            btnPlayStop.Name = "btnPlayStop";
+            btnPlayStop.Size = new Size(94, 48);
+            btnPlayStop.TabIndex = 35;
+            btnPlayStop.Text = "Play Game";
+            btnPlayStop.UseVisualStyleBackColor = true;
+            btnPlayStop.Click += btnPlayStop_Click;
+            // 
+            // lblCount
+            // 
+            lblCount.AutoSize = true;
+            lblCount.Location = new Point(95, 186);
+            lblCount.Name = "lblCount";
+            lblCount.Size = new Size(13, 15);
+            lblCount.TabIndex = 34;
+            lblCount.Text = "0";
+            // 
+            // lblCurrentCount
+            // 
+            lblCurrentCount.AutoSize = true;
+            lblCurrentCount.Location = new Point(3, 186);
+            lblCurrentCount.Name = "lblCurrentCount";
+            lblCurrentCount.Size = new Size(86, 15);
+            lblCurrentCount.TabIndex = 33;
+            lblCurrentCount.Text = "Current Count:";
+            // 
+            // ptbP2_Played8
+            // 
+            ptbP2_Played8.BackgroundImage = Properties.Resources.cardBackBlue;
+            ptbP2_Played8.BackgroundImageLayout = ImageLayout.Zoom;
+            ptbP2_Played8.Location = new Point(458, 135);
+            ptbP2_Played8.Name = "ptbP2_Played8";
+            ptbP2_Played8.Size = new Size(41, 62);
+            ptbP2_Played8.TabIndex = 32;
+            ptbP2_Played8.TabStop = false;
+            ptbP2_Played8.Visible = false;
+            // 
+            // ptbP1_Played8
+            // 
+            ptbP1_Played8.BackgroundImage = Properties.Resources.cardBackBlue;
+            ptbP1_Played8.BackgroundImageLayout = ImageLayout.Zoom;
+            ptbP1_Played8.Location = new Point(458, 215);
+            ptbP1_Played8.Name = "ptbP1_Played8";
+            ptbP1_Played8.Size = new Size(41, 62);
+            ptbP1_Played8.TabIndex = 31;
+            ptbP1_Played8.TabStop = false;
+            ptbP1_Played8.Visible = false;
             // 
             // ptbCrib1
             // 
@@ -490,6 +605,7 @@
             ptbP1_C1.Size = new Size(70, 91);
             ptbP1_C1.TabIndex = 1;
             ptbP1_C1.TabStop = false;
+            ptbP1_C1.Click += ptbP1_C1_Click;
             // 
             // ptbDeck
             // 
@@ -500,84 +616,6 @@
             ptbDeck.Size = new Size(70, 91);
             ptbDeck.TabIndex = 0;
             ptbDeck.TabStop = false;
-            // 
-            // ptbP1_Played8
-            // 
-            ptbP1_Played8.BackgroundImage = Properties.Resources.cardBackBlue;
-            ptbP1_Played8.BackgroundImageLayout = ImageLayout.Zoom;
-            ptbP1_Played8.Location = new Point(458, 215);
-            ptbP1_Played8.Name = "ptbP1_Played8";
-            ptbP1_Played8.Size = new Size(41, 62);
-            ptbP1_Played8.TabIndex = 31;
-            ptbP1_Played8.TabStop = false;
-            ptbP1_Played8.Visible = false;
-            // 
-            // ptbP2_Played8
-            // 
-            ptbP2_Played8.BackgroundImage = Properties.Resources.cardBackBlue;
-            ptbP2_Played8.BackgroundImageLayout = ImageLayout.Zoom;
-            ptbP2_Played8.Location = new Point(458, 135);
-            ptbP2_Played8.Name = "ptbP2_Played8";
-            ptbP2_Played8.Size = new Size(41, 62);
-            ptbP2_Played8.TabIndex = 32;
-            ptbP2_Played8.TabStop = false;
-            ptbP2_Played8.Visible = false;
-            // 
-            // lblCurrentCount
-            // 
-            lblCurrentCount.AutoSize = true;
-            lblCurrentCount.Location = new Point(3, 186);
-            lblCurrentCount.Name = "lblCurrentCount";
-            lblCurrentCount.Size = new Size(86, 15);
-            lblCurrentCount.TabIndex = 33;
-            lblCurrentCount.Text = "Current Count:";
-            // 
-            // lblCount
-            // 
-            lblCount.AutoSize = true;
-            lblCount.Location = new Point(95, 186);
-            lblCount.Name = "lblCount";
-            lblCount.Size = new Size(13, 15);
-            lblCount.TabIndex = 34;
-            lblCount.Text = "0";
-            // 
-            // btnPlayStop
-            // 
-            btnPlayStop.Location = new Point(14, 575);
-            btnPlayStop.Name = "btnPlayStop";
-            btnPlayStop.Size = new Size(94, 48);
-            btnPlayStop.TabIndex = 35;
-            btnPlayStop.Text = "Play Game";
-            btnPlayStop.UseVisualStyleBackColor = true;
-            btnPlayStop.Click += btnPlayStop_Click;
-            // 
-            // pictureBox1
-            // 
-            pictureBox1.BackgroundImage = Properties.Resources.cribbageboard;
-            pictureBox1.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox1.Location = new Point(30, 79);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(223, 544);
-            pictureBox1.TabIndex = 0;
-            pictureBox1.TabStop = false;
-            // 
-            // lblPlayer1
-            // 
-            lblPlayer1.AutoSize = true;
-            lblPlayer1.Location = new Point(30, 52);
-            lblPlayer1.Name = "lblPlayer1";
-            lblPlayer1.Size = new Size(51, 15);
-            lblPlayer1.TabIndex = 1;
-            lblPlayer1.Text = "Player1 :";
-            // 
-            // lblScore_P1
-            // 
-            lblScore_P1.AutoSize = true;
-            lblScore_P1.Location = new Point(87, 52);
-            lblScore_P1.Name = "lblScore_P1";
-            lblScore_P1.Size = new Size(13, 15);
-            lblScore_P1.TabIndex = 2;
-            lblScore_P1.Text = "0";
             // 
             // lblScore_P2
             // 
@@ -597,32 +635,42 @@
             lblPlayer2.TabIndex = 3;
             lblPlayer2.Text = "Player2 :";
             // 
-            // btnPlayCard
+            // lblScore_P1
             // 
-            btnPlayCard.Location = new Point(148, 500);
-            btnPlayCard.Name = "btnPlayCard";
-            btnPlayCard.Size = new Size(99, 55);
-            btnPlayCard.TabIndex = 36;
-            btnPlayCard.Text = "Play Card";
-            btnPlayCard.UseVisualStyleBackColor = true;
+            lblScore_P1.AutoSize = true;
+            lblScore_P1.Location = new Point(87, 52);
+            lblScore_P1.Name = "lblScore_P1";
+            lblScore_P1.Size = new Size(13, 15);
+            lblScore_P1.TabIndex = 2;
+            lblScore_P1.Text = "0";
             // 
-            // btnSendToCrib
+            // lblPlayer1
             // 
-            btnSendToCrib.Location = new Point(290, 500);
-            btnSendToCrib.Name = "btnSendToCrib";
-            btnSendToCrib.Size = new Size(99, 55);
-            btnSendToCrib.TabIndex = 37;
-            btnSendToCrib.Text = "Send To Crib";
-            btnSendToCrib.UseVisualStyleBackColor = true;
+            lblPlayer1.AutoSize = true;
+            lblPlayer1.Location = new Point(30, 52);
+            lblPlayer1.Name = "lblPlayer1";
+            lblPlayer1.Size = new Size(51, 15);
+            lblPlayer1.TabIndex = 1;
+            lblPlayer1.Text = "Player1 :";
             // 
-            // btnGo
+            // pictureBox1
             // 
-            btnGo.Location = new Point(436, 500);
-            btnGo.Name = "btnGo";
-            btnGo.Size = new Size(99, 55);
-            btnGo.TabIndex = 38;
-            btnGo.Text = "Go";
-            btnGo.UseVisualStyleBackColor = true;
+            pictureBox1.BackgroundImage = Properties.Resources.cribbageboard;
+            pictureBox1.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureBox1.Location = new Point(30, 79);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(223, 544);
+            pictureBox1.TabIndex = 0;
+            pictureBox1.TabStop = false;
+            // 
+            // lstPlayed_Cards
+            // 
+            lstPlayed_Cards.FormattingEnabled = true;
+            lstPlayed_Cards.ItemHeight = 15;
+            lstPlayed_Cards.Location = new Point(166, 135);
+            lstPlayed_Cards.Name = "lstPlayed_Cards";
+            lstPlayed_Cards.Size = new Size(131, 154);
+            lstPlayed_Cards.TabIndex = 42;
             // 
             // Form1
             // 
@@ -631,6 +679,7 @@
             ClientSize = new Size(937, 635);
             Controls.Add(splitContainer1);
             Name = "Form1";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Form1";
             Load += Form1_Load;
             splitContainer1.Panel1.ResumeLayout(false);
@@ -639,6 +688,8 @@
             splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
             splitContainer1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)ptbP2_Played8).EndInit();
+            ((System.ComponentModel.ISupportInitialize)ptbP1_Played8).EndInit();
             ((System.ComponentModel.ISupportInitialize)ptbCrib1).EndInit();
             ((System.ComponentModel.ISupportInitialize)ptbCrib2).EndInit();
             ((System.ComponentModel.ISupportInitialize)ptbCrib3).EndInit();
@@ -670,8 +721,6 @@
             ((System.ComponentModel.ISupportInitialize)ptbP2_C1).EndInit();
             ((System.ComponentModel.ISupportInitialize)ptbP1_C1).EndInit();
             ((System.ComponentModel.ISupportInitialize)ptbDeck).EndInit();
-            ((System.ComponentModel.ISupportInitialize)ptbP1_Played8).EndInit();
-            ((System.ComponentModel.ISupportInitialize)ptbP2_Played8).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
         }
@@ -723,5 +772,9 @@
         private Button btnPlayCard;
         private Button btnGo;
         private Button btnSendToCrib;
+        private ListBox lstP1_Cards;
+        private ListBox lstP2_Cards;
+        private ListBox lstCrib_Cards;
+        private ListBox lstPlayed_Cards;
     }
 }

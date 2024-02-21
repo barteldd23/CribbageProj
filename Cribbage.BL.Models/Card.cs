@@ -39,5 +39,6 @@ namespace Cribbage.BL.Models
 
         public int value { get { if ((int)face < 10) return (int)face; else return 10; } }
         public string imgPath { get; set; }
+        public string name { get { return face.ToString() + " of " + suit.ToString(); } }
     }
 }

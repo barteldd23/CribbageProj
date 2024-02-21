@@ -171,6 +171,7 @@ namespace Cribbage.BL.Models
 
                 }
                 LastPlayerPlayed = PlayerTurn;
+                PlayerTurn.Hand.Remove(card);
                 PlayerTurn = PlayerTurn == Player_1 ? Player_2 : Player_1;
                 return true;
             }
