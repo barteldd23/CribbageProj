@@ -38,6 +38,35 @@ namespace Cribbage.BL
             }
         }
 
+        public static List<Guid> GetGames(Guid playerId)
+        {
+            try
+            {
+                List<Guid> list = new List<Guid>();
+                using (CribbageEntities dc = new CribbageEntities())
+                {
+                    tblUserGame entity = dc.tblUserGames.Where(ug => ug.PlayerId == playerId).FirstOrDefault();
+                    if (entity != null)
+                    {
+                        List<tblUserGame> entities = dc.tblUserGames.Where(ug => ug.PlayerId == playerId).ToList();
+                        foreach (tblUserGame userGame in entities)
+                        {
+                            list.Add(userGame.GameId);
+                        }
+                        return list;
+                    }
+                    else
+                    {
+                        throw new Exception("No games found for this player.");
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
 
         public int Update(UserGame userGame, bool rollback = false)
         {
