@@ -669,5 +669,110 @@
             Assert.AreEqual(0, cribbage.CurrentCount);
             Assert.AreEqual(cribbage.Player_2, cribbage.PlayerTurn);
         }
+
+        [TestMethod]
+        public void getPointsof4Test()
+        {
+            Game cribbage = new Game();
+            Deck deck = new Deck();
+            cribbage.CutCard = deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Three).FirstOrDefault();
+            List<Card> hand =
+            [
+                deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.King).FirstOrDefault(),
+                deck.Cards.Where(c => c.suit == Suits.Diamonds && c.face == Faces.Jack).FirstOrDefault(),
+                deck.Cards.Where(c => c.suit == Suits.Clubs && c.face == Faces.Five).FirstOrDefault(),
+                deck.Cards.Where(c => c.suit == Suits.Spades && c.face == Faces.Seven).FirstOrDefault(),
+            ];
+
+            int points = cribbage.Get_Points_of_4_Cards(hand);
+            Assert.AreEqual(4, points);
+
+            hand = null;
+            hand =
+            [
+                deck.Cards.Where(c => c.suit == Suits.Diamonds && c.face == Faces.Six).FirstOrDefault(),
+                deck.Cards.Where(c => c.suit == Suits.Spades && c.face == Faces.Eight).FirstOrDefault(),
+                deck.Cards.Where(c => c.suit == Suits.Diamonds && c.face == Faces.Four).FirstOrDefault(),
+                deck.Cards.Where(c => c.suit == Suits.Diamonds && c.face == Faces.Seven).FirstOrDefault(),
+            ];
+            points = cribbage.Get_Points_of_4_Cards(hand);
+            Assert.AreEqual(5, points);
+
+            hand = null;
+            hand =
+            [
+                deck.Cards.Where(c => c.suit == Suits.Diamonds && c.face == Faces.Six).FirstOrDefault(),
+                deck.Cards.Where(c => c.suit == Suits.Spades && c.face == Faces.Five).FirstOrDefault(),
+                deck.Cards.Where(c => c.suit == Suits.Diamonds && c.face == Faces.Four).FirstOrDefault(),
+                deck.Cards.Where(c => c.suit == Suits.Diamonds && c.face == Faces.Five).FirstOrDefault(),
+            ];
+            points = cribbage.Get_Points_of_4_Cards(hand);
+            Assert.AreEqual(12, points);
+        }
+
+        [TestMethod]
+        public void getCribCardsTest()
+        {
+            Game cribbage = new Game();
+            Deck deck = new Deck();
+            List<Card> hand =
+            [
+                deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.King).FirstOrDefault(),
+                deck.Cards.Where(c => c.suit == Suits.Diamonds && c.face == Faces.Jack).FirstOrDefault(),
+                deck.Cards.Where(c => c.suit == Suits.Clubs && c.face == Faces.Five).FirstOrDefault(),
+                deck.Cards.Where(c => c.suit == Suits.Spades && c.face == Faces.Seven).FirstOrDefault(),
+                deck.Cards.Where(c => c.suit == Suits.Spades && c.face == Faces.Ace).FirstOrDefault(),
+                deck.Cards.Where(c => c.suit == Suits.Spades && c.face == Faces.Two).FirstOrDefault()
+            ];
+
+            List<Card> cribCards = cribbage.Pick_Cards_To_Crib(hand);
+            Assert.AreEqual(2, cribCards.Count);
+
+            hand = null;
+            cribCards = null;
+            hand =
+            [
+                deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Four).FirstOrDefault(),
+                deck.Cards.Where(c => c.suit == Suits.Diamonds && c.face == Faces.Four).FirstOrDefault(),
+                deck.Cards.Where(c => c.suit == Suits.Clubs && c.face == Faces.Ten).FirstOrDefault(),
+                deck.Cards.Where(c => c.suit == Suits.Spades && c.face == Faces.Ten).FirstOrDefault(),
+                deck.Cards.Where(c => c.suit == Suits.Spades && c.face == Faces.Ace).FirstOrDefault(),
+                deck.Cards.Where(c => c.suit == Suits.Spades && c.face == Faces.Ace).FirstOrDefault()
+            ];
+
+            cribCards = cribbage.Pick_Cards_To_Crib(hand);
+            Assert.AreEqual(2, cribCards.Count);
+
+            hand = null;
+            cribCards = null;
+            hand =
+            [
+                deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Five).FirstOrDefault(),
+                deck.Cards.Where(c => c.suit == Suits.Diamonds && c.face == Faces.Ace).FirstOrDefault(),
+                deck.Cards.Where(c => c.suit == Suits.Clubs && c.face == Faces.Queen).FirstOrDefault(),
+                deck.Cards.Where(c => c.suit == Suits.Spades && c.face == Faces.Three).FirstOrDefault(),
+                deck.Cards.Where(c => c.suit == Suits.Spades && c.face == Faces.Two).FirstOrDefault(),
+                deck.Cards.Where(c => c.suit == Suits.Spades && c.face == Faces.Four).FirstOrDefault()
+            ];
+
+            cribCards = cribbage.Pick_Cards_To_Crib(hand);
+            Assert.AreEqual(2, cribCards.Count);
+
+            hand = null;
+            cribCards = null;
+            hand =
+            [
+                deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Ten).FirstOrDefault(),
+                deck.Cards.Where(c => c.suit == Suits.Diamonds && c.face == Faces.Ten).FirstOrDefault(),
+                deck.Cards.Where(c => c.suit == Suits.Clubs && c.face == Faces.Eight).FirstOrDefault(),
+                deck.Cards.Where(c => c.suit == Suits.Spades && c.face == Faces.Seven).FirstOrDefault(),
+                deck.Cards.Where(c => c.suit == Suits.Spades && c.face == Faces.Six).FirstOrDefault(),
+                deck.Cards.Where(c => c.suit == Suits.Spades && c.face == Faces.Five).FirstOrDefault()
+            ];
+
+            cribCards = cribbage.Pick_Cards_To_Crib(hand);
+            Assert.AreEqual(2, cribCards.Count);
+
+        }
     }
 }

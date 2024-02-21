@@ -150,6 +150,102 @@ namespace Cribbage.BL.Models
                 Crib.Add(card);
             }
         }
+
+        public List<Card> Pick_Cards_To_Crib(List<Card> hand)
+        {
+            List<Card> cards_To_Crib = new List<Card>();
+            List<Card> cards_To_Keep = new List<Card>();
+            int handPoints = 0;
+            List<Card> check_4_Cards = new List<Card>();
+            for (int i = 0; i < hand.Count-3; i++)
+            {
+                for (int j = i + 1; j < hand.Count - 2; j++)
+                {
+                    for (int k = j + 1; k < hand.Count -1; k++)
+                    {
+                        for (int l = k + 1; l < hand.Count; l++)
+                        {
+                            check_4_Cards.Add(hand[i]);
+                            check_4_Cards.Add(hand[j]);
+                            check_4_Cards.Add(hand[k]);
+                            check_4_Cards.Add(hand[l]);
+                            int check_Cards_Points = Get_Points_of_4_Cards(check_4_Cards);
+
+                            if (handPoints <= check_Cards_Points)
+                            {
+                                if(handPoints == check_Cards_Points)
+                                {
+                                    Random rnd = new Random();
+                                    if(rnd.NextSingle() > .5)
+                                    {
+                                        cards_To_Keep = check_4_Cards;
+                                    }
+                                }
+                                else
+                                {
+                                    cards_To_Keep = check_4_Cards;
+                                    handPoints = check_Cards_Points;
+                                }
+                                
+                            }
+                            check_4_Cards = null;
+                            check_4_Cards = new List<Card>();
+                        }
+                    }
+                }
+            }
+
+            foreach (Card card in hand)
+            {
+                if( !cards_To_Keep.Contains(card))
+                {
+                    cards_To_Crib.Add(card);
+                }
+            }
+
+
+            return cards_To_Crib;
+        }
+
+        public int Get_Points_of_4_Cards(List<Card> check_4_Cards)
+        {
+            int points = 0;
+
+            points += CountPairs(check_4_Cards);
+            points += Count15s(check_4_Cards);
+            if (check_4_Cards[0].suit == check_4_Cards[1].suit &&
+                check_4_Cards[0].suit == check_4_Cards[2].suit &&
+                check_4_Cards[0].suit == check_4_Cards[3].suit) { points += 4; }
+
+            check_4_Cards = check_4_Cards.OrderBy(c => c.face).ToList();
+
+            if (check_4_Cards[0].face == check_4_Cards[1].face -1 &&
+                check_4_Cards[1].face == check_4_Cards[2].face -1 &&
+                check_4_Cards[2].face == check_4_Cards[3].face -1)
+            {
+                points += 4;
+            }
+            else
+            {
+                // check for runs with 3 cards
+                for (int i = 0; i < check_4_Cards.Count - 2; i++)
+                {
+                    for (int j = i + 1; j < check_4_Cards.Count - 1; j++)
+                    {
+                        for (int k = j + 1; k < check_4_Cards.Count; k++)
+                        {
+                            if (check_4_Cards[i].face == check_4_Cards[j].face - 1 &&
+                                check_4_Cards[j].face == check_4_Cards[k].face - 1)
+                            {
+                                points += 3;
+                            }
+                        }
+                    }
+                }
+            }
+
+                return points;
+        }
         #endregion
 
         #region "Methods for counting rally"
@@ -426,7 +522,11 @@ namespace Cribbage.BL.Models
             }
 
             // check for 15's with 5 cards
-            if (hand[0].value + hand[1].value + hand[2].value + hand[3].value + hand[4].value == 15) points_to_add += 2;
+            if (hand.Count == 5)
+            {
+                if (hand[0].value + hand[1].value + hand[2].value + hand[3].value + hand[4].value == 15) points_to_add += 2;
+            }
+            
             return points_to_add;
         }
 
