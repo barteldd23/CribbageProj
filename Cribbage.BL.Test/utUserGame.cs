@@ -47,5 +47,12 @@ namespace Cribbage.BL.Test
 
             Assert.IsTrue(new UserGameManager(options).Delete(userGame.Id, true) > 0);
         }
+
+        [TestMethod]
+        public void GetGamesTest()
+        {
+            Guid playerId = new UserManager(options).Load().LastOrDefault().Id;
+            Assert.AreEqual(2, new UserGameManager(options).GetGames(playerId).Count());
+        }
     }
 }

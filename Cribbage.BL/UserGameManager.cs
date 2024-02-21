@@ -38,12 +38,12 @@ namespace Cribbage.BL
             }
         }
 
-        public static List<Guid> GetGames(Guid playerId)
+        public List<Guid> GetGames(Guid playerId)
         {
             try
             {
                 List<Guid> list = new List<Guid>();
-                using (CribbageEntities dc = new CribbageEntities())
+                using (CribbageEntities dc = new CribbageEntities(options))
                 {
                     tblUserGame entity = dc.tblUserGames.Where(ug => ug.PlayerId == playerId).FirstOrDefault();
                     if (entity != null)

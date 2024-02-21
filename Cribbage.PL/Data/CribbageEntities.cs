@@ -128,7 +128,7 @@ namespace Cribbage.PL.Data
                 FirstName = "Joe",
                 LastName = "Smith",
                 Password = GetHash("maple"),
-                GamesStarted = 1,
+                GamesStarted = 2,
                 GamesWon = 2,
                 GamesLost = 0,
                 WinStreak = 2,
