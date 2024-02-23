@@ -153,6 +153,12 @@ namespace Cribbage.BL.Models
 
         public List<Card> Pick_Cards_To_Crib(List<Card> hand)
         {
+            // Checks the all possible combinations of 4 cards of your 6 card hand
+            // Keeps track of the 4 card hand with the highest score
+            // returns a List<Card> of the 2 cards not used in the 4 card hand
+            // If two or more combinations have the same highest score,
+            // there is a 50% chance to choose the next hand in iteration over the previous hand
+
             List<Card> cards_To_Crib = new List<Card>();
             List<Card> cards_To_Keep = new List<Card>();
             int handPoints = 0;
@@ -412,6 +418,51 @@ namespace Cribbage.BL.Models
             {
                 return false;
             }
+        }
+
+        public Card Pick_Card_To_Play()
+        {
+            // Checkes the current PlayerTurn.Hand to see which card should be played in the ralley.
+            // Returns the card, does not play or remove the card from their hand.
+            // Returns a card that makes 15,31, or a pair in that order.
+            // If not any of those, returns the highest value card. Random, if multiple cards the same value.
+
+            Card pickedCard = new Card();
+            List<Card> potentialCards = new List<Card>();
+
+            if (PlayedCards.Count > 0)
+            {
+                foreach (Card card in PlayerTurn.Hand)
+                {
+                    if( card.value + CurrentCount == 15 ||
+                        card.value + CurrentCount == 31 ||
+                        card.face == PlayedCards.Last().face)
+                    {
+                        return card;
+                    }
+                    else
+                    {
+                        // Count is not 0, Some cards have been played.
+                        // No pair, 15, or 31 possibilities.
+                        // Need to check if a card can be played and stay <= 31
+                        if (card.value + CurrentCount <= 31)
+                        {
+                            potentialCards.Add(card);
+                        }
+                    }
+                }
+                // There are no pairs, 15s, 31.
+                // Play the highest value card.
+                int maxValue = potentialCards.Max(x => x.value);
+                return potentialCards.Where(x => x.value == maxValue).FirstOrDefault();
+            }
+            else
+            {
+                // Count is 0. No Cards have been played yet, Choose the highest value one.
+                int maxValue = PlayerTurn.Hand.Max(x => x.value);
+                return PlayerTurn.Hand.Where(x => x.value == maxValue).FirstOrDefault();
+            }
+
         }
         #endregion
                
