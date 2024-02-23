@@ -29,6 +29,9 @@
         private void InitializeComponent()
         {
             splitContainer1 = new SplitContainer();
+            txtPlayLog = new RichTextBox();
+            btnNextHand = new Button();
+            lstPlayed_Cards = new ListBox();
             lstCrib_Cards = new ListBox();
             lstP2_Cards = new ListBox();
             lstP1_Cards = new ListBox();
@@ -38,26 +41,18 @@
             btnPlayStop = new Button();
             lblCount = new Label();
             lblCurrentCount = new Label();
-            ptbP2_Played8 = new PictureBox();
-            ptbP1_Played8 = new PictureBox();
+            ptbPlayed8 = new PictureBox();
             ptbCrib1 = new PictureBox();
             ptbCrib2 = new PictureBox();
             ptbCrib3 = new PictureBox();
             ptbCrib4 = new PictureBox();
-            ptbP1_Played7 = new PictureBox();
-            ptbP2_Played6 = new PictureBox();
-            ptbP1_Played6 = new PictureBox();
-            ptbP2_Played7 = new PictureBox();
-            ptbP1_Played5 = new PictureBox();
-            ptbP2_Played5 = new PictureBox();
-            ptbP1_Played4 = new PictureBox();
-            ptbP2_Played4 = new PictureBox();
-            ptbP1_Played3 = new PictureBox();
-            ptbP2_Played3 = new PictureBox();
-            ptbP1_Played2 = new PictureBox();
-            ptbP2_Played2 = new PictureBox();
-            ptbP1_Played1 = new PictureBox();
-            ptbP2_Played1 = new PictureBox();
+            ptbPlayed6 = new PictureBox();
+            ptbPlayed7 = new PictureBox();
+            ptbPlayed5 = new PictureBox();
+            ptbPlayed4 = new PictureBox();
+            ptbPlayed3 = new PictureBox();
+            ptbPlayed2 = new PictureBox();
+            ptbPlayed1 = new PictureBox();
             ptbP1_C6 = new PictureBox();
             ptbP2_C2 = new PictureBox();
             ptbP2_C3 = new PictureBox();
@@ -76,31 +71,22 @@
             lblScore_P1 = new Label();
             lblPlayer1 = new Label();
             pictureBox1 = new PictureBox();
-            lstPlayed_Cards = new ListBox();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
             splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)ptbP2_Played8).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)ptbP1_Played8).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)ptbPlayed8).BeginInit();
             ((System.ComponentModel.ISupportInitialize)ptbCrib1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)ptbCrib2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)ptbCrib3).BeginInit();
             ((System.ComponentModel.ISupportInitialize)ptbCrib4).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)ptbP1_Played7).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)ptbP2_Played6).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)ptbP1_Played6).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)ptbP2_Played7).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)ptbP1_Played5).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)ptbP2_Played5).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)ptbP1_Played4).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)ptbP2_Played4).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)ptbP1_Played3).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)ptbP2_Played3).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)ptbP1_Played2).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)ptbP2_Played2).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)ptbP1_Played1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)ptbP2_Played1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)ptbPlayed6).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)ptbPlayed7).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)ptbPlayed5).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)ptbPlayed4).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)ptbPlayed3).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)ptbPlayed2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)ptbPlayed1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)ptbP1_C6).BeginInit();
             ((System.ComponentModel.ISupportInitialize)ptbP2_C2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)ptbP2_C3).BeginInit();
@@ -125,6 +111,8 @@
             // 
             // splitContainer1.Panel1
             // 
+            splitContainer1.Panel1.Controls.Add(txtPlayLog);
+            splitContainer1.Panel1.Controls.Add(btnNextHand);
             splitContainer1.Panel1.Controls.Add(lstPlayed_Cards);
             splitContainer1.Panel1.Controls.Add(lstCrib_Cards);
             splitContainer1.Panel1.Controls.Add(lstP2_Cards);
@@ -135,26 +123,18 @@
             splitContainer1.Panel1.Controls.Add(btnPlayStop);
             splitContainer1.Panel1.Controls.Add(lblCount);
             splitContainer1.Panel1.Controls.Add(lblCurrentCount);
-            splitContainer1.Panel1.Controls.Add(ptbP2_Played8);
-            splitContainer1.Panel1.Controls.Add(ptbP1_Played8);
+            splitContainer1.Panel1.Controls.Add(ptbPlayed8);
             splitContainer1.Panel1.Controls.Add(ptbCrib1);
             splitContainer1.Panel1.Controls.Add(ptbCrib2);
             splitContainer1.Panel1.Controls.Add(ptbCrib3);
             splitContainer1.Panel1.Controls.Add(ptbCrib4);
-            splitContainer1.Panel1.Controls.Add(ptbP1_Played7);
-            splitContainer1.Panel1.Controls.Add(ptbP2_Played6);
-            splitContainer1.Panel1.Controls.Add(ptbP1_Played6);
-            splitContainer1.Panel1.Controls.Add(ptbP2_Played7);
-            splitContainer1.Panel1.Controls.Add(ptbP1_Played5);
-            splitContainer1.Panel1.Controls.Add(ptbP2_Played5);
-            splitContainer1.Panel1.Controls.Add(ptbP1_Played4);
-            splitContainer1.Panel1.Controls.Add(ptbP2_Played4);
-            splitContainer1.Panel1.Controls.Add(ptbP1_Played3);
-            splitContainer1.Panel1.Controls.Add(ptbP2_Played3);
-            splitContainer1.Panel1.Controls.Add(ptbP1_Played2);
-            splitContainer1.Panel1.Controls.Add(ptbP2_Played2);
-            splitContainer1.Panel1.Controls.Add(ptbP1_Played1);
-            splitContainer1.Panel1.Controls.Add(ptbP2_Played1);
+            splitContainer1.Panel1.Controls.Add(ptbPlayed6);
+            splitContainer1.Panel1.Controls.Add(ptbPlayed7);
+            splitContainer1.Panel1.Controls.Add(ptbPlayed5);
+            splitContainer1.Panel1.Controls.Add(ptbPlayed4);
+            splitContainer1.Panel1.Controls.Add(ptbPlayed3);
+            splitContainer1.Panel1.Controls.Add(ptbPlayed2);
+            splitContainer1.Panel1.Controls.Add(ptbPlayed1);
             splitContainer1.Panel1.Controls.Add(ptbP1_C6);
             splitContainer1.Panel1.Controls.Add(ptbP2_C2);
             splitContainer1.Panel1.Controls.Add(ptbP2_C3);
@@ -180,6 +160,32 @@
             splitContainer1.Size = new Size(937, 635);
             splitContainer1.SplitterDistance = 655;
             splitContainer1.TabIndex = 0;
+            // 
+            // txtPlayLog
+            // 
+            txtPlayLog.Location = new Point(253, 204);
+            txtPlayLog.Name = "txtPlayLog";
+            txtPlayLog.Size = new Size(255, 153);
+            txtPlayLog.TabIndex = 44;
+            txtPlayLog.Text = "";
+            // 
+            // btnNextHand
+            // 
+            btnNextHand.Location = new Point(14, 500);
+            btnNextHand.Name = "btnNextHand";
+            btnNextHand.Size = new Size(99, 55);
+            btnNextHand.TabIndex = 43;
+            btnNextHand.Text = "Next Hand";
+            btnNextHand.UseVisualStyleBackColor = true;
+            // 
+            // lstPlayed_Cards
+            // 
+            lstPlayed_Cards.FormattingEnabled = true;
+            lstPlayed_Cards.ItemHeight = 15;
+            lstPlayed_Cards.Location = new Point(116, 203);
+            lstPlayed_Cards.Name = "lstPlayed_Cards";
+            lstPlayed_Cards.Size = new Size(131, 154);
+            lstPlayed_Cards.TabIndex = 42;
             // 
             // lstCrib_Cards
             // 
@@ -217,6 +223,7 @@
             btnGo.TabIndex = 38;
             btnGo.Text = "Go";
             btnGo.UseVisualStyleBackColor = true;
+            btnGo.Click += btnGo_Click;
             // 
             // btnSendToCrib
             // 
@@ -266,27 +273,16 @@
             lblCurrentCount.TabIndex = 33;
             lblCurrentCount.Text = "Current Count:";
             // 
-            // ptbP2_Played8
+            // ptbPlayed8
             // 
-            ptbP2_Played8.BackgroundImage = Properties.Resources.cardBackBlue;
-            ptbP2_Played8.BackgroundImageLayout = ImageLayout.Zoom;
-            ptbP2_Played8.Location = new Point(458, 135);
-            ptbP2_Played8.Name = "ptbP2_Played8";
-            ptbP2_Played8.Size = new Size(41, 62);
-            ptbP2_Played8.TabIndex = 32;
-            ptbP2_Played8.TabStop = false;
-            ptbP2_Played8.Visible = false;
-            // 
-            // ptbP1_Played8
-            // 
-            ptbP1_Played8.BackgroundImage = Properties.Resources.cardBackBlue;
-            ptbP1_Played8.BackgroundImageLayout = ImageLayout.Zoom;
-            ptbP1_Played8.Location = new Point(458, 215);
-            ptbP1_Played8.Name = "ptbP1_Played8";
-            ptbP1_Played8.Size = new Size(41, 62);
-            ptbP1_Played8.TabIndex = 31;
-            ptbP1_Played8.TabStop = false;
-            ptbP1_Played8.Visible = false;
+            ptbPlayed8.BackgroundImage = Properties.Resources.cardBackBlue;
+            ptbPlayed8.BackgroundImageLayout = ImageLayout.Zoom;
+            ptbPlayed8.Location = new Point(458, 135);
+            ptbPlayed8.Name = "ptbPlayed8";
+            ptbPlayed8.Size = new Size(41, 62);
+            ptbPlayed8.TabIndex = 32;
+            ptbPlayed8.TabStop = false;
+            ptbPlayed8.Visible = false;
             // 
             // ptbCrib1
             // 
@@ -332,159 +328,82 @@
             ptbCrib4.TabStop = false;
             ptbCrib4.Visible = false;
             // 
-            // ptbP1_Played7
+            // ptbPlayed6
             // 
-            ptbP1_Played7.BackgroundImage = Properties.Resources.cardBackBlue;
-            ptbP1_Played7.BackgroundImageLayout = ImageLayout.Zoom;
-            ptbP1_Played7.Location = new Point(411, 215);
-            ptbP1_Played7.Name = "ptbP1_Played7";
-            ptbP1_Played7.Size = new Size(41, 62);
-            ptbP1_Played7.TabIndex = 26;
-            ptbP1_Played7.TabStop = false;
-            ptbP1_Played7.Visible = false;
+            ptbPlayed6.BackgroundImage = Properties.Resources.cardBackBlue;
+            ptbPlayed6.BackgroundImageLayout = ImageLayout.Zoom;
+            ptbPlayed6.Location = new Point(364, 135);
+            ptbPlayed6.Name = "ptbPlayed6";
+            ptbPlayed6.Size = new Size(41, 62);
+            ptbPlayed6.TabIndex = 25;
+            ptbPlayed6.TabStop = false;
+            ptbPlayed6.Visible = false;
             // 
-            // ptbP2_Played6
+            // ptbPlayed7
             // 
-            ptbP2_Played6.BackgroundImage = Properties.Resources.cardBackBlue;
-            ptbP2_Played6.BackgroundImageLayout = ImageLayout.Zoom;
-            ptbP2_Played6.Location = new Point(364, 135);
-            ptbP2_Played6.Name = "ptbP2_Played6";
-            ptbP2_Played6.Size = new Size(41, 62);
-            ptbP2_Played6.TabIndex = 25;
-            ptbP2_Played6.TabStop = false;
-            ptbP2_Played6.Visible = false;
+            ptbPlayed7.BackgroundImage = Properties.Resources.cardBackBlue;
+            ptbPlayed7.BackgroundImageLayout = ImageLayout.Zoom;
+            ptbPlayed7.Location = new Point(411, 135);
+            ptbPlayed7.Name = "ptbPlayed7";
+            ptbPlayed7.Size = new Size(41, 62);
+            ptbPlayed7.TabIndex = 23;
+            ptbPlayed7.TabStop = false;
+            ptbPlayed7.Visible = false;
             // 
-            // ptbP1_Played6
+            // ptbPlayed5
             // 
-            ptbP1_Played6.BackgroundImage = Properties.Resources.cardBackBlue;
-            ptbP1_Played6.BackgroundImageLayout = ImageLayout.Zoom;
-            ptbP1_Played6.Location = new Point(364, 215);
-            ptbP1_Played6.Name = "ptbP1_Played6";
-            ptbP1_Played6.Size = new Size(41, 62);
-            ptbP1_Played6.TabIndex = 24;
-            ptbP1_Played6.TabStop = false;
-            ptbP1_Played6.Visible = false;
+            ptbPlayed5.BackgroundImage = Properties.Resources.cardBackBlue;
+            ptbPlayed5.BackgroundImageLayout = ImageLayout.Zoom;
+            ptbPlayed5.Location = new Point(317, 135);
+            ptbPlayed5.Name = "ptbPlayed5";
+            ptbPlayed5.Size = new Size(41, 62);
+            ptbPlayed5.TabIndex = 21;
+            ptbPlayed5.TabStop = false;
+            ptbPlayed5.Visible = false;
             // 
-            // ptbP2_Played7
+            // ptbPlayed4
             // 
-            ptbP2_Played7.BackgroundImage = Properties.Resources.cardBackBlue;
-            ptbP2_Played7.BackgroundImageLayout = ImageLayout.Zoom;
-            ptbP2_Played7.Location = new Point(411, 135);
-            ptbP2_Played7.Name = "ptbP2_Played7";
-            ptbP2_Played7.Size = new Size(41, 62);
-            ptbP2_Played7.TabIndex = 23;
-            ptbP2_Played7.TabStop = false;
-            ptbP2_Played7.Visible = false;
+            ptbPlayed4.BackgroundImage = Properties.Resources.cardBackBlue;
+            ptbPlayed4.BackgroundImageLayout = ImageLayout.Zoom;
+            ptbPlayed4.Location = new Point(270, 135);
+            ptbPlayed4.Name = "ptbPlayed4";
+            ptbPlayed4.Size = new Size(41, 62);
+            ptbPlayed4.TabIndex = 19;
+            ptbPlayed4.TabStop = false;
+            ptbPlayed4.Visible = false;
             // 
-            // ptbP1_Played5
+            // ptbPlayed3
             // 
-            ptbP1_Played5.BackgroundImage = Properties.Resources.cardBackBlue;
-            ptbP1_Played5.BackgroundImageLayout = ImageLayout.Zoom;
-            ptbP1_Played5.Location = new Point(317, 215);
-            ptbP1_Played5.Name = "ptbP1_Played5";
-            ptbP1_Played5.Size = new Size(41, 62);
-            ptbP1_Played5.TabIndex = 22;
-            ptbP1_Played5.TabStop = false;
-            ptbP1_Played5.Visible = false;
+            ptbPlayed3.BackgroundImage = Properties.Resources.cardBackBlue;
+            ptbPlayed3.BackgroundImageLayout = ImageLayout.Zoom;
+            ptbPlayed3.Location = new Point(223, 135);
+            ptbPlayed3.Name = "ptbPlayed3";
+            ptbPlayed3.Size = new Size(41, 62);
+            ptbPlayed3.TabIndex = 17;
+            ptbPlayed3.TabStop = false;
+            ptbPlayed3.Visible = false;
             // 
-            // ptbP2_Played5
+            // ptbPlayed2
             // 
-            ptbP2_Played5.BackgroundImage = Properties.Resources.cardBackBlue;
-            ptbP2_Played5.BackgroundImageLayout = ImageLayout.Zoom;
-            ptbP2_Played5.Location = new Point(317, 135);
-            ptbP2_Played5.Name = "ptbP2_Played5";
-            ptbP2_Played5.Size = new Size(41, 62);
-            ptbP2_Played5.TabIndex = 21;
-            ptbP2_Played5.TabStop = false;
-            ptbP2_Played5.Visible = false;
+            ptbPlayed2.BackgroundImage = Properties.Resources.cardBackBlue;
+            ptbPlayed2.BackgroundImageLayout = ImageLayout.Zoom;
+            ptbPlayed2.Location = new Point(176, 135);
+            ptbPlayed2.Name = "ptbPlayed2";
+            ptbPlayed2.Size = new Size(41, 62);
+            ptbPlayed2.TabIndex = 15;
+            ptbPlayed2.TabStop = false;
+            ptbPlayed2.Visible = false;
             // 
-            // ptbP1_Played4
+            // ptbPlayed1
             // 
-            ptbP1_Played4.BackgroundImage = Properties.Resources.cardBackBlue;
-            ptbP1_Played4.BackgroundImageLayout = ImageLayout.Zoom;
-            ptbP1_Played4.Location = new Point(270, 215);
-            ptbP1_Played4.Name = "ptbP1_Played4";
-            ptbP1_Played4.Size = new Size(41, 62);
-            ptbP1_Played4.TabIndex = 20;
-            ptbP1_Played4.TabStop = false;
-            ptbP1_Played4.Visible = false;
-            // 
-            // ptbP2_Played4
-            // 
-            ptbP2_Played4.BackgroundImage = Properties.Resources.cardBackBlue;
-            ptbP2_Played4.BackgroundImageLayout = ImageLayout.Zoom;
-            ptbP2_Played4.Location = new Point(270, 135);
-            ptbP2_Played4.Name = "ptbP2_Played4";
-            ptbP2_Played4.Size = new Size(41, 62);
-            ptbP2_Played4.TabIndex = 19;
-            ptbP2_Played4.TabStop = false;
-            ptbP2_Played4.Visible = false;
-            // 
-            // ptbP1_Played3
-            // 
-            ptbP1_Played3.BackgroundImage = Properties.Resources.cardBackBlue;
-            ptbP1_Played3.BackgroundImageLayout = ImageLayout.Zoom;
-            ptbP1_Played3.Location = new Point(223, 215);
-            ptbP1_Played3.Name = "ptbP1_Played3";
-            ptbP1_Played3.Size = new Size(41, 62);
-            ptbP1_Played3.TabIndex = 18;
-            ptbP1_Played3.TabStop = false;
-            ptbP1_Played3.Visible = false;
-            // 
-            // ptbP2_Played3
-            // 
-            ptbP2_Played3.BackgroundImage = Properties.Resources.cardBackBlue;
-            ptbP2_Played3.BackgroundImageLayout = ImageLayout.Zoom;
-            ptbP2_Played3.Location = new Point(223, 135);
-            ptbP2_Played3.Name = "ptbP2_Played3";
-            ptbP2_Played3.Size = new Size(41, 62);
-            ptbP2_Played3.TabIndex = 17;
-            ptbP2_Played3.TabStop = false;
-            ptbP2_Played3.Visible = false;
-            // 
-            // ptbP1_Played2
-            // 
-            ptbP1_Played2.BackgroundImage = Properties.Resources.cardBackBlue;
-            ptbP1_Played2.BackgroundImageLayout = ImageLayout.Zoom;
-            ptbP1_Played2.Location = new Point(176, 215);
-            ptbP1_Played2.Name = "ptbP1_Played2";
-            ptbP1_Played2.Size = new Size(41, 62);
-            ptbP1_Played2.TabIndex = 16;
-            ptbP1_Played2.TabStop = false;
-            ptbP1_Played2.Visible = false;
-            // 
-            // ptbP2_Played2
-            // 
-            ptbP2_Played2.BackgroundImage = Properties.Resources.cardBackBlue;
-            ptbP2_Played2.BackgroundImageLayout = ImageLayout.Zoom;
-            ptbP2_Played2.Location = new Point(176, 135);
-            ptbP2_Played2.Name = "ptbP2_Played2";
-            ptbP2_Played2.Size = new Size(41, 62);
-            ptbP2_Played2.TabIndex = 15;
-            ptbP2_Played2.TabStop = false;
-            ptbP2_Played2.Visible = false;
-            // 
-            // ptbP1_Played1
-            // 
-            ptbP1_Played1.BackgroundImage = Properties.Resources.cardBackBlue;
-            ptbP1_Played1.BackgroundImageLayout = ImageLayout.Zoom;
-            ptbP1_Played1.Location = new Point(129, 215);
-            ptbP1_Played1.Name = "ptbP1_Played1";
-            ptbP1_Played1.Size = new Size(41, 62);
-            ptbP1_Played1.TabIndex = 14;
-            ptbP1_Played1.TabStop = false;
-            ptbP1_Played1.Visible = false;
-            // 
-            // ptbP2_Played1
-            // 
-            ptbP2_Played1.BackgroundImage = Properties.Resources.cardBackBlue;
-            ptbP2_Played1.BackgroundImageLayout = ImageLayout.Zoom;
-            ptbP2_Played1.Location = new Point(129, 135);
-            ptbP2_Played1.Name = "ptbP2_Played1";
-            ptbP2_Played1.Size = new Size(41, 62);
-            ptbP2_Played1.TabIndex = 13;
-            ptbP2_Played1.TabStop = false;
-            ptbP2_Played1.Visible = false;
+            ptbPlayed1.BackgroundImage = Properties.Resources.cardBackBlue;
+            ptbPlayed1.BackgroundImageLayout = ImageLayout.Zoom;
+            ptbPlayed1.Location = new Point(129, 135);
+            ptbPlayed1.Name = "ptbPlayed1";
+            ptbPlayed1.Size = new Size(41, 62);
+            ptbPlayed1.TabIndex = 13;
+            ptbPlayed1.TabStop = false;
+            ptbPlayed1.Visible = false;
             // 
             // ptbP1_C6
             // 
@@ -663,15 +582,6 @@
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
             // 
-            // lstPlayed_Cards
-            // 
-            lstPlayed_Cards.FormattingEnabled = true;
-            lstPlayed_Cards.ItemHeight = 15;
-            lstPlayed_Cards.Location = new Point(166, 135);
-            lstPlayed_Cards.Name = "lstPlayed_Cards";
-            lstPlayed_Cards.Size = new Size(131, 154);
-            lstPlayed_Cards.TabIndex = 42;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -688,26 +598,18 @@
             splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
             splitContainer1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)ptbP2_Played8).EndInit();
-            ((System.ComponentModel.ISupportInitialize)ptbP1_Played8).EndInit();
+            ((System.ComponentModel.ISupportInitialize)ptbPlayed8).EndInit();
             ((System.ComponentModel.ISupportInitialize)ptbCrib1).EndInit();
             ((System.ComponentModel.ISupportInitialize)ptbCrib2).EndInit();
             ((System.ComponentModel.ISupportInitialize)ptbCrib3).EndInit();
             ((System.ComponentModel.ISupportInitialize)ptbCrib4).EndInit();
-            ((System.ComponentModel.ISupportInitialize)ptbP1_Played7).EndInit();
-            ((System.ComponentModel.ISupportInitialize)ptbP2_Played6).EndInit();
-            ((System.ComponentModel.ISupportInitialize)ptbP1_Played6).EndInit();
-            ((System.ComponentModel.ISupportInitialize)ptbP2_Played7).EndInit();
-            ((System.ComponentModel.ISupportInitialize)ptbP1_Played5).EndInit();
-            ((System.ComponentModel.ISupportInitialize)ptbP2_Played5).EndInit();
-            ((System.ComponentModel.ISupportInitialize)ptbP1_Played4).EndInit();
-            ((System.ComponentModel.ISupportInitialize)ptbP2_Played4).EndInit();
-            ((System.ComponentModel.ISupportInitialize)ptbP1_Played3).EndInit();
-            ((System.ComponentModel.ISupportInitialize)ptbP2_Played3).EndInit();
-            ((System.ComponentModel.ISupportInitialize)ptbP1_Played2).EndInit();
-            ((System.ComponentModel.ISupportInitialize)ptbP2_Played2).EndInit();
-            ((System.ComponentModel.ISupportInitialize)ptbP1_Played1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)ptbP2_Played1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)ptbPlayed6).EndInit();
+            ((System.ComponentModel.ISupportInitialize)ptbPlayed7).EndInit();
+            ((System.ComponentModel.ISupportInitialize)ptbPlayed5).EndInit();
+            ((System.ComponentModel.ISupportInitialize)ptbPlayed4).EndInit();
+            ((System.ComponentModel.ISupportInitialize)ptbPlayed3).EndInit();
+            ((System.ComponentModel.ISupportInitialize)ptbPlayed2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)ptbPlayed1).EndInit();
             ((System.ComponentModel.ISupportInitialize)ptbP1_C6).EndInit();
             ((System.ComponentModel.ISupportInitialize)ptbP2_C2).EndInit();
             ((System.ComponentModel.ISupportInitialize)ptbP2_C3).EndInit();
@@ -728,20 +630,13 @@
         #endregion
 
         private SplitContainer splitContainer1;
-        private PictureBox ptbP1_Played7;
-        private PictureBox ptbP2_Played6;
-        private PictureBox ptbP1_Played6;
-        private PictureBox ptbP2_Played7;
-        private PictureBox ptbP1_Played5;
-        private PictureBox ptbP2_Played5;
-        private PictureBox ptbP1_Played4;
-        private PictureBox ptbP2_Played4;
-        private PictureBox ptbP1_Played3;
-        private PictureBox ptbP2_Played3;
-        private PictureBox ptbP1_Played2;
-        private PictureBox ptbP2_Played2;
-        private PictureBox ptbP1_Played1;
-        private PictureBox ptbP2_Played1;
+        private PictureBox ptbPlayed6;
+        private PictureBox ptbPlayed7;
+        private PictureBox ptbPlayed5;
+        private PictureBox ptbPlayed4;
+        private PictureBox ptbPlayed3;
+        private PictureBox ptbPlayed2;
+        private PictureBox ptbPlayed1;
         private PictureBox ptbP1_C6;
         private PictureBox ptbP2_C2;
         private PictureBox ptbP2_C3;
@@ -759,8 +654,7 @@
         private PictureBox ptbCrib2;
         private PictureBox ptbCrib3;
         private PictureBox ptbCrib4;
-        private PictureBox ptbP2_Played8;
-        private PictureBox ptbP1_Played8;
+        private PictureBox ptbPlayed8;
         private Label lblCount;
         private Label lblCurrentCount;
         private Button btnPlayStop;
@@ -776,5 +670,7 @@
         private ListBox lstP2_Cards;
         private ListBox lstCrib_Cards;
         private ListBox lstPlayed_Cards;
+        private Button btnNextHand;
+        private RichTextBox txtPlayLog;
     }
 }

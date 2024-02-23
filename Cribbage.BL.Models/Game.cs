@@ -11,7 +11,7 @@ namespace Cribbage.BL.Models
         public Guid Winner { get; set; } 
         public DateTime Date { get; set; }
         public string? GameName { get; set; }
-        public bool Complete { get; set; }
+        public bool Complete { get; set; } = false;
         public int Dealer { get; set; } = 1;
         public Player PlayerTurn { get; set; }
         public int GoCount { get; set; } = 0;
@@ -40,6 +40,23 @@ namespace Cribbage.BL.Models
             return count;
         }
         #endregion
+
+        public bool CheckWinner()
+        {
+            // Checks scores of both players. If there is a winner, changer Winner property to that player.
+            // Change Complete to true if a winner.
+            // Returns Complete bool value always.
+            if(Player_1.Score >= 121)
+            {
+                Winner = Player_1.Id;
+                Complete = true;
+            } else if (Player_2.Score >= 121)
+            {
+                Winner = Player_2.Id;
+                Complete = true;
+            }
+            return Complete;
+        }
 
         #region "Starting the game methods"
         public void ShuffleDeck()
@@ -140,14 +157,19 @@ namespace Cribbage.BL.Models
             {
                 if (Dealer == 1) Player_1.Score += 2;
                 else Player_2.Score += 2;
+
+                CheckWinner();
             }
         }
         
-        public void Give_To_Crib(List<Card> cards)
+        public void Give_To_Crib(List<Card> cards, Player player)
         {
+            // Adds a List of cards to the crib and removes it from that players hand
             foreach (Card card in cards)
             {
                 Crib.Add(card);
+                if (player == Player_1) Player_1.Hand.Remove(card);
+                else Player_2.Hand.Remove(card);
             }
         }
 
@@ -274,8 +296,10 @@ namespace Cribbage.BL.Models
                     EndCountingRally();
 
                 }
+                CheckWinner();
                 LastPlayerPlayed = PlayerTurn;
                 PlayerTurn.Hand.Remove(card);
+                PlayerTurn.PlayedCards.Add(card);
                 PlayerTurn = PlayerTurn == Player_1 ? Player_2 : Player_1;
                 return true;
             }
@@ -324,6 +348,7 @@ namespace Cribbage.BL.Models
                 if (run)
                 {
                     PlayerTurn.Score += cardsSorted.Count;
+
                     return true;
                 }
 

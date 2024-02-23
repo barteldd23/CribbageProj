@@ -449,10 +449,10 @@
             Assert.IsTrue(cribbage.CutCard != null);
 
             List<Card> cards = [cribbage.Player_1.Hand[5], cribbage.Player_1.Hand[4]];
-            cribbage.Give_To_Crib(cards);
+            cribbage.Give_To_Crib(cards, cribbage.Player_1);
             cards = null;
             cards = [cribbage.Player_2.Hand[5], cribbage.Player_2.Hand[4]];
-            cribbage.Give_To_Crib(cards);
+            cribbage.Give_To_Crib(cards, cribbage.Player_2);
 
             Assert.AreEqual(4, cribbage.Crib.Count);
         }
@@ -470,10 +470,10 @@
             cribbage.Deal();
 
             List<Card> cards = [cribbage.Player_1.Hand[5], cribbage.Player_1.Hand[4]];
-            cribbage.Give_To_Crib(cards);
+            cribbage.Give_To_Crib(cards, cribbage.Player_1);
             cards = null;
             cards = [cribbage.Player_2.Hand[5], cribbage.Player_2.Hand[4]];
-            cribbage.Give_To_Crib(cards);
+            cribbage.Give_To_Crib(cards, cribbage.Player_2);
 
             cribbage.PlayCard(cribbage.PlayerTurn.Hand[0]);
             Assert.IsTrue(cribbage.PlayedCards.Count == 1);
