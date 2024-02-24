@@ -142,26 +142,32 @@ namespace Cribbage.Prototype
                     {
                         case 1:
                             ptbP1_C1.Visible = true;
+                            ptbP1_C1.BorderStyle = BorderStyle.None;
                             ptbP1_C1.BackgroundImage = Image.FromFile(cribbageGame.Player_1.Hand[i - 1].imgPath);
                             break;
                         case 2:
                             ptbP1_C2.Visible = true;
+                            ptbP1_C2.BorderStyle = BorderStyle.None;
                             ptbP1_C2.BackgroundImage = Image.FromFile(cribbageGame.Player_1.Hand[i - 1].imgPath);
                             break;
                         case 3:
                             ptbP1_C3.Visible = true;
+                            ptbP1_C3.BorderStyle = BorderStyle.None;
                             ptbP1_C3.BackgroundImage = Image.FromFile(cribbageGame.Player_1.Hand[i - 1].imgPath);
                             break;
                         case 4:
                             ptbP1_C4.Visible = true;
+                            ptbP1_C4.BorderStyle = BorderStyle.None;
                             ptbP1_C4.BackgroundImage = Image.FromFile(cribbageGame.Player_1.Hand[i - 1].imgPath);
                             break;
                         case 5:
                             ptbP1_C5.Visible = true;
+                            ptbP1_C5.BorderStyle = BorderStyle.None;
                             ptbP1_C5.BackgroundImage = Image.FromFile(cribbageGame.Player_1.Hand[i - 1].imgPath);
                             break;
                         case 6:
                             ptbP1_C6.Visible = true;
+                            ptbP1_C6.BorderStyle = BorderStyle.None;
                             ptbP1_C6.BackgroundImage = Image.FromFile(cribbageGame.Player_1.Hand[i - 1].imgPath);
                             break;
 
