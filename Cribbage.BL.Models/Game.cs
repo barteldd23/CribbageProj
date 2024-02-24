@@ -62,6 +62,7 @@ namespace Cribbage.BL.Models
         public void ShuffleDeck()
         {
             // Go through each card twice. Randomly switch it with a different Index Location
+            this.Deck = new Deck();
 
             Random rnd = new Random();
             for (int j = 0; j < 2; j++)
@@ -70,14 +71,18 @@ namespace Cribbage.BL.Models
                 {
                     int randNum = rnd.Next(Deck.Cards.Count);
                     var value = Deck.Cards[randNum];
-                    Deck.Cards[randNum] = Deck.Cards[i];
-                    Deck.Cards[i] = value;
+                    this.Deck.Cards[randNum] = Deck.Cards[i];
+                    this.Deck.Cards[i] = value;
                 }
             }
         }
         public void Deal()
         {
             // Add the top card of the deck to the Players hand. Then remove that card from the Deck. 
+            EndCountingRally();
+            Player_1.Hand.Clear();
+            Player_2.Hand.Clear();
+
 
             if (Dealer == 1)
             {
@@ -111,6 +116,8 @@ namespace Cribbage.BL.Models
                 Deck.Cards.RemoveAt(0);
                 Player_1.Hand.Add(Deck.Cards[0]);
                 Deck.Cards.RemoveAt(0);
+
+                PlayerTurn = Player_2;
             }
             else
             {
@@ -144,6 +151,8 @@ namespace Cribbage.BL.Models
                 Deck.Cards.RemoveAt(0);
                 Player_2.Hand.Add(Deck.Cards[0]);
                 Deck.Cards.RemoveAt(0);
+
+                PlayerTurn = Player_1;
             }
         }
 
@@ -314,6 +323,8 @@ namespace Cribbage.BL.Models
         {
             PlayedCards = null;
             PlayedCards = new List<Card>();
+            Player_1.SaidGo = false;
+            Player_2.SaidGo = false;
 
         }
 
@@ -413,6 +424,7 @@ namespace Cribbage.BL.Models
 
             if (GoCount == 0)
             {
+                PlayerTurn.SaidGo = true;
                 GoCount++;
             }
             else

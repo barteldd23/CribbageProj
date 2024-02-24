@@ -7,5 +7,6 @@
         public int HandPoints { get; set; }
 
         public int Score { get; set; }
+        public bool SaidGo { get; set; }
     }
 }

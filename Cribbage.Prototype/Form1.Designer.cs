@@ -177,6 +177,7 @@
             btnNextHand.TabIndex = 43;
             btnNextHand.Text = "Next Hand";
             btnNextHand.UseVisualStyleBackColor = true;
+            btnNextHand.Click += btnNextHand_Click;
             // 
             // lstPlayed_Cards
             // 
@@ -414,6 +415,7 @@
             ptbP1_C6.Size = new Size(70, 91);
             ptbP1_C6.TabIndex = 12;
             ptbP1_C6.TabStop = false;
+            ptbP1_C6.Click += ptbP1_C6_Click;
             // 
             // ptbP2_C2
             // 
@@ -474,6 +476,7 @@
             ptbP1_C4.Size = new Size(70, 91);
             ptbP1_C4.TabIndex = 6;
             ptbP1_C4.TabStop = false;
+            ptbP1_C4.Click += ptbP1_C4_Click;
             // 
             // ptbP1_C2
             // 
@@ -484,6 +487,7 @@
             ptbP1_C2.Size = new Size(70, 91);
             ptbP1_C2.TabIndex = 5;
             ptbP1_C2.TabStop = false;
+            ptbP1_C2.Click += ptbP1_C2_Click;
             // 
             // ptbP1_C5
             // 
@@ -494,6 +498,7 @@
             ptbP1_C5.Size = new Size(70, 91);
             ptbP1_C5.TabIndex = 4;
             ptbP1_C5.TabStop = false;
+            ptbP1_C5.Click += ptbP1_C5_Click;
             // 
             // ptbP1_C3
             // 
@@ -504,6 +509,7 @@
             ptbP1_C3.Size = new Size(70, 91);
             ptbP1_C3.TabIndex = 3;
             ptbP1_C3.TabStop = false;
+            ptbP1_C3.Click += ptbP1_C3_Click;
             // 
             // ptbP2_C1
             // 

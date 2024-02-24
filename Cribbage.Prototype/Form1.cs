@@ -83,7 +83,18 @@ namespace Cribbage.Prototype
             // Select 2 to go to crib.
             btnSendToCrib.Enabled = true;
             refreshCards(cribbageGame);
-            txtPlayLog.Text += "Hands Dealt\n";
+
+            txtPlayLog.Text += "~~~~~~~~~~~~~~~~~~~\n";
+
+            if (cribbageGame.Dealer == 1)
+            {
+                txtPlayLog.Text += cribbageGame.Player_1.DisplayName + " Dealt\n";
+            }
+            else
+            {
+                txtPlayLog.Text += cribbageGame.Player_2.DisplayName + " Dealt\n";
+            }
+
             txtPlayLog.Text += "Select Cards for the crib.\n";
 
 
@@ -122,12 +133,202 @@ namespace Cribbage.Prototype
                 lstPlayed_Cards.DataSource = cribbageGame.PlayedCards;
                 lstPlayed_Cards.DisplayMember = "name";
             }
+
+            for (int i = 1; i <= 6; i++)
+            {
+                if (i <= lstP1_Cards.Items.Count)
+                {
+                    switch (i)
+                    {
+                        case 1:
+                            ptbP1_C1.Visible = true;
+                            ptbP1_C1.BackgroundImage = Image.FromFile(cribbageGame.Player_1.Hand[i - 1].imgPath);
+                            break;
+                        case 2:
+                            ptbP1_C2.Visible = true;
+                            ptbP1_C2.BackgroundImage = Image.FromFile(cribbageGame.Player_1.Hand[i - 1].imgPath);
+                            break;
+                        case 3:
+                            ptbP1_C3.Visible = true;
+                            ptbP1_C3.BackgroundImage = Image.FromFile(cribbageGame.Player_1.Hand[i - 1].imgPath);
+                            break;
+                        case 4:
+                            ptbP1_C4.Visible = true;
+                            ptbP1_C4.BackgroundImage = Image.FromFile(cribbageGame.Player_1.Hand[i - 1].imgPath);
+                            break;
+                        case 5:
+                            ptbP1_C5.Visible = true;
+                            ptbP1_C5.BackgroundImage = Image.FromFile(cribbageGame.Player_1.Hand[i - 1].imgPath);
+                            break;
+                        case 6:
+                            ptbP1_C6.Visible = true;
+                            ptbP1_C6.BackgroundImage = Image.FromFile(cribbageGame.Player_1.Hand[i - 1].imgPath);
+                            break;
+
+                    }
+                }
+                else
+                {
+                    switch (i)
+                    {
+                        case 1:
+                            ptbP1_C1.Visible = false;
+                            ptbP1_C1.BorderStyle = BorderStyle.None;
+                            break;
+                        case 2:
+                            ptbP1_C2.Visible = false;
+                            ptbP1_C2.BorderStyle = BorderStyle.None;
+                            break;
+                        case 3:
+                            ptbP1_C3.Visible = false;
+                            ptbP1_C3.BorderStyle = BorderStyle.None;
+                            break;
+                        case 4:
+                            ptbP1_C4.Visible = false;
+                            ptbP1_C4.BorderStyle = BorderStyle.None;
+                            break;
+                        case 5:
+                            ptbP1_C5.Visible = false;
+                            ptbP1_C5.BorderStyle = BorderStyle.None;
+                            break;
+                        case 6:
+                            ptbP1_C6.Visible = false;
+                            ptbP1_C6.BorderStyle = BorderStyle.None;
+                            break;
+                    }
+                }
+                if (i <= lstP2_Cards.Items.Count)
+                {
+                    switch (i)
+                    {
+                        case 1:
+                            ptbP2_C1.Visible = true;
+                            ptbP2_C1.BackgroundImage = Image.FromFile(cribbageGame.Player_2.Hand[i - 1].imgPath);
+                            break;
+                        case 2:
+                            ptbP2_C2.Visible = true;
+                            ptbP2_C2.BackgroundImage = Image.FromFile(cribbageGame.Player_2.Hand[i - 1].imgPath);
+                            break;
+                        case 3:
+                            ptbP2_C3.Visible = true;
+                            ptbP2_C3.BackgroundImage = Image.FromFile(cribbageGame.Player_2.Hand[i - 1].imgPath);
+                            break;
+                        case 4:
+                            ptbP2_C4.Visible = true;
+                            ptbP2_C4.BackgroundImage = Image.FromFile(cribbageGame.Player_2.Hand[i - 1].imgPath);
+                            break;
+                        case 5:
+                            ptbP2_C5.Visible = true;
+                            ptbP2_C5.BackgroundImage = Image.FromFile(cribbageGame.Player_2.Hand[i - 1].imgPath);
+                            break;
+                        case 6:
+                            ptbP2_C6.Visible = true;
+                            ptbP2_C6.BackgroundImage = Image.FromFile(cribbageGame.Player_2.Hand[i - 1].imgPath);
+                            break;
+
+                    }
+                }
+                else
+                {
+                    switch (i)
+                    {
+                        case 1:
+                            ptbP2_C1.Visible = false;
+                            break;
+                        case 2:
+                            ptbP2_C2.Visible = false;
+                            break;
+                        case 3:
+                            ptbP2_C3.Visible = false;
+                            break;
+                        case 4:
+                            ptbP2_C4.Visible = false;
+                            break;
+                        case 5:
+                            ptbP2_C5.Visible = false;
+                            break;
+                        case 6:
+                            ptbP2_C6.Visible = false;
+                            break;
+                    }
+                }
+            }
+
+            for (int i = 1; i <= 8; i++)
+            {
+                if (i <= cribbageGame.PlayedCards.Count)
+                {
+                    switch (i)
+                    {
+                        case 1:
+                            ptbPlayed1.Visible = true;
+                            ptbPlayed1.BackgroundImage = Image.FromFile(cribbageGame.PlayedCards[i - 1].imgPath);
+                            break;
+                        case 2:
+                            ptbPlayed2.Visible = true;
+                            ptbPlayed2.BackgroundImage = Image.FromFile(cribbageGame.PlayedCards[i - 1].imgPath);
+                            break;
+                        case 3:
+                            ptbPlayed3.Visible = true;
+                            ptbPlayed3.BackgroundImage = Image.FromFile(cribbageGame.PlayedCards[i - 1].imgPath);
+                            break;
+                        case 4:
+                            ptbPlayed4.Visible = true;
+                            ptbPlayed4.BackgroundImage = Image.FromFile(cribbageGame.PlayedCards[i - 1].imgPath);
+                            break;
+                        case 5:
+                            ptbPlayed5.Visible = true;
+                            ptbPlayed5.BackgroundImage = Image.FromFile(cribbageGame.PlayedCards[i - 1].imgPath);
+                            break;
+                        case 6:
+                            ptbPlayed6.Visible = true;
+                            ptbPlayed6.BackgroundImage = Image.FromFile(cribbageGame.PlayedCards[i - 1].imgPath);
+                            break;
+                        case 7:
+                            ptbPlayed7.Visible = true;
+                            ptbPlayed7.BackgroundImage = Image.FromFile(cribbageGame.PlayedCards[i - 1].imgPath);
+                            break;
+                        case 8:
+                            ptbPlayed8.Visible = true;
+                            ptbPlayed8.BackgroundImage = Image.FromFile(cribbageGame.PlayedCards[i - 1].imgPath);
+                            break;
+                    }
+                }
+                else
+                {
+                    switch (i)
+                    {
+                        case 1:
+                            ptbPlayed1.Visible = false;
+                            break;
+                        case 2:
+                            ptbPlayed2.Visible = false;
+                            break;
+                        case 3:
+                            ptbPlayed3.Visible = false;
+                            break;
+                        case 4:
+                            ptbPlayed4.Visible = false;
+                            break;
+                        case 5:
+                            ptbPlayed5.Visible = false;
+                            break;
+                        case 6:
+                            ptbPlayed6.Visible = false;
+                            break; ;
+                        case 7:
+                            ptbPlayed7.Visible = false;
+                            break;
+                        case 8:
+                            ptbPlayed8.Visible = false;
+                            break;
+                    }
+                }
+
+            }
         }
 
-        private void ptbP1_C1_Click(object sender, EventArgs e)
-        {
 
-        }
 
         private void btnSendToCrib_Click(object sender, EventArgs e)
         {
@@ -200,7 +401,7 @@ namespace Cribbage.Prototype
             }
             else
             {
-                if (!computerSaidGo)
+                if (!cribbageGame.Player_2.SaidGo)
                 {
                     cribbageGame.Go();
                     txtPlayLog.Text += cribbageGame.Player_2.DisplayName + " said Go.\n";
@@ -209,13 +410,14 @@ namespace Cribbage.Prototype
                         txtPlayLog.Text += "Rally Ended\n";
                         txtPlayLog.Text += cribbageGame.LastPlayerPlayed.DisplayName + " played last.\n";
                         txtPlayLog.Text += cribbageGame.PlayerTurn.DisplayName + "'s turn.\n";
+                        refreshCards(cribbageGame);
                     }
                 }
                 else
                 {
                     cribbageGame.PlayerTurn = cribbageGame.Player_1;
                 }
-                
+
 
             }
 
@@ -225,11 +427,12 @@ namespace Cribbage.Prototype
             }
             else
             {
-                if (cribbageGame.PlayerTurn == cribbageGame.Player_1)
+                if (cribbageGame.PlayerTurn == cribbageGame.Player_1 && cribbageGame.PlayerTurn.SaidGo == false)
                 {
                     if (cribbageGame.CanPlay())
                     {
                         btnPlayCard.Enabled = true;
+                        btnGo.Enabled = false;
                     }
                     else
                     {
@@ -239,6 +442,7 @@ namespace Cribbage.Prototype
                 }
                 else
                 {
+                    cribbageGame.PlayerTurn = cribbageGame.Player_2;
                     Computer_Play_Card();
                 }
             }
@@ -249,7 +453,7 @@ namespace Cribbage.Prototype
             txtPlayLog.Text += "--------------";
             Player winner;
 
-            if(cribbageGame.Winner == cribbageGame.Player_1.Id)
+            if (cribbageGame.Winner == cribbageGame.Player_1.Id)
             {
                 winner = cribbageGame.Player_1;
             }
@@ -271,8 +475,8 @@ namespace Cribbage.Prototype
             {
                 handScore = cribbageGame.CountHand(cribbageGame.Player_2.Hand);
                 cribbageGame.Player_2.Score += handScore;
-                txtPlayLog.Text += cribbageGame.Player_2.DisplayName + "'s hand scored " + handScore.ToString() + "points.\n";
-                if( cribbageGame.CheckWinner())
+                txtPlayLog.Text += cribbageGame.Player_2.DisplayName + "'s hand scored " + handScore.ToString() + " points.\n";
+                if (cribbageGame.CheckWinner())
                 {
                     refreshCards(cribbageGame);
                     EndGame();
@@ -281,14 +485,14 @@ namespace Cribbage.Prototype
                 {
                     handScore = cribbageGame.CountHand(cribbageGame.Player_1.Hand);
                     cribbageGame.Player_1.Score += handScore;
-                    txtPlayLog.Text += cribbageGame.Player_1.DisplayName + "'s hand scored " + handScore.ToString() + "points.\n";
+                    txtPlayLog.Text += cribbageGame.Player_1.DisplayName + "'s hand scored " + handScore.ToString() + " points.\n";
                 }
             }
             else
             {
                 handScore = cribbageGame.CountHand(cribbageGame.Player_1.Hand);
                 cribbageGame.Player_2.Score += handScore;
-                txtPlayLog.Text += cribbageGame.Player_1.DisplayName + "'s hand scored " + handScore.ToString() + "points.\n";
+                txtPlayLog.Text += cribbageGame.Player_1.DisplayName + "'s hand scored " + handScore.ToString() + " points.\n";
                 if (cribbageGame.CheckWinner())
                 {
                     refreshCards(cribbageGame);
@@ -298,15 +502,42 @@ namespace Cribbage.Prototype
                 {
                     handScore = cribbageGame.CountHand(cribbageGame.Player_2.Hand);
                     cribbageGame.Player_1.Score += handScore;
-                    txtPlayLog.Text += cribbageGame.Player_2.DisplayName + "'s hand scored " + handScore.ToString() + "points.\n";
-                    
+                    txtPlayLog.Text += cribbageGame.Player_2.DisplayName + "'s hand scored " + handScore.ToString() + " points.\n";
+                    if (cribbageGame.CheckWinner())
+                    {
+                        EndGame();
+                    }
+
                 }
             }
+
+            handScore = cribbageGame.CountHand(cribbageGame.Crib);
+            if (cribbageGame.Dealer == 1)
+            {
+                cribbageGame.Player_1.Score += handScore;
+                txtPlayLog.Text += cribbageGame.Player_1.DisplayName + "'s crib scored " + handScore.ToString() + "  points.\n";
+            }
+            else
+            {
+                cribbageGame.Player_2.Score += handScore;
+                txtPlayLog.Text += cribbageGame.Player_2.DisplayName + "'s crib scored " + handScore.ToString() + "  points.\n";
+            }
+
 
             refreshCards(cribbageGame);
             if (cribbageGame.CheckWinner())
             {
                 EndGame();
+            }
+            else
+            {
+                if (cribbageGame.Dealer == 1) cribbageGame.Dealer = 2;
+                else cribbageGame.Dealer = 1;
+
+                btnGo.Enabled = false;
+                btnPlayCard.Enabled = false;
+                btnSendToCrib.Enabled = false;
+                btnNextHand.Enabled = true;
             }
         }
 
@@ -317,10 +548,10 @@ namespace Cribbage.Prototype
                 Card playedCard = (Card)lstP1_Cards.SelectedItem;
                 if (cribbageGame.PlayCard(playedCard))
                 {
-                    txtPlayLog.Text += cribbageGame.LastPlayerPlayed.DisplayName + " played " + playedCard.name;
+                    txtPlayLog.Text += cribbageGame.LastPlayerPlayed.DisplayName + " played " + playedCard.name + "\n";
                     refreshCards(cribbageGame);
 
-                    
+
 
                     if (cribbageGame.Complete)
                     {
@@ -330,6 +561,7 @@ namespace Cribbage.Prototype
                     if (cribbageGame.Player_1.Hand.Count == 0 && cribbageGame.Player_2.Hand.Count == 0)
                     {
                         CountHands();
+                        return;
                     }
 
                     if (cribbageGame.PlayerTurn == cribbageGame.Player_2)
@@ -384,16 +616,106 @@ namespace Cribbage.Prototype
             txtPlayLog.Text += cribbageGame.PlayerTurn.DisplayName + " said Go.\n";
             cribbageGame.Go();
 
-            if(cribbageGame.CurrentCount == 0)
+            if (cribbageGame.CurrentCount == 0)
             {
                 txtPlayLog.Text += "Rally Ended\n";
                 txtPlayLog.Text += cribbageGame.LastPlayerPlayed.DisplayName + " played last.\n";
                 txtPlayLog.Text += cribbageGame.PlayerTurn.DisplayName + "'s turn.\n";
             }
-            if(cribbageGame.PlayerTurn == cribbageGame.Player_2)
+            if (cribbageGame.PlayerTurn == cribbageGame.Player_2)
             {
                 Computer_Play_Card();
             }
+        }
+
+        private void ptbP1_C1_Click(object sender, EventArgs e)
+        {
+            if (lstP1_Cards.GetSelected(0))
+            {
+                ptbP1_C1.BorderStyle = BorderStyle.None;
+                lstP1_Cards.SetSelected(0, false);
+            }
+            else
+            {
+                ptbP1_C1.BorderStyle = BorderStyle.FixedSingle;
+                lstP1_Cards.SetSelected(0, true);
+            }
+        }
+
+        private void ptbP1_C2_Click(object sender, EventArgs e)
+        {
+            if (lstP1_Cards.GetSelected(1))
+            {
+                ptbP1_C2.BorderStyle = BorderStyle.None;
+                lstP1_Cards.SetSelected(1, false);
+            }
+            else
+            {
+                ptbP1_C2.BorderStyle = BorderStyle.FixedSingle;
+                lstP1_Cards.SetSelected(1, true);
+            }
+        }
+
+        private void ptbP1_C3_Click(object sender, EventArgs e)
+        {
+            if (lstP1_Cards.GetSelected(2))
+            {
+                ptbP1_C3.BorderStyle = BorderStyle.None;
+                lstP1_Cards.SetSelected(2, false);
+            }
+            else
+            {
+                ptbP1_C3.BorderStyle = BorderStyle.FixedSingle;
+                lstP1_Cards.SetSelected(2, true);
+            }
+        }
+
+        private void ptbP1_C4_Click(object sender, EventArgs e)
+        {
+            if (lstP1_Cards.GetSelected(3))
+            {
+                ptbP1_C4.BorderStyle = BorderStyle.None;
+                lstP1_Cards.SetSelected(3, false);
+            }
+            else
+            {
+                ptbP1_C4.BorderStyle = BorderStyle.FixedSingle;
+                lstP1_Cards.SetSelected(3, true);
+            }
+        }
+
+        private void ptbP1_C5_Click(object sender, EventArgs e)
+        {
+            if (lstP1_Cards.GetSelected(4))
+            {
+                ptbP1_C5.BorderStyle = BorderStyle.None;
+                lstP1_Cards.SetSelected(4, false);
+            }
+            else
+            {
+                ptbP1_C5.BorderStyle = BorderStyle.FixedSingle;
+                lstP1_Cards.SetSelected(4, true);
+            }
+        }
+
+        private void ptbP1_C6_Click(object sender, EventArgs e)
+        {
+            if (lstP1_Cards.GetSelected(5))
+            {
+                ptbP1_C6.BorderStyle = BorderStyle.None;
+                lstP1_Cards.SetSelected(5, false);
+            }
+            else
+            {
+                ptbP1_C6.BorderStyle = BorderStyle.FixedSingle;
+                lstP1_Cards.SetSelected(5, true);
+            }
+        }
+
+        private void btnNextHand_Click(object sender, EventArgs e)
+        {
+            btnNextHand.Enabled = false;
+            DealHand();
         }
     }
 }
