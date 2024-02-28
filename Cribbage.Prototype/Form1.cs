@@ -134,6 +134,11 @@ namespace Cribbage.Prototype
                 lstPlayed_Cards.DisplayMember = "name";
             }
 
+            if(cribbageGame.CutCard == null)
+            {
+                ptbDeck.BackgroundImage = Image.FromFile("../../../images/cardBackBlue.png");
+            }
+
             for (int i = 1; i <= 6; i++)
             {
                 if (i <= lstP1_Cards.Items.Count)
@@ -456,6 +461,11 @@ namespace Cribbage.Prototype
 
         private void EndGame()
         {
+            btnGo.Enabled = false;
+            btnPlayCard.Enabled = false;
+            btnNextHand.Enabled = false;
+            btnSendToCrib.Enabled = false;
+
             txtPlayLog.Text += "--------------";
             Player winner;
 
@@ -474,8 +484,16 @@ namespace Cribbage.Prototype
         private void CountHands()
         {
             int handScore = 0;
-            cribbageGame.Player_1.Hand = cribbageGame.Player_1.PlayedCards;
-            cribbageGame.Player_2.Hand = cribbageGame.Player_2.PlayedCards;
+            foreach( Card card in cribbageGame.Player_1.PlayedCards)
+            {
+                cribbageGame.Player_1.Hand.Add(card);
+            }
+            foreach (Card card in cribbageGame.Player_2.PlayedCards)
+            {
+                cribbageGame.Player_2.Hand.Add(card);
+            }
+            //cribbageGame.Player_1.Hand = cribbageGame.Player_1.PlayedCards;
+            //cribbageGame.Player_2.Hand = cribbageGame.Player_2.PlayedCards;
             refreshCards(cribbageGame);
             if (cribbageGame.Dealer == 1)
             {

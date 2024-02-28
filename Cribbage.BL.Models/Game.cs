@@ -82,6 +82,10 @@ namespace Cribbage.BL.Models
             EndCountingRally();
             Player_1.Hand.Clear();
             Player_2.Hand.Clear();
+            Player_1.PlayedCards.Clear();
+            Player_2.PlayedCards.Clear();
+            Crib.Clear();
+            CutCard = null;
 
 
             if (Dealer == 1)
