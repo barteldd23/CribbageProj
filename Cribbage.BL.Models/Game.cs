@@ -11,7 +11,7 @@ namespace Cribbage.BL.Models
         public Guid Winner { get; set; } 
         public DateTime Date { get; set; }
         public string? GameName { get; set; }
-        public bool Complete { get; set; }
+        public bool Complete { get; set; } = false;
         public int Dealer { get; set; } = 1;
         public Player PlayerTurn { get; set; }
         public int GoCount { get; set; } = 0;
@@ -41,10 +41,28 @@ namespace Cribbage.BL.Models
         }
         #endregion
 
+        public bool CheckWinner()
+        {
+            // Checks scores of both players. If there is a winner, changer Winner property to that player.
+            // Change Complete to true if a winner.
+            // Returns Complete bool value always.
+            if(Player_1.Score >= 121)
+            {
+                Winner = Player_1.Id;
+                Complete = true;
+            } else if (Player_2.Score >= 121)
+            {
+                Winner = Player_2.Id;
+                Complete = true;
+            }
+            return Complete;
+        }
+
         #region "Starting the game methods"
         public void ShuffleDeck()
         {
             // Go through each card twice. Randomly switch it with a different Index Location
+            this.Deck = new Deck();
 
             Random rnd = new Random();
             for (int j = 0; j < 2; j++)
@@ -53,14 +71,22 @@ namespace Cribbage.BL.Models
                 {
                     int randNum = rnd.Next(Deck.Cards.Count);
                     var value = Deck.Cards[randNum];
-                    Deck.Cards[randNum] = Deck.Cards[i];
-                    Deck.Cards[i] = value;
+                    this.Deck.Cards[randNum] = Deck.Cards[i];
+                    this.Deck.Cards[i] = value;
                 }
             }
         }
         public void Deal()
         {
             // Add the top card of the deck to the Players hand. Then remove that card from the Deck. 
+            EndCountingRally();
+            Player_1.Hand.Clear();
+            Player_2.Hand.Clear();
+            Player_1.PlayedCards.Clear();
+            Player_2.PlayedCards.Clear();
+            Crib.Clear();
+            CutCard = null;
+
 
             if (Dealer == 1)
             {
@@ -94,6 +120,8 @@ namespace Cribbage.BL.Models
                 Deck.Cards.RemoveAt(0);
                 Player_1.Hand.Add(Deck.Cards[0]);
                 Deck.Cards.RemoveAt(0);
+
+                PlayerTurn = Player_2;
             }
             else
             {
@@ -127,6 +155,8 @@ namespace Cribbage.BL.Models
                 Deck.Cards.RemoveAt(0);
                 Player_2.Hand.Add(Deck.Cards[0]);
                 Deck.Cards.RemoveAt(0);
+
+                PlayerTurn = Player_1;
             }
         }
 
@@ -140,14 +170,19 @@ namespace Cribbage.BL.Models
             {
                 if (Dealer == 1) Player_1.Score += 2;
                 else Player_2.Score += 2;
+
+                CheckWinner();
             }
         }
         
-        public void Give_To_Crib(List<Card> cards)
+        public void Give_To_Crib(List<Card> cards, Player player)
         {
+            // Adds a List of cards to the crib and removes it from that players hand
             foreach (Card card in cards)
             {
                 Crib.Add(card);
+                if (player == Player_1) Player_1.Hand.Remove(card);
+                else Player_2.Hand.Remove(card);
             }
         }
 
@@ -274,8 +309,10 @@ namespace Cribbage.BL.Models
                     EndCountingRally();
 
                 }
+                CheckWinner();
                 LastPlayerPlayed = PlayerTurn;
                 PlayerTurn.Hand.Remove(card);
+                PlayerTurn.PlayedCards.Add(card);
                 PlayerTurn = PlayerTurn == Player_1 ? Player_2 : Player_1;
                 return true;
             }
@@ -290,6 +327,8 @@ namespace Cribbage.BL.Models
         {
             PlayedCards = null;
             PlayedCards = new List<Card>();
+            Player_1.SaidGo = false;
+            Player_2.SaidGo = false;
 
         }
 
@@ -324,6 +363,7 @@ namespace Cribbage.BL.Models
                 if (run)
                 {
                     PlayerTurn.Score += cardsSorted.Count;
+
                     return true;
                 }
 
@@ -388,6 +428,7 @@ namespace Cribbage.BL.Models
 
             if (GoCount == 0)
             {
+                PlayerTurn.SaidGo = true;
                 GoCount++;
             }
             else
