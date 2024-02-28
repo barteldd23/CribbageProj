@@ -463,11 +463,14 @@
             Game cribbage = new Game();
             Player player1 = new Player();
             Player player2 = new Player();
+            player1.DisplayName = "P1";
+            player2.DisplayName = "P2";
             cribbage.Player_1 = player1;
             cribbage.Player_2 = player2;
-            cribbage.PlayerTurn = cribbage.Player_1;
+            
             cribbage.ShuffleDeck();
             cribbage.Deal();
+            cribbage.PlayerTurn = cribbage.Player_1;
 
             List<Card> cards = [cribbage.Player_1.Hand[5], cribbage.Player_1.Hand[4]];
             cribbage.Give_To_Crib(cards, cribbage.Player_1);
