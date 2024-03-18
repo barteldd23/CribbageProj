@@ -20,6 +20,7 @@ namespace Cribbage.BL.Models
         public List<Card> Crib { get; set; } = new List<Card>();
         public Card CutCard { get; set; }
         public List<Card> PlayedCards { get; set; } = new List<Card>();
+        public List<Card> CurrentRally { get; set; } = new List<Card>();
         public int CurrentCount { get { return getCount(); } } 
 
         [DisplayName("Team 1 Score")] 
