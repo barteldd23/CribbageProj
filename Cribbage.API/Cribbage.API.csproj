@@ -10,4 +10,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Cribbage.BL\Cribbage.BL.csproj" />
+    <ProjectReference Include="..\Cribbage.PL\Cribbage.PL.csproj" />
+  </ItemGroup>
+
 </Project>
