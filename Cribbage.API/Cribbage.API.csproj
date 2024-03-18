@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Cribbage.BL\Cribbage.BL.csproj" />
     <ProjectReference Include="..\Cribbage.PL\Cribbage.PL.csproj" />
   </ItemGroup>
 
