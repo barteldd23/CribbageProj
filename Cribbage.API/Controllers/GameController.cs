@@ -8,13 +8,13 @@ namespace Cribbage.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class GameController : ControllerBase
     {
 
-        private readonly ILogger<UserController> logger;
+        private readonly ILogger<GameController> logger;
         private readonly DbContextOptions<CribbageEntities> options;
 
-        public UserController(ILogger<UserController> logger, DbContextOptions<CribbageEntities> options)
+        public GameController(ILogger<GameController> logger, DbContextOptions<CribbageEntities> options)
         {
             this.logger = logger;
             this.options = options;
@@ -22,24 +22,24 @@ namespace Cribbage.API.Controllers
 
 
         [HttpGet]
-        public IEnumerable<User> Get()
+        public IEnumerable<Game> Get()
         {
-            return new UserManager(options).Load();
+            return new GameManager(options).Load();
         }
 
         [HttpGet("{id}")]
-        public User Get(Guid id)
+        public Game Get(Guid id)
         {
-            return new UserManager(options).LoadById(id);
+            return new GameManager(options).LoadById(id);
         }
 
         [HttpPost("{rollback?}")]
-        public int Post([FromBody] User user, bool rollback = false)
+        public int Post([FromBody] Game game, bool rollback = false)
         {
 
             try
             {
-                return new UserManager(options).Insert(user, rollback);
+                return new GameManager(options).Insert(game, rollback);
             }
             catch (Exception)
             {
@@ -49,11 +49,11 @@ namespace Cribbage.API.Controllers
         }
 
         [HttpPut("{id}/{rollback?}")]
-        public int Put(Guid id, [FromBody] User user, bool rollback = false)
+        public int Put(Guid id, [FromBody] Game game, bool rollback = false)
         {
             try
             {
-                return new UserManager(options).Update(user, rollback);
+                return new GameManager(options).Update(game, rollback);
             }
             catch (Exception)
             {
@@ -67,7 +67,7 @@ namespace Cribbage.API.Controllers
         {
             try
             {
-                return new UserManager(options).Delete(id, rollback);
+                return new GameManager(options).Delete(id, rollback);
             }
             catch (Exception)
             {
