@@ -6,10 +6,8 @@ namespace Cribbage.BL.Test
         [TestMethod]
         public void InsertTest()
         {
-            Guid gameId = new GameManager(options).Load().FirstOrDefault().Id;
-            Guid playerId = new UserManager(options).Load().FirstOrDefault().Id;
-            int playerScore = 50;
-            int results = new UserGameManager(options).Insert(gameId, playerId, playerScore, true);
+            UserGame userGame = new UserGameManager(options).Load().FirstOrDefault();
+            int results = new UserGameManager(options).Insert(userGame, true);
             Assert.IsTrue(results > 0);
         }
 

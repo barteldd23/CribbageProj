@@ -20,19 +20,33 @@ namespace Cribbage.API.Controllers
             this.options = options;
         }
 
-
+        /// <summary>
+        /// Return a list of games.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IEnumerable<Game> Get()
         {
             return new GameManager(options).Load();
         }
 
+        /// <summary>
+        /// Get a particular game by id.
+        /// </summary>
+        /// <param name="id">Game Id</param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public Game Get(Guid id)
         {
             return new GameManager(options).LoadById(id);
         }
 
+        /// <summary>
+        /// Insert a game.
+        /// </summary>
+        /// <param name="game">Game Id</param>
+        /// <param name="rollback">Should we rollback the insert?</param>
+        /// <returns>New Guid</returns>
         [HttpPost("{rollback?}")]
         public int Post([FromBody] Game game, bool rollback = false)
         {
@@ -48,6 +62,13 @@ namespace Cribbage.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Update a game.
+        /// </summary>
+        /// <param name="id">Game Id</param>
+        /// <param name="game"></param>
+        /// <param name="rollback">Should we rollback the update?</param>
+        /// <returns></returns>
         [HttpPut("{id}/{rollback?}")]
         public int Put(Guid id, [FromBody] Game game, bool rollback = false)
         {
@@ -62,6 +83,12 @@ namespace Cribbage.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Delete a game.
+        /// </summary>
+        /// <param name="id">Game Id</param>
+        /// <param name="rollback">Should we rollback the delete?</param>
+        /// <returns></returns>
         [HttpDelete("{id}/{rollback?}")]
         public int Delete(Guid id, bool rollback = false)
         {

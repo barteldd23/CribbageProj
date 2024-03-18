@@ -2,6 +2,7 @@ using Cribbage.API.Hubs;
 
 using Cribbage.PL.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +17,24 @@ builder.Services.AddSignalR()
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Title = "Cribbage API",
+        Version = "v1",
+        Contact = new Microsoft.OpenApi.Models.OpenApiContact
+        {
+            Name = "Cribbage"
+            //Email = "rachel.groff2190@fvtc.edu",
+            //Url = new Uri("https://www.fvtc.edu")
+        }
+    });
+
+    var xmlfile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlpath = Path.Combine(AppContext.BaseDirectory, xmlfile);
+    c.IncludeXmlComments(xmlpath);
+});
 
 
 // Add Connection information

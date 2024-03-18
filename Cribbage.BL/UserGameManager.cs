@@ -8,7 +8,7 @@ namespace Cribbage.BL
         {
         }
 
-        public int Insert(Guid gameId, Guid playerId, int playerScore, bool rollback = false)
+        public int Insert(UserGame userGame, bool rollback = false)
         {
             try
             {
@@ -20,9 +20,9 @@ namespace Cribbage.BL
                     tblUserGame row = new tblUserGame();
 
                     row.Id = Guid.NewGuid();
-                    row.GameId = gameId;
-                    row.PlayerId = playerId;
-                    row.PlayerScore = playerScore;
+                    row.GameId = userGame.GameId;
+                    row.PlayerId = userGame.PlayerId;
+                    row.PlayerScore = userGame.PlayerScore;
 
                     dc.tblUserGames.Add(row);
 

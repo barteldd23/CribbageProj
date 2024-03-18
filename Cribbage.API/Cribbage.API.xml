@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Cribbage.API</name>
+    </assembly>
+    <members>
+        <member name="M:Cribbage.API.Controllers.GameController.Get">
+            <summary>
+            Return a list of games.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cribbage.API.Controllers.GameController.Get(System.Guid)">
+            <summary>
+            Get a particular game by id.
+            </summary>
+            <param name="id">Game Id</param>
+            <returns></returns>
+        </member>
+        <member name="M:Cribbage.API.Controllers.GameController.Post(Cribbage.BL.Models.Game,System.Boolean)">
+            <summary>
+            Insert a game.
+            </summary>
+            <param name="game">Game Id</param>
+            <param name="rollback">Should we rollback the insert?</param>
+            <returns>New Guid</returns>
+        </member>
+        <member name="M:Cribbage.API.Controllers.GameController.Put(System.Guid,Cribbage.BL.Models.Game,System.Boolean)">
+            <summary>
+            Update a game.
+            </summary>
+            <param name="id">Game Id</param>
+            <param name="game"></param>
+            <param name="rollback">Should we rollback the update?</param>
+            <returns></returns>
+        </member>
+        <member name="M:Cribbage.API.Controllers.GameController.Delete(System.Guid,System.Boolean)">
+            <summary>
+            Delete a game.
+            </summary>
+            <param name="id">Game Id</param>
+            <param name="rollback">Should we rollback the delete?</param>
+            <returns></returns>
+        </member>
+        <member name="M:Cribbage.API.Controllers.UserController.Get">
+            <summary>
+            Return a list of users.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cribbage.API.Controllers.UserController.Get(System.Guid)">
+            <summary>
+            Get a particular user by id.
+            </summary>
+            <param name="id">User Id</param>
+            <returns></returns>
+        </member>
+        <member name="M:Cribbage.API.Controllers.UserController.Post(Cribbage.BL.Models.User,System.Boolean)">
+            <summary>
+            Insert a user.
+            </summary>
+            <param name="user"></param>
+            <param name="rollback">Should we rollback the insert?</param>
+            <returns>New Guid</returns>
+        </member>
+        <member name="M:Cribbage.API.Controllers.UserController.Put(System.Guid,Cribbage.BL.Models.User,System.Boolean)">
+            <summary>
+            Update a user.
+            </summary>
+            <param name="id">User Id</param>
+            <param name="user"></param>
+            <param name="rollback">Should we rollback the update?</param>
+            <returns></returns>
+        </member>
+        <member name="M:Cribbage.API.Controllers.UserController.Delete(System.Guid,System.Boolean)">
+            <summary>
+            Delete a user.
+            </summary>
+            <param name="id">User Id</param>
+            <param name="rollback">Should we rollback the delete?</param>
+            <returns></returns>
+        </member>
+        <member name="M:Cribbage.API.Controllers.UserGameController.Get">
+            <summary>
+            Return a list of user games.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cribbage.API.Controllers.UserGameController.Get(System.Guid)">
+            <summary>
+            Get a particular user game by id.
+            </summary>
+            <param name="id">UserGame Id</param>
+            <returns></returns>
+        </member>
+        <member name="M:Cribbage.API.Controllers.UserGameController.Post(Cribbage.BL.Models.UserGame,System.Boolean)">
+            <summary>
+            Insert a user game.
+            </summary>
+            <param name="userGame"></param>
+            <param name="rollback">Should we rollback the insert?</param>
+            <returns>New Guid</returns>
+        </member>
+        <member name="M:Cribbage.API.Controllers.UserGameController.Put(System.Guid,Cribbage.BL.Models.UserGame,System.Boolean)">
+            <summary>
+            Update a user game.
+            </summary>
+            <param name="id">UserGame Id</param>
+            <param name="userGame"></param>
+            <param name="rollback">Should we rollback the update?</param>
+            <returns></returns>
+        </member>
+        <member name="M:Cribbage.API.Controllers.UserGameController.Delete(System.Guid,System.Boolean)">
+            <summary>
+            Delete a user game.
+            </summary>
+            <param name="id">UserGame Id</param>
+            <param name="rollback">Should we rollback the delete?</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

@@ -20,26 +20,40 @@ namespace Cribbage.API.Controllers
             this.options = options;
         }
 
-
+        /// <summary>
+        /// Return a list of user games.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IEnumerable<UserGame> Get()
         {
             return new UserGameManager(options).Load();
         }
 
+        /// <summary>
+        /// Get a particular user game by id.
+        /// </summary>
+        /// <param name="id">UserGame Id</param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public UserGame Get(Guid id)
         {
             return new UserGameManager(options).LoadById(id);
         }
 
-        [HttpPost("{gameId}/{userId}/{score}/{rollback?}")]
-        public int Post(Guid gameId, Guid userId, int score, bool rollback = false)
+        /// <summary>
+        /// Insert a user game.
+        /// </summary>
+        /// <param name="userGame"></param>
+        /// <param name="rollback">Should we rollback the insert?</param>
+        /// <returns>New Guid</returns>
+        [HttpPost("{rollback?}")]
+        public int Post([FromBody] UserGame userGame, bool rollback = false)
         {
 
             try
             {
-                return new UserGameManager(options).Insert(gameId, userId, score, rollback);
+                return new UserGameManager(options).Insert(userGame, rollback);
             }
             catch (Exception)
             {
@@ -48,6 +62,13 @@ namespace Cribbage.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Update a user game.
+        /// </summary>
+        /// <param name="id">UserGame Id</param>
+        /// <param name="userGame"></param>
+        /// <param name="rollback">Should we rollback the update?</param>
+        /// <returns></returns>
         [HttpPut("{id}/{rollback?}")]
         public int Put(Guid id, [FromBody] UserGame userGame, bool rollback = false)
         {
@@ -62,6 +83,12 @@ namespace Cribbage.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Delete a user game.
+        /// </summary>
+        /// <param name="id">UserGame Id</param>
+        /// <param name="rollback">Should we rollback the delete?</param>
+        /// <returns></returns>
         [HttpDelete("{id}/{rollback?}")]
         public int Delete(Guid id, bool rollback = false)
         {

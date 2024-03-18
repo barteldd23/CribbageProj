@@ -20,19 +20,33 @@ namespace Cribbage.API.Controllers
             this.options = options;
         }
 
-
+        /// <summary>
+        /// Return a list of users.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IEnumerable<User> Get()
         {
             return new UserManager(options).Load();
         }
 
+        /// <summary>
+        /// Get a particular user by id.
+        /// </summary>
+        /// <param name="id">User Id</param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public User Get(Guid id)
         {
             return new UserManager(options).LoadById(id);
         }
 
+        /// <summary>
+        /// Insert a user.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="rollback">Should we rollback the insert?</param>
+        /// <returns>New Guid</returns>
         [HttpPost("{rollback?}")]
         public int Post([FromBody] User user, bool rollback = false)
         {
@@ -48,6 +62,13 @@ namespace Cribbage.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Update a user.
+        /// </summary>
+        /// <param name="id">User Id</param>
+        /// <param name="user"></param>
+        /// <param name="rollback">Should we rollback the update?</param>
+        /// <returns></returns>
         [HttpPut("{id}/{rollback?}")]
         public int Put(Guid id, [FromBody] User user, bool rollback = false)
         {
@@ -62,6 +83,12 @@ namespace Cribbage.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Delete a user.
+        /// </summary>
+        /// <param name="id">User Id</param>
+        /// <param name="rollback">Should we rollback the delete?</param>
+        /// <returns></returns>
         [HttpDelete("{id}/{rollback?}")]
         public int Delete(Guid id, bool rollback = false)
         {
