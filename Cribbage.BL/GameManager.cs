@@ -476,8 +476,8 @@ namespace Cribbage.BL
 
         private void EndCountingRally(Game game)
         {
-            game.PlayedCards = null;
-            game.PlayedCards = new List<Card>();
+            game.CurrentRally = null;
+            game.CurrentRally = new List<Card>();
             game.Player_1.SaidGo = false;
             game.Player_2.SaidGo = false;
 
