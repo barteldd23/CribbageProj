@@ -30,6 +30,8 @@ Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Cribbage.PythonUI", "Cribba
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Cribbage.PythonCL", "Cribbage.PythonCL\Cribbage.PythonCL.pyproj", "{AC301D6D-C791-4AFA-BFE3-F08CAA8232C5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cribbage.ConsoleApp", "Cribbage.ConsoleApp\Cribbage.ConsoleApp.csproj", "{6730C6DB-7618-4A53-8DEE-614FF7A8B279}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -78,6 +80,10 @@ Global
 		{E866FF06-B7D5-4072-80C5-2DBDA3C5D36D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AC301D6D-C791-4AFA-BFE3-F08CAA8232C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AC301D6D-C791-4AFA-BFE3-F08CAA8232C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6730C6DB-7618-4A53-8DEE-614FF7A8B279}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6730C6DB-7618-4A53-8DEE-614FF7A8B279}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6730C6DB-7618-4A53-8DEE-614FF7A8B279}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6730C6DB-7618-4A53-8DEE-614FF7A8B279}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

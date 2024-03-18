@@ -24,3 +24,5 @@ Add-migration sp-GetUsers
             migrationBuilder.Sql(sp);
 
 Update-Database 
+
+API localhost: 7186
