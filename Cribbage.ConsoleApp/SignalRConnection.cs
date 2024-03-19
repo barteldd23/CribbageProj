@@ -21,9 +21,9 @@ namespace Cribbage.ConsoleApp
         public void Start()
         {
             _connection = new HubConnectionBuilder()
-                .Build();
-                //.WithUrl(hubAddress) 
                 //.Build();
+                .WithUrl(hubAddress) 
+                .Build();
 
             _connection.On<string, string>("ReceiveMessage", (s1, s2) => OnSend(s1, s2));
 
