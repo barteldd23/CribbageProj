@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "identityapp1": {
+      "connectionInfo": "App registration: CribbageWebApp, Tenant: Fox Valley Technical College (fvtc.edu - Microsoft Entra ID)",
+      "type": "identityapp.default"
+    }
+  }
+}
