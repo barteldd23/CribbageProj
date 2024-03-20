@@ -449,6 +449,7 @@ namespace Cribbage.BL
             if (card.value + game.CurrentCount <= 31)
             {
                 game.PlayedCards.Add(card);
+                game.CurrentRally.Add(card);
                 Check15(game);
                 CheckPair(game);
                 CheckRun(game);

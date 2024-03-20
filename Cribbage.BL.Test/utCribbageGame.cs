@@ -574,14 +574,14 @@ namespace Cribbage.BL.Test
                 cribbage.Deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Queen).FirstOrDefault(),
                 cribbage.Deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.King).FirstOrDefault(),
             ];
-            cribbage.PlayedCards = cards;
+            cribbage.CurrentRally = cards;
 
             Card card = new Card();
             card = cribbage.Deck.Cards.Where(c => c.suit == Suits.Spades && c.face == Faces.Ace).FirstOrDefault();
 
             new GameManager(options).PlayCard(cribbage, card);
 
-            Assert.AreEqual(0, cribbage.PlayedCards.Count);
+            Assert.AreEqual(0, cribbage.CurrentRally.Count);
             Assert.AreEqual(2, cribbage.Player_1.Score);
             Assert.AreEqual(0, cribbage.CurrentCount);
             Assert.AreEqual(cribbage.Player_2, cribbage.PlayerTurn);
@@ -669,7 +669,7 @@ namespace Cribbage.BL.Test
 
             new GameManager(options).Go(cribbage);
             new GameManager(options).Go(cribbage);
-            Assert.AreEqual(0, cribbage.PlayedCards.Count);
+            Assert.AreEqual(0, cribbage.CurrentRally.Count);
             Assert.AreEqual(1, cribbage.Player_1.Score);
             Assert.AreEqual(0, cribbage.CurrentCount);
             Assert.AreEqual(cribbage.Player_2, cribbage.PlayerTurn);

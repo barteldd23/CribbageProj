@@ -31,9 +31,9 @@ namespace Cribbage.BL.Models
         public int getCount()
         {
             int count = 0;
-            if (PlayedCards.Count > 0)
+            if (CurrentRally.Count > 0)
             {
-                foreach(Card card in PlayedCards)
+                foreach(Card card in CurrentRally)
                 {
                     count += card.value;
                 }
