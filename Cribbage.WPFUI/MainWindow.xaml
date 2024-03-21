@@ -5,8 +5,39 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Cribbage.WPFUI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="565" Width="895">
     <Grid>
-        
+        <Grid x:Name="grdMenuCrib" HorizontalAlignment="Left" Height="430" Margin="0,4,0,0" VerticalAlignment="Top" Width="180">
+            <Menu x:Name="mnuMenu" Margin="0,0,0,390"/>
+        </Grid>
+        <Grid HorizontalAlignment="Left" Height="120" Margin="180,4,0,0" VerticalAlignment="Top" Width="430"/>
+        <Grid x:Name="grdOpponent" HorizontalAlignment="Left" Height="120" Margin="185,4,0,0" VerticalAlignment="Top" Width="385">
+            <StackPanel x:Name="stkOppenentCards" Margin="65,35,60,25"/>
+        </Grid>
+        <Grid x:Name="grdBoardScore" Margin="610,10,0,10">
+            <Grid.Background>
+                <ImageBrush ImageSource="/cribbageboard.png" Stretch="None"/>
+            </Grid.Background>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="329*"/>
+                <RowDefinition Height="135*"/>
+            </Grid.RowDefinitions>
+            <Image x:Name="imgCribbageBoard" HorizontalAlignment="Left" Margin="10,34,0,0" VerticalAlignment="Top" Width="160">
+                <Image.OpacityMask>
+                    <ImageBrush />
+                </Image.OpacityMask>
+            </Image>
+        </Grid>
+        <Grid x:Name="grdPlayerButtons" Margin="145,304,190,0">
+            <StackPanel x:Name="stkPlayerCards" Margin="45,25,40,65"/>
+            <Button x:Name="btnSendToCrib" Content="Send To Crib" HorizontalAlignment="Left" Margin="30,105,0,0" VerticalAlignment="Top" Height="35" Width="80"/>
+            <Button x:Name="btnNextHand" Content="Next Hand" HorizontalAlignment="Left" Margin="135,105,0,0" VerticalAlignment="Top" Height="35" Width="80"/>
+            <Button x:Name="btnPlayCard" Content="Play Card" HorizontalAlignment="Left" Margin="245,105,0,0" VerticalAlignment="Top" Height="35" Width="80"/>
+            <Button x:Name="btnGo" Content="Go" HorizontalAlignment="Left" Margin="350,102,0,0" VerticalAlignment="Top" Height="36" Width="80"/>
+        </Grid>
+        <Grid x:Name="grdShared" Margin="180,124,230,135">
+            <Button x:Name="btnCountCards" Content="Count Cards" HorizontalAlignment="Left" Margin="270,0,0,0" VerticalAlignment="Center" Height="35" Width="80"/>
+        </Grid>
+
     </Grid>
 </Window>
