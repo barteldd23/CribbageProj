@@ -12,8 +12,16 @@
             <ColumnDefinition Width="134*"/>
         </Grid.ColumnDefinitions>
         <Grid x:Name="grdMenuCrib" HorizontalAlignment="Left" Height="535" Margin="0,4,0,0" VerticalAlignment="Top" Width="110">
-            <Menu x:Name="mnuMenu" Margin="0,0,0,490"/>
-            <Label x:Name="lblPlayersCrib" Content="Crib" HorizontalAlignment="Left" Margin="30,175,0,0" VerticalAlignment="Top"/>
+            <Menu x:Name="mnuMenu" Margin="0,0,25,490" Background="{x:Null}">
+                <MenuItem Header="Menu">
+                    <MenuItem Header="_New Game" InputGestureText="Ctrl+N"
+                          Click="NewGame_Click"/>
+                    <MenuItem Header="_Quit Game" InputGestureText="Ctrl+Q"
+                          Click="QuitGame_Click"/>
+                </MenuItem>
+
+            </Menu>
+            <Label x:Name="lblPlayersCrib" Content="Crib" HorizontalAlignment="Center" Margin="0,165,0,0" VerticalAlignment="Top" Width="90"/>
         </Grid>
         <Grid HorizontalAlignment="Left" Height="120" Margin="180,4,0,0" VerticalAlignment="Top" Width="430" Grid.ColumnSpan="2"/>
         <Grid x:Name="grdOpponent" HorizontalAlignment="Left" Height="140" Margin="145,4,0,0" VerticalAlignment="Top" Width="520" Grid.ColumnSpan="2">
@@ -58,7 +66,7 @@
                 </Image.OpacityMask>
             </Image>
             <StackPanel x:Name="stkPlayedCards" Margin="30,70,130,95"/>
-            <Label x:Name="lblCutCard" Content="Cut Card" HorizontalAlignment="Left" Margin="455,25,0,0" VerticalAlignment="Top" Width="65"/>
+            <Label x:Name="lblCutCard" Content="Cut Card" HorizontalAlignment="Left" Margin="480,52,0,0" VerticalAlignment="Top" Width="65"/>
         </Grid>
         <GridSplitter HorizontalAlignment="Left" Height="100" Margin="670,-91,0,0" VerticalAlignment="Top" Width="5" Grid.Column="1"/>
 

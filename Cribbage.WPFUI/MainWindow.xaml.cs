@@ -23,5 +23,15 @@ namespace Cribbage.WPFUI
         {
             InitializeComponent();
         }
+
+        private void QuitGame_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void NewGame_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
