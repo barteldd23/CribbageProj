@@ -5,13 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Cribbage.WPFUI"
         mc:Ignorable="d"
-        Title="Cribbage Game" Height="570" Width="1295" Background="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}" SizeToContent="Height" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen">
+        Title="Cribbage Game" Height="597" Width="1308" Background="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}" SizeToContent="Height" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="45*"/>
-            <ColumnDefinition Width="134*"/>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="321*"/>
+            <ColumnDefinition Width="809*"/>
+            <ColumnDefinition Width="160*"/>
         </Grid.ColumnDefinitions>
-        <Grid x:Name="grdMenuCrib" HorizontalAlignment="Left" Height="535" Margin="0,4,0,0" VerticalAlignment="Top" Width="110">
+        <Grid x:Name="grdMenuCrib" HorizontalAlignment="Left" Height="535" Margin="0,4,0,0" VerticalAlignment="Top" Width="110" Grid.ColumnSpan="2">
             <Menu x:Name="mnuMenu" Margin="0,0,25,490" Background="{x:Null}">
                 <MenuItem Header="Menu">
                     <MenuItem Header="_New Game" InputGestureText="Ctrl+N"
@@ -23,11 +25,42 @@
             </Menu>
             <Label x:Name="lblPlayersCrib" Content="Crib" HorizontalAlignment="Center" Margin="0,165,0,0" VerticalAlignment="Top" Width="90"/>
         </Grid>
-        <Grid HorizontalAlignment="Left" Height="120" Margin="180,4,0,0" VerticalAlignment="Top" Width="430" Grid.ColumnSpan="2"/>
-        <Grid x:Name="grdOpponent" HorizontalAlignment="Left" Height="140" Margin="145,4,0,0" VerticalAlignment="Top" Width="520" Grid.ColumnSpan="2">
-            <StackPanel x:Name="stkOppenentCards" Margin="25,10,60,25"/>
+        <Grid HorizontalAlignment="Left" Height="120" Margin="175,4,0,0" VerticalAlignment="Top" Width="430" Grid.ColumnSpan="2" Grid.Column="1"/>
+        <Grid x:Name="grdOpponent" HorizontalAlignment="Left" Height="140" Margin="140,4,0,0" VerticalAlignment="Top" Width="520" Grid.ColumnSpan="2" Grid.Column="1">
+            <StackPanel x:Name="stkOppenentCards" Margin="25,10,60,25">
+                <Image x:Name="imgOppenentCard1" Height="100" Width="83">
+                    <Image.OpacityMask>
+                        <ImageBrush Stretch="None" ImageSource="/cardBackBlue.png"/>
+                    </Image.OpacityMask>
+                </Image>
+                <Image x:Name="imgOppenentCard2" Height="100" Width="83">
+                    <Image.OpacityMask>
+                        <ImageBrush Stretch="None" ImageSource="/cardBackBlue.png"/>
+                    </Image.OpacityMask>
+                </Image>
+                <Image x:Name="imgOppenentCard3" Height="100" Width="83">
+                    <Image.OpacityMask>
+                        <ImageBrush Stretch="None" ImageSource="/cardBackBlue.png"/>
+                    </Image.OpacityMask>
+                </Image>
+                <Image x:Name="imgOppenentCard4" Height="100" Width="83">
+                    <Image.OpacityMask>
+                        <ImageBrush Stretch="None" ImageSource="/cardBackBlue.png"/>
+                    </Image.OpacityMask>
+                </Image>
+                <Image x:Name="imgOppenentCard5" Height="100" Width="83">
+                    <Image.OpacityMask>
+                        <ImageBrush Stretch="None" ImageSource="/cardBackBlue.png"/>
+                    </Image.OpacityMask>
+                </Image>
+                <Image x:Name="imgOppenentCard6" Height="100" Width="83">
+                    <Image.OpacityMask>
+                        <ImageBrush Stretch="None" ImageSource="/cardBackBlue.png"/>
+                    </Image.OpacityMask>
+                </Image>
+            </StackPanel>
         </Grid>
-        <Grid x:Name="grdBoardScore" Margin="353,14,10,6" Grid.Column="2">
+        <Grid x:Name="grdBoardScore" Margin="353,14,0,6" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Left" Width="606">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="32*"/>
                 <ColumnDefinition Width="25*"/>
@@ -44,31 +77,103 @@
                     <ImageBrush />
                 </Image.OpacityMask>
             </Image>
-            <Rectangle Grid.Column="1" HorizontalAlignment="Left" Height="71" Margin="89,0,0,0" Stroke="Black" VerticalAlignment="Center" Width="147"/>
-            <Label x:Name="lblPlayer1ScoreName" Grid.Column="1" Content="Player 1 Score Name" HorizontalAlignment="Left" Margin="89,154,0,0" VerticalAlignment="Top"/>
-            <Label x:Name="lblPlayer1Score" Grid.Column="1" Content="Player 1 Score" HorizontalAlignment="Left" Margin="89,185,0,0" VerticalAlignment="Top"/>
+            <Rectangle Grid.Column="1" Height="71" Margin="89,154,0,0" Stroke="Black" VerticalAlignment="Top" HorizontalAlignment="Left" Width="147"/>
+            <Label x:Name="lblPlayer1ScoreName" Grid.Column="1" Content="Player 1 Score Name" Margin="89,154,57,199"/>
+            <Label x:Name="lblPlayer1Score" Grid.Column="1" Content="Player 1 Score" HorizontalAlignment="Right" Margin="0,185,91,168"/>
             <Rectangle Grid.Column="1" HorizontalAlignment="Left" Height="75" Margin="89,230,0,0" Stroke="Black" VerticalAlignment="Top" Width="147"/>
-            <Label x:Name="lblPlayer2ScoreName" Grid.Column="1" Content="Player 2 Score Name" HorizontalAlignment="Left" Margin="89,230,0,0" VerticalAlignment="Top"/>
-            <Label x:Name="lblPlayer2Score" Grid.Column="1" Content="Player 2 Score" HorizontalAlignment="Center" Margin="0,261,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="lblPlayer2ScoreName" Grid.Column="1" Content="Player 2 Score Name" Margin="89,230,57,123"/>
+            <Label x:Name="lblPlayer2Score" Grid.Column="1" Content="Player 2 Score" HorizontalAlignment="Right" Margin="0,261,91,92"/>
         </Grid>
-        <Grid x:Name="grdPlayerButtons" Margin="145,339,190,10" Grid.ColumnSpan="2">
-            <StackPanel x:Name="stkPlayerCards" Margin="0,25,40,100"/>
-            <Button x:Name="btnSendToCrib" Content="Send To Crib" HorizontalAlignment="Left" Margin="25,139,0,0" VerticalAlignment="Top" Height="35" Width="80"/>
-            <Button x:Name="btnNextHand" Content="Next Hand" HorizontalAlignment="Left" Margin="135,139,0,0" VerticalAlignment="Top" Height="35" Width="80"/>
-            <Button x:Name="btnPlayCard" Content="Play Card" HorizontalAlignment="Left" Margin="245,139,0,0" VerticalAlignment="Top" Height="35" Width="80"/>
-            <Button x:Name="btnGo" Content="Go" HorizontalAlignment="Left" Margin="355,139,0,0" VerticalAlignment="Top" Height="35" Width="80"/>
-            <Button x:Name="btnCountCards" Content="Count Cards" HorizontalAlignment="Left" Margin="465,139,0,0" VerticalAlignment="Top" Height="35" Width="80"/>
+        <Grid x:Name="grdPlayerButtons" Margin="140,339,30,10" Grid.ColumnSpan="2" Grid.Column="1">
+            <StackPanel x:Name="stkPlayerCards" Margin="0,25,40,100">
+                <Image x:Name="imgPlayerCard1" Height="100" Width="83">
+                    <Image.OpacityMask>
+                        <ImageBrush Stretch="None" ImageSource="/cardBackBlue.png"/>
+                    </Image.OpacityMask>
+                </Image>
+                <Image x:Name="imgPlayerCard2" Height="100" Width="83">
+                    <Image.OpacityMask>
+                        <ImageBrush Stretch="None" ImageSource="/cardBackBlue.png"/>
+                    </Image.OpacityMask>
+                </Image>
+                <Image x:Name="imgPlayerCard3" Height="100" Width="83">
+                    <Image.OpacityMask>
+                        <ImageBrush Stretch="None" ImageSource="/cardBackBlue.png"/>
+                    </Image.OpacityMask>
+                </Image>
+                <Image x:Name="imgPlayerCard4" Height="100" Width="83">
+                    <Image.OpacityMask>
+                        <ImageBrush Stretch="None" ImageSource="/cardBackBlue.png"/>
+                    </Image.OpacityMask>
+                </Image>
+                <Image x:Name="imgPlayerCard5" Height="100" Width="83">
+                    <Image.OpacityMask>
+                        <ImageBrush Stretch="None" ImageSource="/cardBackBlue.png"/>
+                    </Image.OpacityMask>
+                </Image>
+                <Image x:Name="imgPlayerCard6" Height="100" Width="83">
+                    <Image.OpacityMask>
+                        <ImageBrush Stretch="None" ImageSource="/cardBackBlue.png"/>
+                    </Image.OpacityMask>
+                </Image>
+            </StackPanel>
+            <Button x:Name="btnSendToCrib" Content="Send To Crib" HorizontalAlignment="Right" Margin="0,139,855,0" Width="80" Height="35" VerticalAlignment="Top"/>
+            <Button x:Name="btnNextHand" Content="Next Hand" HorizontalAlignment="Right" Margin="0,139,745,0" Width="80" Height="35" VerticalAlignment="Top"/>
+            <Button x:Name="btnPlayCard" Content="Play Card" HorizontalAlignment="Right" Margin="0,139,635,0" Width="80" Height="35" VerticalAlignment="Top"/>
+            <Button x:Name="btnGo" Content="Go" HorizontalAlignment="Right" Margin="0,139,525,0" Width="80" Height="35" VerticalAlignment="Top"/>
+            <Button x:Name="btnCountCards" Content="Count Cards" HorizontalAlignment="Right" Margin="0,139,415,0" Width="80" Height="35" VerticalAlignment="Top"/>
         </Grid>
-        <Grid x:Name="grdShared" Margin="145,124,230,175" Grid.ColumnSpan="2">
-            <Image x:Name="imgCutCard" HorizontalAlignment="Left" Height="180" Margin="425,40,0,0" VerticalAlignment="Top" Width="85">
+        <Grid x:Name="grdShared" Margin="140,124,70,175" Grid.ColumnSpan="2" Grid.Column="1">
+            <Image x:Name="imgCutCard" HorizontalAlignment="Left" Height="145" Margin="425,40,0,0" VerticalAlignment="Top" Width="80">
                 <Image.OpacityMask>
                     <ImageBrush ImageSource="/cardBackBlue.png"/>
                 </Image.OpacityMask>
             </Image>
-            <StackPanel x:Name="stkPlayedCards" Margin="30,70,130,95"/>
+            <StackPanel x:Name="stkPlayedCards" Margin="30,70,130,95">
+                <Image x:Name="imgPlayedCard1" Height="100" Width="83">
+                    <Image.OpacityMask>
+                        <ImageBrush Stretch="None" ImageSource="/cardBackBlue.png"/>
+                    </Image.OpacityMask>
+                </Image>
+                <Image x:Name="imgPlayedCard2" Height="100" Width="83">
+                    <Image.OpacityMask>
+                        <ImageBrush Stretch="None" ImageSource="/cardBackBlue.png"/>
+                    </Image.OpacityMask>
+                </Image>
+                <Image x:Name="imgPlayedCard3" Height="100" Width="83">
+                    <Image.OpacityMask>
+                        <ImageBrush Stretch="None" ImageSource="/cardBackBlue.png"/>
+                    </Image.OpacityMask>
+                </Image>
+                <Image x:Name="imgPlayedCard4" Height="100" Width="83">
+                    <Image.OpacityMask>
+                        <ImageBrush Stretch="None" ImageSource="/cardBackBlue.png"/>
+                    </Image.OpacityMask>
+                </Image>
+                <Image x:Name="imgPlayedCard5" Height="100" Width="83">
+                    <Image.OpacityMask>
+                        <ImageBrush Stretch="None" ImageSource="/cardBackBlue.png"/>
+                    </Image.OpacityMask>
+                </Image>
+                <Image x:Name="imgPlayedCard6" Height="100" Width="83">
+                    <Image.OpacityMask>
+                        <ImageBrush Stretch="None" ImageSource="/cardBackBlue.png"/>
+                    </Image.OpacityMask>
+                </Image>
+                <Image x:Name="imgPlayedCard7" Height="100" Width="83">
+                    <Image.OpacityMask>
+                        <ImageBrush Stretch="None" ImageSource="/cardBackBlue.png"/>
+                    </Image.OpacityMask>
+                </Image>
+                <Image x:Name="imgPlayedCard8" Height="100" Width="83">
+                    <Image.OpacityMask>
+                        <ImageBrush Stretch="None" ImageSource="/cardBackBlue.png"/>
+                    </Image.OpacityMask>
+                </Image>
+            </StackPanel>
             <Label x:Name="lblCutCard" Content="Cut Card" HorizontalAlignment="Left" Margin="480,52,0,0" VerticalAlignment="Top" Width="65"/>
         </Grid>
-        <GridSplitter HorizontalAlignment="Left" Height="100" Margin="670,-91,0,0" VerticalAlignment="Top" Width="5" Grid.Column="1"/>
+        <!--<GridSplitter HorizontalAlignment="Left" Height="100" Margin="670,-91,0,0" VerticalAlignment="Top" Width="5" Grid.Column="2"/>-->
 
     </Grid>
 </Window>
