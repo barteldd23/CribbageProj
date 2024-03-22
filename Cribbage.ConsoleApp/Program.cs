@@ -19,13 +19,13 @@ internal class Program
     private async static void GetSecret()
     {
 
-        const string secretName = "Cribbage";
-        var keyVaultName = "kv-31590";
+        const string secretName = "WebAPIKey";
+        var keyVaultName = "kv-300089145";
         var kvUri = $"https://{keyVaultName}.vault.azure.net";
 
         var client = new SecretClient(new Uri(kvUri), new DefaultAzureCredential());
 
-        var secretValue = "SECRET_VALUE";
+        var secretValue = "webapikey";
 
         Console.Write($"Creating a secret in {keyVaultName} called '{secretName}' with the value '{secretValue}' ...");
         await client.SetSecretAsync(secretName, secretValue);

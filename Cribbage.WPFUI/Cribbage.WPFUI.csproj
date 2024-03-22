@@ -9,7 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="cardBackBlue.jpg" />
     <None Remove="cardBackBlue.png" />
     <None Remove="cribbageboard.png" />
     <None Remove="cribbageboardoriginal.png" />
@@ -20,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="cardBackBlue.jpg" />
     <Resource Include="cardBackBlue.png" />
     <Resource Include="cribbageboard.png" />
   </ItemGroup>
