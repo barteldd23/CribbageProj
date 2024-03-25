@@ -1,3 +1,5 @@
+using Reporting;
+
 namespace Cribbage.BL.Test
 {
     [TestClass]

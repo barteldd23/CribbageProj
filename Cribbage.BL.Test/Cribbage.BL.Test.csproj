@@ -39,6 +39,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Cribbage.BL\Cribbage.BL.csproj" />
+    <ProjectReference Include="..\Reporting\Reporting.csproj" />
   </ItemGroup>
 
 </Project>

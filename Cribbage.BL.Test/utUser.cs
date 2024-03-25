@@ -1,8 +1,17 @@
+using Reporting;
+
 namespace Cribbage.BL.Test
 {
     [TestClass]
     public class utUser : utBase
     {
+        [TestMethod]
+        public void ReportTest()
+        {
+            var users = new UserManager(options).Load();
+            Excel.Export("userStats.xlsx", UserManager.ConvertData(users));
+        }
+
         [TestMethod]
         public void LoadTest()
         {

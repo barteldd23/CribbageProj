@@ -32,7 +32,9 @@ Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Cribbage.PythonCL", "Cribba
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cribbage.ConsoleApp", "Cribbage.ConsoleApp\Cribbage.ConsoleApp.csproj", "{6730C6DB-7618-4A53-8DEE-614FF7A8B279}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cribbage.WebApp.UI", "Cribbage.WebApp.UI\Cribbage.WebApp.UI.csproj", "{E9A86833-D748-4CB0-A44F-787A88A5035E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cribbage.WebApp.UI", "Cribbage.WebApp.UI\Cribbage.WebApp.UI.csproj", "{E9A86833-D748-4CB0-A44F-787A88A5035E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reporting", "Reporting\Reporting.csproj", "{A645A9A9-758E-40F4-9038-C7E9F17104F0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -90,6 +92,10 @@ Global
 		{E9A86833-D748-4CB0-A44F-787A88A5035E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9A86833-D748-4CB0-A44F-787A88A5035E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9A86833-D748-4CB0-A44F-787A88A5035E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A645A9A9-758E-40F4-9038-C7E9F17104F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A645A9A9-758E-40F4-9038-C7E9F17104F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A645A9A9-758E-40F4-9038-C7E9F17104F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A645A9A9-758E-40F4-9038-C7E9F17104F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
