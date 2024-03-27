@@ -27,7 +27,8 @@ namespace Cribbage.API.Controllers
         [HttpGet]
         public IEnumerable<Game> Get()
         {
-            return new GameManager(options).Load();
+            logger.LogWarning("Get Games");
+            return new GameManager(logger, options).Load();
         }
 
         /// <summary>

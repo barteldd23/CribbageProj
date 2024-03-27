@@ -18,6 +18,35 @@ namespace Cribbage.BL
     {
         public UserManager(DbContextOptions<CribbageEntities> options) : base(options) { }
 
+        //public static string[,] ConvertData(List<User> users)
+        //{
+        //    string[,] data = new string[users.Count + 1, 6]; // extra one for the row is for the header
+
+        //    int counter = 0;
+
+        //    data[counter, 0] = "Display Name";
+        //    data[counter, 1] = "Games Started";
+        //    data[counter, 2] = "Games Won";
+        //    data[counter, 3] = "Games Lost";
+        //    data[counter, 4] = "Win Streak";
+        //    data[counter, 5] = "Average Points Per Game";
+
+        //    counter++;
+
+        //    foreach (User user in users)
+        //    {
+        //        data[counter, 0] = user.DisplayName;
+        //        data[counter, 1] = user.GamesStarted.ToString();
+        //        data[counter, 2] = user.GamesWon.ToString();
+        //        data[counter, 3] = user.GamesLost.ToString();
+        //        data[counter, 4] = user.WinStreak.ToString();
+        //        data[counter, 5] = user.AvgPtsPerGame.ToString();
+        //        counter++;
+        //    }
+
+        //    return data;
+        //}
+
         private string GetHash(string Password)
         {
             using (var hasher = new SHA1Managed())

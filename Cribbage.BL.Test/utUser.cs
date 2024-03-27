@@ -1,8 +1,21 @@
+using iText.Forms.Xfdf;
+using iText.StyledXmlParser.Jsoup.Nodes;
+using Reporting;
+
 namespace Cribbage.BL.Test
 {
     [TestClass]
     public class utUser : utBase
     {
+        [TestMethod]
+        public void ReportTest()
+        {
+            var users = new UserManager(options).Load();
+            string[] columns = { "DisplayName", "GamesStarted", "GamesWon", "GamesLost", "WinStreak", "AvgPtsPerGame" };
+            var data = UserManager.ConvertData<User>(users, columns);
+            Excel.Export("userStats.xlsx", data);
+        }
+
         [TestMethod]
         public void LoadTest()
         {

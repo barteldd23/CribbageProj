@@ -26,3 +26,73 @@ Add-migration sp-GetUsers
 Update-Database 
 
 API localhost: 7186
+
+log url: https://localhost:7186/logs/index.html
+
+
+PRIOR STORED PROCEDURE FILE:
+
+using Microsoft.EntityFrameworkCore.Migrations;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Cribbage.PL.Entities
+{
+    public partial class spGetStudents : Migration
+    {
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            var sp = @"CREATE PROCEDURE [dbo].[usp-GetUsers]
+                    @name varchar(max)
+                AS
+                BEGIN
+                    SET NOCOUNT ON;
+                    select * from Students where FirstName = @name
+                END";
+
+            migrationBuilder.Sql(sp);
+        }
+
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+
+        }
+    }
+}
+
+STORED PROCEDURE FROM DVDCENTRAL / CLASS
+
+Stored Procedures (at the bottom of the Up method -- look around line 451 in the migrations > date_createdatabase file)
+
+           migrationBuilder.Sql(@"CREATE PROCEDURE [dbo].[spGetMovies]
+                AS
+	                select m.Id, m.RatingId, m.DirectorId, m.FormatId, m.Cost, m.Title, m.Description, m.Quantity,
+	                r.Description RatingDescription,
+	                f.Description FormatDescription,
+	                d.FirstName, d.LastName
+	                from tblMovie m
+	                inner join tblRating r on m.RatingId = r.Id
+	                inner join tblFormat f on m.FormatId = f.Id
+	                inner join tblDirector d on m.DirectorId = d.Id
+
+                RETURN 0");
+
+            migrationBuilder.Sql(@"CREATE PROCEDURE [dbo].[spGetMoviesByGenre]
+                 @GenreName VARCHAR(20)
+            AS
+                 select m.Id, m.RatingId, m.DirectorId, m.FormatId, m.Cost, m.Title, m.Description, m.Quantity,
+                 r.Description RatingDescription,
+                 f.Description FormatDescription,
+                 d.FirstName, d.LastName
+                 from tblMovie m
+                 inner join tblRating r on m.RatingId = r.Id
+                 inner join tblFormat f on m.FormatId = f.Id
+                 inner join tblDirector d on m.DirectorId = d.Id
+                 inner join tblMovieGenre mg on m.Id = mg.MovieId
+                 inner join tblGenre g on mg.GenreId = g.Id
+                 WHERE g.Description Like '%' + @GenreName + '%'
+            RETURN 0
+            ");

@@ -8,5 +8,6 @@
         public string? GameName { get; set; }
         public bool Complete { get; set; } // bit vs bool
         public virtual ICollection<tblUserGame> tblUserGames { get; set; }
+        public string SortField { get { return GameName; } }
     }
 }

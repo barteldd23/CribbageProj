@@ -15,5 +15,6 @@
         public double AvgPtsPerGame { get; set; }
         //public double AvgHandScore { get; set; }
         public virtual ICollection<tblUserGame> tblUserGames { get; set; }
+        public string SortField { get { return DisplayName; } }
     }
 }

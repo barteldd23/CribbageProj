@@ -1,30 +1,22 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Cribbage.PL.Entities
 {
-    public partial class spGetStudents : Migration
+    public class spGetUsers : IEntity
     {
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            var sp = @"CREATE PROCEDURE [dbo].[usp-GetUsers]
-                    @name varchar(max)
-                AS
-                BEGIN
-                    SET NOCOUNT ON;
-                    select * from Students where FirstName = @name
-                END";
-
-            migrationBuilder.Sql(sp);
-        }
-
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-
-        }
+        public Guid Id { get; set; }
+        public string Email { get; set; }
+        public string DisplayName { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string FullName { get; set; }
+        public string LastFirstName { get; set; }
+        public string Password { get; set; }
+        public int GamesStarted { get; set; }
+        public int GamesWon { get; set; }
+        public int GamesLost { get; set; }
+        public int WinStreak { get; set; }
+        public double AvgPtsPerGame { get; set; }
+        public string SortField { get { return DisplayName; } }
     }
 }

@@ -31,6 +31,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cribbage.ConsoleApp", "Crib
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cribbage.WebApp.UI", "Cribbage.WebApp.UI\Cribbage.WebApp.UI.csproj", "{E9A86833-D748-4CB0-A44F-787A88A5035E}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reporting", "Reporting\Reporting.csproj", "{A645A9A9-758E-40F4-9038-C7E9F17104F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cribbage.API.Test", "Cribbage.API.Test\Cribbage.API.Test.csproj", "{45462F07-36D4-4BAB-82B9-6D950BDE3F2E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +91,14 @@ Global
 		{E9A86833-D748-4CB0-A44F-787A88A5035E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9A86833-D748-4CB0-A44F-787A88A5035E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9A86833-D748-4CB0-A44F-787A88A5035E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A645A9A9-758E-40F4-9038-C7E9F17104F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A645A9A9-758E-40F4-9038-C7E9F17104F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A645A9A9-758E-40F4-9038-C7E9F17104F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A645A9A9-758E-40F4-9038-C7E9F17104F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45462F07-36D4-4BAB-82B9-6D950BDE3F2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45462F07-36D4-4BAB-82B9-6D950BDE3F2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45462F07-36D4-4BAB-82B9-6D950BDE3F2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45462F07-36D4-4BAB-82B9-6D950BDE3F2E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

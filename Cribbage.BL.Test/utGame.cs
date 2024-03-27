@@ -1,8 +1,19 @@
+using Reporting;
+
 namespace Cribbage.BL.Test
 {
     [TestClass]
     public class utGame : utBase
     {
+        [TestMethod]
+        public void ReportTest()
+        {
+            var games = new GameManager(options).Load();
+            string[] columns = { "Date", "GameName", "Complete" };
+            var data = GameManager.ConvertData<Game>(games, columns);
+            Excel.Export("gameStats.xlsx", data);
+        }
+
         [TestMethod]
         public void LoadTest()
         {

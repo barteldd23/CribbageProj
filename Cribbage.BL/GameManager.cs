@@ -1,13 +1,14 @@
 ﻿using Cribbage.BL.Models;
 using System.Numerics;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 
 namespace Cribbage.BL
 {
     public class GameManager : GenericManager<tblGame>
     {
         public GameManager(DbContextOptions<CribbageEntities> options) : base(options) { }
-
+        public GameManager(ILogger logger, DbContextOptions<CribbageEntities> options) : base(logger, options) { }
         #region DB Methods
         public int Insert(Game game, bool rollback = false)
         {
