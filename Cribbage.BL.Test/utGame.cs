@@ -6,6 +6,15 @@ namespace Cribbage.BL.Test
     public class utGame : utBase
     {
         [TestMethod]
+        public void ReportTest()
+        {
+            var games = new GameManager(options).Load();
+            string[] columns = { "Date", "GameName", "Complete" };
+            var data = GameManager.ConvertData<Game>(games, columns);
+            Excel.Export("gameStats.xlsx", data);
+        }
+
+        [TestMethod]
         public void LoadTest()
         {
             List<Game> games = new GameManager(options).Load();

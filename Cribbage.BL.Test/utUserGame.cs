@@ -49,7 +49,7 @@ namespace Cribbage.BL.Test
         [TestMethod]
         public void GetGamesTest()
         {
-            Guid playerId = new UserManager(options).Load().LastOrDefault().Id;
+            Guid playerId = new UserManager(options).Load().FirstOrDefault().Id;
             Assert.AreEqual(2, new UserGameManager(options).GetGames(playerId).Count());
         }
     }

@@ -8,5 +8,6 @@
         public int PlayerScore { get; set; }
         public virtual tblGame Game { get; set; }
         public virtual tblUser User { get; set; }
+        public string SortField { get { return User.DisplayName; } }
     }
 }

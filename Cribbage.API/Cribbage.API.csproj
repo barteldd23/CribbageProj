@@ -4,16 +4,24 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+	<InvariantGlobalization>false</InvariantGlobalization>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <DocumentationFile>Cribbage.API.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
+	<PackageReference Include="Serilog" Version="3.1.1" />
+	<PackageReference Include="Serilog.Extensions.Logging" Version="8.0.0" />
+	<PackageReference Include="Serilog.Settings.Configuration" Version="8.0.0" />
+	<PackageReference Include="Serilog.Sinks.MSSqlServer" Version="6.6.0" />
+	<PackageReference Include="Serilog.UI" Version="2.6.0" />
+	<PackageReference Include="Serilog.Ui.MsSqlServerProvider" Version="2.2.3" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Cribbage.BL.Models\Cribbage.BL.Models.csproj" />
     <ProjectReference Include="..\Cribbage.BL\Cribbage.BL.csproj" />
     <ProjectReference Include="..\Cribbage.PL\Cribbage.PL.csproj" />
   </ItemGroup>
