@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cribbage.PL.Test", "Cribbag
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cribbage.MigrationHandler", "Cribbage.MigrationHandler\Cribbage.MigrationHandler.csproj", "{A88369F5-D5D2-4A0C-8608-9CABC328BD34}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C9D3FFE9-B404-49BC-8EAB-7927DD8B21DC}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{C9D3FFE9-B404-49BC-8EAB-7927DD8B21DC}"
 	ProjectSection(SolutionItems) = preProject
 		TextFile1.txt = TextFile1.txt
 	EndProjectSection
@@ -34,11 +34,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cribbage.ConsoleApp", "Crib
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cribbage.WebApp.UI", "Cribbage.WebApp.UI\Cribbage.WebApp.UI.csproj", "{E9A86833-D748-4CB0-A44F-787A88A5035E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reporting", "Reporting\Reporting.csproj", "{A645A9A9-758E-40F4-9038-C7E9F17104F0}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cribbage.API.Test", "Cribbage.API.Test\Cribbage.API.Test.csproj", "{45462F07-36D4-4BAB-82B9-6D950BDE3F2E}"
-EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Cribbage.PythonUI2", "Cribbage.PythonUI2\Cribbage.PythonUI2.pyproj", "{D7E87019-CB86-437D-92EB-F34DD9A6FA46}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "images", "images", "{7FB5D99F-33BD-4695-B3AE-6BE1C982265D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -96,14 +94,6 @@ Global
 		{E9A86833-D748-4CB0-A44F-787A88A5035E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9A86833-D748-4CB0-A44F-787A88A5035E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9A86833-D748-4CB0-A44F-787A88A5035E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A645A9A9-758E-40F4-9038-C7E9F17104F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A645A9A9-758E-40F4-9038-C7E9F17104F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A645A9A9-758E-40F4-9038-C7E9F17104F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A645A9A9-758E-40F4-9038-C7E9F17104F0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{45462F07-36D4-4BAB-82B9-6D950BDE3F2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{45462F07-36D4-4BAB-82B9-6D950BDE3F2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{45462F07-36D4-4BAB-82B9-6D950BDE3F2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{45462F07-36D4-4BAB-82B9-6D950BDE3F2E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D7E87019-CB86-437D-92EB-F34DD9A6FA46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D7E87019-CB86-437D-92EB-F34DD9A6FA46}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7E87019-CB86-437D-92EB-F34DD9A6FA46}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -111,6 +101,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7FB5D99F-33BD-4695-B3AE-6BE1C982265D} = {C9D3FFE9-B404-49BC-8EAB-7927DD8B21DC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3F4B2341-D315-439D-AB66-0E016F312C5A}
