@@ -16,9 +16,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cribbage.MigrationHandler", "Cribbage.MigrationHandler\Cribbage.MigrationHandler.csproj", "{A88369F5-D5D2-4A0C-8608-9CABC328BD34}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C9D3FFE9-B404-49BC-8EAB-7927DD8B21DC}"
-	ProjectSection(SolutionItems) = preProject
-		TextFile1.txt = TextFile1.txt
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cribbage.Prototype", "Cribbage.Prototype\Cribbage.Prototype.csproj", "{CE059C91-CDAA-4157-999C-5860DF7FC88D}"
 EndProject
@@ -32,7 +29,7 @@ Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Cribbage.PythonCL", "Cribba
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cribbage.ConsoleApp", "Cribbage.ConsoleApp\Cribbage.ConsoleApp.csproj", "{6730C6DB-7618-4A53-8DEE-614FF7A8B279}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cribbage.WebApp.UI", "Cribbage.WebApp.UI\Cribbage.WebApp.UI.csproj", "{E9A86833-D748-4CB0-A44F-787A88A5035E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cribbage.WebApp.UI", "Cribbage.WebApp.UI\Cribbage.WebApp.UI.csproj", "{E9A86833-D748-4CB0-A44F-787A88A5035E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
