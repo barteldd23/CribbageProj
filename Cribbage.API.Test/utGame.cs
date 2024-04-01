@@ -25,7 +25,7 @@ namespace Cribbage.API.Test
         [TestMethod]
         public async Task LoadByIdTestAsync()
         {
-            await base.LoadByIdTestAsync<Game>(new KeyValuePair<string, string>("GameName", "utGame test"));
+            await base.LoadByIdTestAsync<Game>(new KeyValuePair<string, string>("GameName", "Test2"));
         }
 
         [TestMethod]
@@ -39,7 +39,7 @@ namespace Cribbage.API.Test
         [TestMethod]
         public async Task DeleteTestAsync()
         {
-            await base.DeleteTestAsync1<Game>(new KeyValuePair<string, string>("GameName", "Other"));
+            await base.DeleteTestAsync1<Game>(new KeyValuePair<string, string>("GameName", "Test1"));
         }
     }
 
