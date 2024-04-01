@@ -391,7 +391,6 @@ namespace Cribbage.BL
                     .ForEach(u => users.Add(
                         new spGetMostWinsResult
                         {
-                            Id = u.Id,
                             DisplayName = u.DisplayName,
                             GamesWon = u.GamesWon
                         }));

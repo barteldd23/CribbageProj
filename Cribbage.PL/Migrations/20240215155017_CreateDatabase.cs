@@ -134,7 +134,7 @@ namespace Cribbage.PL.Migrations
 
             migrationBuilder.Sql(@"CREATE PROCEDURE [dbo].[spGetMostWins]
               AS
-              select Top 3 Id, DisplayName, GamesWon 
+              select Top 3 *
               from tblUser
               order by GamesWon desc");
         }
