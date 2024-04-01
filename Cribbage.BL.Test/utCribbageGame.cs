@@ -19,7 +19,7 @@ namespace Cribbage.BL.Test
         [TestMethod]
         public void countPairsTest()
         {
-            Game cribbage = new Game();
+            CribbageGame cribbage = new CribbageGame();
             Deck deck = new Deck();
             List<Card> hand =
             [
@@ -30,7 +30,7 @@ namespace Cribbage.BL.Test
                 deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Seven).FirstOrDefault(),
             ];
             
-            int points = new GameManager(options).CountPairs(hand);
+            int points = CribbageGameManager.CountPairs(hand);
             Assert.AreEqual(2, points);
 
             hand = null;
@@ -42,7 +42,7 @@ namespace Cribbage.BL.Test
                 deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Seven).FirstOrDefault(),
                 deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Ace).FirstOrDefault(),
             ];
-            points = new GameManager(options).CountPairs(hand);
+            points = CribbageGameManager.CountPairs(hand);
             Assert.AreEqual(2, points);
 
             hand = null;
@@ -54,7 +54,7 @@ namespace Cribbage.BL.Test
                 deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Three).FirstOrDefault(),
                 deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Five).FirstOrDefault(),
             ];
-            points = new GameManager(options).CountPairs(hand);
+            points = CribbageGameManager.CountPairs(hand);
             Assert.AreEqual(4, points);
 
             hand = null;
@@ -66,7 +66,7 @@ namespace Cribbage.BL.Test
                 deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Ace).FirstOrDefault(),
                 deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Five).FirstOrDefault(),
             ];
-            points = new GameManager(options).CountPairs(hand);
+            points = CribbageGameManager.CountPairs(hand);
             Assert.AreEqual(6, points);
 
             hand = null;
@@ -78,7 +78,7 @@ namespace Cribbage.BL.Test
                 deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Ace).FirstOrDefault(),
                 deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Ace).FirstOrDefault(),
             ];
-            points = new GameManager(options).CountPairs(hand);
+            points = CribbageGameManager.CountPairs(hand);
             Assert.AreEqual(8, points);
 
             hand = null;
@@ -90,14 +90,14 @@ namespace Cribbage.BL.Test
                 deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Ace).FirstOrDefault(),
                 deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Ace).FirstOrDefault(),
             ];
-            points = new GameManager(options).CountPairs(hand);
+            points = CribbageGameManager.CountPairs(hand);
             Assert.AreEqual(12, points);
         }
 
         [TestMethod]
         public void count15sTest()
         {
-            Game cribbage = new Game();
+            CribbageGame cribbage = new CribbageGame();
             Deck deck = new Deck();
             List<Card> hand =
             [
@@ -108,7 +108,7 @@ namespace Cribbage.BL.Test
                 deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Seven).FirstOrDefault(),
             ];
 
-            int points = new GameManager(options).Count15s(hand);
+            int points = CribbageGameManager.Count15s(hand);
             Assert.AreEqual(2, points);
 
             hand = null;
@@ -120,7 +120,7 @@ namespace Cribbage.BL.Test
                 deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Seven).FirstOrDefault(),
                 deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Ace).FirstOrDefault(),
             ];
-            points = new GameManager(options).Count15s(hand);
+            points = CribbageGameManager.Count15s(hand);
             Assert.AreEqual(4, points);
 
             hand = null;
@@ -132,14 +132,14 @@ namespace Cribbage.BL.Test
                 deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Jack).FirstOrDefault(),
                 deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Five).FirstOrDefault(),
             ];
-            points = new GameManager(options).Count15s(hand);
+            points = CribbageGameManager.Count15s(hand);
             Assert.AreEqual(8, points);
         }
 
         [TestMethod]
         public void countRunsTest()
         {
-            Game cribbage = new Game();
+            CribbageGame cribbage = new CribbageGame();
             Deck deck = new Deck();
             List<Card> hand =
             [
@@ -150,7 +150,7 @@ namespace Cribbage.BL.Test
                 deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Five).FirstOrDefault(),
             ];
 
-            int points = new GameManager(options).CountRuns(hand);
+            int points = CribbageGameManager.CountRuns(hand);
             Assert.AreEqual(3, points);
 
             hand = null;
@@ -162,7 +162,7 @@ namespace Cribbage.BL.Test
                 deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Four).FirstOrDefault(),
                 deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Five).FirstOrDefault(),
             ];
-            points = new GameManager(options).CountRuns(hand);
+            points = CribbageGameManager.CountRuns(hand);
             Assert.AreEqual(5, points);
 
             hand = null;
@@ -174,7 +174,7 @@ namespace Cribbage.BL.Test
                 deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.King).FirstOrDefault(),
                 deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Five).FirstOrDefault(),
             ];
-            points = new GameManager(options).CountRuns(hand);
+            points = CribbageGameManager.CountRuns(hand);
             Assert.AreEqual(0, points);
 
             hand = null;
@@ -186,7 +186,7 @@ namespace Cribbage.BL.Test
                 deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Jack).FirstOrDefault(),
                 deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Seven).FirstOrDefault(),
             ];
-            points = new GameManager(options).CountRuns(hand);
+            points = CribbageGameManager.CountRuns(hand);
             Assert.AreEqual(4, points);
 
             hand = null;
@@ -198,7 +198,7 @@ namespace Cribbage.BL.Test
                 deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Eight).FirstOrDefault(),
                 deck.Cards.Where(c => c.suit == Suits.Diamonds && c.face == Faces.Seven).FirstOrDefault(),
             ];
-            points = new GameManager(options).CountRuns(hand);
+            points = CribbageGameManager.CountRuns(hand);
             Assert.AreEqual(6, points);
 
             
@@ -212,7 +212,7 @@ namespace Cribbage.BL.Test
                 deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Ace).FirstOrDefault(),
                 deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Four).FirstOrDefault(),
             ];
-            points = new GameManager(options).CountRuns(hand);
+            points = CribbageGameManager.CountRuns(hand);
             Assert.AreEqual(8, points);
 
             hand = null;
@@ -224,7 +224,7 @@ namespace Cribbage.BL.Test
                 deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Nine).FirstOrDefault(),
                 deck.Cards.Where(c => c.suit == Suits.Diamonds && c.face == Faces.Nine).FirstOrDefault(),
             ];
-            points = new GameManager(options).CountRuns(hand);
+            points = CribbageGameManager.CountRuns(hand);
             Assert.AreEqual(9, points);
 
             hand = null;
@@ -236,14 +236,14 @@ namespace Cribbage.BL.Test
                 deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Three).FirstOrDefault(),
                 deck.Cards.Where(c => c.suit == Suits.Diamonds && c.face == Faces.Four).FirstOrDefault(),
             ];
-            points = new GameManager(options).CountRuns(hand);
+            points = CribbageGameManager.CountRuns(hand);
             Assert.AreEqual(12, points);
         }
 
         [TestMethod]
         public void countFlushTest()
         {
-            Game cribbage = new Game();
+            CribbageGame cribbage = new CribbageGame();
             Deck deck = new Deck();
             List<Card> hand =
             [
@@ -254,7 +254,7 @@ namespace Cribbage.BL.Test
                 deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Five).FirstOrDefault(),
             ];
 
-            int points = new GameManager(options).CountFlush(hand);
+            int points = CribbageGameManager.CountFlush(hand);
             Assert.AreEqual(5, points);
 
             hand = null;
@@ -266,7 +266,7 @@ namespace Cribbage.BL.Test
                 deck.Cards.Where(c => c.suit == Suits.Diamonds && c.face == Faces.Four).FirstOrDefault(),
                 deck.Cards.Where(c => c.suit == Suits.Diamonds && c.face == Faces.Five).FirstOrDefault(),
             ];
-            points = new GameManager(options).CountFlush(hand);
+            points = CribbageGameManager.CountFlush(hand);
             Assert.AreEqual(0, points);
 
             hand = null;
@@ -278,7 +278,7 @@ namespace Cribbage.BL.Test
                 deck.Cards.Where(c => c.suit == Suits.Clubs && c.face == Faces.Four).FirstOrDefault(),
                 deck.Cards.Where(c => c.suit == Suits.Diamonds && c.face == Faces.Five).FirstOrDefault(),
             ];
-            points = new GameManager(options).CountFlush(hand);
+            points = CribbageGameManager.CountFlush(hand);
             Assert.AreEqual(4, points);
 
             hand = null;
@@ -290,7 +290,7 @@ namespace Cribbage.BL.Test
                 deck.Cards.Where(c => c.suit == Suits.Clubs && c.face == Faces.Four).FirstOrDefault(),
                 deck.Cards.Where(c => c.suit == Suits.Diamonds && c.face == Faces.Five).FirstOrDefault(),
             ];
-            points = new GameManager(options).CountFlush(hand, true);
+            points = CribbageGameManager.CountFlush(hand, true);
             Assert.AreEqual(0, points);
 
             hand = null;
@@ -302,14 +302,14 @@ namespace Cribbage.BL.Test
                 deck.Cards.Where(c => c.suit == Suits.Clubs && c.face == Faces.Four).FirstOrDefault(),
                 deck.Cards.Where(c => c.suit == Suits.Clubs && c.face == Faces.Five).FirstOrDefault(),
             ];
-            points = new GameManager(options).CountFlush(hand, true);
+            points = CribbageGameManager.CountFlush(hand, true);
             Assert.AreEqual(5, points);
         }
 
         [TestMethod]
         public void countKnobsTest()
         {
-            Game cribbage = new Game();
+            CribbageGame cribbage = new CribbageGame();
             Deck deck = new Deck();
             cribbage.CutCard = deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Three).FirstOrDefault();
             List<Card> hand =
@@ -321,7 +321,7 @@ namespace Cribbage.BL.Test
                 deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Five).FirstOrDefault(),
             ];
 
-            int points = new GameManager(options).CountKnobs(cribbage, hand);
+            int points = CribbageGameManager.CountKnobs(cribbage, hand);
             Assert.AreEqual(1, points);
 
             hand = null;
@@ -333,7 +333,7 @@ namespace Cribbage.BL.Test
                 deck.Cards.Where(c => c.suit == Suits.Diamonds && c.face == Faces.Four).FirstOrDefault(),
                 deck.Cards.Where(c => c.suit == Suits.Diamonds && c.face == Faces.Five).FirstOrDefault(),
             ];
-            points = new GameManager(options).CountKnobs(cribbage, hand);
+            points = CribbageGameManager.CountKnobs(cribbage, hand);
             Assert.AreEqual(0, points);
 
             hand = null;
@@ -345,14 +345,14 @@ namespace Cribbage.BL.Test
                 deck.Cards.Where(c => c.suit == Suits.Diamonds && c.face == Faces.Four).FirstOrDefault(),
                 deck.Cards.Where(c => c.suit == Suits.Diamonds && c.face == Faces.Five).FirstOrDefault(),
             ];
-            points = new GameManager(options).CountKnobs(cribbage, hand);
+            points = CribbageGameManager.CountKnobs(cribbage, hand);
             Assert.AreEqual(0, points);
         }
 
         [TestMethod]
         public void countHandTest()
         {
-            Game cribbage = new Game();
+            CribbageGame cribbage = new CribbageGame();
             Deck deck = new Deck();
             cribbage.CutCard = deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Three).FirstOrDefault();
             List<Card> hand =
@@ -364,7 +364,7 @@ namespace Cribbage.BL.Test
             ];
             cribbage.CutCard = deck.Cards.Where(c => c.suit == Suits.Diamonds && c.face == Faces.Two).FirstOrDefault();
 
-            int points = new GameManager(options).CountHand(cribbage, hand);
+            int points = CribbageGameManager.CountHand(cribbage, hand);
             Assert.AreEqual(5, points);
 
             hand = null;
@@ -376,7 +376,7 @@ namespace Cribbage.BL.Test
                 deck.Cards.Where(c => c.suit == Suits.Diamonds && c.face == Faces.Seven).FirstOrDefault(),
             ];
             cribbage.CutCard = deck.Cards.Where(c => c.suit == Suits.Diamonds && c.face == Faces.Three).FirstOrDefault();
-            points = new GameManager(options).CountHand(cribbage, hand);
+            points = CribbageGameManager.CountHand(cribbage, hand);
             Assert.AreEqual(7, points);
 
             hand = null;
@@ -388,7 +388,7 @@ namespace Cribbage.BL.Test
                 deck.Cards.Where(c => c.suit == Suits.Diamonds && c.face == Faces.Four).FirstOrDefault(),
             ];
             cribbage.CutCard = deck.Cards.Where(c => c.suit == Suits.Diamonds && c.face == Faces.Five).FirstOrDefault();
-            points = new GameManager(options).CountHand(cribbage, hand);
+            points = CribbageGameManager.CountHand(cribbage, hand);
             Assert.AreEqual(17, points);
 
             hand = null;
@@ -400,7 +400,7 @@ namespace Cribbage.BL.Test
                 deck.Cards.Where(c => c.suit == Suits.Clubs && c.face == Faces.Five).FirstOrDefault(),
             ];
             cribbage.CutCard = deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Five).FirstOrDefault();
-            points = new GameManager(options).CountHand(cribbage, hand);
+            points = CribbageGameManager.CountHand(cribbage, hand);
             Assert.AreEqual(29, points);
 
             hand = null;
@@ -412,7 +412,7 @@ namespace Cribbage.BL.Test
                 deck.Cards.Where(c => c.suit == Suits.Diamonds && c.face == Faces.Seven).FirstOrDefault(),
             ];
             cribbage.CutCard = deck.Cards.Where(c => c.suit == Suits.Diamonds && c.face == Faces.Two).FirstOrDefault();
-            points = new GameManager(options).CountHand(cribbage, hand);
+            points = CribbageGameManager.CountHand(cribbage, hand);
             Assert.AreEqual(15, points);
 
             hand = null;
@@ -424,7 +424,7 @@ namespace Cribbage.BL.Test
                 deck.Cards.Where(c => c.suit == Suits.Diamonds && c.face == Faces.Ace).FirstOrDefault(),
             ];
             cribbage.CutCard = deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.King).FirstOrDefault();
-            points = new GameManager(options).CountHand(cribbage, hand);
+            points = CribbageGameManager.CountHand(cribbage, hand);
             Assert.AreEqual(0, points);
         }
 
@@ -435,26 +435,26 @@ namespace Cribbage.BL.Test
             // Test Cut() initializes a cut card
             // test Give_To_Crib() puts cards in the crib property
 
-            Game cribbage = new Game();
+            CribbageGame cribbage = new CribbageGame();
             Player player1 = new Player();
             Player player2 = new Player();
             cribbage.Player_1 = player1;
             cribbage.Player_2 = player2;
-            new GameManager(options).ShuffleDeck(cribbage);
-            new GameManager(options).Deal(cribbage);
+            CribbageGameManager.ShuffleDeck(cribbage);
+            CribbageGameManager.Deal(cribbage);
 
             Assert.AreEqual(6, cribbage.Player_1.Hand.Count);
             Assert.AreEqual(6, cribbage.Player_2.Hand.Count);
             Assert.AreEqual(40, cribbage.Deck.Cards.Count);
 
-            new GameManager(options).Cut(cribbage);
+            CribbageGameManager.Cut(cribbage);
             Assert.IsTrue(cribbage.CutCard != null);
 
             List<Card> cards = [cribbage.Player_1.Hand[5], cribbage.Player_1.Hand[4]];
-            new GameManager(options).Give_To_Crib(cribbage, cards, cribbage.Player_1);
+            CribbageGameManager.Give_To_Crib(cribbage, cards, cribbage.Player_1);
             cards = null;
             cards = [cribbage.Player_2.Hand[5], cribbage.Player_2.Hand[4]];
-            new GameManager(options).Give_To_Crib(cribbage, cards, cribbage.Player_2);
+            CribbageGameManager.Give_To_Crib(cribbage, cards, cribbage.Player_2);
 
             Assert.AreEqual(4, cribbage.Crib.Count);
         }
@@ -462,7 +462,7 @@ namespace Cribbage.BL.Test
         [TestMethod]
         public void playCardTest()
         {
-            Game cribbage = new Game();
+            CribbageGame cribbage = new CribbageGame();
             Player player1 = new Player();
             Player player2 = new Player();
             player1.DisplayName = "P1";
@@ -470,17 +470,17 @@ namespace Cribbage.BL.Test
             cribbage.Player_1 = player1;
             cribbage.Player_2 = player2;
 
-            new GameManager(options).ShuffleDeck(cribbage);
-            new GameManager(options).Deal(cribbage);
+            CribbageGameManager.ShuffleDeck(cribbage);
+            CribbageGameManager.Deal(cribbage);
             cribbage.PlayerTurn = cribbage.Player_1;
 
             List<Card> cards = [cribbage.Player_1.Hand[5], cribbage.Player_1.Hand[4]];
-            new GameManager(options).Give_To_Crib(cribbage, cards, cribbage.Player_1);
+            CribbageGameManager.Give_To_Crib(cribbage, cards, cribbage.Player_1);
             cards = null;
             cards = [cribbage.Player_2.Hand[5], cribbage.Player_2.Hand[4]];
-            new GameManager(options).Give_To_Crib(cribbage, cards, cribbage.Player_2);
+            CribbageGameManager.Give_To_Crib(cribbage, cards, cribbage.Player_2);
 
-            new GameManager(options).PlayCard(cribbage, cribbage.PlayerTurn.Hand[0]);
+            CribbageGameManager.PlayCard(cribbage, cribbage.PlayerTurn.Hand[0]);
             Assert.IsTrue(cribbage.PlayedCards.Count == 1);
             //Assert.IsTrue(cribbage.PlayerTurn == cribbage.Player_2);
         }
@@ -488,7 +488,7 @@ namespace Cribbage.BL.Test
         [TestMethod]
         public void playCardTest2()
         {
-            Game cribbage = new Game();
+            CribbageGame cribbage = new CribbageGame();
             Player player1 = new Player();
             Player player2 = new Player();
             cribbage.Player_1 = player1;
@@ -500,7 +500,7 @@ namespace Cribbage.BL.Test
 
             Card card = cribbage.Deck.Cards.Where(c => c.suit == Suits.Spades && c.face == Faces.King).FirstOrDefault();
 
-            new GameManager(options).PlayCard(cribbage, card);
+            CribbageGameManager.PlayCard(cribbage, card);
             Assert.IsTrue(cribbage.PlayedCards.Count == 2);
             Assert.AreEqual(2, cribbage.Player_1.Score);
             Assert.AreEqual(20, cribbage.CurrentCount);
@@ -509,7 +509,7 @@ namespace Cribbage.BL.Test
         [TestMethod]
         public void playCardTest3()
         {
-            Game cribbage = new Game();
+            CribbageGame cribbage = new CribbageGame();
             Player player1 = new Player();
             Player player2 = new Player();
             cribbage.Player_1 = player1;
@@ -523,7 +523,7 @@ namespace Cribbage.BL.Test
             card = cribbage.Deck.Cards.Where(c => c.suit == Suits.Spades && c.face == Faces.Eight).FirstOrDefault();
 
 
-            new GameManager(options).PlayCard(cribbage, card);
+            CribbageGameManager.PlayCard(cribbage, card);
 
             Assert.IsTrue(cribbage.PlayedCards.Count == 2);
             Assert.AreEqual(2, cribbage.Player_1.Score);
@@ -534,7 +534,7 @@ namespace Cribbage.BL.Test
         [TestMethod]
         public void playCardTest4()
         {
-            Game cribbage = new Game();
+            CribbageGame cribbage = new CribbageGame();
             Player player1 = new Player();
             Player player2 = new Player();
             cribbage.Player_1 = player1;
@@ -551,7 +551,7 @@ namespace Cribbage.BL.Test
             Card card = new Card();
             card = cribbage.Deck.Cards.Where(c => c.suit == Suits.Spades && c.face == Faces.Jack).FirstOrDefault();
 
-            new GameManager(options).PlayCard(cribbage, card);
+            CribbageGameManager.PlayCard(cribbage, card);
 
             Assert.AreEqual(3, cribbage.PlayedCards.Count);
             Assert.AreEqual(3, cribbage.Player_1.Score);
@@ -561,7 +561,7 @@ namespace Cribbage.BL.Test
         [TestMethod]
         public void playCardTest5()
         {
-            Game cribbage = new Game();
+            CribbageGame cribbage = new CribbageGame();
             Player player1 = new Player();
             Player player2 = new Player();
             cribbage.Player_1 = player1;
@@ -579,7 +579,7 @@ namespace Cribbage.BL.Test
             Card card = new Card();
             card = cribbage.Deck.Cards.Where(c => c.suit == Suits.Spades && c.face == Faces.Ace).FirstOrDefault();
 
-            new GameManager(options).PlayCard(cribbage, card);
+            CribbageGameManager.PlayCard(cribbage, card);
 
             Assert.AreEqual(0, cribbage.CurrentRally.Count);
             Assert.AreEqual(2, cribbage.Player_1.Score);
@@ -590,7 +590,7 @@ namespace Cribbage.BL.Test
         [TestMethod]
         public void playCardTest6()
         {
-            Game cribbage = new Game();
+            CribbageGame cribbage = new CribbageGame();
             Player player1 = new Player();
             Player player2 = new Player();
             cribbage.Player_1 = player1;
@@ -608,7 +608,7 @@ namespace Cribbage.BL.Test
             Card card = new Card();
             card = cribbage.Deck.Cards.Where(c => c.suit == Suits.Spades && c.face == Faces.Six).FirstOrDefault();
 
-            new GameManager(options).PlayCard(cribbage, card);
+            CribbageGameManager.PlayCard(cribbage, card);
 
             Assert.AreEqual(4, cribbage.PlayedCards.Count);
             Assert.AreEqual(3, cribbage.Player_1.Score);
@@ -619,7 +619,7 @@ namespace Cribbage.BL.Test
         [TestMethod]
         public void playCardTest7()
         {
-            Game cribbage = new Game();
+            CribbageGame cribbage = new CribbageGame();
             Player player1 = new Player();
             Player player2 = new Player();
             cribbage.Player_1 = player1;
@@ -637,7 +637,7 @@ namespace Cribbage.BL.Test
             Card card = new Card();
             card = cribbage.Deck.Cards.Where(c => c.suit == Suits.Spades && c.face == Faces.Five).FirstOrDefault();
 
-            new GameManager(options).PlayCard(cribbage, card);
+            CribbageGameManager.PlayCard(cribbage, card);
 
             Assert.AreEqual(4, cribbage.PlayedCards.Count);
             Assert.AreEqual(6, cribbage.Player_1.Score);
@@ -648,7 +648,7 @@ namespace Cribbage.BL.Test
         [TestMethod]
         public void playCardTest8()
         {
-            Game cribbage = new Game();
+            CribbageGame cribbage = new CribbageGame();
             Player player1 = new Player();
             Player player2 = new Player();
             cribbage.Player_1 = player1;
@@ -665,10 +665,10 @@ namespace Cribbage.BL.Test
             Card card = new Card();
             card = cribbage.Deck.Cards.Where(c => c.suit == Suits.Spades && c.face == Faces.Eight).FirstOrDefault();
 
-            new GameManager(options).PlayCard(cribbage, card);
+            CribbageGameManager.PlayCard(cribbage, card);
 
-            new GameManager(options).Go(cribbage);
-            new GameManager(options).Go(cribbage);
+            CribbageGameManager.Go(cribbage);
+            CribbageGameManager.Go(cribbage);
             Assert.AreEqual(0, cribbage.CurrentRally.Count);
             Assert.AreEqual(1, cribbage.Player_1.Score);
             Assert.AreEqual(0, cribbage.CurrentCount);
@@ -678,7 +678,7 @@ namespace Cribbage.BL.Test
         [TestMethod]
         public void getPointsof4Test()
         {
-            Game cribbage = new Game();
+            CribbageGame cribbage = new CribbageGame();
             Deck deck = new Deck();
             cribbage.CutCard = deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Three).FirstOrDefault();
             List<Card> hand =
@@ -689,7 +689,7 @@ namespace Cribbage.BL.Test
                 deck.Cards.Where(c => c.suit == Suits.Spades && c.face == Faces.Seven).FirstOrDefault(),
             ];
 
-            int points = new GameManager(options).Get_Points_of_4_Cards(hand);
+            int points = CribbageGameManager.Get_Points_of_4_Cards(hand);
             Assert.AreEqual(4, points);
 
             hand = null;
@@ -700,7 +700,7 @@ namespace Cribbage.BL.Test
                 deck.Cards.Where(c => c.suit == Suits.Diamonds && c.face == Faces.Four).FirstOrDefault(),
                 deck.Cards.Where(c => c.suit == Suits.Diamonds && c.face == Faces.Seven).FirstOrDefault(),
             ];
-            points = new GameManager(options).Get_Points_of_4_Cards(hand);
+            points = CribbageGameManager.Get_Points_of_4_Cards(hand);
             Assert.AreEqual(5, points);
 
             hand = null;
@@ -711,14 +711,14 @@ namespace Cribbage.BL.Test
                 deck.Cards.Where(c => c.suit == Suits.Diamonds && c.face == Faces.Four).FirstOrDefault(),
                 deck.Cards.Where(c => c.suit == Suits.Diamonds && c.face == Faces.Five).FirstOrDefault(),
             ];
-            points = new GameManager(options).Get_Points_of_4_Cards(hand);
+            points = CribbageGameManager.Get_Points_of_4_Cards(hand);
             Assert.AreEqual(12, points);
         }
 
         [TestMethod]
         public void getCribCardsTest()
         {
-            Game cribbage = new Game();
+            CribbageGame cribbage = new CribbageGame();
             Deck deck = new Deck();
             List<Card> hand =
             [
@@ -730,7 +730,7 @@ namespace Cribbage.BL.Test
                 deck.Cards.Where(c => c.suit == Suits.Spades && c.face == Faces.Two).FirstOrDefault()
             ];
 
-            List<Card> cribCards = new GameManager(options).Pick_Cards_To_Crib(hand);
+            List<Card> cribCards = CribbageGameManager.Pick_Cards_To_Crib(hand);
             Assert.AreEqual(2, cribCards.Count);
 
             hand = null;
@@ -745,7 +745,7 @@ namespace Cribbage.BL.Test
                 deck.Cards.Where(c => c.suit == Suits.Spades && c.face == Faces.Ace).FirstOrDefault()
             ];
 
-            cribCards = new GameManager(options).Pick_Cards_To_Crib(hand);
+            cribCards = CribbageGameManager.Pick_Cards_To_Crib(hand);
             Assert.AreEqual(2, cribCards.Count);
 
             hand = null;
@@ -760,7 +760,7 @@ namespace Cribbage.BL.Test
                 deck.Cards.Where(c => c.suit == Suits.Spades && c.face == Faces.Four).FirstOrDefault()
             ];
 
-            cribCards = new GameManager(options).Pick_Cards_To_Crib(hand);
+            cribCards = CribbageGameManager.Pick_Cards_To_Crib(hand);
             Assert.AreEqual(2, cribCards.Count);
 
             hand = null;
@@ -775,7 +775,7 @@ namespace Cribbage.BL.Test
                 deck.Cards.Where(c => c.suit == Suits.Spades && c.face == Faces.Five).FirstOrDefault()
             ];
 
-            cribCards = new GameManager(options).Pick_Cards_To_Crib(hand);
+            cribCards = CribbageGameManager.Pick_Cards_To_Crib(hand);
             Assert.AreEqual(2, cribCards.Count);
 
         }
@@ -783,7 +783,7 @@ namespace Cribbage.BL.Test
         [TestMethod]
         public void getCardToPlayTest()
         {
-            Game cribbage = new Game();
+            CribbageGame cribbage = new CribbageGame();
             Deck deck = new Deck();
             cribbage.PlayerTurn = new Player();
 
@@ -803,7 +803,7 @@ namespace Cribbage.BL.Test
 
             cribbage.PlayerTurn.Hand = new List<Card>();
             cribbage.PlayerTurn.Hand = hand;
-            Card card = new GameManager(options).Pick_Card_To_Play(cribbage);
+            Card card = CribbageGameManager.Pick_Card_To_Play(cribbage);
             Assert.AreEqual(card, hand[3]);
 
             cribbage.PlayerTurn.Hand = null;
@@ -830,7 +830,7 @@ namespace Cribbage.BL.Test
 
             cribbage.PlayerTurn.Hand = new List<Card>();
             cribbage.PlayerTurn.Hand = hand;
-            card = new GameManager(options).Pick_Card_To_Play(cribbage);
+            card = CribbageGameManager.Pick_Card_To_Play(cribbage);
             Assert.AreEqual(card, hand[2]);
 
             cribbage.PlayerTurn.Hand = null;
@@ -857,7 +857,7 @@ namespace Cribbage.BL.Test
 
             cribbage.PlayerTurn.Hand = new List<Card>();
             cribbage.PlayerTurn.Hand = hand;
-            card = new GameManager(options).Pick_Card_To_Play(cribbage);
+            card = CribbageGameManager.Pick_Card_To_Play(cribbage);
             Assert.AreEqual(card, hand[1]);
 
             cribbage.PlayerTurn.Hand = null;
@@ -884,7 +884,7 @@ namespace Cribbage.BL.Test
 
             cribbage.PlayerTurn.Hand = new List<Card>();
             cribbage.PlayerTurn.Hand = hand;
-            card = new GameManager(options).Pick_Card_To_Play(cribbage);
+            card = CribbageGameManager.Pick_Card_To_Play(cribbage);
             Assert.AreEqual(card, hand[3]);
 
 
@@ -911,7 +911,7 @@ namespace Cribbage.BL.Test
 
             cribbage.PlayerTurn.Hand = new List<Card>();
             cribbage.PlayerTurn.Hand = hand;
-            card = new GameManager(options).Pick_Card_To_Play(cribbage);
+            card = CribbageGameManager.Pick_Card_To_Play(cribbage);
             Assert.AreEqual(card, hand[2]);
 
             cribbage.PlayerTurn.Hand = null;
@@ -937,7 +937,7 @@ namespace Cribbage.BL.Test
 
             cribbage.PlayerTurn.Hand = new List<Card>();
             cribbage.PlayerTurn.Hand = hand;
-            card = new GameManager(options).Pick_Card_To_Play(cribbage);
+            card = CribbageGameManager.Pick_Card_To_Play(cribbage);
             Assert.AreEqual(Faces.Five, card.face);
         }
     }
