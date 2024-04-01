@@ -30,6 +30,20 @@ steps:
 
 
 - task: DotNetCoreCLI@2
+  displayName: Build Console App
+  inputs:
+    command: build
+    projects: 'Cribbage.ConsoleApp/Cribbage.ConsoleApp.csproj'
+    arguments: '--configuration Debug' 
+
+- task: DotNetCoreCLI@2
+  displayName: Build API Project
+  inputs:
+    command: build
+    projects: 'Cribbage.API/Cribbage.API.csproj'
+    arguments: '--configuration Debug'
+
+- task: DotNetCoreCLI@2
   displayName: Test PL
   inputs:
     command: test
