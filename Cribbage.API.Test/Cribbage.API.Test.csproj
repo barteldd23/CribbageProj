@@ -20,6 +20,7 @@
 	<ItemGroup>
     <ProjectReference Include="..\Cribbage.API\Cribbage.API.csproj" />
     <ProjectReference Include="..\Cribbage.BL.Models\Cribbage.BL.Models.csproj" />
+    <ProjectReference Include="..\Cribbage.BL\Cribbage.BL.csproj" />
   </ItemGroup>
 
 
