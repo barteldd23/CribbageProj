@@ -44,6 +44,13 @@ steps:
     arguments: '--configuration Debug'
 
 - task: DotNetCoreCLI@2
+  displayName: Test API
+  inputs:
+    command: test
+    projects: 'Cribbage.API.Test/Cribbage.API.Test.csproj'
+    arguments: '--configuration Debug'
+
+- task: DotNetCoreCLI@2
   displayName: Test PL
   inputs:
     command: test
