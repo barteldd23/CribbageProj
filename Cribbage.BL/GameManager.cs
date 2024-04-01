@@ -206,7 +206,7 @@ namespace Cribbage.BL
             return game.Complete;
         }
 
-        // Think about adding a AddPoints(int points, Player plaer) method
+        // Think about adding a AddPoints(int points, Player player) method
 
         #region "Starting the game methods"
         public void ShuffleDeck(Game game)

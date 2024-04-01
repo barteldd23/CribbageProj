@@ -26,12 +26,12 @@ namespace Cribbage.WPFUI
 
         private void QuitGame_Click(object sender, RoutedEventArgs e)
         {
-
+            this.Close();
         }
 
         private void NewGame_Click(object sender, RoutedEventArgs e)
         {
-
+            
         }
     }
 }

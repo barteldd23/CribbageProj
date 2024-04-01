@@ -31,17 +31,16 @@ namespace Cribbage.API.Test
         [TestMethod]
         public async Task UpdateTestAsync()
         {
-            Game game = new Game { Winner = Guid.NewGuid(), Date = DateTime.Now, GameName = "utGame test", Complete = false };
-            await base.UpdateTestAsync<Game>(new KeyValuePair<string, string>("GameName", "Other"), game);
+            Game game = new Game { Winner = Guid.NewGuid(), Date = DateTime.Now, GameName = "Other", Complete = false };
+            await base.UpdateTestAsync<Game>(new KeyValuePair<string, string>("GameName", "Test5"), game);
 
         }
 
         [TestMethod]
         public async Task DeleteTestAsync()
         {
-            await base.DeleteTestAsync1<Game>(new KeyValuePair<string, string>("Description", "Other"));
+            await base.DeleteTestAsync1<Game>(new KeyValuePair<string, string>("GameName", "Other"));
         }
-
     }
 
 }
