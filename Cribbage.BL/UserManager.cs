@@ -380,5 +380,27 @@ namespace Cribbage.BL
                 throw e;
             }
         }
+
+        public List<spGetMostWinsResult> LoadSPGetMostWins()
+        {
+            try
+            {
+                List<spGetMostWinsResult> users = new List<spGetMostWinsResult>();
+
+                base.Load("spGetMostWins")
+                    .ForEach(u => users.Add(
+                        new spGetMostWinsResult
+                        {
+                            Id = u.Id,
+                            DisplayName = u.DisplayName,
+                            GamesWon = u.GamesWon
+                        }));
+                return users;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
     }
 }

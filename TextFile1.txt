@@ -105,7 +105,7 @@ STORED PROCEDURE FOR CRIBBAGE PROJECT -- Most wins
 
     migrationBuilder.Sql(@"CREATE PROCEDURE [dbo].[spGetMostWins]
             AS
-            select Top 3 DisplayName, GamesWon 
+            select Top 3 Id, DisplayName, GamesWon 
             from tblUser
             order by GamesWon desc");
 

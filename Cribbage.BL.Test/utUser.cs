@@ -24,6 +24,14 @@ namespace Cribbage.BL.Test
         }
 
         [TestMethod]
+        public void LoadSPTest()
+        {
+            var users = new UserManager(options).LoadSPGetMostWins();
+            int expected = 3;
+            Assert.AreEqual(expected, users.Count);
+        }
+
+        [TestMethod]
         public void LoadByIdTest()
         {
             User user = new UserManager(options).Load().FirstOrDefault();
