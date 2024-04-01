@@ -65,7 +65,7 @@ namespace Cribbage.PL.Entities
 
 STORED PROCEDURE FROM DVDCENTRAL / CLASS
 
-Stored Procedures (at the bottom of the Up method -- look around line 451 in the migrations > date_createdatabase file)
+Stored Procedures (at the bottom of the Up method -- look around line 451 in the PL > migrations > date_createdatabase file)
 
            migrationBuilder.Sql(@"CREATE PROCEDURE [dbo].[spGetMovies]
                 AS
@@ -96,3 +96,15 @@ Stored Procedures (at the bottom of the Up method -- look around line 451 in the
                  WHERE g.Description Like '%' + @GenreName + '%'
             RETURN 0
             ");
+
+
+
+STORED PROCEDURE FOR CRIBBAGE PROJECT -- Most wins
+
+    migrationBuilder.Sql(@"CREATE PROCEDURE [dbo].[spGetMostWins]
+                    AS
+            select Top 3 DisplayName, GamesWon 
+            from tblUser
+            order by GamesWon desc
+            RETURN 0");
+

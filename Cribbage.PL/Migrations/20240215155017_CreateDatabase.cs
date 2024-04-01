@@ -131,6 +131,13 @@ namespace Cribbage.PL.Migrations
                 name: "IX_tblUserGame_PlayerId",
                 table: "tblUserGame",
                 column: "PlayerId");
+
+            migrationBuilder.Sql(@"CREATE PROCEDURE [dbo].[spGetMostWins]
+              AS
+              select Top 3 DisplayName, GamesWon 
+              from tblUser
+              order by GamesWon desc
+              RETURN 0");
         }
 
         /// <inheritdoc />
