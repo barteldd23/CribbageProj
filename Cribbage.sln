@@ -16,6 +16,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cribbage.MigrationHandler", "Cribbage.MigrationHandler\Cribbage.MigrationHandler.csproj", "{A88369F5-D5D2-4A0C-8608-9CABC328BD34}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C9D3FFE9-B404-49BC-8EAB-7927DD8B21DC}"
+	ProjectSection(SolutionItems) = preProject
+		TextFile1.txt = TextFile1.txt
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cribbage.Prototype", "Cribbage.Prototype\Cribbage.Prototype.csproj", "{CE059C91-CDAA-4157-999C-5860DF7FC88D}"
 EndProject
@@ -33,7 +36,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cribbage.WebApp.UI", "Cribb
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reporting", "Reporting\Reporting.csproj", "{A645A9A9-758E-40F4-9038-C7E9F17104F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cribbage.API.Test", "Cribbage.API.Test\Cribbage.API.Test.csproj", "{45462F07-36D4-4BAB-82B9-6D950BDE3F2E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cribbage.API.Test", "Cribbage.API.Test\Cribbage.API.Test.csproj", "{45462F07-36D4-4BAB-82B9-6D950BDE3F2E}"
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Cribbage.PythonUI2", "Cribbage.PythonUI2\Cribbage.PythonUI2.pyproj", "{D7E87019-CB86-437D-92EB-F34DD9A6FA46}"
 EndProject

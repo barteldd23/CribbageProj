@@ -136,8 +136,7 @@ namespace Cribbage.PL.Migrations
               AS
               select Top 3 DisplayName, GamesWon 
               from tblUser
-              order by GamesWon desc
-              RETURN 0");
+              order by GamesWon desc");
         }
 
         /// <inheritdoc />

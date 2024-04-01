@@ -8,6 +8,8 @@ Migration First:
 Add-Migration CreateDatabase
 Update-Database 
 
+**Startup project: MigrationHandler, project to target: PL 
+
 
 Stored Procedure: 
 
@@ -102,9 +104,16 @@ Stored Procedures (at the bottom of the Up method -- look around line 451 in the
 STORED PROCEDURE FOR CRIBBAGE PROJECT -- Most wins
 
     migrationBuilder.Sql(@"CREATE PROCEDURE [dbo].[spGetMostWins]
-                    AS
+            AS
             select Top 3 DisplayName, GamesWon 
             from tblUser
-            order by GamesWon desc
-            RETURN 0");
+            order by GamesWon desc");
 
+exec spGetMostWins
+
+DELETE THE TABLES ETC.
+    drop TABLE tblUserGame;
+    Drop TABLE tblGame;
+    Drop TABLE tblUser;
+    Drop procedure spGetMostWins;
+    Drop table __EFMigrationsHistory;
