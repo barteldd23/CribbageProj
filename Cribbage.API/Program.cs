@@ -31,9 +31,9 @@ public class Program
                 Version = "v1",
                 Contact = new Microsoft.OpenApi.Models.OpenApiContact
                 {
-                    Name = "Cribbage"
-                    //Email = "rachel.groff2190@fvtc.edu",
-                    //Url = new Uri("https://www.fvtc.edu")
+                    Name = "Cribbage",
+                    Email = "rachel.groff2190@fvtc.edu; dean.bartel9145@fvtc.edu",
+                    Url = new Uri("https://bigprojectapi-300089145.azurewebsites.net/")
                 }
             });
 
@@ -79,7 +79,7 @@ public class Program
         });
 
         // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
+        if (app.Environment.IsDevelopment() /*|| true*/)
         {
             app.UseSwagger();
             app.UseSwaggerUI();
