@@ -33,7 +33,7 @@ public class Program
                 {
                     Name = "Cribbage",
                     Email = "rachel.groff2190@fvtc.edu; dean.bartel9145@fvtc.edu",
-                    Url = new Uri("https://bigprojectapi-300089145.azurewebsites.net/")
+                    Url = new Uri("https://bigprojectapi-300089145.azurewebsites.net/CribbageHub")
                 }
             });
 
@@ -79,7 +79,7 @@ public class Program
         });
 
         // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment() /*|| true*/)
+        if (app.Environment.IsDevelopment() || true)
         {
             app.UseSwagger();
             app.UseSwaggerUI();

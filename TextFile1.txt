@@ -30,7 +30,7 @@ Update-Database
 API localhost: 7186
 
 log url: https://localhost:7186/logs/index.html
-
+https://bigprojectapi-300089145.azurewebsites.net/CribbageHub
 
 PRIOR STORED PROCEDURE FILE:
 
