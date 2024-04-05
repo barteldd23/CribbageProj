@@ -2,7 +2,34 @@ from textwrap import fill
 from tkinter import *
 from tkinter import ttk
 
+import asyncio
 
+import websockets
+import requests
+import json
+#import signalrcore.hub_connection_builder
+#from signalrcore import HubConnection
+#from signalrcore.hub_connection_builder import HubConnection
+#from signalrcore import hub_connection_builder
+import logging
+import sys
+from signalrcore.hub_connection_builder import HubConnectionBuilder
+#import signalrcore
+
+from requests import Session
+#from signalr import Connection
+
+
+
+
+hubAddress = "https://bigprojectapi-300089145.azurewebsites.net/CribbageHub"
+
+# def toSignalRMessage(data):
+#     return f'{json.dumps(data)}\u001e'
+
+# async def connectToHub(connectionId):
+#     uri = f"https://bigprojectapi-300089145.azurewebsites.net/CribbageHub?id={connectionId}"
+#     async with websockets.connect(uri) as websocket:
 
 def displayUI():
     
@@ -43,6 +70,8 @@ def displayUI():
     availableGamesFrame = ttk.Frame(root);
     availableGamesFrame.config(height=900, width=200);
     availableGamesFrame.pack(side=LEFT, fill=BOTH, expand=True)
+    
+    txtTestDisplay = ttk.Label(availableGamesFrame, text="Test Message")
     
     txtCrib = ttk.Label(cribFrame, text="Player1's Crib:")
     cribCard1 = ttk.Label(cribFrame, width=50);
@@ -215,7 +244,17 @@ def displayUI():
     lblP1Score.pack();
     lblP2Score.pack();
     
-
+    # hub_connection = HubConnection(hubAddress)
+    # hub_connection.build()
+    # hub_connection.on("ReceiveMessage", lambda: print("connected to hub, received message back"))
+    # hub_connection.start()
+    hub_connection = HubConnectionBuilder()\
+    .with_url(hubAddress, options={"verify_ssl": False})\
+    .build()
+    
+    hub_connection.on("ReceiveMessage", lambda: print("connected to hub, received message back"))
+    hub_connection.start()
+                      
     
 
     root.mainloop();
