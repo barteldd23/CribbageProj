@@ -8,6 +8,18 @@ def displayUI():
     
 
     root = Tk()
+    root.option_add('*tearOff', False)
+    
+    menuBar = Menu(root)
+    root.config(menu = menuBar)
+    file = Menu(menuBar)
+    
+    menuBar.add_cascade(menu=file, label="File")
+    
+    file.add_command(label='New Game', command = lambda: print('NewGame'))
+    file.add_command(label = 'Quit', command = quit)
+    
+    
     
     cardBack = PhotoImage(file="../images/cardBackBlue.png")
     smallCardBack = cardBack.subsample(5,5);
