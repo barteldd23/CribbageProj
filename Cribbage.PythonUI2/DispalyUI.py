@@ -22,7 +22,8 @@ from requests import Session
 
 
 
-hubAddress = "https://bigprojectapi-300089145.azurewebsites.net/CribbageHub"
+#hubAddress = "https://bigprojectapi-300089145.azurewebsites.net/CribbageHub"
+hubAddress = "https://localhost:7186/CribbageHub"
 
 # def toSignalRMessage(data):
 #     return f'{json.dumps(data)}\u001e'
@@ -252,7 +253,7 @@ def displayUI():
     .with_url(hubAddress, options={"verify_ssl": False})\
     .build()
     
-    hub_connection.on("ReceiveMessage", lambda: print("connected to hub, received message back"))
+    hub_connection.on("ReceiveMessage", lambda msg: print("received message back from hub." + msg[0]))
     hub_connection.start()
                       
     
