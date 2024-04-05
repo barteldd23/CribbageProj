@@ -15,6 +15,10 @@ def displayUI():
     menuAndCribFrame = ttk.Frame(root);
     menuAndCribFrame.config(height=900, width=300, relief=RIDGE);
     menuAndCribFrame.pack(side=LEFT, fill=BOTH, expand=True);
+    paddingFrame = ttk.Frame(menuAndCribFrame, height=300)
+    paddingFrame.pack(fill=X)
+    cribFrame = ttk.Frame(menuAndCribFrame, height=300)
+    cribFrame.pack(fill=X)
     
     playFrame = ttk.Frame(root);
     playFrame.config(height=900, width=900, relief=RIDGE);
@@ -24,23 +28,29 @@ def displayUI():
     scoreFrame.config(height=900, width=300, relief=RIDGE);
     scoreFrame.pack(side=LEFT, fill=BOTH, expand=True);
     
-    cribCard1 = ttk.Label(menuAndCribFrame, width=100);
+    availableGamesFrame = ttk.Frame(root);
+    availableGamesFrame.config(height=900, width=200);
+    availableGamesFrame.pack(side=LEFT, fill=BOTH, expand=True)
+    
+    txtCrib = ttk.Label(cribFrame, text="Player1's Crib:")
+    cribCard1 = ttk.Label(cribFrame, width=50);
     cribCard1.img = smallCardBack;
     cribCard1.config(image = cribCard1.img);
-    cribCard2 = ttk.Label(menuAndCribFrame, width=100);
+    cribCard2 = ttk.Label(cribFrame, width=50);
     cribCard2.img = smallCardBack;
     cribCard2.config(image = cribCard2.img);
-    cribCard3 = ttk.Label(menuAndCribFrame, width=100);
+    cribCard3 = ttk.Label(cribFrame, width=50);
     cribCard3.img = smallCardBack;
     cribCard3.config(image = cribCard3.img);
-    cribCard4 = ttk.Label(menuAndCribFrame, width=100);
+    cribCard4 = ttk.Label(cribFrame, width=50);
     cribCard4.img = smallCardBack;
     cribCard4.config(image = cribCard4.img);
     
-    cribCard1.pack();
-    cribCard2.pack();
-    cribCard3.pack();
-    cribCard4.pack();
+    txtCrib.grid(row=0, column=0, columnspan=2)
+    cribCard1.grid(row=1, column=0);
+    cribCard2.grid(row=1, column=1);
+    cribCard3.grid(row=2, column=0);
+    cribCard4.grid(row=2, column=1);
     
     opponentFrame = ttk.Frame(playFrame,height=300, width=900, relief=RIDGE)
     rallyFrame = ttk.Frame(playFrame,height=300, width=900, relief=RIDGE)
@@ -53,7 +63,7 @@ def displayUI():
     opponentLabel = ttk.Label(opponentFrame, text="Oppenents Hand");
     opponentLabel.grid(column=2, row=0, columnspan=2, pady=5, padx=5);
     
-    cardBack = PhotoImage(file="../images/cardBackBlue.png")
+    cardBack = PhotoImage(file="./images/cardBackBlue.png")
     smallCardBack = cardBack.subsample(5,5);
 
     # Setting the image this way should prevent garbage collection of the image.
@@ -115,7 +125,7 @@ def displayUI():
     playedCard8.config(image = playedCard8.img);
     
     cutCard = ttk.Label(rallyFrame, width=100)
-    cutCardImg = PhotoImage(file="../images/cardClubs_Jack.png")
+    cutCardImg = PhotoImage(file="./images/cardClubs_Jack.png")
     cutCard.img = cutCardImg.subsample(5,5);
     cutCard.config(image = cutCard.img);
     
