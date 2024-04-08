@@ -71,6 +71,7 @@ public class Program
             .AddLogging(c => c.AddEventLog())
             .AddLogging(c => c.AddConsole());
 
+
         var app = builder.Build();
 
         app.UseSerilogUi(options =>
@@ -88,6 +89,8 @@ public class Program
         app.UseHttpsRedirection();
         app.UseRouting();
         app.UseAuthorization();
+        app.UseWebSockets();
+
 
         //app.MapControllers();
 

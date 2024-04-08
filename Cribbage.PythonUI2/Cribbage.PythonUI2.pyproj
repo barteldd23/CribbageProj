@@ -31,6 +31,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="images\" />
     <Folder Include="Properties\" />
     <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
@@ -39,6 +40,69 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\PublishProfiles\bigprojectapi-300089145 - Web Deploy.pubxml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="images\background_1.png" />
+    <Content Include="images\background_2.png" />
+    <Content Include="images\background_3.png" />
+    <Content Include="images\cardBackBlue.jpg" />
+    <Content Include="images\cardBackBlue.png" />
+    <Content Include="images\cardBackGreen.png" />
+    <Content Include="images\cardBackRed.png" />
+    <Content Include="images\cardClubs_Ace.png" />
+    <Content Include="images\cardClubs_Eight.png" />
+    <Content Include="images\cardClubs_Five.png" />
+    <Content Include="images\cardClubs_Four.png" />
+    <Content Include="images\cardClubs_Jack.png" />
+    <Content Include="images\cardClubs_King.png" />
+    <Content Include="images\cardClubs_Nine.png" />
+    <Content Include="images\cardClubs_Queen.png" />
+    <Content Include="images\cardClubs_Seven.png" />
+    <Content Include="images\cardClubs_Six.png" />
+    <Content Include="images\cardClubs_Ten.png" />
+    <Content Include="images\cardClubs_Three.png" />
+    <Content Include="images\cardClubs_two.png" />
+    <Content Include="images\cardDiamonds_Ace.png" />
+    <Content Include="images\cardDiamonds_Eight.png" />
+    <Content Include="images\cardDiamonds_Five.png" />
+    <Content Include="images\cardDiamonds_Four.png" />
+    <Content Include="images\cardDiamonds_Jack.png" />
+    <Content Include="images\cardDiamonds_King.png" />
+    <Content Include="images\cardDiamonds_Nine.png" />
+    <Content Include="images\cardDiamonds_Queen.png" />
+    <Content Include="images\cardDiamonds_Seven.png" />
+    <Content Include="images\cardDiamonds_Six.png" />
+    <Content Include="images\cardDiamonds_Ten.png" />
+    <Content Include="images\cardDiamonds_Three.png" />
+    <Content Include="images\cardDiamonds_two.png" />
+    <Content Include="images\cardHearts_Ace.png" />
+    <Content Include="images\cardHearts_Eight.png" />
+    <Content Include="images\cardHearts_Five.png" />
+    <Content Include="images\cardHearts_Four.png" />
+    <Content Include="images\cardHearts_Jack.png" />
+    <Content Include="images\cardHearts_King.png" />
+    <Content Include="images\cardHearts_Nine.png" />
+    <Content Include="images\cardHearts_Queen.png" />
+    <Content Include="images\cardHearts_Seven.png" />
+    <Content Include="images\cardHearts_Six.png" />
+    <Content Include="images\cardHearts_Ten.png" />
+    <Content Include="images\cardHearts_Three.png" />
+    <Content Include="images\cardHearts_two.png" />
+    <Content Include="images\cardSpades_Ace.png" />
+    <Content Include="images\cardSpades_Eight.png" />
+    <Content Include="images\cardSpades_Five.png" />
+    <Content Include="images\cardSpades_Four.png" />
+    <Content Include="images\cardSpades_Jack.png" />
+    <Content Include="images\cardSpades_King.png" />
+    <Content Include="images\cardSpades_Nine.png" />
+    <Content Include="images\cardSpades_Queen.png" />
+    <Content Include="images\cardSpades_Seven.png" />
+    <Content Include="images\cardSpades_Six.png" />
+    <Content Include="images\cardSpades_Ten.png" />
+    <Content Include="images\cardSpades_Three.png" />
+    <Content Include="images\cardSpades_two.png" />
+    <Content Include="images\cribbageboard.png" />
+    <Content Include="images\cribbageboardoriginal.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.Web.targets" />
   <!-- Specify pre- and post-build commands in the BeforeBuild and 
