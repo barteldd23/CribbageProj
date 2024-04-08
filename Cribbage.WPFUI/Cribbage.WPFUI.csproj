@@ -19,6 +19,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Cribbage.API\Cribbage.API.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="cardBackBlue.png" />
     <Resource Include="cribbageboard.png" />
   </ItemGroup>
