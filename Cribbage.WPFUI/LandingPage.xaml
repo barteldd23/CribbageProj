@@ -9,7 +9,7 @@
     <Grid Height="300" VerticalAlignment="Top" HorizontalAlignment="Left" Width="470">
         <Label x:Name="lblWelcomeUser" Content="Welcome &quot;USER&quot;!" HorizontalAlignment="Left" Margin="70,34,0,0" VerticalAlignment="Top" FontSize="20"/>
         <Button x:Name="btnNewGame" Content="New Game" HorizontalAlignment="Left" Margin="70,94,0,0" VerticalAlignment="Top" Width="165" Height="60" FontSize="18" Click="btnNewGame_Click"/>
-        <Button x:Name="btnOpenSavedGame" Content="Open Saved Game" HorizontalAlignment="Left" Margin="70,159,0,0" VerticalAlignment="Top" Width="165" Height="60" FontSize="18"/>
+        <Button x:Name="btnOpenSavedGame" Content="Open Saved Game" HorizontalAlignment="Left" Margin="70,159,0,0" VerticalAlignment="Top" Width="165" Height="60" FontSize="18" Click="btnOpenSavedGame_Click"/>
         <Button x:Name="btnStats" Content="Stats" HorizontalAlignment="Left" Margin="243,94,0,0" VerticalAlignment="Top" Width="165" Height="60" FontSize="18" Click="btnStats_Click"/>
         <Button x:Name="btnExit" Content="Exit" HorizontalAlignment="Left" Margin="243,159,0,0" VerticalAlignment="Top" Width="165" Height="60" FontSize="18" Click="btnExit_Click"/>
     </Grid>

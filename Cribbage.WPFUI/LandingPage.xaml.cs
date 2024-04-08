@@ -75,5 +75,11 @@ namespace Cribbage.WPFUI
             // Set up to see their stats in a pop up window
 
         }
+
+        private void btnOpenSavedGame_Click(object sender, RoutedEventArgs e)
+        {
+            // Set up to see / open their saved games -- only able to continue against computer?
+
+        }
     }
 }

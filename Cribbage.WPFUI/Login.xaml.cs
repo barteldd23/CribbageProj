@@ -76,7 +76,9 @@ namespace Cribbage.WPFUI
 
         private void btnRegister_Click(object sender, RoutedEventArgs e)
         {
-            // need to set up to register a user
+            RegistrationPage registrationPage = new RegistrationPage();
+            registrationPage.Show();
+
             this.Close();
         }
 
