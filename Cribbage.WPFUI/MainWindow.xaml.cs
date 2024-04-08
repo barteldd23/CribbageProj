@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using Cribbage.BL.Models;
+using System.Windows;
 
 namespace Cribbage.WPFUI
 {
@@ -13,6 +14,7 @@ namespace Cribbage.WPFUI
         public MainWindow()
         {
             InitializeComponent();
+            
 
             // Start the hub connection
             SignalRConnection cribbageHubConnection = new SignalRConnection(hubAddress);

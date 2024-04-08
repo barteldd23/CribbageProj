@@ -42,6 +42,26 @@ namespace Cribbage.API.Controllers
         }
 
         /// <summary>
+        /// Get a particular user by logging in.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        [HttpGet("{user}")]
+        public bool Login(User user)
+        {
+            try
+            {
+                return new UserManager(options).Login(user);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
+        /// <summary>
         /// Insert a user.
         /// </summary>
         /// <param name="user"></param>
