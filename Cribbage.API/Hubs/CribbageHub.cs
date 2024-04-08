@@ -1,15 +1,30 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using Cribbage.BL;
+using Cribbage.BL.Models;
+using Cribbage.PL.Data;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace Cribbage.API.Hubs
 {
     public class CribbageHub : Hub
     {
+        private readonly DbContextOptions<CribbageEntities> options;
+
         public async Task Login(string email, string password)
         {
             // Try logging in.
+            User user = new User { Email = email, Password = password };
+            bool isLoggedIn = new UserManager(options).Login(user);
             // Send Back Success/fail to client only
+            string message;
+            if (isLoggedIn) { message = "Logged in as: " + user.DisplayName; }
+            else { message = "Error. Try Again"; }
+            await Clients.Caller.SendAsync("LoggedIn", message);
             // On success: serialize User into Json
+            string UserJson = JsonConvert.SerializeObject(user);
             // Send Back User Json to client only
+            //await Clients.Caller.SendAsync("User", UserJson);
         }
 
         public async Task CreateUser(string user)
