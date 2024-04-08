@@ -5,16 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Cribbage.WPFUI"
         mc:Ignorable="d"
-        Title="Cribbage Game Login" Height="325" Width="515" Background="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}" SizeToContent="Height" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen">
-    <Grid Background="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}" Height="315" VerticalAlignment="Top" HorizontalAlignment="Left" Width="515">
-        <Button x:Name="btnLogin" Content="Login" HorizontalAlignment="Left" Margin="165,190,0,0" VerticalAlignment="Top" Width="105" Height="40" IsDefault="True" Grid.Column="1" Grid.ColumnSpan="2" Click="btnLogin_Click" TabIndex="3"/>
-        <Button x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Left" Margin="291,190,0,0" VerticalAlignment="Top" Width="104" Height="40" IsCancel="True" Grid.Column="1" Click="btnCancel_Click" TabIndex="5"/>
-        <Label x:Name="___No_Name_" Content="Email" HorizontalAlignment="Left" Margin="96,74,0,0" VerticalAlignment="Top" Focusable="True" FontSize="18" Width="52" Grid.Column="1"/>
-        <Label Content="Password" HorizontalAlignment="Left" Margin="65,108,0,0" VerticalAlignment="Top" Height="45" Width="92" FontSize="18" Grid.Column="1"/>
-        <TextBox x:Name="txtLoginEmail" HorizontalAlignment="Left" Margin="175,64,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" Height="40" FontSize="18" AcceptsReturn="True" AcceptsTab="True" AutoWordSelection="True" TabIndex="1"/>
-        <PasswordBox x:Name="pbxPasswordBox" Grid.Column="1" HorizontalAlignment="Left" Margin="175,109,0,0" VerticalAlignment="Top" Width="220" Height="35" FontSize="18" TabIndex="2"/>
-        <Label Content="New user?" HorizontalAlignment="Left" Margin="56,239,0,0" VerticalAlignment="Top" Height="45" Width="101" FontSize="18"/>
-        <Button x:Name="btnRegister" Content="Register" HorizontalAlignment="Left" Margin="165,239,0,0" VerticalAlignment="Top" Width="105" Height="40" Click="btnLogin_Click" TabIndex="4"/>
+        Title="Cribbage Game Login" Height="290" Width="485" Background="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}" SizeToContent="Height" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen">
+    <Grid Background="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}" Height="280" VerticalAlignment="Top" HorizontalAlignment="Center" Width="485">
+        <Button x:Name="btnLogin" Content="Login" HorizontalAlignment="Left" Margin="165,109,0,0" VerticalAlignment="Top" Width="105" Height="40" IsDefault="True" Click="btnLogin_Click" TabIndex="3" FontSize="20"/>
+        <Button x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Left" Margin="291,109,0,0" VerticalAlignment="Top" Width="104" Height="40" IsCancel="True" Click="btnCancel_Click" TabIndex="5" FontSize="20"/>
+        <Label x:Name="___No_Name_" Content="Email" HorizontalAlignment="Left" Margin="90,29,0,0" VerticalAlignment="Top" Focusable="True" FontSize="20" Width="58"/>
+        <Label Content="Password" HorizontalAlignment="Left" Margin="65,63,0,0" VerticalAlignment="Top" Height="45" Width="92" FontSize="20"/>
+        <TextBox x:Name="txtLoginEmail" HorizontalAlignment="Left" Margin="175,19,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" Height="40" FontSize="18" AcceptsReturn="True" AcceptsTab="True" AutoWordSelection="True" TabIndex="1"/>
+        <PasswordBox x:Name="pbxPasswordBox" HorizontalAlignment="Left" Margin="175,64,0,0" VerticalAlignment="Top" Width="220" Height="35" FontSize="18" TabIndex="2"/>
+        <Label Content="New user?" HorizontalAlignment="Left" Margin="56,169,0,0" VerticalAlignment="Top" Height="45" Width="101" FontSize="20"/>
+        <Button x:Name="btnRegister" Content="Register" HorizontalAlignment="Left" Margin="165,169,0,0" VerticalAlignment="Top" Width="105" Height="40" Click="btnLogin_Click" TabIndex="4" FontSize="20" />
+        <Label x:Name="lblError" Content="" HorizontalAlignment="Left" Margin="56,219,0,0" VerticalAlignment="Top" FontSize="22" FontWeight="Bold"/>
 
     </Grid>
 </Window>

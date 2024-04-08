@@ -23,12 +23,17 @@ namespace Cribbage.WPFUI
 
         private void QuitGame_Click(object sender, RoutedEventArgs e)
         {
+            // need to save prior to closing 
             this.Close();
         }
 
         private void NewGame_Click(object sender, RoutedEventArgs e)
         {
-            
+            MainWindow mainWindow = new MainWindow();
+            mainWindow.Show();
+
+            // need to save prior to closing 
+            this.Close();
         }
 
     }

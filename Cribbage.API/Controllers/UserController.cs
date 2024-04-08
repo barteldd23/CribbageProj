@@ -25,9 +25,16 @@ namespace Cribbage.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IEnumerable<User> Get()
+        public async Task<IEnumerable<User>> Get()
         {
-            return new UserManager(options).Load();
+            try
+            {
+                return (IEnumerable<User>)Ok(await new UserManager(logger, options).LoadAsync());
+            }
+            catch (Exception ex)
+            {
+                return (IEnumerable<User>)StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         /// <summary>

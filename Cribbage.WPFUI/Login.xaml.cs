@@ -16,6 +16,17 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Windows;
+using Microsoft.VisualBasic.ApplicationServices;
+using Cribbage.API.Hubs;
 
 namespace Cribbage.WPFUI
 {
@@ -24,7 +35,7 @@ namespace Cribbage.WPFUI
     /// </summary>
     public partial class Login : Window
     {
-
+        BL.Models.User user; //pass the user info from Login to LandingPage
 
         public Login()
         {
@@ -38,18 +49,36 @@ namespace Cribbage.WPFUI
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            string email = txtLoginEmail.Text;
-            string password = pbxPasswordBox.ToString();
+            string email = txtLoginEmail.Text.Trim();
+            string password = pbxPasswordBox.ToString().Trim();
 
-            User user = new User();
+            BL.Models.User user = new BL.Models.User();
 
             user.Email = email;
             user.Password = password;
 
-            //UserController login = new UserController().Login(user);
+            if(user.Email != string.Empty && user.Password != string.Empty)
+            {
+                CribbageHub cribbageHub = new CribbageHub();
 
+                cribbageHub.Login(email, password);
 
-
+                LandingPage landingPage = new LandingPage();
+                landingPage.Show();
+                this.Close();
+            }
+            else
+            {
+                lblError.Foreground = new SolidColorBrush(Colors.DarkMagenta);
+                lblError.Content = "Please enter an email and password."; 
+            }
         }
+
+        private void btnRegister_Click(object sender, RoutedEventArgs e)
+        {
+            // need to set up to register a user
+            this.Close();
+        }
+
     }
 }
