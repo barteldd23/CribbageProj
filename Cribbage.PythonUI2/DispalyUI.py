@@ -4,7 +4,7 @@ from tkinter import ttk
 
 import asyncio
 
-import websockets
+#import websockets
 import requests
 import json
 #import signalrcore.hub_connection_builder
