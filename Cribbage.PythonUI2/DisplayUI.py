@@ -5,17 +5,38 @@ import tkinter
 from tkinter import messagebox
 from tkinter.tix import COLUMN
 from turtle import bgcolor
+from dataclasses import dataclass, field
+import json
 
 
 from signalrcore.hub_connection_builder import HubConnectionBuilder
 
+@dataclass
+class User:
+    # Id: str 
+    # Email: str
+    # DisplayName: str
+    # FirstName: str
+    # LastName: str
+    # FullName: str #= field(init=False)
+    # LastFirstName: str #= field(init=False)
+    # Password: str
+    # GamesStarted: int
+    # GamesWon: int
+    # GamesLost: int
+    # WinStreak: int
+    # AvgPtsPerGame: float
+    
+    def __init__(self, j):
+        self.__dict__ = json.loads(j)
 
-def receivedLogInMessage(isLoggedIn, messageInfo, user):
+def receivedLogInMessage(isLoggedIn, messageInfo, userJson):
     if(isLoggedIn):
         loginFrame.pack_forget()
-        welcomeString = 'Welcome' + user
-        print(user)
-        lblWelcomMessage.config(text=welcomeString )
+        welcomeString = 'Welcome' + userJson
+        print(userJson)
+        pythonUser = User(userJson)
+        lblWelcomMessage.config(text=pythonUser.DisplayName )
         loggedInFrame.pack()
         
 def newVsComputer():
