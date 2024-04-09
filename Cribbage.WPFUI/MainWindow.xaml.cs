@@ -1,16 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Cribbage.BL.Models;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Cribbage.WPFUI
 {
@@ -19,19 +8,33 @@ namespace Cribbage.WPFUI
     /// </summary>
     public partial class MainWindow : Window
     {
+        //string hubAddress = "https://bigprojectapi-300089145.azurewebsites.net/CribbageHub";
+        string hubAddress = "https://localhost:7186/CribbageHub";
+
         public MainWindow()
         {
             InitializeComponent();
+            
+
+            // Start the hub connection
+            SignalRConnection cribbageHubConnection = new SignalRConnection(hubAddress);
+            cribbageHubConnection.Start();
         }
 
         private void QuitGame_Click(object sender, RoutedEventArgs e)
         {
+            // need to save prior to closing 
             this.Close();
         }
 
         private void NewGame_Click(object sender, RoutedEventArgs e)
         {
-            
+            MainWindow mainWindow = new MainWindow();
+            mainWindow.Show();
+
+            // need to save prior to closing 
+            this.Close();
         }
+
     }
 }

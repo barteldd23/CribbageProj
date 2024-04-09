@@ -1,7 +1,14 @@
 ﻿using Microsoft.Extensions.Logging;
+using System.Linq.Expressions;
 
 namespace Cribbage.BL
 {
+    public class AlreadyExistsException : Exception
+    {
+        public AlreadyExistsException() : base("Row already exists.") { }
+        public AlreadyExistsException(string message) : base(message) { }
+    }
+
     public abstract class GenericManager<T> where T : class, IEntity
     {
         protected DbContextOptions<CribbageEntities> options;
@@ -90,6 +97,60 @@ namespace Cribbage.BL
                 throw e;
             }
         }
+
+        public async Task<int> InsertAsync(T entity,
+                                  Expression<Func<T, bool>> predicate = null,
+                                  bool rollback = false)
+        {
+            try
+            {
+                int results = 0;
+                using (CribbageEntities dc = new CribbageEntities(options))
+                {
+                    if ((predicate == null) || ((predicate != null) && (!dc.Set<T>().Any(predicate))))
+                    {
+                        IDbContextTransaction dbTransaction = null;
+                        if (rollback) dbTransaction = dc.Database.BeginTransaction();
+
+                        entity.Id = Guid.NewGuid();
+
+                        dc.Set<T>().Add(entity);
+                        results = dc.SaveChanges();
+
+                        if (rollback) dbTransaction.Rollback();
+                    }
+                    else
+                    {
+                        if (logger != null) logger.LogWarning("Row already exists.");
+                        throw new AlreadyExistsException("Row already exists.");
+                    }
+                }
+                return results;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<List<T>> LoadAsync()
+        {
+            try
+            {
+                if (logger != null) logger.LogWarning($"Get {typeof(T).Name}s");
+                var rows = new CribbageEntities(options)
+                    .Set<T>()
+                    .ToListAsync<T>()
+                    .ConfigureAwait(false);
+
+                return await rows;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
 
         public int Insert(T entity, bool rollback = false)
         {

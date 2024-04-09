@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Cribbage.WPFUI"
         mc:Ignorable="d"
-        Title="Cribbage Game" Height="597" Width="1308" Background="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}" SizeToContent="Height" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen">
+        Title="Cribbage Game" Height="620" Width="1365" Background="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}" SizeToContent="Height" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5*"/>
@@ -17,7 +17,7 @@
         </Grid.ColumnDefinitions>
         <Grid x:Name="grdMenuCrib" HorizontalAlignment="Left" Height="535" Margin="0,4,0,0" VerticalAlignment="Top" Width="175" Grid.ColumnSpan="2">
             <Menu x:Name="mnuMenu" Margin="0,0,25,490" Background="{x:Null}">
-                <MenuItem Header="Menu">
+                <MenuItem Header="Menu" Height="35" Width="85" FontSize="20" FontWeight="Bold">
                     <MenuItem Header="_New Game" InputGestureText="Ctrl+N"
                           Click="NewGame_Click"/>
                     <MenuItem Header="_Quit Game" InputGestureText="Ctrl+Q"
@@ -25,7 +25,7 @@
                 </MenuItem>
 
             </Menu>
-            <Label x:Name="lblPlayersCrib" Content="Crib" HorizontalAlignment="Left" Margin="10,154,0,0" VerticalAlignment="Top" Width="165"/>
+            <Label x:Name="lblPlayersCrib" Content="Player's Crib" HorizontalAlignment="Left" Margin="10,145,0,0" VerticalAlignment="Top" Width="165" FontSize="18" Height="43" FontWeight="Bold"/>
             <Image x:Name="imgCribCard1" HorizontalAlignment="Left" Height="100" Margin="8,185,0,0" VerticalAlignment="Top" Width="68" Source="/cardBackBlue.png"/>
             <Image x:Name="imgCribCard2" HorizontalAlignment="Left" Height="100" Margin="80,185,0,0" VerticalAlignment="Top" Width="77" Source="/cardBackBlue.png"/>
             <Image x:Name="imgCribCard3" HorizontalAlignment="Left" Height="100" Margin="8,295,0,0" VerticalAlignment="Top" Width="67" Source="/cardBackBlue.png"/>
@@ -52,7 +52,7 @@
                 <Image x:Name="imgOppenentCard6" Height="100" Width="83" Source="/cardBackBlue.png"/>
             </StackPanel>
         </Grid>
-        <Grid x:Name="grdBoardScore" Margin="341,14,0,6" Grid.Column="3" Grid.ColumnSpan="3" HorizontalAlignment="Left" Width="618">
+        <Grid x:Name="grdBoardScore" Margin="341,14,0,6" Grid.Column="3" Grid.ColumnSpan="3" HorizontalAlignment="Left" Width="681">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="32*"/>
                 <ColumnDefinition Width="25*"/>
@@ -62,12 +62,12 @@
                 <RowDefinition Height="135*"/>
             </Grid.RowDefinitions>
             <Image x:Name="imgCribbageBoard" HorizontalAlignment="Left" Margin="260,16,0,42" Width="160" Grid.ColumnSpan="2" Source="/cribbageboard.png" Grid.RowSpan="2"/>
-            <Rectangle Grid.Column="1" Height="71" Margin="89,154,0,0" Stroke="Black" VerticalAlignment="Top" HorizontalAlignment="Left" Width="147"/>
-            <Label x:Name="lblPlayer1ScoreName" Grid.Column="1" Content="Player 1 Score Name" Margin="89,154,57,199"/>
-            <Label x:Name="lblPlayer1Score" Grid.Column="1" Content="Player 1 Score" HorizontalAlignment="Left" Margin="89,180,0,188"/>
-            <Rectangle Grid.Column="1" HorizontalAlignment="Left" Height="75" Margin="89,230,0,0" Stroke="Black" VerticalAlignment="Top" Width="147"/>
-            <Label x:Name="lblPlayer2ScoreName" Grid.Column="1" Content="Player 2 Score Name" Margin="89,230,57,123"/>
-            <Label x:Name="lblPlayer2Score" Grid.Column="1" Content="Player 2 Score" HorizontalAlignment="Left" Margin="89,257,0,107"/>
+            <Rectangle Grid.Column="1" Height="71" Margin="89,154,0,0" Stroke="Black" VerticalAlignment="Top" HorizontalAlignment="Left" Width="200"/>
+            <Label x:Name="lblPlayer1DisplayName" Grid.Column="1" Content="Player1 DisplayName" Margin="89,154,10,224" FontSize="18" FontWeight="Bold"/>
+            <Label x:Name="lblPlayer1Score" Grid.Column="1" Content="Player1 Score" HorizontalAlignment="Left" Margin="91,190,0,189" FontSize="18"/>
+            <Rectangle Grid.Column="1" HorizontalAlignment="Left" Height="75" Margin="89,230,0,0" Stroke="Black" VerticalAlignment="Top" Width="200"/>
+            <Label x:Name="lblPlayer2DisplayName" Grid.Column="1" Content="Player2 DisplayName" Margin="89,230,10,0" FontSize="18" FontWeight="Bold" Height="38" VerticalAlignment="Top"/>
+            <Label x:Name="lblPlayer2Score" Grid.Column="1" Content="Player2 Score" HorizontalAlignment="Left" Margin="91,268,0,109" FontSize="18"/>
         </Grid>
         <Grid x:Name="grdPlayerButtons" Margin="0,339,0,10" Grid.ColumnSpan="4" Grid.Column="1" HorizontalAlignment="Left" Width="1040">
             <Grid.RowDefinitions>
@@ -82,11 +82,11 @@
                 <Image x:Name="imgPlayerCard5" Height="100" Width="83" Source="/cardBackBlue.png"/>
                 <Image x:Name="imgPlayerCard6" Height="100" Width="88" Source="/cardBackBlue.png"/>
             </StackPanel>
-            <Button x:Name="btnSendToCrib" Content="Send To Crib" HorizontalAlignment="Left" Margin="200,80,0,0" Width="80" Height="35" VerticalAlignment="Top" Grid.Row="1"/>
-            <Button x:Name="btnNextHand" Content="Next Hand" HorizontalAlignment="Left" Margin="315,80,0,0" Width="80" Height="35" VerticalAlignment="Top" Grid.Row="1"/>
-            <Button x:Name="btnPlayCard" Content="Play Card" HorizontalAlignment="Left" Margin="440,80,0,0" Width="80" Height="35" VerticalAlignment="Top" Grid.Row="1"/>
-            <Button x:Name="btnGo" Content="Go" HorizontalAlignment="Left" Margin="570,80,0,0" Width="80" Height="35" VerticalAlignment="Top" Grid.Row="1"/>
-            <Button x:Name="btnCountCards" Content="Count Cards" HorizontalAlignment="Left" Margin="690,80,0,0" Width="80" Height="35" VerticalAlignment="Top" Grid.Row="1"/>
+            <Button x:Name="btnSendToCrib" Content="Send To Crib" HorizontalAlignment="Left" Margin="165,80,0,0" Width="115" Height="35" VerticalAlignment="Top" Grid.Row="1" FontSize="18"/>
+            <Button x:Name="btnNextHand" Content="Next Hand" HorizontalAlignment="Left" Margin="305,80,0,0" Width="110" Height="35" VerticalAlignment="Top" Grid.Row="1" FontSize="18"/>
+            <Button x:Name="btnPlayCard" Content="Play Card" HorizontalAlignment="Left" Margin="435,80,0,0" Width="105" Height="35" VerticalAlignment="Top" Grid.Row="1" FontSize="18"/>
+            <Button x:Name="btnGo" Content="Go" HorizontalAlignment="Left" Margin="560,80,0,0" Width="100" Height="35" VerticalAlignment="Top" Grid.Row="1" FontSize="18"/>
+            <Button x:Name="btnCountCards" Content="Count Cards" HorizontalAlignment="Left" Margin="680,80,0,0" Width="130" Height="35" VerticalAlignment="Top" Grid.Row="1" FontSize="18"/>
         </Grid>
         <Grid x:Name="grdShared" Margin="0,124,70,175" Grid.ColumnSpan="4" Grid.Column="1" HorizontalAlignment="Left" Width="931">
             <Grid.ColumnDefinitions>
@@ -107,7 +107,7 @@
                 <Image x:Name="imgPlayedCard7" Height="100" Width="83" Source="/cardBackBlue.png"/>
                 <Image x:Name="imgPlayedCard8" Height="100" Width="83" Source="/cardBackBlue.png"/>
             </StackPanel>
-            <Label x:Name="lblCutCard" Content="Cut Card" HorizontalAlignment="Left" Margin="94,-52,0,0" VerticalAlignment="Top" Width="66" Grid.Column="4"/>
+            <Label x:Name="lblCutCard" Content="Cut Card" HorizontalAlignment="Left" Margin="80,-58,0,0" VerticalAlignment="Top" Width="120" Grid.Column="4" FontSize="20" FontWeight="Bold"/>
         </Grid>
     </Grid>
 </Window>

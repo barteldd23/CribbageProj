@@ -1,4 +1,6 @@
 ﻿using Cribbage.BL.Models;
+using Microsoft.Extensions.Logging;
+using Microsoft.SqlServer.Server;
 using System.Security.Cryptography;
 
 namespace Cribbage.BL
@@ -17,6 +19,8 @@ namespace Cribbage.BL
     public class UserManager : GenericManager<tblUser>
     {
         public UserManager(DbContextOptions<CribbageEntities> options) : base(options) { }
+
+        public UserManager(ILogger logger, DbContextOptions<CribbageEntities> options) : base(logger, options) { }
 
         //public static string[,] ConvertData(List<User> users)
         //{
@@ -113,6 +117,51 @@ namespace Cribbage.BL
             catch (Exception e)
             {
                 throw e;
+            }
+        }
+
+        public async Task<int> InsertAsync(User user, bool rollback = false)
+        {
+            try
+            {
+                tblUser row = new tblUser { Email = user.Email };
+                user.Id = row.Id;
+                return await InsertAsync(row, e => e.Email == user.Email, rollback);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<List<User>> LoadAsync()
+        {
+            try
+            {
+                List<User> rows = new List<User>();
+                (await base.LoadAsync())
+                    .OrderBy(d => d.SortField)
+                    .ToList()
+                    .ForEach(d => rows.Add(
+                        new User
+                        {
+                            Id = d.Id,
+                            Email = d.Email,
+                            Password = d.Password,
+                            DisplayName = d.DisplayName,
+                            FirstName = d.FirstName,
+                            LastName = d.LastName,
+                            GamesStarted = d.GamesStarted,
+                            GamesWon = d.GamesWon,
+                            GamesLost = d.GamesLost,
+                            WinStreak = d.WinStreak,
+                            AvgPtsPerGame = d.AvgPtsPerGame
+            }));
+                return rows;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
