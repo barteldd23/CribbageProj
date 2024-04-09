@@ -29,6 +29,9 @@
     <Compile Include="DispalyUI.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="User.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="images\" />

@@ -3,28 +3,60 @@ using Cribbage.BL.Models;
 using Cribbage.PL.Data;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 
 namespace Cribbage.API.Hubs
 {
     public class CribbageHub : Hub
     {
-        private readonly DbContextOptions<CribbageEntities> options;
+        protected readonly DbContextOptions<CribbageEntities> options;
+        private IConfigurationRoot _configuration;
+
+        public CribbageHub()
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json");
+
+            _configuration = builder.Build();
+
+            options = new DbContextOptionsBuilder<CribbageEntities>()
+                .UseSqlServer(_configuration.GetConnectionString("DatabaseConnection"))
+                .UseLazyLoadingProxies()
+                .Options;
+        }
 
         public async Task Login(string email, string password)
         {
-            // Try logging in.
-            User user = new User { Email = email, Password = password };
-            bool isLoggedIn = new UserManager(options).Login(user);
-            // Send Back Success/fail to client only
+
             string message;
-            if (isLoggedIn) { message = "Logged in as: " + user.DisplayName; }
-            else { message = "Error. Try Again"; }
-            await Clients.Caller.SendAsync("LoggedIn", message);
-            // On success: serialize User into Json
-            string UserJson = JsonConvert.SerializeObject(user);
-            // Send Back User Json to client only
-            //await Clients.Caller.SendAsync("User", UserJson);
+            bool isLoggedIn;
+            try
+            {
+                // Try logging in.
+                User user = new User { Email = email, Password = password };
+                isLoggedIn = new UserManager(options).Login(user);
+                // Send Back Success/fail to client only
+                
+                if (isLoggedIn) { message = "Logged in as: " + user.DisplayName; }
+                else { message = "Error. Try Again"; }
+
+                await Clients.All.SendAsync("ReceiveMessage", message, message);
+
+                //await Clients.Caller.SendAsync("LogInAttempt", isLoggedIn, message);
+                // On success: serialize User into Json
+                string UserJson = JsonConvert.SerializeObject(user);
+                // Send Back User Json to client only
+                await Clients.Caller.SendAsync("LogInAttempt", isLoggedIn, message, UserJson);
+            }
+            catch (Exception ex)
+            {
+                isLoggedIn = false;
+                message = "Error. Try Again";
+                await Clients.All.SendAsync("ReceiveMessage", message, message);
+                await Clients.Caller.SendAsync("LogInAttempt", isLoggedIn, message);
+            }
         }
 
         public async Task CreateUser(string user)
