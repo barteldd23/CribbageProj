@@ -1,3 +1,4 @@
+using Cribbage.BL.Models;
 using iText.Forms.Xfdf;
 using iText.StyledXmlParser.Jsoup.Nodes;
 using Reporting;
@@ -52,6 +53,22 @@ namespace Cribbage.BL.Test
             int result = new UserManager(options).Insert(user, true);
             Assert.AreEqual(1, result);
         }
+
+        [TestMethod]
+        public void InsertDuplicateTest()
+        {
+            User user = new User { Id = Guid.NewGuid(), Email = "cribbage@game.com", DisplayName = "TestName", FirstName = "Bob", LastName = "Bob", Password = "test", GamesStarted = 0, GamesWon = 0, GamesLost = 0, WinStreak = 0, AvgPtsPerGame = 0 };
+            try
+            {
+                int result = new UserManager(options).Insert(user, true);
+                Assert.IsTrue(false);
+            }
+            catch (Exception ex)
+            {
+                Assert.IsTrue(true);
+            }
+        }
+        
 
         [TestMethod]
         public void UpdateTest()

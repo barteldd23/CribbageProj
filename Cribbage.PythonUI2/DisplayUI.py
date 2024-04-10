@@ -5,38 +5,55 @@ import tkinter
 from tkinter import messagebox
 from tkinter.tix import COLUMN
 from turtle import bgcolor
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, asdict
 import json
+import uuid
 
 
 from signalrcore.hub_connection_builder import HubConnectionBuilder
 #
 
 @dataclass
-class User:
-    # Id: str 
-    # Email: str
-    # DisplayName: str
-    # FirstName: str
-    # LastName: str
-    # FullName: str #= field(init=False)
-    # LastFirstName: str #= field(init=False)
-    # Password: str
-    # GamesStarted: int
-    # GamesWon: int
-    # GamesLost: int
-    # WinStreak: int
-    # AvgPtsPerGame: float
+class CribbageUser:
+    Id: str = ''
+    Email: str = ''
+    DisplayName: str = ''
+    FirstName: str = ''
+    LastName: str = ''
+    FullName: str = field(init=False)
+    LastFirstName: str = field(init=False)
+    Password: str = ''
+    GamesStarted: int = 0
+    GamesWon: int = 0
+    GamesLost: int = 0
+    WinStreak: int = 0
+    AvgPtsPerGame: float = 0
     
-    def __init__(self, j):
+
+    
+    def insertJson(self, j):
         self.__dict__ = json.loads(j)
+        
+    def __post_init__(self) -> None:
+        self.FullName = self.FirstName + " " + self.LastName
+        self.LastFirstName = self.LastName + ", " + self.FirstName
+
+pythonUser = CribbageUser()
+        
+def receivedCreateUserMessage(isCreated, messageInfo):
+    if(isCreated):
+        newPlayerFrame.pack_forget()
+        lblErrorMessage.config(text="User Created")
+        loginFrame.pack()
+    else:
+        lblCreateUserError.config(text=messageInfo)
 
 def receivedLogInMessage(isLoggedIn, messageInfo, userJson):
     if(isLoggedIn):
         loginFrame.pack_forget()
         welcomeString = 'Welcome' + userJson
         print(userJson)
-        pythonUser = User(userJson)
+        pythonUser.insertJson(userJson)
         lblWelcomMessage.config(text=pythonUser.DisplayName )
         loggedInFrame.pack()
     else:
@@ -50,18 +67,68 @@ def newVsPlayer():
 
 def onClickNewUser():
     loginFrame.pack_forget()
+    newPlayerFrame.pack()
 
 def onClickLogin():
     lblErrorMessage.config(text='')
     email = txtEmail.get()
     password = txtPassword.get()
     
+    if(email.isspace() or email.find('@') == -1):
+        lblErrorMessage.config(text="Enter an Email")
+        return
+        
+    if(len(password) == 0 or password.isspace()):
+        lblErrorMessage.config(text="Enter a password")
+        return
+    
     hub_connection.send("Login",[email, password])
     
 def onClickCreateUser():
-    pass
+    #clear error message
+    lblCreateUserError.config(text='')
+
+    ### check for valid entries
+    firstName = txtFirstName.get()
+    lastName = txtLastName.get()
+    displayName = txtDisplayName.get()
+    email = txtCreateUserEmail.get()
+    password = txtNewPlayerPassword.get()
+    password2 = txtNewPlayerVerifyPassword.get()
+    if(firstName.isspace()):
+        lblCreateUserError.config(text="Enter a First Name")
+        return
+    if(len(lastName)==0 or lastName.isspace()):
+        lblCreateUserError.config(text="Enter a Last Name")
+        return
+    if(len(displayName)==0 or displayName.isspace()):
+        lblCreateUserError.config(text="Enter a Display Name")
+        return
+    if( len(email) == 0 or email.isspace() or email.find('@') == -1 ):
+        lblCreateUserError.config(text="Enter an Email")
+        return
+    if(len(password)==0 or password.isspace()):
+        lblCreateUserError.config(text="Enter a Password")
+        return
+    if( password != password2):
+        lblCreateUserError.config(text="Passwords not Matching")
+        return
+    
+    user = CribbageUser()
+    user.Id = str(uuid.uuid4())
+    user.FirstName = firstName
+    user.LastName = lastName
+    user.DisplayName = displayName
+    user.Email = email
+    user.Password = password
+
+    userJson = json.dumps(asdict(user))
+    hub_connection.send("CreateUser",[userJson])
+    #messagebox.showinfo(message=userJson)
+
 def onClickCancelUser():
-    pass
+    newPlayerFrame.pack_forget()
+    loginFrame.pack()
 
     #messagebox.showinfo(message='email: ' + email + ' password: ' + password)
 
@@ -77,6 +144,7 @@ hub_connection = HubConnectionBuilder()\
     
 hub_connection.on("ReceiveMessage", lambda msg: print("received message back from hub." + msg[0]))
 hub_connection.on("LogInAttempt", lambda data: receivedLogInMessage(data[0],data[1],data[2]))
+hub_connection.on("CreateUserAttempt", lambda data: receivedCreateUserMessage(data[0],data[1]))
 hub_connection.start()
 
 
@@ -195,8 +263,8 @@ lblEmail.grid(row=1, column=0, sticky=W, pady=5, padx=5)
 txtEmail.grid(row=1, column=1, sticky=W, pady=5, padx=5)
 lblPassword.grid(row=2, column=0, sticky=W, pady=5, padx=5)
 txtPassword.grid(row=2, column=1, sticky=W, pady=5, padx=5)
-btnLogin.grid(row=3, column=0, pady=5, padx=5)
-btnNewUser.grid(row=3, column=2, pady=5, padx=5)
+btnLogin.grid(row=3, column=0, pady=5, padx=5, sticky='e')
+btnNewUser.grid(row=3, column=1, pady=5, padx=5, sticky='w')
 lblErrorMessage.grid(row=4, column=0, columnspan=2, pady=5, padx=5)
 
 
@@ -225,8 +293,33 @@ lblNewPlayerPassword = tkinter.Label(newPlayerFrame, text="Password", font=('Ari
 lblNewPlayerVerifyPassword = tkinter.Label(newPlayerFrame, text="Verify Password", font=('Arial',16))
 btnCreateUser = tkinter.Button(newPlayerFrame,text="Create", command=onClickCreateUser, font=('Arial',16))
 btnCancel = tkinter.Button(newPlayerFrame,text="Cancel", command=onClickCancelUser, font=('Arial',16))
+lblCreateUserError = tkinter.Label(newPlayerFrame, font=('Arial',16), fg='red')
 
-txtFirstName = tkinter.Entry(newPlayerFrame)
+txtFirstName = tkinter.Entry(newPlayerFrame, font=('Arial',16))
+txtLastName = tkinter.Entry(newPlayerFrame, font=('Arial',16))
+txtDisplayName = tkinter.Entry(newPlayerFrame, font=('Arial',16))
+txtCreateUserEmail = tkinter.Entry(newPlayerFrame, font=('Arial',16))
+txtNewPlayerPassword = tkinter.Entry(newPlayerFrame, show='*', font=('Arial',16))
+txtNewPlayerVerifyPassword = tkinter.Entry(newPlayerFrame, show='*', font=('Arial',16))
+
+lblCreatePlayer.grid(row=0, column=0, columnspan=2)
+lblFirstName.grid(row=1, column=0)
+lblLastName.grid(row=2, column=0)
+lblDisplayName.grid(row=3, column=0)
+lblEmail.grid(row=4, column=0)
+lblNewPlayerPassword.grid(row=5, column=0)
+lblNewPlayerVerifyPassword.grid(row=6, column=0)
+btnCreateUser.grid(row=7, column=0, sticky='e')
+btnCancel.grid(row=7, column=1, sticky='w')
+lblCreateUserError.grid(row=9, column=0, columnspan=2)
+
+txtFirstName.grid(row=1, column=1)
+txtLastName.grid(row=2, column=1)
+txtDisplayName.grid(row=3, column=1)
+txtCreateUserEmail.grid(row=4, column=1)
+txtNewPlayerPassword.grid(row=5, column=1)
+txtNewPlayerVerifyPassword.grid(row=6, column=1)
+
 
 
 # cribbageBoard = tkinter.Label(scoreFrame);
