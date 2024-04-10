@@ -63,7 +63,7 @@ namespace Cribbage.WPFUI
             this.Close();
         }
 
-        private void btnNewGame_Click(object sender, RoutedEventArgs e)
+        private void btnNewGameVsComputer_Click(object sender, RoutedEventArgs e)
         {
             MainWindow mainWindow = new MainWindow();
             mainWindow.Show();
@@ -79,6 +79,11 @@ namespace Cribbage.WPFUI
         private void btnOpenSavedGame_Click(object sender, RoutedEventArgs e)
         {
             // Set up to see / open their saved games -- only able to continue against computer?
+
+        }
+
+        private void btnNewGameVsPlayer_Click(object sender, RoutedEventArgs e)
+        {
 
         }
     }

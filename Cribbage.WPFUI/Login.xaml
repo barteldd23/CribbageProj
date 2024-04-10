@@ -5,17 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Cribbage.WPFUI"
         mc:Ignorable="d"
-        Title="Cribbage Game Login" Height="290" Width="485" Background="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}" SizeToContent="Height" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen">
-    <Grid Background="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}" Height="280" VerticalAlignment="Top" HorizontalAlignment="Center" Width="485">
-        <Button x:Name="btnLogin" Content="Login" HorizontalAlignment="Left" Margin="165,109,0,0" VerticalAlignment="Top" Width="105" Height="40" IsDefault="True" Click="btnLogin_Click" TabIndex="3" FontSize="20"/>
-        <Button x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Left" Margin="291,109,0,0" VerticalAlignment="Top" Width="104" Height="40" IsCancel="True" Click="btnCancel_Click" TabIndex="5" FontSize="20"/>
-        <Label x:Name="___No_Name_" Content="Email" HorizontalAlignment="Left" Margin="90,29,0,0" VerticalAlignment="Top" Focusable="True" FontSize="20" Width="58"/>
-        <Label Content="Password" HorizontalAlignment="Left" Margin="65,63,0,0" VerticalAlignment="Top" Height="45" Width="92" FontSize="20"/>
-        <TextBox x:Name="txtLoginEmail" HorizontalAlignment="Left" Margin="175,19,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" Height="40" FontSize="18" AcceptsReturn="True" AcceptsTab="True" AutoWordSelection="True" TabIndex="1"/>
-        <PasswordBox x:Name="pbxPasswordBox" HorizontalAlignment="Left" Margin="175,64,0,0" VerticalAlignment="Top" Width="220" Height="35" FontSize="18" TabIndex="2"/>
-        <Label Content="New user?" HorizontalAlignment="Left" Margin="56,169,0,0" VerticalAlignment="Top" Height="45" Width="101" FontSize="20"/>
-        <Button x:Name="btnRegister" Content="Register" HorizontalAlignment="Left" Margin="165,169,0,0" VerticalAlignment="Top" Width="105" Height="40" Click="btnRegister_Click" TabIndex="4" FontSize="20" />
-        <Label x:Name="lblError" Content="" HorizontalAlignment="Left" Margin="56,219,0,0" VerticalAlignment="Top" FontSize="22" FontWeight="Bold"/>
+        Title="Cribbage Game Login" Height="900" Width="1400" Background="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}" SizeToContent="Height" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen">
+    <Grid Background="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}" Height="870" VerticalAlignment="Top" HorizontalAlignment="Center" Width="1380" Margin="0,10,0,0">
+        <Button x:Name="btnLogin" Content="Login" HorizontalAlignment="Left" Margin="594,229,0,0" VerticalAlignment="Top" Width="106" Height="40" IsDefault="True" Click="btnLogin_Click" TabIndex="3" FontSize="20"/>
+        <Button x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Left" Margin="720,229,0,0" VerticalAlignment="Top" Width="104" Height="40" IsCancel="True" Click="btnCancel_Click" TabIndex="5" FontSize="20"/>
+        <Label x:Name="___No_Name_" Content="Email" HorizontalAlignment="Left" Margin="433,149,0,0" VerticalAlignment="Top" Focusable="True" FontSize="20" Width="58"/>
+        <Label Content="Password" HorizontalAlignment="Left" Margin="408,183,0,0" VerticalAlignment="Top" Height="45" Width="92" FontSize="20"/>
+        <TextBox x:Name="txtLoginEmail" HorizontalAlignment="Left" Margin="518,139,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="405" Height="40" FontSize="18" AcceptsReturn="True" AcceptsTab="True" AutoWordSelection="True" TabIndex="1"/>
+        <PasswordBox x:Name="pbxPasswordBox" HorizontalAlignment="Left" Margin="518,184,0,0" VerticalAlignment="Top" Width="405" Height="35" FontSize="18" TabIndex="2"/>
+        <Label Content="New user?" HorizontalAlignment="Left" Margin="543,415,0,0" VerticalAlignment="Top" Height="45" Width="101" FontSize="20"/>
+        <Button x:Name="btnRegister" Content="Register" HorizontalAlignment="Left" Margin="652,0,0,0" VerticalAlignment="Center" Width="105" Height="40" Click="btnRegister_Click" TabIndex="4" FontSize="20" />
+        <Label x:Name="lblError" Content="" HorizontalAlignment="Left" Margin="543,334,0,0" VerticalAlignment="Top" FontSize="22" FontWeight="Bold"/>
+        <Label Content="Returning User" HorizontalAlignment="Left" Margin="634,82,0,0" VerticalAlignment="Top" FontSize="20"/>
 
     </Grid>
 </Window>
