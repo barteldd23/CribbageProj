@@ -32,6 +32,7 @@ namespace Cribbage.API.Hubs
 
             string message;
             bool isLoggedIn;
+            string userJson = "";
             try
             {
                 // Try logging in.
@@ -46,16 +47,16 @@ namespace Cribbage.API.Hubs
 
                 //await Clients.Caller.SendAsync("LogInAttempt", isLoggedIn, message);
                 // On success: serialize User into Json
-                string UserJson = JsonConvert.SerializeObject(user);
+                userJson = JsonConvert.SerializeObject(user);
                 // Send Back User Json to client only
-                await Clients.Caller.SendAsync("LogInAttempt", isLoggedIn, message, UserJson);
+                await Clients.Caller.SendAsync("LogInAttempt", isLoggedIn, message, userJson);
             }
             catch (Exception ex)
             {
                 isLoggedIn = false;
-                message = "Error. Try Again";
+                message = "Login Failed";
                 await Clients.All.SendAsync("ReceiveMessage", message, message);
-                await Clients.Caller.SendAsync("LogInAttempt", isLoggedIn, message);
+                await Clients.Caller.SendAsync("LogInAttempt", isLoggedIn, message, userJson);
             }
         }
 
