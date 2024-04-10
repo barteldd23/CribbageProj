@@ -1,5 +1,6 @@
 ﻿using Cribbage.BL.Models;
 using Microsoft.AspNetCore.SignalR.Client;
+using Newtonsoft.Json;
 using System.Windows;
 
 namespace Cribbage.WPFUI
@@ -46,7 +47,7 @@ namespace Cribbage.WPFUI
             Start();
             try
             {
-                string strUser = user.ToString();
+                string strUser = JsonConvert.SerializeObject(user);
                 _connection.InvokeAsync("CreateUser", strUser);
             }
             catch (Exception ex)

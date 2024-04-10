@@ -37,7 +37,7 @@ namespace Cribbage.WPFUI
                 {
                     // Start the hub connection
                     SignalRConnection cribbageHubConnection = new SignalRConnection(hubAddress);
-                    cribbageHubConnection.Start();
+                    //cribbageHubConnection.Start();
                     cribbageHubConnection.Login(user);
                 }
                 else
