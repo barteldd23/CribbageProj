@@ -60,6 +60,7 @@ namespace Cribbage.WPFUI
             if(user.Email != string.Empty && user.Password != string.Empty)
             {
                 CribbageHub cribbageHub = new CribbageHub();
+                //cribbageHub.GetHashCode(us)
 
                 cribbageHub.Login(email, password);
 

@@ -47,6 +47,7 @@
             Return a list of users.
             </summary>
             <returns></returns>
+            
         </member>
         <member name="M:Cribbage.API.Controllers.UserController.Get(System.Guid)">
             <summary>
