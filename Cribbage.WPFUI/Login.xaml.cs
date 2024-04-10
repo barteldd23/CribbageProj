@@ -35,7 +35,9 @@ namespace Cribbage.WPFUI
     /// </summary>
     public partial class Login : Window
     {
-        BL.Models.User user; //pass the user info from Login to LandingPage
+        BL.Models.User user = new BL.Models.User(); //pass the user info from Login to LandingPage
+        //string hubAddress = "https://bigprojectapi-300089145.azurewebsites.net/CribbageHub";
+        string hubAddress = "https://localhost:7186/CribbageHub";
 
         public Login()
         {
@@ -49,30 +51,43 @@ namespace Cribbage.WPFUI
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            string email = txtLoginEmail.Text.Trim();
-            string password = pbxPasswordBox.ToString().Trim();
-
-            BL.Models.User user = new BL.Models.User();
-
-            user.Email = email;
-            user.Password = password;
-
-            if(user.Email != string.Empty && user.Password != string.Empty)
+            try
             {
-                CribbageHub cribbageHub = new CribbageHub();
-                //cribbageHub.GetHashCode(us)
+                string email = txtLoginEmail.Text.Trim();
+                string password = pbxPasswordBox.Password.ToString().Trim();
 
-                cribbageHub.Login(email, password);
+                user.Email = email;
+                user.Password = password;
 
-                LandingPage landingPage = new LandingPage();
-                landingPage.Show();
-                this.Close();
+                if (email != string.Empty && password != string.Empty)
+                {
+                    // Start the hub connection
+                    SignalRConnection cribbageHubConnection = new SignalRConnection(hubAddress);
+                    cribbageHubConnection.Start();
+                    cribbageHubConnection.Login(user);
+
+
+
+
+                    //this.Close();
+                }
+                else
+                {
+                    lblError.Foreground = new SolidColorBrush(Colors.DarkMagenta);
+                    lblError.Content = "Please enter an email and password.";
+                }
             }
-            else
+            catch (Exception ex)
             {
-                lblError.Foreground = new SolidColorBrush(Colors.DarkMagenta);
-                lblError.Content = "Please enter an email and password."; 
+
+                throw ex;
             }
+            
+        }
+
+        public static void changePage()
+        {
+            MessageBox.Show("Change page called!");
         }
 
         private void btnRegister_Click(object sender, RoutedEventArgs e)
