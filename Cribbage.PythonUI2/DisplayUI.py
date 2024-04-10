@@ -5,18 +5,42 @@ import tkinter
 from tkinter import messagebox
 from tkinter.tix import COLUMN
 from turtle import bgcolor
+from dataclasses import dataclass, field
+import json
 
 
 from signalrcore.hub_connection_builder import HubConnectionBuilder
+#
 
+@dataclass
+class User:
+    # Id: str 
+    # Email: str
+    # DisplayName: str
+    # FirstName: str
+    # LastName: str
+    # FullName: str #= field(init=False)
+    # LastFirstName: str #= field(init=False)
+    # Password: str
+    # GamesStarted: int
+    # GamesWon: int
+    # GamesLost: int
+    # WinStreak: int
+    # AvgPtsPerGame: float
+    
+    def __init__(self, j):
+        self.__dict__ = json.loads(j)
 
-def receivedLogInMessage(isLoggedIn, messageInfo, user):
+def receivedLogInMessage(isLoggedIn, messageInfo, userJson):
     if(isLoggedIn):
         loginFrame.pack_forget()
-        welcomeString = 'Welcome' + user
-        print(user)
-        lblWelcomMessage.config(text=welcomeString )
+        welcomeString = 'Welcome' + userJson
+        print(userJson)
+        pythonUser = User(userJson)
+        lblWelcomMessage.config(text=pythonUser.DisplayName )
         loggedInFrame.pack()
+    else:
+        lblErrorMessage.config(text=messageInfo)
         
 def newVsComputer():
     pass
@@ -24,11 +48,20 @@ def newVsComputer():
 def newVsPlayer():
     pass
 
-def login():
+def onClickNewUser():
+    loginFrame.pack_forget()
+
+def onClickLogin():
+    lblErrorMessage.config(text='')
     email = txtEmail.get()
     password = txtPassword.get()
     
     hub_connection.send("Login",[email, password])
+    
+def onClickCreateUser():
+    pass
+def onClickCancelUser():
+    pass
 
     #messagebox.showinfo(message='email: ' + email + ' password: ' + password)
 
@@ -73,6 +106,7 @@ file.add_command(label = 'Quit', command = quit)
 loginFrame = tkinter.Frame(bg='blue')
 gameFrame = tkinter.Frame(bg='#333333')
 loggedInFrame = tkinter.Frame(bg='blue')
+newPlayerFrame = tkinter.Frame(bg='blue')
 
 #################### gameFrame Frames
 cribFrame = tkinter.Frame(gameFrame, width=200, height=900, relief=RIDGE, bg='#333333')
@@ -152,14 +186,18 @@ lblEmail = tkinter.Label(loginFrame, text="Email: ", font=('Arial',16))
 txtEmail = tkinter.Entry(loginFrame, font=('Arial',16))
 lblPassword = tkinter.Label(loginFrame, text="Password: ", font=('Arial',16))
 txtPassword = tkinter.Entry(loginFrame, show='*', font=('Arial',16))
-btnLogin = tkinter.Button(loginFrame, text='Login', font=('Arial',16), command=login)
+btnLogin = tkinter.Button(loginFrame, text='Login', font=('Arial',16), command=onClickLogin)
+btnNewUser = tkinter.Button(loginFrame, text='New Player', font=('Arial',16), command=onClickNewUser)
+lblErrorMessage = tkinter.Label(loginFrame, font=('Arial',30), fg='red')
 
 lblLogin.grid(row=0, column=0, columnspan=2, sticky='news', pady=20, padx=20)
 lblEmail.grid(row=1, column=0, sticky=W, pady=5, padx=5)
 txtEmail.grid(row=1, column=1, sticky=W, pady=5, padx=5)
 lblPassword.grid(row=2, column=0, sticky=W, pady=5, padx=5)
 txtPassword.grid(row=2, column=1, sticky=W, pady=5, padx=5)
-btnLogin.grid(row=3, column=0, columnspan=2, pady=5, padx=5)
+btnLogin.grid(row=3, column=0, pady=5, padx=5)
+btnNewUser.grid(row=3, column=2, pady=5, padx=5)
+lblErrorMessage.grid(row=4, column=0, columnspan=2, pady=5, padx=5)
 
 
 lblCribFrame.grid(row=0, column=0, sticky='news', pady=10, padx=10)
@@ -171,9 +209,25 @@ lblWelcomMessage = tkinter.Label(loggedInFrame ,text='Welcome ',font=('Arial',30
 btnVsComputer = tkinter.Button(loggedInFrame, text='New Game against a Computer', command = newVsComputer)
 btnVsPlayer = tkinter.Button(loggedInFrame, text='New Game against a Person', command = newVsPlayer)
 
+
 lblWelcomMessage.pack()
 btnVsComputer.pack()
 btnVsPlayer.pack()
+
+######################### New Player Frame ######################
+
+lblCreatePlayer = tkinter.Label(newPlayerFrame, text="New Player Info", font=('Arial',30))
+lblFirstName = tkinter.Label(newPlayerFrame, text="First Name:", font=('Arial',16))
+lblLastName = tkinter.Label(newPlayerFrame, text="Last Name:", font=('Arial',16))
+lblDisplayName = tkinter.Label(newPlayerFrame, text="Display Name:", font=('Arial',16))
+lblEmail = tkinter.Label(newPlayerFrame, text="Email:", font=('Arial',16))
+lblNewPlayerPassword = tkinter.Label(newPlayerFrame, text="Password", font=('Arial',16))
+lblNewPlayerVerifyPassword = tkinter.Label(newPlayerFrame, text="Verify Password", font=('Arial',16))
+btnCreateUser = tkinter.Button(newPlayerFrame,text="Create", command=onClickCreateUser, font=('Arial',16))
+btnCancel = tkinter.Button(newPlayerFrame,text="Cancel", command=onClickCancelUser, font=('Arial',16))
+
+txtFirstName = tkinter.Entry(newPlayerFrame)
+
 
 # cribbageBoard = tkinter.Label(scoreFrame);
 # boardImg = PhotoImage(file="../images/cribbageboard.png");
