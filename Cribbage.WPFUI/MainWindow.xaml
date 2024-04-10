@@ -62,10 +62,10 @@
                 <RowDefinition Height="128*"/>
             </Grid.RowDefinitions>
             <Image x:Name="imgCribbageBoard" HorizontalAlignment="Left" Margin="22,0,0,28" Width="175" Source="/cribbageboard.png" Grid.Column="1" Height="558" VerticalAlignment="Bottom"/>
-            <Rectangle Grid.Column="1" Height="71" Margin="9,0,0,89" Stroke="Black" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="200" Grid.Row="1"/>
-            <Label x:Name="lblPlayer1DisplayName" Grid.Column="1" Content="Player1 DisplayName" Margin="11,0,90,0" FontSize="18" FontWeight="Bold" Grid.Row="1" Height="55" VerticalAlignment="Center"/>
-            <Label x:Name="lblPlayer1Score" Grid.Column="1" Content="Player1 Score" HorizontalAlignment="Left" Margin="11,129,0,72" FontSize="18" Grid.Row="1" Width="117" />
-            <Rectangle Grid.Column="1" HorizontalAlignment="Left" Height="75" Margin="9,169,0,0" Stroke="Black" VerticalAlignment="Top" Width="200" Grid.Row="1"/>
+            <Rectangle Grid.Column="1" Height="77" Margin="9,0,0,87" Stroke="Black" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="200" Grid.Row="1"/>
+            <Label x:Name="lblPlayer1DisplayName" Grid.Column="1" Content="Player1 DisplayName" Margin="11,0,90,0" FontSize="18" FontWeight="Bold" Grid.Row="1" Height="72" VerticalAlignment="Center"/>
+            <Label x:Name="lblPlayer1Score" Grid.Column="1" Content="Player1 Score" HorizontalAlignment="Left" Margin="11,129,0,87" FontSize="18" Grid.Row="1" Width="117" />
+            <Rectangle Grid.Column="1" HorizontalAlignment="Left" Height="75" Margin="9,0,0,12" Stroke="Black" VerticalAlignment="Bottom" Width="200" Grid.Row="1"/>
             <Label x:Name="lblPlayer2DisplayName" Grid.Column="1" Content="Player2 DisplayName" Margin="9,169,90,0" FontSize="18" FontWeight="Bold" Height="38" VerticalAlignment="Top" Grid.Row="1"/>
             <Label x:Name="lblPlayer2Score" Grid.Column="1" Content="Player2 Score" HorizontalAlignment="Left" Margin="11,207,0,-6" FontSize="18" Grid.Row="1" Width="117"/>
         </Grid>

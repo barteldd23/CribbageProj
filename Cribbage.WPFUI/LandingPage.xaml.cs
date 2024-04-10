@@ -36,26 +36,6 @@ namespace Cribbage.WPFUI
         public LandingPage()
         {
             InitializeComponent();
-            //GetData();
-        }
-
-        private void GetData()
-        {
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:7186/");
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            MessageBox.Show("It got here");
-            //HttpResponseMessage response = client.GetAsync("api/values").Result;
-            //if (response.IsSuccessStatusCode)
-            //{
-            //    var getUsers = response.Content.ReadAsAsync<IEnumerable<User>>().Result;
-            //    grdGetUsers.ItemsSource = getUsers;
-            //}
-            //else
-            //{
-            //    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
-            //}
         }
 
         private void btnExit_Click(object sender, RoutedEventArgs e)
@@ -70,21 +50,11 @@ namespace Cribbage.WPFUI
             this.Close();
         }
 
-        private void btnStats_Click(object sender, RoutedEventArgs e)
-        {
-            // Set up to see their stats in a pop up window
-
-        }
-
-        private void btnOpenSavedGame_Click(object sender, RoutedEventArgs e)
-        {
-            // Set up to see / open their saved games -- only able to continue against computer?
-
-        }
-
         private void btnNewGameVsPlayer_Click(object sender, RoutedEventArgs e)
         {
-
+            MainWindow mainWindow = new MainWindow();
+            mainWindow.Show();
+            this.Close();
         }
     }
 }
