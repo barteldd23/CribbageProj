@@ -1,17 +1,12 @@
-﻿using System.Windows;
-using System.Windows.Media;
-using Cribbage.BL.Models;
-using Microsoft.AspNetCore.SignalR.Client;
+﻿using Cribbage.BL.Models;
 using System.Windows;
-using System.Runtime.CompilerServices;
-using System.Reflection.Emit;
-using Microsoft.AspNetCore.SignalR.Protocol;
+using System.Windows.Media;
 
 namespace Cribbage.WPFUI
 {
     /// <summary>
     /// Interaction logic for Login.xaml
-    /// </summary>
+    /// </summary> 
     public partial class Login : Window
     {
         //string hubAddress = "https://bigprojectapi-300089145.azurewebsites.net/CribbageHub";
@@ -90,8 +85,6 @@ namespace Cribbage.WPFUI
         {
             RegistrationPage registrationPage = new RegistrationPage();
             registrationPage.Show();
-
-            this.Close();
         }
 
     }
