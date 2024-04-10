@@ -1,32 +1,11 @@
-﻿using Cribbage.API.Controllers;
-using Cribbage.BL.Models;
-using Cribbage.PL.Data;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
+﻿using System.Windows;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
+using Cribbage.BL.Models;
+using Microsoft.AspNetCore.SignalR.Client;
 using System.Windows;
-using Microsoft.VisualBasic.ApplicationServices;
-using Cribbage.API.Hubs;
+using System.Runtime.CompilerServices;
+using System.Reflection.Emit;
+using Microsoft.AspNetCore.SignalR.Protocol;
 
 namespace Cribbage.WPFUI
 {
@@ -35,9 +14,9 @@ namespace Cribbage.WPFUI
     /// </summary>
     public partial class Login : Window
     {
-        BL.Models.User user = new BL.Models.User(); //pass the user info from Login to LandingPage
         //string hubAddress = "https://bigprojectapi-300089145.azurewebsites.net/CribbageHub";
         string hubAddress = "https://localhost:7186/CribbageHub";
+        User user = new User(); //pass the user info from Login to LandingPage
 
         public Login()
         {
@@ -65,11 +44,6 @@ namespace Cribbage.WPFUI
                     SignalRConnection cribbageHubConnection = new SignalRConnection(hubAddress);
                     cribbageHubConnection.Start();
                     cribbageHubConnection.Login(user);
-
-
-
-
-                    //this.Close();
                 }
                 else
                 {
@@ -79,15 +53,37 @@ namespace Cribbage.WPFUI
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
             
         }
 
-        public static void changePage()
+        private static void StaThreadWrapper(Action action)
         {
-            MessageBox.Show("Change page called!");
+            var t = new Thread(o =>
+            {
+                action();
+                System.Windows.Threading.Dispatcher.Run();
+            });
+            t.SetApartmentState(ApartmentState.STA);
+            t.Start();
+        }
+
+        //opens the landing page if the user is logged in successfully
+        public static void LoggedInCheck(bool loggedIn) 
+        {
+            if(loggedIn)
+            {
+                StaThreadWrapper(() =>
+                {
+                    var landingPage = new LandingPage();
+                    landingPage.Show();
+                });
+            }
+            else
+            {
+                MessageBox.Show("Cannot log in with the provided credentials");
+            }
         }
 
         private void btnRegister_Click(object sender, RoutedEventArgs e)

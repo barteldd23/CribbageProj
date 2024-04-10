@@ -1,6 +1,5 @@
 ﻿using Cribbage.BL.Models;
 using Microsoft.AspNetCore.SignalR.Client;
-using System;
 using System.Windows;
 
 namespace Cribbage.WPFUI
@@ -9,7 +8,6 @@ namespace Cribbage.WPFUI
     {
         private string hubAddress;
         HubConnection _connection;
-        string user;
 
         public SignalRConnection(string hubAddress)
         {
@@ -22,9 +20,9 @@ namespace Cribbage.WPFUI
                 .WithUrl(hubAddress)
                 .Build();
 
-            _connection.On<string, string>("ReceiveMessage", (s1, s2) => OnSend(s1, s2));
             _connection.On<bool, string, string>("LogInAttempt", (isLoggedIn, message, userJson) => ReceivedLoginMessage(isLoggedIn, message, userJson));
-
+            _connection.On<string, string>("ReceiveMessage", (s1, s2) => OnSend(s1, s2));
+            
             _connection.StartAsync();
         }
 
@@ -32,14 +30,13 @@ namespace Cribbage.WPFUI
         {
             if(isLoggedIn)
             {
-                MessageBox.Show("logged in: " + message + " " + userJson);
-                WPFUI.Login.changePage();
-                //return userJson;
+                //MessageBox.Show("logged in: " + message + " " + userJson);
+                WPFUI.Login.LoggedInCheck(isLoggedIn);
             }
             else // not logged in
             {
-                MessageBox.Show("not logged in: " + message + " " + userJson);
-                //return userJson;
+                //MessageBox.Show("not logged in: " + message + " " + userJson);
+                WPFUI.Login.LoggedInCheck(isLoggedIn);
             }
         }
 
@@ -48,20 +45,33 @@ namespace Cribbage.WPFUI
             Console.WriteLine(user + ": " + message);
         }
 
+        //public Tuple<bool, string> Login(User user)
+        //{
+        //    Start();
+        //    string message = user.Email + " logged in";
+        //    try
+        //    {
+        //        _connection.InvokeAsync("Login", user.Email, user.Password);
+        //        return Tuple.Create(true, message);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine(ex.ToString());
+        //        return Tuple.Create(false, ex.Message);
+        //    }
+        //}
+
         public void Login(User user)
         {
             Start();
-            string message = user.Email + " logged in";
+            //string message = user.Email + " logged in";
             try
             {
                 _connection.InvokeAsync("Login", user.Email, user.Password);
-                //return Tuple.Create(true, message);
-                //_connection.SendMessage("System", message);
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
-                //return Tuple.Create(false, ex.Message);
+                MessageBox.Show(ex.Message);
             }
         }
     }
