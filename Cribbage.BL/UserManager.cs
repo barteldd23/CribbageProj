@@ -175,7 +175,7 @@ namespace Cribbage.BL
                     // Check if the email exists (can't have duplicates)
                     bool inUse = dc.tblUsers.Any(u => u.Email.Trim().ToUpper() == user.Email.Trim().ToUpper());
 
-                    if (inUse && rollback == false) 
+                    if (inUse) 
                     {
                         throw new Exception("The provided email is already associated with an account.");
                     }
@@ -191,7 +191,7 @@ namespace Cribbage.BL
                         newUser.DisplayName = user.DisplayName;
                         newUser.FirstName = user.FirstName;
                         newUser.LastName = user.LastName;
-                        newUser.Password = user.Password;
+                        newUser.Password = GetHash(user.Password.Trim());
                         newUser.GamesStarted = 0;
                         newUser.GamesWon = 0;
                         newUser.GamesLost = 0;

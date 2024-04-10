@@ -25,8 +25,15 @@ namespace Cribbage.ConsoleApp
                 .Build();
 
             _connection.On<string, string>("ReceiveMessage", (s1, s2) => OnSend(s1, s2));
+            _connection.On<bool, string, string>("LogInAttempt", (isLoggedIn, message, userJson) => ReceievedLoginMessage(isLoggedIn, message, userJson));
 
             _connection.StartAsync();
+        }
+
+        private void ReceievedLoginMessage(bool isLoggedIn, string message, string userJson)
+        {
+            if (isLoggedIn) { }
+            throw new NotImplementedException();
         }
 
         private void OnSend(string user, string message)

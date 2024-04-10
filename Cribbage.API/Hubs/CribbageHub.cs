@@ -62,10 +62,34 @@ namespace Cribbage.API.Hubs
 
         public async Task CreateUser(string user)
         {
-            // De-serialize string to user object
-            // Try to create in DB
-            // Send Back Success/Fail to client only
-            // send List of available games to join to client only
+            string message = "";
+            bool isSuccess = false;
+            string userJson;
+            try
+            {
+                // De-serialize string to user object
+                User newUser;
+                
+                newUser = JsonConvert.DeserializeObject<User>(user);
+
+                // Try to create in DB
+                int rows = new UserManager(options).Insert(newUser);
+                if (rows == 1 ) isSuccess = true;
+                
+                userJson = JsonConvert.SerializeObject(newUser);
+
+                // Send Back Success/Fail to client only
+                //Do we want them to log in still after creating an account?
+                await Clients.Caller.SendAsync("CreateUserAttempt", isSuccess, message);
+
+                // send List of available games to join to client only
+            }
+            catch (Exception)
+            {
+                message = "User already exists for that email";
+                await Clients.Caller.SendAsync("CreateUserAttempt", isSuccess, message);
+            }
+            
         }
 
         public async Task SendMessage(string user, string message)
