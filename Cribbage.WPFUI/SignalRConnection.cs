@@ -44,10 +44,10 @@ namespace Cribbage.WPFUI
 
         public void RegisterUser(User user)
         {
+            string strUser = JsonConvert.SerializeObject(user);
             Start();
             try
             {
-                string strUser = JsonConvert.SerializeObject(user);
                 _connection.InvokeAsync("CreateUser", strUser);
             }
             catch (Exception ex)

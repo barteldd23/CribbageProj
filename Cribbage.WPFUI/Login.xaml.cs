@@ -16,11 +16,12 @@ namespace Cribbage.WPFUI
         public Login()
         {
             InitializeComponent();
+            LoginVisible();
         }
 
-        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        private void btnExit_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Application.Current.Shutdown();
         }
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)
@@ -83,9 +84,146 @@ namespace Cribbage.WPFUI
 
         private void btnRegister_Click(object sender, RoutedEventArgs e)
         {
-            RegistrationPage registrationPage = new RegistrationPage();
-            registrationPage.Show();
+            RegistrationVisible();
         }
 
+        private void RegistrationVisible()
+        {
+            txtFirstName.Visibility = Visibility.Visible;
+            txtLastName.Visibility = Visibility.Visible;
+            txtDisplayName.Visibility = Visibility.Visible;
+            txtEmail.Visibility = Visibility.Visible;
+            pbxSetPassword.Visibility = Visibility.Visible;
+            pbxReEnterPassword.Visibility = Visibility.Visible;
+            btnRegisterSubmit.Visibility = Visibility.Visible;
+            btnBack.Visibility = Visibility.Visible;
+            lblFirstName.Visibility = Visibility.Visible;
+            lblLastName.Visibility = Visibility.Visible;
+            lblDisplayName.Visibility = Visibility.Visible;
+            lblRegisterEmail.Visibility = Visibility.Visible;
+            lblRegisterPassword.Visibility = Visibility.Visible;
+            lblReEnterPassword.Visibility = Visibility.Visible;
+            lblNewUserRegistration.Visibility = Visibility.Visible;
+            lblRegisterError.Content = "";
+            lblRegisterError.Visibility = Visibility.Visible;
+
+            txtLoginEmail.Visibility = Visibility.Collapsed;
+            pbxPasswordBox.Visibility = Visibility.Collapsed;
+            btnLogin.Visibility = Visibility.Collapsed;
+            btnExit.Visibility = Visibility.Collapsed;
+            lblEmail.Visibility = Visibility.Collapsed;
+            lblPassword.Visibility = Visibility.Collapsed;
+            lblReturningUser.Visibility = Visibility.Collapsed;
+            btnRegister.Visibility = Visibility.Collapsed;
+            lblNewUser.Visibility = Visibility.Collapsed;
+            lblError.Content = "";
+            lblError.Visibility = Visibility.Collapsed;
+        }
+
+        public static void CreateUserCheck(bool isSuccess)
+        {
+            if (isSuccess)
+            {
+                MessageBox.Show("User created");
+                var login = new Login();
+                login.LoginVisible();
+
+            }
+            else
+            {
+                MessageBox.Show("Cannot create user");
+            }
+        }
+
+        private void LoginVisible()
+        {
+            txtFirstName.Visibility = Visibility.Collapsed;
+            txtLastName.Visibility = Visibility.Collapsed;
+            txtDisplayName.Visibility = Visibility.Collapsed;
+            txtEmail.Visibility = Visibility.Collapsed;
+            pbxSetPassword.Visibility = Visibility.Collapsed;
+            pbxReEnterPassword.Visibility = Visibility.Collapsed;
+            btnRegisterSubmit.Visibility = Visibility.Collapsed;
+            btnBack.Visibility = Visibility.Collapsed;
+            lblFirstName.Visibility = Visibility.Collapsed;
+            lblLastName.Visibility = Visibility.Collapsed;
+            lblDisplayName.Visibility = Visibility.Collapsed;
+            lblRegisterEmail.Visibility = Visibility.Collapsed;
+            lblRegisterPassword.Visibility = Visibility.Collapsed;
+            lblReEnterPassword.Visibility = Visibility.Collapsed;
+            lblNewUserRegistration.Visibility = Visibility.Collapsed;
+            lblRegisterError.Content = "";
+            lblRegisterError.Visibility = Visibility.Collapsed;
+
+            txtLoginEmail.Visibility = Visibility.Visible;
+            pbxPasswordBox.Visibility = Visibility.Visible;
+            btnLogin.Visibility = Visibility.Visible;
+            btnExit.Visibility = Visibility.Visible;
+            lblEmail.Visibility = Visibility.Visible;
+            lblPassword.Visibility = Visibility.Visible;
+            lblReturningUser.Visibility = Visibility.Visible;
+            btnRegister.Visibility = Visibility.Visible;
+            lblNewUser.Visibility = Visibility.Visible;
+            lblError.Content = "";
+            lblError.Visibility = Visibility.Visible;
+        }
+
+        private void btnBack_Click(object sender, RoutedEventArgs e)
+        {
+            LoginVisible();
+        }
+
+        private void btnRegisterSubmit_Click(object sender, RoutedEventArgs e)
+        {
+            //need to test that the registration works before opening a new game and closing the page
+            try
+            {
+                string firstName = txtFirstName.Text.Trim();
+                string lastName = txtLastName.Text.Trim();
+                string displayName = txtDisplayName.Text.Trim();
+                string email = txtEmail.Text.Trim();
+                string setPassword = pbxSetPassword.Password.ToString().Trim();
+                string checkPassword = pbxReEnterPassword.Password.ToString().Trim();
+
+
+                User user = new User();
+
+                user.FirstName = firstName;
+                user.LastName = lastName;
+                user.DisplayName = displayName;
+                user.Email = email;
+
+                if (setPassword == checkPassword)
+                {
+                    user.Password = setPassword;
+                }
+                else
+                {
+                    user.Password = string.Empty;
+                }
+
+                if (firstName != string.Empty && lastName != string.Empty
+                    && displayName != string.Empty && email != string.Empty
+                    && user.Password != string.Empty)
+                {
+                    // Start the hub connection
+                    SignalRConnection cribbageHubConnection = new SignalRConnection(hubAddress);
+                    //cribbageHubConnection.Start();
+                    cribbageHubConnection.RegisterUser(user);
+                }
+                else
+                {
+                    lblRegisterError.Foreground = new SolidColorBrush(Colors.DarkMagenta);
+                    lblRegisterError.Content = "Unable to register.";
+                }
+            }
+            catch (Exception ex)
+            {
+                lblRegisterError.Foreground = new SolidColorBrush(Colors.DarkMagenta);
+                lblRegisterError.Content = ex.Message;
+
+                throw;
+            }
+        }
     }
 }
