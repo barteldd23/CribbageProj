@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using Cribbage.BL.Models;
+using System.Windows;
 
 namespace Cribbage.WPFUI
 {
@@ -7,9 +8,7 @@ namespace Cribbage.WPFUI
     /// </summary>
     public partial class LandingPage : Window
     {
-        BL.Models.User user; //pass the user info from the LandingPage to the MainWindow
-
-        public LandingPage()
+        public LandingPage(User user)
         {
             InitializeComponent(); 
         }

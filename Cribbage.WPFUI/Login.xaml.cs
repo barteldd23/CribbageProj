@@ -1,4 +1,5 @@
 ﻿using Cribbage.BL.Models;
+using Newtonsoft.Json;
 using System.Windows;
 using System.Windows.Media;
 
@@ -11,7 +12,6 @@ namespace Cribbage.WPFUI
     {
         //string hubAddress = "https://bigprojectapi-300089145.azurewebsites.net/CribbageHub";
         string hubAddress = "https://localhost:7186/CribbageHub";
-        User user = new User(); //pass the user info from Login to LandingPage
 
         public Login()
         {
@@ -30,6 +30,8 @@ namespace Cribbage.WPFUI
             {
                 string email = txtLoginEmail.Text.Trim();
                 string password = pbxPasswordBox.Password.ToString().Trim();
+
+                User user = new User();
 
                 user.Email = email;
                 user.Password = password;
@@ -66,13 +68,22 @@ namespace Cribbage.WPFUI
         }
 
         //opens the landing page if the user is logged in successfully
-        public static void LoggedInCheck(bool loggedIn) 
+        public static void LoggedInCheck(bool loggedIn, string userJson) 
         {
             if(loggedIn)
             {
+                //this.Dispatcher.Invoke(() =>
+                //{
+                //    var w = Application.Current.Windows[0];
+                //    w.Close();
+                //});
+
+                User loggedInUser = new User();
+                loggedInUser = JsonConvert.DeserializeObject<User>(userJson);
+
                 StaThreadWrapper(() =>
                 {
-                    var landingPage = new LandingPage();
+                    var landingPage = new LandingPage(loggedInUser);
                     landingPage.Show();
                 });
             }
@@ -125,9 +136,13 @@ namespace Cribbage.WPFUI
             if (isSuccess)
             {
                 MessageBox.Show("User created");
-                var login = new Login();
-                login.LoginVisible();
-
+                StaThreadWrapper(() =>
+                {
+                    //var w = Application.Current.Windows[0];
+                    //w.Close();
+                    var login = new Login();
+                    login.Show();
+                });
             }
             else
             {

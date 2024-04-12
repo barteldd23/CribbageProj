@@ -32,13 +32,13 @@ namespace Cribbage.WPFUI
         {
             if (isSuccess)
             {
-                MessageBox.Show(message + " successfully created user");
-                //RegistrationPage.CreateUserCheck(isSuccess);
+                //MessageBox.Show(message + " successfully created user");
+                WPFUI.Login.CreateUserCheck(isSuccess);
             }
             else // not logged in
             {
-                MessageBox.Show(message + " did not create user");
-                //RegistrationPage.CreateUserCheck(isSuccess);
+                //MessageBox.Show(message + " did not create user");
+                WPFUI.Login.CreateUserCheck(isSuccess);
             }
         }
 
@@ -60,11 +60,11 @@ namespace Cribbage.WPFUI
         {
             if(isLoggedIn)
             {
-                WPFUI.Login.LoggedInCheck(isLoggedIn);
+                WPFUI.Login.LoggedInCheck(isLoggedIn, userJson);
             }
             else // not logged in
             {
-                WPFUI.Login.LoggedInCheck(isLoggedIn);
+                WPFUI.Login.LoggedInCheck(isLoggedIn, userJson);
             }
         }
 
