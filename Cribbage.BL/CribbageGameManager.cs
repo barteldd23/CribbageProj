@@ -7,7 +7,6 @@ namespace Cribbage.BL
 {
     public static class CribbageGameManager
     {
-        
         #region Play CribbageGame Methods
         public static bool CheckWinner(CribbageGame cribbageGame)
         {
@@ -681,8 +680,6 @@ namespace Cribbage.BL
             return runPoints;
         }
         #endregion
-
-
 
         #endregion
     }

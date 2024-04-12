@@ -8,9 +8,27 @@ namespace Cribbage.WPFUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        //string hubAddress = "https://bigprojectapi-300089145.azurewebsites.net/CribbageHub";
+        string hubAddress = "https://localhost:7186/CribbageHub";
+        UserGame game;
+        User user;
+        CribbageGame cribbageGame;
+
+        public MainWindow(User user)
         {
             InitializeComponent();
+            //if(lblPlayer1DisplayName.Content == "Player1 DisplayName")
+            //{
+            //    lblPlayer1DisplayName.Content = user.DisplayName;
+            //    cribbageGame.Player_1 = (Player)user;
+            //}
+            //else
+            //{
+            //    lblPlayer2DisplayName.Content = user.DisplayName;
+            //    cribbageGame.Player_2 = (Player)user;
+            //}
+
+            MessageBox.Show("User " + user);
         }
 
         private void QuitGame_Click(object sender, RoutedEventArgs e)
@@ -21,7 +39,7 @@ namespace Cribbage.WPFUI
 
         private void NewGame_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow mainWindow = new MainWindow();
+            MainWindow mainWindow = new MainWindow(user);
             mainWindow.Show();
 
             // need to save prior to closing 

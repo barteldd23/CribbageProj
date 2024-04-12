@@ -9,7 +9,5 @@ namespace Cribbage.BL.Models
         public DateTime Date { get; set; }
         public string? GameName { get; set; }
         public bool Complete { get; set; } = false;
-       
-
     }
 }
