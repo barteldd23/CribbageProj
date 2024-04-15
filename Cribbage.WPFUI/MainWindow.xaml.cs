@@ -13,22 +13,41 @@ namespace Cribbage.WPFUI
         UserGame game;
         User loggedInUser;
         CribbageGame cribbageGame;
+        SignalRConnection cribbageHubConnection;
+        Player secondPlayer;
 
-        public MainWindow(User user)
+        public MainWindow(User user, Player player)
         {
             InitializeComponent();
-            //if(lblPlayer1DisplayName.Content == "Player1 DisplayName")
-            //{
-            //    lblPlayer1DisplayName.Content = user.DisplayName;
-            //    cribbageGame.Player_1 = (Player)user;
-            //}
-            //else
-            //{
-            //    lblPlayer2DisplayName.Content = user.DisplayName;
-            //    cribbageGame.Player_2 = (Player)user;
-            //}
+            secondPlayer = player;
             loggedInUser = user;
-            //MessageBox.Show("User " + user.FullName);
+
+            // need to convert User to Player --> it keeps crashing
+
+            cribbageGame = new CribbageGame();
+
+            if (player.Email == "computer@computer.computer")
+            {
+                lblPlayer1DisplayName.Content = player.DisplayName;
+                cribbageGame.Player_1 = player;
+
+                lblPlayer2DisplayName.Content = user.DisplayName;
+
+                //cribbageGame.Player_2 = (Player)user;
+            }
+            else if (cribbageGame.Player_1 == null)
+            {
+                lblPlayer1DisplayName.Content = user.DisplayName;
+                //cribbageGame.Player_1 = (Player)user;
+            }
+            else
+            {
+                lblPlayer2DisplayName.Content = user.DisplayName;
+                //cribbageGame.Player_2 = (Player)user;
+            }
+
+            // Start the hub connection
+            cribbageHubConnection = new SignalRConnection(hubAddress);
         }
 
         private void QuitGame_Click(object sender, RoutedEventArgs e)
@@ -39,7 +58,7 @@ namespace Cribbage.WPFUI
 
         private void NewGame_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow mainWindow = new MainWindow(loggedInUser);
+            MainWindow mainWindow = new MainWindow(loggedInUser, secondPlayer);
             mainWindow.Show();
 
             // need to save prior to closing 

@@ -25,6 +25,7 @@ namespace Cribbage.WPFUI
             _connection.On<bool, string, string>("LogInAttempt", (isLoggedIn, message, userJson) => ReceivedLoginMessage(isLoggedIn, message, userJson));
             _connection.On<bool, string>("CreateUserAttempt", (isSuccess, message) => CreateUserMessage(isSuccess, message));
             _connection.On<bool, string>("SavedGames", (isSuccess, userGamesJson) => SavedGamesMessage(isSuccess, userGamesJson));
+            _connection.On<bool, string>("SavedGames", (isSuccess, userGamesJson) => SavedGamesMessage(isSuccess, userGamesJson));
 
             _connection.StartAsync();
         }

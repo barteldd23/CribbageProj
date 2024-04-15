@@ -25,8 +25,6 @@ namespace Cribbage.WPFUI
             lblWelcomeUser.Content = "Welcome " + user.FirstName + "!";
 
             loggedInUser = user;
-
-            //lstSavedGames = "";
             lstSavedGames.Visibility = Visibility.Collapsed;
             lstStats.Visibility = Visibility.Collapsed;
             lblGameStats.Visibility = Visibility.Collapsed;
@@ -70,6 +68,7 @@ namespace Cribbage.WPFUI
 
                 StaThreadWrapper(() =>
                 {
+                    // NOTE: making a new page makes the listbox NULL!!
                     var games = new LandingPage();
                     //games.lstSavedGames.ItemsSource = LoadUserGames(userGames);
                     games.AddSavedGames(userGames);
@@ -95,7 +94,7 @@ namespace Cribbage.WPFUI
 
         private void AddSavedGames(List<string> userGames)
         {
-            MessageBox.Show("Need to make lstSavedGames NOT null");
+            MessageBox.Show("game");
             //foreach(var game in userGames)
             //{
             //    lstSavedGames.Items.Add(game);
@@ -110,14 +109,27 @@ namespace Cribbage.WPFUI
 
         private void btnNewGameVsComputer_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow mainWindow = new MainWindow(loggedInUser);
+            Player computer = new Player();
+            computer.Id = new Guid();
+            computer.Email = "computer@computer.computer";
+            computer.DisplayName = "Computer Bot";
+            computer.FirstName = "Computer";
+            computer.LastName = "Bot";
+            computer.Password = "computer";
+            computer.GamesStarted = 0;
+            computer.GamesWon = 0;
+            computer.GamesLost = 0;
+            computer.WinStreak = 0;
+            computer.AvgPtsPerGame = 0;
+            MainWindow mainWindow = new MainWindow(loggedInUser, computer);
             mainWindow.Show();
             this.Close();
         }
 
         private void btnNewGameVsPlayer_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow mainWindow = new MainWindow(loggedInUser);
+            Player human = new Player();
+            MainWindow mainWindow = new MainWindow(loggedInUser, human);
             mainWindow.Show();
             this.Close();
         }
