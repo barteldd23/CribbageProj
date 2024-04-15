@@ -121,6 +121,9 @@ namespace Cribbage.WPFUI
             computer.GamesLost = 0;
             computer.WinStreak = 0;
             computer.AvgPtsPerGame = 0;
+
+            cribbageHubConnection.NewGameVsComputer(loggedInUser);
+
             MainWindow mainWindow = new MainWindow(loggedInUser, computer);
             mainWindow.Show();
             this.Close();

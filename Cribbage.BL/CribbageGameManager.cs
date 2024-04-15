@@ -681,6 +681,5 @@ namespace Cribbage.BL
         }
         #endregion
 
-        #endregion
     }
 }

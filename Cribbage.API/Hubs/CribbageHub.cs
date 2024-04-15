@@ -147,9 +147,8 @@ namespace Cribbage.API.Hubs
             // Add Game to DB.
             // Add UserGame to DB.
             // Create CribbageGame
-            // Serialzie CribbageGame into Json
+            // Serialize CribbageGame into Json
             // Send CribbageGame back to only that person.
-
         }
         public async Task NewGameVsPlayer(string user)
         {

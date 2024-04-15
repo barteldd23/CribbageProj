@@ -115,5 +115,19 @@ namespace Cribbage.WPFUI
                 MessageBox.Show(ex.Message);
             }
         }
+
+        internal void NewGameVsComputer(User user)
+        {
+            Start();
+            try
+            {
+                string strUser = JsonConvert.SerializeObject(user);
+                _connection.InvokeAsync("GetSavedGames", strUser);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
     }
 }

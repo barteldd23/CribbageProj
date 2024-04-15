@@ -65,5 +65,24 @@ namespace Cribbage.WPFUI
             this.Close();
         }
 
+        private void btnSendToCrib_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void btnGo_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnPlayCard_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnNextHand_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
