@@ -3,6 +3,8 @@ using Microsoft.Data.SqlClient;
 using System.Windows;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 using System.Windows.Media;
+using Newtonsoft.Json;
+using System.Collections;
 
 namespace Cribbage.WPFUI
 {
@@ -24,6 +26,7 @@ namespace Cribbage.WPFUI
 
             loggedInUser = user;
 
+            //lstSavedGames = "";
             lstSavedGames.Visibility = Visibility.Collapsed;
             lstStats.Visibility = Visibility.Collapsed;
             lblGameStats.Visibility = Visibility.Collapsed;
@@ -32,6 +35,73 @@ namespace Cribbage.WPFUI
             // Start the hub connection
             cribbageHubConnection = new SignalRConnection(hubAddress);
         }
+
+        public LandingPage() {}
+
+        private static void StaThreadWrapper(Action action)
+        {
+            var t = new Thread(o =>
+            {
+                action();
+                System.Windows.Threading.Dispatcher.Run();
+            });
+            t.SetApartmentState(ApartmentState.STA);
+            t.Start();
+        }
+
+        public static void SavedGamesCheck(bool isSuccess, string userGamesJson)
+        {
+            if (isSuccess)
+            {
+                MessageBox.Show("UserGamesJson: " + userGamesJson);
+                List<string> userGames = new List<string>();
+                userGames = JsonConvert.DeserializeObject<List<string>>(userGamesJson);
+
+                //string updatedJson = userGamesJson.TrimEnd(']');
+                //updatedJson = userGamesJson.TrimStart('[');
+
+                //string[] arrGames = updatedJson.Split(',');
+
+                //foreach(string gameId in arrGames)
+                //{
+
+                //    userGames.Add((string)gameId);
+                //}
+
+                StaThreadWrapper(() =>
+                {
+                    var games = new LandingPage();
+                    //games.lstSavedGames.ItemsSource = LoadUserGames(userGames);
+                    games.AddSavedGames(userGames);
+                });
+
+                MessageBox.Show("Saved Games Check TRUE");
+            }
+            else
+            {
+                MessageBox.Show("Saved Games Check FALSE");
+            }
+        }
+        
+        private static ArrayList LoadUserGames(List<string> userGames)
+        {
+            ArrayList gamesList = new ArrayList();
+            foreach (var game in userGames)
+            {
+                gamesList.Add(game);
+            }
+            return gamesList;
+        }
+
+        private void AddSavedGames(List<string> userGames)
+        {
+            MessageBox.Show("Need to make lstSavedGames NOT null");
+            //foreach(var game in userGames)
+            //{
+            //    lstSavedGames.Items.Add(game);
+            //}
+        }
+
 
         private void btnExit_Click(object sender, RoutedEventArgs e)
         {
@@ -59,7 +129,7 @@ namespace Cribbage.WPFUI
             btnShowGameStats.Visibility = Visibility.Collapsed;
 
             cribbageHubConnection.GetSavedGames(loggedInUser);
-            lstStats.Items.Add(loggedInUser.GamesWon);
+            //lstStats.Items.Add(loggedInUser.GamesWon);
         }
 
         private void btnShowSavedGames_Click(object sender, RoutedEventArgs e)

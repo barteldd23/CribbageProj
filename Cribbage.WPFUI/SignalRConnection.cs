@@ -33,11 +33,13 @@ namespace Cribbage.WPFUI
         {
             if(isSuccess)
             {
-                MessageBox.Show("Saved games is TRUE! UserGamesJson: " + userGamesJson);
+                //MessageBox.Show("Saved games is TRUE! UserGamesJson: " + userGamesJson);
+                LandingPage.SavedGamesCheck(isSuccess, userGamesJson);
             }
             else
             {
-                MessageBox.Show("Saved games is FALSE! UserGamesJson: " + userGamesJson);
+                //MessageBox.Show("Saved games is FALSE! UserGamesJson: " + userGamesJson);
+                LandingPage.SavedGamesCheck(isSuccess, userGamesJson);
             }
         }
 
