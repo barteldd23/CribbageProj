@@ -1,5 +1,8 @@
 ﻿using Cribbage.BL.Models;
+using Microsoft.Data.SqlClient;
 using System.Windows;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
+using System.Windows.Media;
 
 namespace Cribbage.WPFUI
 {
@@ -20,6 +23,12 @@ namespace Cribbage.WPFUI
 
             lstSavedGames.Items.Add(user.GamesStarted);
             lstStats.Items.Add(user.GamesWon);
+
+            // Start the hub connection
+            SignalRConnection cribbageHubConnection = new SignalRConnection(hubAddress);
+            cribbageHubConnection.GetSavedGames(user.Id);
+
+
 
             //game.PlayerId = user.Id;
 

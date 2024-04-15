@@ -31,21 +31,6 @@ namespace Cribbage.API.Controllers
             return new UserManager(options).Load();
         }
 
-        //[HttpGet]
-        //public async Task<IEnumerable<User>> Get()
-        //{
-        //    try
-        //    {
-        //        return (IEnumerable<User>)Ok(await new UserManager(logger, options).LoadAsync());
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return (IEnumerable<User>)StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-        //    }
-        //}
-
-
-
         /// <summary>
         /// Get a particular user by id.
         /// </summary>

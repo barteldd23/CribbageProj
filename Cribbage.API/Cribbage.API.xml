@@ -101,6 +101,13 @@
             <param name="id">UserGame Id</param>
             <returns></returns>
         </member>
+        <member name="M:Cribbage.API.Controllers.UserGameController.GetGames(System.Guid)">
+            <summary>
+            Get all games for one user.
+            </summary>
+            <param name="id">Player Id</param>
+            <returns></returns>
+        </member>
         <member name="M:Cribbage.API.Controllers.UserGameController.Post(Cribbage.BL.Models.UserGame,System.Boolean)">
             <summary>
             Insert a user game.

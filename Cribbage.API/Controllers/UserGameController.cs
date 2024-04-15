@@ -35,10 +35,21 @@ namespace Cribbage.API.Controllers
         /// </summary>
         /// <param name="id">UserGame Id</param>
         /// <returns></returns>
-        [HttpGet("{id}")]
-        public UserGame Get(Guid id)
+        [HttpGet("{gameId}")]
+        public UserGame Get(Guid gameId)
         {
-            return new UserGameManager(options).LoadById(id);
+            return new UserGameManager(options).LoadById(gameId);
+        }
+
+        /// <summary>
+        /// Get all games for one user.
+        /// </summary>
+        /// <param name="id">Player Id</param>
+        /// <returns></returns>
+        [HttpGet("{playerId}")]
+        public List<Guid> GetGames(Guid playerId)
+        {
+            return new UserGameManager(options).GetGames(playerId);
         }
 
         /// <summary>
