@@ -11,7 +11,7 @@ namespace Cribbage.WPFUI
         //string hubAddress = "https://bigprojectapi-300089145.azurewebsites.net/CribbageHub";
         string hubAddress = "https://localhost:7186/CribbageHub";
         UserGame game;
-        User user;
+        User loggedInUser;
         CribbageGame cribbageGame;
 
         public MainWindow(User user)
@@ -27,8 +27,8 @@ namespace Cribbage.WPFUI
             //    lblPlayer2DisplayName.Content = user.DisplayName;
             //    cribbageGame.Player_2 = (Player)user;
             //}
-
-            MessageBox.Show("User " + user);
+            loggedInUser = user;
+            //MessageBox.Show("User " + user.FullName);
         }
 
         private void QuitGame_Click(object sender, RoutedEventArgs e)
@@ -39,7 +39,7 @@ namespace Cribbage.WPFUI
 
         private void NewGame_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow mainWindow = new MainWindow(user);
+            MainWindow mainWindow = new MainWindow(loggedInUser);
             mainWindow.Show();
 
             // need to save prior to closing 

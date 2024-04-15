@@ -1,6 +1,7 @@
 ﻿using Cribbage.BL.Models;
 using Newtonsoft.Json;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace Cribbage.WPFUI
@@ -40,7 +41,6 @@ namespace Cribbage.WPFUI
                 {
                     // Start the hub connection
                     SignalRConnection cribbageHubConnection = new SignalRConnection(hubAddress);
-                    //cribbageHubConnection.Start();
                     cribbageHubConnection.Login(user);
                 }
                 else
@@ -72,12 +72,6 @@ namespace Cribbage.WPFUI
         {
             if(loggedIn)
             {
-                //this.Dispatcher.Invoke(() =>
-                //{
-                //    var w = Application.Current.Windows[0];
-                //    w.Close();
-                //});
-
                 User loggedInUser = new User();
                 loggedInUser = JsonConvert.DeserializeObject<User>(userJson);
 
@@ -118,6 +112,8 @@ namespace Cribbage.WPFUI
             lblRegisterError.Content = "";
             lblRegisterError.Visibility = Visibility.Visible;
 
+            txtFirstName.Focus();
+
             txtLoginEmail.Visibility = Visibility.Collapsed;
             pbxPasswordBox.Visibility = Visibility.Collapsed;
             btnLogin.Visibility = Visibility.Collapsed;
@@ -138,8 +134,6 @@ namespace Cribbage.WPFUI
                 MessageBox.Show("User created");
                 StaThreadWrapper(() =>
                 {
-                    //var w = Application.Current.Windows[0];
-                    //w.Close();
                     var login = new Login();
                     login.Show();
                 });
@@ -181,6 +175,8 @@ namespace Cribbage.WPFUI
             lblNewUser.Visibility = Visibility.Visible;
             lblError.Content = "";
             lblError.Visibility = Visibility.Visible;
+
+            txtLoginEmail.Focus();
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
@@ -223,7 +219,6 @@ namespace Cribbage.WPFUI
                 {
                     // Start the hub connection
                     SignalRConnection cribbageHubConnection = new SignalRConnection(hubAddress);
-                    //cribbageHubConnection.Start();
                     cribbageHubConnection.RegisterUser(user);
                 }
                 else

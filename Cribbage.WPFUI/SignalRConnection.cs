@@ -24,9 +24,21 @@ namespace Cribbage.WPFUI
             _connection.On<string, string>("ReceiveMessage", (s1, s2) => OnSend(s1, s2));
             _connection.On<bool, string, string>("LogInAttempt", (isLoggedIn, message, userJson) => ReceivedLoginMessage(isLoggedIn, message, userJson));
             _connection.On<bool, string>("CreateUserAttempt", (isSuccess, message) => CreateUserMessage(isSuccess, message));
-            _connection.On<bool, string>("CreateUserAttempt", (isSuccess, message) => CreateUserMessage(isSuccess, message));
+            _connection.On<bool, string>("SavedGames", (isSuccess, userGamesJson) => SavedGamesMessage(isSuccess, userGamesJson));
 
             _connection.StartAsync();
+        }
+
+        private void SavedGamesMessage(bool isSuccess, string userGamesJson)
+        {
+            if(isSuccess)
+            {
+                MessageBox.Show("Saved games is TRUE! UserGamesJson: " + userGamesJson);
+            }
+            else
+            {
+                MessageBox.Show("Saved games is FALSE! UserGamesJson: " + userGamesJson);
+            }
         }
 
         private void CreateUserMessage(bool isSuccess, string message)
@@ -87,12 +99,13 @@ namespace Cribbage.WPFUI
             }
         }
 
-        public void GetSavedGames(Guid userId)
+        public void GetSavedGames(User user)
         {
             Start();
             try
             {
-                _connection.InvokeAsync("Login", userId);
+                string strUser = JsonConvert.SerializeObject(user);
+                _connection.InvokeAsync("GetSavedGames", strUser);
             }
             catch (Exception ex)
             {

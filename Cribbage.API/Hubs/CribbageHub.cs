@@ -76,7 +76,7 @@ namespace Cribbage.API.Hubs
                 int rows = new UserManager(options).Insert(newUser);
                 if (rows == 1 ) isSuccess = true;
                 
-                userJson = JsonConvert.SerializeObject(newUser);
+                //userJson = JsonConvert.SerializeObject(newUser);
 
                 // Send Back Success/Fail to client only
                 //Do we want them to log in still after creating an account?
@@ -94,8 +94,34 @@ namespace Cribbage.API.Hubs
 
         public async Task GetSavedGames(string user, string message)
         {
-            // Do BL Stuff - Game Logic
-            await Clients.All.SendAsync("ReceiveMessage", user, message);
+            bool isSuccess = false;
+            string userGamesJson;
+            try
+            {
+                // De-serialize string to user object
+                User newUser;
+                
+                newUser = JsonConvert.DeserializeObject<User>(user);
+
+                // Get the saved games for the user
+                List<Guid> savedGameIds = new UserGameManager(options).GetGames(newUser.Id);
+
+                if (savedGameIds != null ) isSuccess = true; // what happens if they don't have any games?
+
+                userGamesJson = JsonConvert.SerializeObject(savedGameIds);
+
+                // Send Back Success/Fail to client only
+                //Do we want them to log in still after creating an account?
+                await Clients.Caller.SendAsync("SavedGames", isSuccess, userGamesJson);
+
+                // send List of available games to join to client only
+            }
+            catch (Exception)
+            {
+                isSuccess = false;
+                userGamesJson = null;
+                await Clients.Caller.SendAsync("SavedGames", isSuccess, userGamesJson);
+            }
         }
 
         public async Task GetPlayerStats(string user, string message)

@@ -14,35 +14,19 @@ namespace Cribbage.WPFUI
         //string hubAddress = "https://bigprojectapi-300089145.azurewebsites.net/CribbageHub";
         string hubAddress = "https://localhost:7186/CribbageHub";
         UserGame game;
-        User user;
+        User loggedInUser;
 
         public LandingPage(User user)
         {
             InitializeComponent();
             lblWelcomeUser.Content = "Welcome " + user.FirstName + "!";
 
-            lstSavedGames.Items.Add(user.GamesStarted);
-            lstStats.Items.Add(user.GamesWon);
+            loggedInUser = user;
 
-            // Start the hub connection
-            SignalRConnection cribbageHubConnection = new SignalRConnection(hubAddress);
-            cribbageHubConnection.GetSavedGames(user.Id);
-
-
-
-            //game.PlayerId = user.Id;
-
-            //foreach(UserGame userGame in games) 
-            //{
-            // need to add logic to cribbage hub & signal r connection
-            //    lstSavedGames.Items.Add(numGames)
-            //}
-
-            //foreach(UserGame userGame in games) 
-            //{
-            // need to add logic to cribbage hub & signal r connection
-            //    lstStats.Items.Add(numGames)
-            //}
+            lstSavedGames.Visibility = Visibility.Collapsed;
+            lstStats.Visibility = Visibility.Collapsed;
+            lblGameStats.Visibility = Visibility.Collapsed;
+            lblOpenASavedGame.Visibility = Visibility.Collapsed;
         }
 
         private void btnExit_Click(object sender, RoutedEventArgs e)
@@ -52,16 +36,40 @@ namespace Cribbage.WPFUI
 
         private void btnNewGameVsComputer_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow mainWindow = new MainWindow(user);
+            MainWindow mainWindow = new MainWindow(loggedInUser);
             mainWindow.Show();
             this.Close();
         }
 
         private void btnNewGameVsPlayer_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow mainWindow = new MainWindow(user);
+            MainWindow mainWindow = new MainWindow(loggedInUser);
             mainWindow.Show();
             this.Close();
+        }
+
+        private void btnShowGameStats_Click(object sender, RoutedEventArgs e)
+        {
+            lstStats.Visibility = Visibility.Visible;
+            lblGameStats.Visibility = Visibility.Visible;
+            btnShowGameStats.Visibility = Visibility.Collapsed;
+
+            // Start the hub connection
+            SignalRConnection cribbageHubConnection = new SignalRConnection(hubAddress);
+            cribbageHubConnection.GetSavedGames(loggedInUser);
+            lstStats.Items.Add(loggedInUser.GamesWon);
+        }
+
+        private void btnShowSavedGames_Click(object sender, RoutedEventArgs e)
+        {
+            lstSavedGames.Visibility = Visibility.Visible;
+            lblOpenASavedGame.Visibility = Visibility.Visible;
+            btnShowSavedGames.Visibility = Visibility.Collapsed;
+
+            // Start the hub connection
+            SignalRConnection cribbageHubConnection = new SignalRConnection(hubAddress);
+            cribbageHubConnection.GetSavedGames(loggedInUser);
+            lstSavedGames.Items.Add(loggedInUser.GamesStarted);
         }
     }
 }

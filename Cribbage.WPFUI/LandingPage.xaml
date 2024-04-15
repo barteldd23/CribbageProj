@@ -8,12 +8,14 @@
         Title="Cribbage Game Home" Height="900" Width="1400" Background="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}" SizeToContent="Height" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen">
     <Grid Height="895" VerticalAlignment="Center" HorizontalAlignment="Right" Width="1380" Margin="0,0,10,0">
         <Label x:Name="lblWelcomeUser" Content="Welcome &quot;USER&quot;!" HorizontalAlignment="Center" Margin="0,0,0,815" VerticalAlignment="Bottom" FontSize="20" FontWeight="Bold"/>
-        <Button x:Name="btnNewGameVsComputer" Content="New Game vs Computer" HorizontalAlignment="Right" Margin="0,0,920,718" VerticalAlignment="Bottom" Width="210" Height="60" FontSize="18" Click="btnNewGameVsComputer_Click"/>
+        <Button x:Name="btnNewGameVsComputer" Content="New Game vs Computer" HorizontalAlignment="Right" Margin="0,0,1025,718" VerticalAlignment="Bottom" Width="210" Height="60" FontSize="18" Click="btnNewGameVsComputer_Click"/>
         <Button x:Name="btnExit" Content="Exit" HorizontalAlignment="Left" Margin="989,735,0,0" Width="197" FontSize="18" Click="btnExit_Click" Height="70" VerticalAlignment="Top"/>
-        <Button x:Name="btnNewGameVsPlayer" Content="New Game vs Player" HorizontalAlignment="Right" Margin="0,0,925,637" VerticalAlignment="Bottom" Width="205" Height="60" FontSize="18" Click="btnNewGameVsPlayer_Click"/>
+        <Button x:Name="btnNewGameVsPlayer" Content="New Game vs Player" HorizontalAlignment="Right" Margin="0,0,1030,637" VerticalAlignment="Bottom" Width="205" Height="60" FontSize="18" Click="btnNewGameVsPlayer_Click"/>
         <ListBox x:Name="lstStats" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="855,0,0,266" HorizontalAlignment="Left" Width="465" Height="431" VerticalAlignment="Bottom" FontSize="18"/>
         <ListBox x:Name="lstSavedGames" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,324,795,0" HorizontalAlignment="Right" Width="460" Height="431" VerticalAlignment="Top" FontSize="18"/>
-        <Label Content="Game Stats" HorizontalAlignment="Left" Margin="1010,148,0,0" VerticalAlignment="Top" FontSize="20" FontWeight="Bold"/>
-        <Label Content="Open a Saved Game" HorizontalAlignment="Left" Margin="250,282,0,0" VerticalAlignment="Top" FontSize="20" FontWeight="Bold"/>
+        <Label x:Name="lblGameStats" Content="Game Stats" HorizontalAlignment="Left" Margin="1010,148,0,0" VerticalAlignment="Top" FontSize="20" FontWeight="Bold"/>
+        <Label x:Name="lblOpenASavedGame" Content="Open a Saved Game" HorizontalAlignment="Left" Margin="250,282,0,0" VerticalAlignment="Top" FontSize="20" FontWeight="Bold"/>
+        <Button x:Name="btnShowGameStats" Content="Show Game Stats" HorizontalAlignment="Right" Margin="0,0,795,718" VerticalAlignment="Bottom" Width="210" Height="60" FontSize="18" Click="btnShowGameStats_Click"/>
+        <Button x:Name="btnShowSavedGames" Content="Show Saved Games" HorizontalAlignment="Right" Margin="0,0,795,637" VerticalAlignment="Bottom" Width="210" Height="60" FontSize="18" Click="btnShowSavedGames_Click"/>
     </Grid>
 </Window>
