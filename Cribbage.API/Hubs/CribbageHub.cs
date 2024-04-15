@@ -92,7 +92,7 @@ namespace Cribbage.API.Hubs
             
         }
 
-        public async Task GetSavedGames(string user, string message)
+        public async Task GetSavedGames(string user)
         {
             bool isSuccess = false;
             string userGamesJson;

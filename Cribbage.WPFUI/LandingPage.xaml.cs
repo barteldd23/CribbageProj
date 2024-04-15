@@ -15,6 +15,7 @@ namespace Cribbage.WPFUI
         string hubAddress = "https://localhost:7186/CribbageHub";
         UserGame game;
         User loggedInUser;
+        SignalRConnection cribbageHubConnection;
 
         public LandingPage(User user)
         {
@@ -27,6 +28,9 @@ namespace Cribbage.WPFUI
             lstStats.Visibility = Visibility.Collapsed;
             lblGameStats.Visibility = Visibility.Collapsed;
             lblOpenASavedGame.Visibility = Visibility.Collapsed;
+
+            // Start the hub connection
+            cribbageHubConnection = new SignalRConnection(hubAddress);
         }
 
         private void btnExit_Click(object sender, RoutedEventArgs e)
@@ -54,8 +58,6 @@ namespace Cribbage.WPFUI
             lblGameStats.Visibility = Visibility.Visible;
             btnShowGameStats.Visibility = Visibility.Collapsed;
 
-            // Start the hub connection
-            SignalRConnection cribbageHubConnection = new SignalRConnection(hubAddress);
             cribbageHubConnection.GetSavedGames(loggedInUser);
             lstStats.Items.Add(loggedInUser.GamesWon);
         }
@@ -66,8 +68,7 @@ namespace Cribbage.WPFUI
             lblOpenASavedGame.Visibility = Visibility.Visible;
             btnShowSavedGames.Visibility = Visibility.Collapsed;
 
-            // Start the hub connection
-            SignalRConnection cribbageHubConnection = new SignalRConnection(hubAddress);
+            
             cribbageHubConnection.GetSavedGames(loggedInUser);
             lstSavedGames.Items.Add(loggedInUser.GamesStarted);
         }
