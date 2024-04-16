@@ -105,10 +105,18 @@ namespace Cribbage.API.Hubs
 
                 // Get the saved games for the user
                 List<Guid> savedGameIds = new UserGameManager(options).GetGames(newUser.Id);
+                Game game;
+                List<Game> savedGames = new List<Game>();
 
-                if (savedGameIds != null ) isSuccess = true; // what happens if they don't have any games?
+                foreach(Guid gameId in savedGameIds)
+                {
+                    game = new GameManager(options).LoadById(gameId);
+                    savedGames.Add(game);
+                }
 
-                userGamesJson = JsonConvert.SerializeObject(savedGameIds);
+                if (savedGames != null ) isSuccess = true; // what happens if they don't have any games?
+
+                userGamesJson = JsonConvert.SerializeObject(savedGames);
 
                 // Send Back Success/Fail to client only
                 //Do we want them to log in still after creating an account?

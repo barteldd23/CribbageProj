@@ -52,29 +52,27 @@ namespace Cribbage.WPFUI
             if (isSuccess)
             {
                 MessageBox.Show("UserGamesJson: " + userGamesJson);
-                List<string> userGames = new List<string>();
-                userGames = JsonConvert.DeserializeObject<List<string>>(userGamesJson);
+                List<Game> userGames = new List<Game>();
+                userGames = JsonConvert.DeserializeObject<List<Game>>(userGamesJson);
+                string gameName;
+                List<string> savedGameNames = new List<string>();
+                List<DateTime> savedDates = new List<DateTime>();
 
-                //string updatedJson = userGamesJson.TrimEnd(']');
-                //updatedJson = userGamesJson.TrimStart('[');
-
-                //string[] arrGames = updatedJson.Split(',');
-
-                //foreach(string gameId in arrGames)
-                //{
-
-                //    userGames.Add((string)gameId);
-                //}
-
-                StaThreadWrapper(() =>
+                foreach(Game game in userGames)
                 {
-                    // NOTE: making a new page makes the listbox NULL!!
-                    var games = new LandingPage();
-                    //games.lstSavedGames.ItemsSource = LoadUserGames(userGames);
-                    games.AddSavedGames(userGames);
-                });
+                    savedGameNames.Add(game.GameName);
+                    savedDates.Add(game.Date);
+                }
 
-                MessageBox.Show("Saved Games Check TRUE");
+                //StaThreadWrapper(() =>
+                //{
+                //    // NOTE: making a new page makes the listbox NULL!!
+                //    var games = new LandingPage();
+                //    //games.lstSavedGames.ItemsSource = LoadUserGames(userGames);
+                //    games.AddSavedGames(userGames);
+                //});
+
+                MessageBox.Show("Saved Games Check TRUE: " + savedGameNames[0] + " " + savedDates[0]);
             }
             else
             {
