@@ -132,10 +132,36 @@ namespace Cribbage.API.Hubs
             }
         }
 
-        public async Task GetPlayerStats(string user, string message)
+        public async Task GetGameStats(string user)
         {
-            // Do BL Stuff - Game Logic
-            await Clients.All.SendAsync("ReceiveMessage", user, message);
+            bool isSuccess = false;
+            string userStatsJson;
+            try
+            {
+                // De-serialize string to user object
+                User newUser;
+
+                newUser = JsonConvert.DeserializeObject<User>(user);
+
+                // Get the game stats for the user
+                User userInfo = new UserManager(options).LoadById(newUser.Id);
+
+                if (userInfo != null) isSuccess = true; // what happens if they don't have any stats?
+
+                userStatsJson = JsonConvert.SerializeObject(userInfo);
+
+                // Send Back Success/Fail to client only
+                //Do we want them to log in still after creating an account?
+                await Clients.Caller.SendAsync("GameStats", isSuccess, userStatsJson);
+
+                // send List of available games to join to client only
+            }
+            catch (Exception)
+            {
+                isSuccess = false;
+                userStatsJson = null;
+                await Clients.Caller.SendAsync("GameStats", isSuccess, userStatsJson);
+            }
         }
 
         public async Task SendMessage(string user, string message)

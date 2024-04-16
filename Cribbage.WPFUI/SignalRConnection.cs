@@ -25,9 +25,23 @@ namespace Cribbage.WPFUI
             _connection.On<bool, string, string>("LogInAttempt", (isLoggedIn, message, userJson) => ReceivedLoginMessage(isLoggedIn, message, userJson));
             _connection.On<bool, string>("CreateUserAttempt", (isSuccess, message) => CreateUserMessage(isSuccess, message));
             _connection.On<bool, string>("SavedGames", (isSuccess, userGamesJson) => SavedGamesMessage(isSuccess, userGamesJson));
-            _connection.On<bool, string>("SavedGames", (isSuccess, userGamesJson) => SavedGamesMessage(isSuccess, userGamesJson));
+            _connection.On<bool, string>("GameStats", (isSuccess, userStatsJson) => GameStatsMessage(isSuccess, userStatsJson));
 
             _connection.StartAsync();
+        }
+
+        private void GameStatsMessage(bool isSuccess, string userStatsJson)
+        {
+            if (isSuccess)
+            {
+                //MessageBox.Show("Game stats is TRUE! userStatsJson: " + userStatsJson);
+                LandingPage.GameStatsCheck(isSuccess, userStatsJson);
+            }
+            else
+            {
+                //MessageBox.Show("Game stats is FALSE! userStatsJson: " + userStatsJson);
+                LandingPage.GameStatsCheck(isSuccess, userStatsJson);
+            }
         }
 
         private void SavedGamesMessage(bool isSuccess, string userGamesJson)
@@ -122,7 +136,21 @@ namespace Cribbage.WPFUI
             try
             {
                 string strUser = JsonConvert.SerializeObject(user);
-                _connection.InvokeAsync("GetSavedGames", strUser);
+                //_connection.InvokeAsync("GetSavedGames", strUser);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        internal void GetGameStats(User user)
+        {
+            Start();
+            try
+            {
+                string strUser = JsonConvert.SerializeObject(user);
+                _connection.InvokeAsync("GetGameStats", strUser);
             }
             catch (Exception ex)
             {
