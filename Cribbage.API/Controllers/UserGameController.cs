@@ -35,10 +35,10 @@ namespace Cribbage.API.Controllers
         /// </summary>
         /// <param name="id">UserGame Id</param>
         /// <returns></returns>
-        [HttpGet("{gameId}")]
-        public UserGame Get(Guid gameId)
+        [HttpGet("{userGameId}")]
+        public UserGame Get(Guid userGameId)
         {
-            return new UserGameManager(options).LoadById(gameId);
+            return new UserGameManager(options).LoadById(userGameId);
         }
 
         /// <summary>
@@ -46,11 +46,11 @@ namespace Cribbage.API.Controllers
         /// </summary>
         /// <param name="id">Player Id</param>
         /// <returns></returns>
-        [HttpGet("{playerId}")]
-        public List<Guid> GetGames(Guid playerId)
-        {
-            return new UserGameManager(options).GetGames(playerId);
-        }
+        //[HttpGet("{playerId}")]
+        //public List<Guid> GetGames(Guid playerId)
+        //{
+        //    return new UserGameManager(options).GetGames(playerId);
+        //}
 
         /// <summary>
         /// Insert a user game.
