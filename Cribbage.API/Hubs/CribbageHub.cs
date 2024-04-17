@@ -177,12 +177,37 @@ namespace Cribbage.API.Hubs
 
         public async Task NewGameVsComputer(string user)
         {
-            // Create a Game.
-            // Add Game to DB.
-            // Add UserGame to DB.
-            // Create CribbageGame
-            // Serialize CribbageGame into Json
-            // Send CribbageGame back to only that person.
+            string cribbageGameJson = "";
+            string computerEmail = "computer@computer.com";
+            User computer = new UserManager(options).LoadByEmail(computerEmail);
+            int result;
+
+            try
+            {
+                User player1 = JsonConvert.DeserializeObject<User>(user);
+
+                // Create a Game.
+                CribbageGame cribbageGame = new CribbageGame(player1, computer);
+
+                // Add Game to DB.
+                result = new GameManager(options).Insert(cribbageGame);
+
+                // Add UserGame to DB.
+                UserGame userGame = new UserGame(cribbageGame.Id, player1.Id, cribbageGame.Player_1.Score);
+                result = new UserGameManager(options).Insert(userGame);
+
+                // Serialize CribbageGame into Json
+                cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
+
+                // Send CribbageGame back to only that person.
+                await Clients.Caller.SendAsync("StartGame", cribbageGame.Player_2.DisplayName + "  is Ready.");
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
         public async Task NewGameVsPlayer(string user)
         {

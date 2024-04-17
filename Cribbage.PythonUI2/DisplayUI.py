@@ -12,7 +12,7 @@ import uuid
 
 from signalrcore.hub_connection_builder import HubConnectionBuilder
 #
-
+################################# Classes ##############
 @dataclass
 class CribbageUser:
     Id: str = ''
@@ -37,8 +37,14 @@ class CribbageUser:
     def __post_init__(self) -> None:
         self.FullName = self.FirstName + " " + self.LastName
         self.LastFirstName = self.LastName + ", " + self.FirstName
+        
+###################### Modular Variables #################
 
 pythonUser = CribbageUser()
+pythonUserJson = json.dumps(asdict(pythonUser))
+
+
+###################### Methods for Received Hub Messages ##############
         
 def receivedCreateUserMessage(isCreated, messageInfo):
     if(isCreated):
@@ -58,9 +64,17 @@ def receivedLogInMessage(isLoggedIn, messageInfo, userJson):
         loggedInFrame.pack()
     else:
         lblErrorMessage.config(text=messageInfo)
+
+def receivedStartGameMessage(message):
+    loggedInFrame.pack_forget()
+    gameFrame.pack()
+    lblGameMessages.config(text=message)
+
+###################### Methods for Button clicks ###################
         
 def newVsComputer():
-    pass
+    pythonUserJson = json.dumps(asdict(pythonUser))
+    hub_connection.send("NewGameVsComputer",[pythonUserJson])
 
 def newVsPlayer():
     pass
@@ -145,6 +159,7 @@ hub_connection = HubConnectionBuilder()\
 hub_connection.on("ReceiveMessage", lambda msg: print("received message back from hub." + msg[0]))
 hub_connection.on("LogInAttempt", lambda data: receivedLogInMessage(data[0],data[1],data[2]))
 hub_connection.on("CreateUserAttempt", lambda data: receivedCreateUserMessage(data[0],data[1]))
+hub_connection.on("StartGame", lambda data: receivedStartGameMessage(data[0]))
 hub_connection.start()
 
 
@@ -236,6 +251,9 @@ usersFrame = tkinter.Frame(playFrame, height=300, relief=RIDGE, bg='purple')
 # usersFrame.columnconfigure(5, weight=1)
 # usersFrame.columnconfigure(6, weight=1)
 
+lblGameMessages = tkinter.Label(rallyFrame, text='Initial Start\n')
+lblGameMessages.pack()
+
 opponentFrame.grid(row=0, column=0, sticky='news')
 rallyFrame.grid(row=1, column=0, sticky='news')
 usersFrame.grid(row=2, column=0, sticky='news')
@@ -251,9 +269,14 @@ lblAvailableGames = tkinter.Label(availableGamesFrame, text="AvailableGamesFrame
 ################ Login Widgets ###############################
 lblLogin = tkinter.Label(loginFrame, text="Login to Play", font=('Arial',30))
 lblEmail = tkinter.Label(loginFrame, text="Email: ", font=('Arial',16))
-txtEmail = tkinter.Entry(loginFrame, font=('Arial',16))
 lblPassword = tkinter.Label(loginFrame, text="Password: ", font=('Arial',16))
+
+###Change default values after development
+txtEmail = tkinter.Entry(loginFrame, font=('Arial',16))
 txtPassword = tkinter.Entry(loginFrame, show='*', font=('Arial',16))
+txtEmail.insert(END,'dean@dean.com')
+txtPassword.insert(END,'password')
+
 btnLogin = tkinter.Button(loginFrame, text='Login', font=('Arial',16), command=onClickLogin)
 btnNewUser = tkinter.Button(loginFrame, text='New Player', font=('Arial',16), command=onClickNewUser)
 lblErrorMessage = tkinter.Label(loginFrame, font=('Arial',30), fg='red')
@@ -273,14 +296,16 @@ lblCribFrame.grid(row=0, column=0, sticky='news', pady=10, padx=10)
 lblAvailableGames.pack()
 
 ############## LoggedInFrame Widgets ###################
-lblWelcomMessage = tkinter.Label(loggedInFrame ,text='Welcome ',font=('Arial',30))
-btnVsComputer = tkinter.Button(loggedInFrame, text='New Game against a Computer', command = newVsComputer)
-btnVsPlayer = tkinter.Button(loggedInFrame, text='New Game against a Person', command = newVsPlayer)
+lblWelcomMessage = tkinter.Label(loggedInFrame ,text='Welcome ',font=('Arial',40))
+lblPlayCribbageMessage = tkinter.Label(loggedInFrame, text='Start Playing a Cribbage Game!', font=('Arial', 20))
+btnVsComputer = tkinter.Button(loggedInFrame, text='New Game against a Computer', command = newVsComputer, font=('Arial',16))
+btnVsPlayer = tkinter.Button(loggedInFrame, text='New Game against a Person', command = newVsPlayer, font=('Arial',16))
 
 
-lblWelcomMessage.pack()
-btnVsComputer.pack()
-btnVsPlayer.pack()
+lblWelcomMessage.grid(row=0, column=0, sticky='news', pady=20, padx=20)
+lblPlayCribbageMessage.grid(row=1, column=0, sticky='news', pady=20, padx=20)
+btnVsComputer.grid(row=2, column=0, sticky='news', pady=20, padx=20)
+btnVsPlayer.grid(row=3, column=0, sticky='news', pady=20, padx=20)
 
 ######################### New Player Frame ######################
 
