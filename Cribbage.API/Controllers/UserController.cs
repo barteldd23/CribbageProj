@@ -47,20 +47,20 @@ namespace Cribbage.API.Controllers
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        [HttpGet("{user}")]
-        public bool Login(User user)
-        {
-            try
-            {
-                return new UserManager(options).Login(user);
-            }
-            catch (Exception ex)
-            {
+        //[HttpGet("{user}")]
+        //public bool Login(User user)
+        //{
+        //    try
+        //    {
+        //        return new UserManager(options).Login(user);
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                throw ex;
-            }
+        //        throw ex;
+        //    }
 
-        }
+        //}
 
         /// <summary>
         /// Insert a user.

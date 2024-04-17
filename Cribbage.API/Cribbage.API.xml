@@ -56,13 +56,6 @@
             <param name="id">User Id</param>
             <returns></returns>
         </member>
-        <member name="M:Cribbage.API.Controllers.UserController.Login(Cribbage.BL.Models.User)">
-            <summary>
-            Get a particular user by logging in.
-            </summary>
-            <param name="user"></param>
-            <returns></returns>
-        </member>
         <member name="M:Cribbage.API.Controllers.UserController.Post(Cribbage.BL.Models.User,System.Boolean)">
             <summary>
             Insert a user.
@@ -99,13 +92,6 @@
             Get a particular user game by id.
             </summary>
             <param name="id">UserGame Id</param>
-            <returns></returns>
-        </member>
-        <member name="M:Cribbage.API.Controllers.UserGameController.GetGames(System.Guid)">
-            <summary>
-            Get all games for one user.
-            </summary>
-            <param name="id">Player Id</param>
             <returns></returns>
         </member>
         <member name="M:Cribbage.API.Controllers.UserGameController.Post(Cribbage.BL.Models.UserGame,System.Boolean)">
