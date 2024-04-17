@@ -195,6 +195,9 @@ namespace Cribbage.API.Hubs
                 // Add UserGame to DB.
                 UserGame userGame = new UserGame(cribbageGame.Id, player1.Id, cribbageGame.Player_1.Score);
                 result = new UserGameManager(options).Insert(userGame);
+                player1.GamesStarted++;
+                result = new UserManager(options).Update(player1);
+                cribbageGame.Player_1.GamesStarted = player1.GamesStarted;
 
                 // Serialize CribbageGame into Json
                 cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);

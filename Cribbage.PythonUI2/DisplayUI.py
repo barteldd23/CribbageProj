@@ -152,15 +152,15 @@ def onClickCancelUser():
 # #hubAddress = "https://bigprojectapi-300089145.azurewebsites.net/CribbageHub"
 hubAddress = "https://localhost:7186/CribbageHub"
 
-hub_connection = HubConnectionBuilder()\
-.with_url(hubAddress, options={"verify_ssl": False})\
-.build()
+# hub_connection = HubConnectionBuilder()\
+# .with_url(hubAddress, options={"verify_ssl": False})\
+# .build()
     
-hub_connection.on("ReceiveMessage", lambda msg: print("received message back from hub." + msg[0]))
-hub_connection.on("LogInAttempt", lambda data: receivedLogInMessage(data[0],data[1],data[2]))
-hub_connection.on("CreateUserAttempt", lambda data: receivedCreateUserMessage(data[0],data[1]))
-hub_connection.on("StartGame", lambda data: receivedStartGameMessage(data[0]))
-hub_connection.start()
+# hub_connection.on("ReceiveMessage", lambda msg: print("received message back from hub." + msg[0]))
+# hub_connection.on("LogInAttempt", lambda data: receivedLogInMessage(data[0],data[1],data[2]))
+# hub_connection.on("CreateUserAttempt", lambda data: receivedCreateUserMessage(data[0],data[1]))
+# hub_connection.on("StartGame", lambda data: receivedStartGameMessage(data[0]))
+# hub_connection.start()
 
 
 ################ Set Up Window and Menu Bar ####################
@@ -187,7 +187,7 @@ file.add_command(label = 'Quit', command = quit)
 
 ############ Main Frames ###############
 loginFrame = tkinter.Frame(bg='blue')
-gameFrame = tkinter.Frame(bg='#333333')
+gameFrame = tkinter.Frame(bg='#333333', height=900, width=1400)
 loggedInFrame = tkinter.Frame(bg='blue')
 newPlayerFrame = tkinter.Frame(bg='blue')
 
@@ -197,6 +197,12 @@ playFrame = tkinter.Frame(gameFrame, width=800, height=900, relief=RIDGE, bg='bl
 scoreFrame = tkinter.Frame(gameFrame, width=200, height=900, relief=RIDGE, bg='green')
 availableGamesFrame = tkinter.Frame(gameFrame, width=200, height=900, relief=RIDGE, bg='red')
 
+
+playFrame.columnconfigure(0,weight=1)
+playFrame.columnconfigure(1,weight=4)
+playFrame.columnconfigure(2,weight=1)
+playFrame.columnconfigure(3,weight=1)
+playFrame.rowconfigure(0, weight=1)
 
 # playFrame.rowconfigure(0, weight=1)
 # playFrame.rowconfigure(1, weight=1)
@@ -210,16 +216,21 @@ loginFrame.columnconfigure(0,weight=1)
 # scoreFrame.columnconfigure(0, weight=1)
 
 
-cribFrame.pack(side='left')
-playFrame.pack(side='left')
-scoreFrame.pack(side='left')
-availableGamesFrame.pack(side='left')
+cribFrame.grid(row=0, column=0, sticky='news')
+playFrame.grid(row=0, column=1, sticky='news')
+scoreFrame.grid(row=0, column=2, sticky='news')
+availableGamesFrame.grid(row=0, column=3, sticky='news')
+
+# cribFrame.pack(side='left')
+# playFrame.pack(side='left')
+# scoreFrame.pack(side='left')
+# availableGamesFrame.pack(side='left')
 
 
 ##################### playFrame Frames #####################
-opponentFrame = tkinter.Frame(playFrame, height=300, relief=RIDGE, bg='pink')
-rallyFrame = tkinter.Frame(playFrame, height=300, relief=RIDGE, bg='orange')
-usersFrame = tkinter.Frame(playFrame, height=300, relief=RIDGE, bg='purple')
+opponentFrame = tkinter.Frame(playFrame, height=300, width=800, relief=RIDGE, bg='pink')
+rallyFrame = tkinter.Frame(playFrame, height=300, width=800, relief=RIDGE, bg='orange')
+usersFrame = tkinter.Frame(playFrame, height=300, width=800, relief=RIDGE, bg='purple')
 
 # opponentFrame.columnconfigure(0, weight=1)
 # opponentFrame.columnconfigure(1, weight=1)
@@ -252,7 +263,7 @@ usersFrame = tkinter.Frame(playFrame, height=300, relief=RIDGE, bg='purple')
 # usersFrame.columnconfigure(6, weight=1)
 
 lblGameMessages = tkinter.Label(rallyFrame, text='Initial Start\n')
-lblGameMessages.pack()
+lblGameMessages.grid(row=3, column=0, columnspan=8, sticky='news')
 
 opponentFrame.grid(row=0, column=0, sticky='news')
 rallyFrame.grid(row=1, column=0, sticky='news')
@@ -264,6 +275,10 @@ lblCribFrame = tkinter.Label(cribFrame, text="cribFrame")
 
 lblScoreFrame = tkinter.Label(scoreFrame, text="scoreFrame")
 lblAvailableGames = tkinter.Label(availableGamesFrame, text="AvailableGamesFrame")
+
+lblCribFrame.grid(row=0, column=0, sticky='news')
+lblScoreFrame.grid(row=0, column=0, sticky='news')
+lblAvailableGames.grid(row=0, column=0, sticky='news')
 
 
 ################ Login Widgets ###############################
@@ -359,7 +374,8 @@ txtNewPlayerVerifyPassword.grid(row=6, column=1)
 # scoreFrame.grid(row=0, column=2, sticky='news')
 # availableGamesFrame.grid(row=0, column=3, sticky='news')
 
-loginFrame.pack()
+#loginFrame.pack()
+gameFrame.pack()
 
 
 window.mainloop()
