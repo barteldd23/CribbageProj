@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Cribbage.BL.Models
 {
     public class CribbageGame : Game
-{
+    {
         public Player Player_1 { get; set; }
         public Player Player_2 { get; set; }
         public int Dealer { get; set; } = 1;
@@ -39,5 +39,21 @@ namespace Cribbage.BL.Models
             }
             return count;
         }
+
+        public CribbageGame(User user1)
+        {
+            Date = DateTime.Now;
+            GameName = user1.DisplayName + " Vs. Computer";
+            Player_1 = new Player(user1);
+        }
+
+        public CribbageGame(User user1, User user2)
+        {
+            Date = DateTime.Now;
+            Player_1 = new Player(user1);
+            Player_2 = new Player(user2);
+            GameName = user1.DisplayName + " Vs. " + user2.DisplayName;
+        }
+
     }
 }

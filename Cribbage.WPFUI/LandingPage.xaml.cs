@@ -19,9 +19,11 @@ namespace Cribbage.WPFUI
         User loggedInUser;
         SignalRConnection cribbageHubConnection;
         //public ObservableCollection<string> Stats;
+        Window landingPage;
 
         public LandingPage(User user)
         {
+            landingPage = this;
             this.DataContext = this;
             InitializeComponent();
             lblWelcomeUser.Content = "Welcome " + user.FirstName + "!";
@@ -65,8 +67,7 @@ namespace Cribbage.WPFUI
                     savedGameNames.Add(game.GameName);
                     savedDates.Add(game.Date);
                 }
-                
-                
+
                 //StaThreadWrapper(() =>
                 //{
                 //    // NOTE: making a new page makes the listbox NULL!!
@@ -87,6 +88,11 @@ namespace Cribbage.WPFUI
                 MessageBox.Show("Saved Games Check FALSE");
                 return Tuple.Create(savedGameNames, savedDates);
             }
+        }
+
+        public void closePage()
+        {
+            landingPage.Close();
         }
         
         //private static ArrayList LoadUserGames(List<string> userGames)
@@ -116,32 +122,36 @@ namespace Cribbage.WPFUI
 
         private void btnNewGameVsComputer_Click(object sender, RoutedEventArgs e)
         {
-            Player computer = new Player();
-            computer.Id = new Guid();
-            computer.Email = "computer@computer.computer";
-            computer.DisplayName = "Computer Bot";
-            computer.FirstName = "Computer";
-            computer.LastName = "Bot";
-            computer.Password = "computer";
-            computer.GamesStarted = 0;
-            computer.GamesWon = 0;
-            computer.GamesLost = 0;
-            computer.WinStreak = 0;
-            computer.AvgPtsPerGame = 0;
+
+
+            //Player computer = new Player();
+            //computer.Id = new Guid();
+            //computer.Email = "computer@computer.computer";
+            //computer.DisplayName = "Computer Bot";
+            //computer.FirstName = "Computer";
+            //computer.LastName = "Bot";
+            //computer.Password = "computer";
+            //computer.GamesStarted = 0;
+            //computer.GamesWon = 0;
+            //computer.GamesLost = 0;
+            //computer.WinStreak = 0;
+            //computer.AvgPtsPerGame = 0;
 
             cribbageHubConnection.NewGameVsComputer(loggedInUser);
 
-            MainWindow mainWindow = new MainWindow(loggedInUser, computer);
-            mainWindow.Show();
-            this.Close();
+            //MainWindow mainWindow = new MainWindow(loggedInUser, computer);
+            //mainWindow.Show();
+            //this.Close();
         }
 
         private void btnNewGameVsPlayer_Click(object sender, RoutedEventArgs e)
         {
-            Player human = new Player();
-            MainWindow mainWindow = new MainWindow(loggedInUser, human);
-            mainWindow.Show();
-            this.Close();
+
+
+            //Player human = new Player();
+            //MainWindow mainWindow = new MainWindow(loggedInUser, human);
+            //mainWindow.Show();
+            //this.Close();
         }
 
         private void btnShowGameStats_Click(object sender, RoutedEventArgs e)
@@ -155,7 +165,6 @@ namespace Cribbage.WPFUI
             lstStats.Items.Add("Games Lost: " + loggedInUser.GamesLost);
             lstStats.Items.Add("Win Streak: " + loggedInUser.WinStreak);
             lstStats.Items.Add("Average Points Per Game: " + loggedInUser.AvgPtsPerGame);
-            //cribbageHubConnection.GetGameStats(loggedInUser);
         }
 
         private void btnShowSavedGames_Click(object sender, RoutedEventArgs e)
@@ -172,18 +181,6 @@ namespace Cribbage.WPFUI
             {
                 cribbageHubConnection.GetSavedGames(loggedInUser);
                 lstSavedGames.Items.Add("Total Games Started: " + loggedInUser.GamesStarted);
-            }
-        }
-
-        public static void GameStatsCheck(bool isSuccess, string userStatsJson)
-        {
-            if (isSuccess)
-            {
-                MessageBox.Show("userStatsJson: " + userStatsJson);
-            }
-            else
-            {
-                MessageBox.Show("Game Stats Check FALSE");
             }
         }
     }

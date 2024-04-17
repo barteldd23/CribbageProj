@@ -132,38 +132,6 @@ namespace Cribbage.API.Hubs
             }
         }
 
-        public async Task GetGameStats(string user)
-        {
-            bool isSuccess = false;
-            string userStatsJson;
-            try
-            {
-                // De-serialize string to user object
-                User newUser;
-
-                newUser = JsonConvert.DeserializeObject<User>(user);
-
-                // Get the game stats for the user
-                User userInfo = new UserManager(options).LoadById(newUser.Id);
-
-                if (userInfo != null) isSuccess = true; // what happens if they don't have any stats?
-
-                userStatsJson = JsonConvert.SerializeObject(userInfo);
-
-                // Send Back Success/Fail to client only
-                //Do we want them to log in still after creating an account?
-                await Clients.Caller.SendAsync("GameStats", isSuccess, userStatsJson);
-
-                // send List of available games to join to client only
-            }
-            catch (Exception)
-            {
-                isSuccess = false;
-                userStatsJson = null;
-                await Clients.Caller.SendAsync("GameStats", isSuccess, userStatsJson);
-            }
-        }
-
         public async Task SendMessage(string user, string message)
         {
             // Do BL Stuff - Game Logic
@@ -177,12 +145,40 @@ namespace Cribbage.API.Hubs
 
         public async Task NewGameVsComputer(string user)
         {
-            // Create a Game.
-            // Add Game to DB.
-            // Add UserGame to DB.
-            // Create CribbageGame
-            // Serialize CribbageGame into Json
-            // Send CribbageGame back to only that person.
+            string cribbageGameJson = "";
+            string computerEmail = "computer@computer.com";
+            User computer = new UserManager(options).LoadByEmail(computerEmail);
+            int result;
+
+            try
+            {
+                User player1 = JsonConvert.DeserializeObject<User>(user);
+
+                // Create a Game.
+                CribbageGame cribbageGame = new CribbageGame(player1, computer);
+
+                // Add Game to DB.
+                result = new GameManager(options).Insert(cribbageGame);
+
+                // Add UserGame to DB.
+                UserGame userGame = new UserGame(cribbageGame.Id, player1.Id, cribbageGame.Player_1.Score);
+                result = new UserGameManager(options).Insert(userGame);
+                player1.GamesStarted++;
+                result = new UserManager(options).Update(player1);
+                cribbageGame.Player_1.GamesStarted = player1.GamesStarted;
+
+                // Serialize CribbageGame into Json
+                cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
+
+                // Send CribbageGame back to only that person.
+                await Clients.Caller.SendAsync("StartGame", cribbageGame.Player_2.DisplayName + " is Ready.");
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
         public async Task NewGameVsPlayer(string user)
         {
