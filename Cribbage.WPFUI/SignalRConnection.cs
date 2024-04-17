@@ -25,23 +25,15 @@ namespace Cribbage.WPFUI
             _connection.On<bool, string, string>("LogInAttempt", (isLoggedIn, message, userJson) => ReceivedLoginMessage(isLoggedIn, message, userJson));
             _connection.On<bool, string>("CreateUserAttempt", (isSuccess, message) => CreateUserMessage(isSuccess, message));
             _connection.On<bool, string>("SavedGames", (isSuccess, userGamesJson) => SavedGamesMessage(isSuccess, userGamesJson));
-            _connection.On<bool, string>("GameStats", (isSuccess, userStatsJson) => GameStatsMessage(isSuccess, userStatsJson));
+            _connection.On<string>("StartGame", (message) => StartGameVsComputerMessage(message));
+
 
             _connection.StartAsync();
         }
 
-        private void GameStatsMessage(bool isSuccess, string userStatsJson)
+        private void StartGameVsComputerMessage(string message)
         {
-            if (isSuccess)
-            {
-                //MessageBox.Show("Game stats is TRUE! userStatsJson: " + userStatsJson);
-                LandingPage.GameStatsCheck(isSuccess, userStatsJson);
-            }
-            else
-            {
-                //MessageBox.Show("Game stats is FALSE! userStatsJson: " + userStatsJson);
-                LandingPage.GameStatsCheck(isSuccess, userStatsJson);
-            }
+            MessageBox.Show(message);
         }
 
         private void SavedGamesMessage(bool isSuccess, string userGamesJson)
@@ -136,7 +128,7 @@ namespace Cribbage.WPFUI
             try
             {
                 string strUser = JsonConvert.SerializeObject(user);
-                //_connection.InvokeAsync("GetSavedGames", strUser);
+                _connection.InvokeAsync("NewGameVsComputer", strUser);
             }
             catch (Exception ex)
             {
