@@ -108,9 +108,9 @@ namespace Cribbage.API.Hubs
                 Game game;
                 List<Game> savedGames = new List<Game>();
 
-                foreach(Guid gameId in savedGameIds)
+                foreach(Guid savedGameId in savedGameIds)
                 {
-                    game = new GameManager(options).LoadById(gameId);
+                    game = new GameManager(options).LoadById(savedGameId);
                     savedGames.Add(game);
                 }
 
@@ -182,9 +182,41 @@ namespace Cribbage.API.Hubs
         }
         public async Task NewGameVsPlayer(string user)
         {
-            // Create a Game, only 1 person assigned to it.
-            // Wait for 2nd person.
             // Send back List of all available games to join to All connected users.
+
+            string cribbageGameJson = "";
+            int result;
+
+            try
+            {
+                User player1 = JsonConvert.DeserializeObject<User>(user);
+
+                // Create a Game, only 1 person assigned to it.
+                CribbageGame cribbageGame = new CribbageGame(player1);
+
+                // Wait for 2nd person
+
+                // Add Game to DB.
+                result = new GameManager(options).Insert(cribbageGame);
+
+                // Add UserGame to DB.
+                UserGame userGame = new UserGame(cribbageGame.Id, player1.Id, cribbageGame.Player_1.Score);
+                result = new UserGameManager(options).Insert(userGame);
+                player1.GamesStarted++;
+                result = new UserManager(options).Update(player1);
+                cribbageGame.Player_1.GamesStarted = player1.GamesStarted;
+
+                // Serialize CribbageGame into Json
+                cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
+
+                // Send CribbageGame back to only that person.
+                await Clients.Caller.SendAsync("StartGameVsPlayer", cribbageGame.Player_1.DisplayName + " is Ready.");
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public async Task JoinGame(string user, string game)

@@ -24,8 +24,6 @@ namespace Cribbage.WPFUI
 
             // need to convert User to Player --> it keeps crashing
 
-            //cribbageGame = new CribbageGame();
-
             if (player.Email == "computer@computer.computer")
             {
                 lblPlayer1DisplayName.Content = player.DisplayName;
