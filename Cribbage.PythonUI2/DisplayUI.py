@@ -1,3 +1,4 @@
+from gc import disable
 from textwrap import fill
 from tkinter import *
 from tkinter import ttk
@@ -65,11 +66,16 @@ def receivedLogInMessage(isLoggedIn, messageInfo, userJson):
     else:
         lblErrorMessage.config(text=messageInfo)
 
-def receivedStartGameMessage(message):
+def receivedStartGameMessage(message, gameJson):
     loggedInFrame.pack_forget()
     gameFrame.pack()
-    lblGameMessages.config(text=message)
+    setMessage(message)
+    setMessage(gameJson)
 
+def setMessage(msg):
+    txtGameMessages.config(state='normal')
+    txtGameMessages.insert('end', msg + '\n')
+    txtGameMessages.config(state='disabled')
 ###################### Methods for Button clicks ###################
         
 def newVsComputer():
@@ -152,15 +158,15 @@ def onClickCancelUser():
 # #hubAddress = "https://bigprojectapi-300089145.azurewebsites.net/CribbageHub"
 hubAddress = "https://localhost:7186/CribbageHub"
 
-# hub_connection = HubConnectionBuilder()\
-# .with_url(hubAddress, options={"verify_ssl": False})\
-# .build()
+hub_connection = HubConnectionBuilder()\
+.with_url(hubAddress, options={"verify_ssl": False})\
+.build()
     
-# hub_connection.on("ReceiveMessage", lambda msg: print("received message back from hub." + msg[0]))
-# hub_connection.on("LogInAttempt", lambda data: receivedLogInMessage(data[0],data[1],data[2]))
-# hub_connection.on("CreateUserAttempt", lambda data: receivedCreateUserMessage(data[0],data[1]))
-# hub_connection.on("StartGame", lambda data: receivedStartGameMessage(data[0]))
-# hub_connection.start()
+hub_connection.on("ReceiveMessage", lambda msg: print("received message back from hub." + msg[0]))
+hub_connection.on("LogInAttempt", lambda data: receivedLogInMessage(data[0],data[1],data[2]))
+hub_connection.on("CreateUserAttempt", lambda data: receivedCreateUserMessage(data[0],data[1]))
+hub_connection.on("StartGame", lambda data: receivedStartGameMessage(data[0],data[1]))
+hub_connection.start()
 
 
 ################ Set Up Window and Menu Bar ####################
@@ -215,6 +221,10 @@ loginFrame.columnconfigure(0,weight=1)
 
 # scoreFrame.columnconfigure(0, weight=1)
 
+cribFrame.grid_propagate(0)
+playFrame.grid_propagate(0)
+scoreFrame.grid_propagate(0)
+availableGamesFrame.grid_propagate(0)
 
 cribFrame.grid(row=0, column=0, sticky='news')
 playFrame.grid(row=0, column=1, sticky='news')
@@ -262,8 +272,18 @@ usersFrame = tkinter.Frame(playFrame, height=300, width=800, relief=RIDGE, bg='p
 # usersFrame.columnconfigure(5, weight=1)
 # usersFrame.columnconfigure(6, weight=1)
 
-lblGameMessages = tkinter.Label(rallyFrame, text='Initial Start\n')
-lblGameMessages.grid(row=3, column=0, columnspan=8, sticky='news')
+txtGameMessages = tkinter.Text(rallyFrame, width=80, height=3, state='disabled')
+txtGameMessages.config(state='normal')
+txtGameMessages.insert('1.0', 'Initial Message\n')
+txtGameMessages.config(state='disabled')
+txtGameMessages.grid(row=3, column=0, columnspan=8, sticky='news')
+scrollbar = tkinter.Scrollbar(rallyFrame, orient=VERTICAL, command=txtGameMessages.yview)
+scrollbar.grid(row=3, column=9, sticky='ns')
+txtGameMessages.config(yscrollcommand = scrollbar.set)
+
+opponentFrame.grid_propagate(0)
+rallyFrame.grid_propagate(0)
+usersFrame.grid_propagate(0)
 
 opponentFrame.grid(row=0, column=0, sticky='news')
 rallyFrame.grid(row=1, column=0, sticky='news')
@@ -374,9 +394,11 @@ txtNewPlayerVerifyPassword.grid(row=6, column=1)
 # scoreFrame.grid(row=0, column=2, sticky='news')
 # availableGamesFrame.grid(row=0, column=3, sticky='news')
 
-#loginFrame.pack()
-gameFrame.pack()
 
+gameFrame.pack_propagate(0)
+#gameFrame.pack()
+
+loginFrame.pack()
 
 window.mainloop()
 
