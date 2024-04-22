@@ -940,5 +940,13 @@ namespace Cribbage.BL.Test
             card = CribbageGameManager.Pick_Card_To_Play(cribbage);
             Assert.AreEqual(Faces.Five, card.face);
         }
+
+        //[TestMethod]
+        //public void CardImgPathTest()
+        //{
+        //    Deck deck = new Deck();
+            
+        //    Assert.IsTrue("adaf" == deck.Cards[0].imgPath);
+        //}
     }
 }
