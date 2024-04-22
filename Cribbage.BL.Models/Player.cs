@@ -24,6 +24,10 @@
             WinStreak = user.WinStreak;
             AvgPtsPerGame = user.AvgPtsPerGame;
         }
+
+        public Player()
+        {
+        }
     }
 
 }

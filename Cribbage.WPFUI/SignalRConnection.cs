@@ -25,7 +25,7 @@ namespace Cribbage.WPFUI
             _connection.On<bool, string, string>("LogInAttempt", (isLoggedIn, message, userJson) => ReceivedLoginMessage(isLoggedIn, message, userJson));
             _connection.On<bool, string>("CreateUserAttempt", (isSuccess, message) => CreateUserMessage(isSuccess, message));
             _connection.On<bool, string>("SavedGames", (isSuccess, userGamesJson) => SavedGamesMessage(isSuccess, userGamesJson));
-            _connection.On<string>("StartGame", (message) => StartGameVsComputerMessage(message));
+            _connection.On<string>("StartGameVsComputer", (cribbageGameJson) => StartGameVsComputerMessage(cribbageGameJson));
             _connection.On<string>("StartGameVsPlayer", (message) => StartGameVsPlayerMessage(message));
 
             _connection.StartAsync();
@@ -50,9 +50,9 @@ namespace Cribbage.WPFUI
             }
         }
 
-        private void StartGameVsComputerMessage(string message)
+        private void StartGameVsComputerMessage(string cribbageGameJson)
         {
-            MessageBox.Show(message);
+            MessageBox.Show(cribbageGameJson);
             //LandingPage.StartGameVsComputer(message);
         }
 
