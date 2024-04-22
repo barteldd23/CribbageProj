@@ -1,4 +1,8 @@
-﻿using Cribbage.BL.Models;
+﻿using Cribbage.API.Controllers;
+using Cribbage.BL.Models;
+using Cribbage.PL.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.Windows;
 using System.Windows.Media;
@@ -10,8 +14,16 @@ namespace Cribbage.WPFUI
     /// </summary> 
     public partial class Login : Window
     {
+        private readonly ILogger<UserController> logger;
+        private readonly DbContextOptions<CribbageEntities> options;
         //string hubAddress = "https://bigprojectapi-300089145.azurewebsites.net/CribbageHub";
         string hubAddress = "https://localhost:7186/CribbageHub";
+
+        public Login(ILogger<UserController> logger, DbContextOptions<CribbageEntities> options)
+        {
+            this.logger = logger;
+            this.options = options;
+        }
 
         public Login()
         {
@@ -41,6 +53,10 @@ namespace Cribbage.WPFUI
                     // Start the hub connection
                     SignalRConnection cribbageHubConnection = new SignalRConnection(hubAddress);
                     cribbageHubConnection.Login(user);
+
+                    //bool loggedIn = new UserController(logger, options).Login(user);
+                    //MessageBox.Show("logged in! " + loggedIn);
+
                 }
                 else
                 {

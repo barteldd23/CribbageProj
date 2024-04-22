@@ -56,6 +56,13 @@
             <param name="id">User Id</param>
             <returns></returns>
         </member>
+        <member name="M:Cribbage.API.Controllers.UserController.Login(Cribbage.BL.Models.User)">
+            <summary>
+            User login.
+            </summary>
+            <param name="user">User</param>
+            <returns></returns>
+        </member>
         <member name="M:Cribbage.API.Controllers.UserController.Post(Cribbage.BL.Models.User,System.Boolean)">
             <summary>
             Insert a user.

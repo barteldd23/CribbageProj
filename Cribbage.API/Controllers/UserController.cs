@@ -36,10 +36,23 @@ namespace Cribbage.API.Controllers
         /// </summary>
         /// <param name="id">User Id</param>
         /// <returns></returns>
+        
         [HttpGet("{id}")]
         public User Get(Guid id)
         {
             return new UserManager(options).LoadById(id);
+        }
+
+        /// <summary>
+        /// User login.
+        /// </summary>
+        /// <param name="user">User</param>
+        /// <returns></returns>
+
+        [HttpGet("{user}")]
+        public bool Login(User user)
+        {
+            return new UserManager(options).Login(user);
         }
 
         /// <summary>
