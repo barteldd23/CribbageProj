@@ -108,7 +108,7 @@ def setStartGameFrame(gameData, playerHand, opponentHand):
     else:
         userDisplayName = gameData["Player_2"]["DisplayName"]
         opponentDisplayName = gameData["Player_1"]["DisplayName"]
-    playerLabel.confic(text=userDisplayName)
+    playerLabel.config(text=userDisplayName)
     opponentLabel.config(text=opponentDisplayName)
     playerLabel.grid(row=0, column=2, columnspan=2, padx=5, pady=5, sticky='news')
     opponentLabel.grid(row=0, column=2, columnspan=2, padx=5, pady=5, sticky='news')

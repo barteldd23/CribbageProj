@@ -23,36 +23,44 @@ namespace Cribbage.WPFUI
         public MainWindow()
         {
             Start();
-            loggedInUser.Id = Guid.NewGuid();
-            loggedInUser.Email = "firsttester@test.test";
-            loggedInUser.DisplayName = "FirstTester";
-            loggedInUser.FirstName = "First";
-            loggedInUser.LastName = "Tester";
-            loggedInUser.Password = "test";
-            loggedInUser.GamesStarted = 0;
-            loggedInUser.GamesWon = 0;
-            loggedInUser.GamesLost = 0;
-            loggedInUser.WinStreak = 0;
-            loggedInUser.AvgPtsPerGame = 0;
 
-            secondPlayer.Id = Guid.NewGuid();
-            secondPlayer.Email = "secondtester@test.test";
-            secondPlayer.DisplayName = "SecondTester";
-            secondPlayer.FirstName = "Second";
-            secondPlayer.LastName = "Tester";
-            secondPlayer.Password = "test";
-            secondPlayer.GamesStarted = 0;
-            secondPlayer.GamesWon = 0;
-            secondPlayer.GamesLost = 0;
-            secondPlayer.WinStreak = 0;
-            secondPlayer.AvgPtsPerGame = 0;
+            string email = "tester@gmail.com";
+            string password = "maple";
+
+            //loggedInUser.Id = Guid.NewGuid();
+            //loggedInUser.Email = "firsttester@test.test";
+            //loggedInUser.DisplayName = "FirstTester";
+            //loggedInUser.FirstName = "First";
+            //loggedInUser.LastName = "Tester";
+            //loggedInUser.Password = "test";
+            //loggedInUser.GamesStarted = 0;
+            //loggedInUser.GamesWon = 0;
+            //loggedInUser.GamesLost = 0;
+            //loggedInUser.WinStreak = 0;
+            //loggedInUser.AvgPtsPerGame = 0;
+
+            //secondPlayer.Id = Guid.NewGuid();
+            //secondPlayer.Email = "secondtester@test.test";
+            //secondPlayer.DisplayName = "SecondTester";
+            //secondPlayer.FirstName = "Second";
+            //secondPlayer.LastName = "Tester";
+            //secondPlayer.Password = "test";
+            //secondPlayer.GamesStarted = 0;
+            //secondPlayer.GamesWon = 0;
+            //secondPlayer.GamesLost = 0;
+            //secondPlayer.WinStreak = 0;
+            //secondPlayer.AvgPtsPerGame = 0;
+
+            
 
             //Player firstPlayer = new Player(loggedInUser);
-            NewGameVsComputer(loggedInUser);
+            //NewGameVsComputer(loggedInUser);
 
             InitializeComponent();
 
-            SetUpGame(loggedInUser, secondPlayer);
+            Login(email, password);
+
+            //SetUpGame(loggedInUser, secondPlayer);
         }
 
         public MainWindow(User user, Player player)
@@ -98,6 +106,7 @@ namespace Cribbage.WPFUI
                 .WithUrl(hubAddress)
                 .Build();
 
+            _connection.On<bool, string, string>("LogInAttempt", (isLoggedIn, message, userJson) => ReceivedLoginMessage(isLoggedIn, message, userJson));
             _connection.On<string>("StartGameVsComputer", (cribbageGameJson) => StartGameVsComputerMessage(cribbageGameJson));
             _connection.On<string>("StartGameVsPlayer", (cribbageGameJson) => StartGameVsPlayerMessage(cribbageGameJson));
 
@@ -143,6 +152,34 @@ namespace Cribbage.WPFUI
             }
         }
 
+        public void Login(string email, string password)
+        {
+            //Start();
+            try
+            {
+                _connection.InvokeAsync("Login", email, password);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void ReceivedLoginMessage(bool isLoggedIn, string message, string userJson)
+        {
+            if (isLoggedIn)
+            {
+                loggedInUser = JsonConvert.DeserializeObject<User>(userJson);
+                MessageBox.Show(loggedInUser.DisplayName);
+                //WPFUI.Login.LoggedInCheck(isLoggedIn, userJson);
+            }
+            else // not logged in
+            {
+                MessageBox.Show("Failed log in");
+                //WPFUI.Login.LoggedInCheck(isLoggedIn, userJson);
+            }
+        }
+
         #endregion
 
         private void SetUpGame(User user1, User user2)
@@ -155,8 +192,6 @@ namespace Cribbage.WPFUI
 
             lblPlayer2DisplayName.Content = secondPlayer.DisplayName + " Score";
             lblPlayer2Score.Content = secondPlayer.Score;
-
-            //CribbageGameManager.Deal();
         }
 
 
