@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 from gc import disable
 from textwrap import fill
 from tkinter import *
@@ -14,6 +15,7 @@ import uuid
 from signalrcore.hub_connection_builder import HubConnectionBuilder
 #
 ################################# Classes ##############
+
 
 @dataclass
 class CribbageGame:
@@ -50,6 +52,8 @@ class CribbageUser:
 
 pythonUser = CribbageUser()
 pythonUserJson = json.dumps(asdict(pythonUser))
+playerHand = NULL
+opponentHand = NULL
 
 
 ###################### Methods for Received Hub Messages ##############
@@ -81,137 +85,169 @@ def receivedStartGameMessage(message, gameJson):
     #cribbageGame = CribbageGame()
     #cribbageGame.insertJson(gameJson)
     #print(cribbageGame);
-    data = json.loads(gameJson)
-    print(data)
-    print(data['Player_1']['Id'])
+    cribbagGame = json.loads(gameJson)
+    print(cribbagGame)
+    hands = setHands(cribbagGame)
+    playerHand = hands[0]
+    opponentHand = hands[1]
+    print(playerHand)
+    print(opponentHand)
     
-    setStartGameFrame(data)
+    setStartGameFrame(cribbagGame, playerHand, opponentHand)
     
-
-def setStartGameFrame(data):
-    if(pythonUser.Id == data["Player_1"]["Id"]):
-        opponentDisplayName = data["Player_2"]["DisplayName"]
+def setHands(gameData):
+    if(pythonUser.Id == gameData["Player_1"]["Id"]):
+        return [gameData["Player_1"]["Hand"], gameData["Player_2"]["Hand"] ]
     else:
-        opponentDisplayName = data["Player_1"]["DisplayName"]
-    opponentLabel.config(text=opponentDisplayName)
-    opponentLabel.grid(row=0, column=2, columnspan=2, padx=5, pady=5, sticky='news')
+        return [gameData["Player_2"]["Hand"], gameData["Player_1"]["Hand"] ]
     
+def setStartGameFrame(gameData, playerHand, opponentHand):
+    if(pythonUser.Id == gameData["Player_1"]["Id"]):
+        userDisplayName = gameData["Player_1"]["DisplayName"]
+        opponentDisplayName = gameData["Player_2"]["DisplayName"]
+    else:
+        userDisplayName = gameData["Player_2"]["DisplayName"]
+        opponentDisplayName = gameData["Player_1"]["DisplayName"]
+    playerLabel.confic(text=userDisplayName)
+    opponentLabel.config(text=opponentDisplayName)
+    playerLabel.grid(row=0, column=2, columnspan=2, padx=5, pady=5, sticky='news')
+    opponentLabel.grid(row=0, column=2, columnspan=2, padx=5, pady=5, sticky='news')
 
-
-    if(data['WhatToDo'] == 'SelectCribCards'):
-        displayOpponentHand(data, True)
+    if(gameData['WhatToDo'] == 'SelectCribCards'):
+        displayOpponentHand(gameData, opponentHand, True)
+        displayPlayerHand(gameData, playerHand)
         setMessage("in the if for selectCribCards")
     
 
-def displayOpponentHand(gameData, isShown):
+def displayOpponentHand(gameData, opponentHand, isShown):
     if(isShown == False):
-        if(pythonUser.Id == gameData["Player_1"]["Id"]):
-            if(len(gameData["Player_2"]["Hand"]) >= 1):
-                opponentCard1.img = cardBack.subsample(5,5)
-                opponentCard1.config(image= opponentCard1.img)
-                opponentCard1.grid(row=1, column=0, sticky='news', padx=10)
-            if(len(gameData["Player_2"]["Hand"]) >= 1):
-                opponentCard2.img = cardBack.subsample(5,5)
-                opponentCard2.config(image= opponentCard1.img)
-                opponentCard2.grid(row=1, column=1, sticky='news', padx=10)
-            if(len(gameData["Player_2"]["Hand"]) >= 1):
-                opponentCard3.img = cardBack.subsample(5,5)
-                opponentCard3.config(image= opponentCard1.img)
-                opponentCard3.grid(row=1, column=2, sticky='news', padx=10)
-            if(len(gameData["Player_2"]["Hand"]) >= 1):
-                opponentCard4.img = cardBack.subsample(5,5)
-                opponentCard4.config(image= opponentCard1.img)
-                opponentCard4.grid(row=1, column=3, sticky='news', padx=10)
-            if(len(gameData["Player_2"]["Hand"]) >= 1):
-                opponentCard5.img = cardBack.subsample(5,5)
-                opponentCard5.config(image= opponentCard1.img)
-                opponentCard5.grid(row=1, column=4, sticky='news', padx=10)
-            if(len(gameData["Player_2"]["Hand"]) >= 1):
-                opponentCard6.img = cardBack.subsample(5,5)
-                opponentCard6.config(image= opponentCard1.img)
-                opponentCard6.grid(row=1, column=5, sticky='news', padx=10)
+        if(len(opponentHand) >= 1):
+            opponentCard1.img = cardBack.subsample(5,5)
+            opponentCard1.config(image= opponentCard1.img)
+            opponentCard1.grid(row=1, column=0, sticky='news', padx=10)
         else:
-            if(len(gameData["Player_1"]["Hand"]) >= 1):
-                opponentCard1.img = cardBack.subsample(5,5)
-                opponentCard1.config(image= opponentCard1.img)
-                opponentCard1.grid(row=1, column=0, sticky='news', padx=10)
-            if(len(gameData["Player_1"]["Hand"]) >= 1):
-                opponentCard2.img = cardBack.subsample(5,5)
-                opponentCard2.config(image= opponentCard1.img)
-                opponentCard2.grid(row=1, column=1, sticky='news', padx=10)
-            if(len(gameData["Player_1"]["Hand"]) >= 1):
-                opponentCard3.img = cardBack.subsample(5,5)
-                opponentCard3.config(image= opponentCard1.img)
-                opponentCard3.grid(row=1, column=2, sticky='news', padx=10)
-            if(len(gameData["Player_1"]["Hand"]) >= 1):
-                opponentCard4.img = cardBack.subsample(5,5)
-                opponentCard4.config(image= opponentCard1.img)
-                opponentCard4.grid(row=1, column=3, sticky='news', padx=10)
-            if(len(gameData["Player_1"]["Hand"]) >= 1):
-                opponentCard5.img = cardBack.subsample(5,5)
-                opponentCard5.config(image= opponentCard1.img)
-                opponentCard5.grid(row=1, column=4, sticky='news', padx=10)
-            if(len(gameData["Player_1"]["Hand"]) >= 1):
-                opponentCard6.img = cardBack.subsample(5,5)
-                opponentCard6.config(image= opponentCard1.img)
-                opponentCard6.grid(row=1, column=5, sticky='news', padx=10)
+            pass
+        if(len(opponentHand) >= 2):
+            opponentCard2.img = cardBack.subsample(5,5)
+            opponentCard2.config(image= opponentCard2.img)
+            opponentCard2.grid(row=1, column=1, sticky='news', padx=10)
+        else:
+            pass
+        if(len(opponentHand) >= 3):
+            opponentCard3.img = cardBack.subsample(5,5)
+            opponentCard3.config(image= opponentCard3.img)
+            opponentCard3.grid(row=1, column=2, sticky='news', padx=10)
+        else:
+            pass
+        if(len(opponentHand) >= 4):
+            opponentCard4.img = cardBack.subsample(5,5)
+            opponentCard4.config(image= opponentCard4.img)
+            opponentCard4.grid(row=1, column=3, sticky='news', padx=10)
+        else:
+            pass
+        if(len(opponentHand) >= 5):
+            opponentCard5.img = cardBack.subsample(5,5)
+            opponentCard5.config(image= opponentCard5.img)
+            opponentCard5.grid(row=1, column=4, sticky='news', padx=10)
+        else:
+            pass
+        if(len(opponentHand) >= 6):
+            opponentCard6.img = cardBack.subsample(5,5)
+            opponentCard6.config(image= opponentCard6.img)
+            opponentCard6.grid(row=1, column=5, sticky='news', padx=10)
+        else:
+            pass
+        
     else:
-        if(pythonUser.Id == gameData["Player_1"]["Id"]):
-            if(len(gameData["Player_2"]["Hand"]) >= 1):
-                card = PhotoImage(file="./images/" + gameData["Player_2"]["Hand"][0]["imgPath"])
-                opponentCard1.img = card.subsample(5,5)
-                opponentCard1.config(image= opponentCard1.img)
-                opponentCard1.grid(row=1, column=0, sticky='news', padx=10)
-            if(len(gameData["Player_2"]["Hand"]) >= 1):
-                opponentCard2.img = cardBack.subsample(5,5)
-                opponentCard2.config(image= opponentCard1.img)
-                opponentCard2.grid(row=1, column=1, sticky='news', padx=10)
-            if(len(gameData["Player_2"]["Hand"]) >= 1):
-                opponentCard3.img = cardBack.subsample(5,5)
-                opponentCard3.config(image= opponentCard1.img)
-                opponentCard3.grid(row=1, column=2, sticky='news', padx=10)
-            if(len(gameData["Player_2"]["Hand"]) >= 1):
-                opponentCard4.img = cardBack.subsample(5,5)
-                opponentCard4.config(image= opponentCard1.img)
-                opponentCard4.grid(row=1, column=3, sticky='news', padx=10)
-            if(len(gameData["Player_2"]["Hand"]) >= 1):
-                opponentCard5.img = cardBack.subsample(5,5)
-                opponentCard5.config(image= opponentCard1.img)
-                opponentCard5.grid(row=1, column=4, sticky='news', padx=10)
-            if(len(gameData["Player_2"]["Hand"]) >= 1):
-                opponentCard6.img = cardBack.subsample(5,5)
-                opponentCard6.config(image= opponentCard1.img)
-                opponentCard6.grid(row=1, column=5, sticky='news', padx=10)
+        if(len(opponentHand) >= 1):
+            card = PhotoImage(file="./images/" + opponentHand[0]["imgPath"])
+            opponentCard1.img = card.subsample(5,5)
+            opponentCard1.config(image= opponentCard1.img)
+            opponentCard1.grid(row=1, column=0, sticky='news', padx=10)
         else:
-            if(len(gameData["Player_1"]["Hand"]) >= 1):
-                card = PhotoImage(file="./images/" + gameData["Player_1"]["Hand"][0]["imgPath"])
-                opponentCard1.img = card.subsample(5,5)
-                opponentCard1.config(image= opponentCard1.img)
-                opponentCard1.grid(row=1, column=0, sticky='news', padx=10)
-            if(len(gameData["Player_1"]["Hand"]) >= 1):
-                opponentCard2.img = cardBack.subsample(5,5)
-                opponentCard2.config(image= opponentCard1.img)
-                opponentCard2.grid(row=1, column=1, sticky='news', padx=10)
-            if(len(gameData["Player_1"]["Hand"]) >= 1):
-                opponentCard3.img = cardBack.subsample(5,5)
-                opponentCard3.config(image= opponentCard1.img)
-                opponentCard3.grid(row=1, column=2, sticky='news', padx=10)
-            if(len(gameData["Player_1"]["Hand"]) >= 1):
-                opponentCard4.img = cardBack.subsample(5,5)
-                opponentCard4.config(image= opponentCard1.img)
-                opponentCard4.grid(row=1, column=3, sticky='news', padx=10)
-            if(len(gameData["Player_1"]["Hand"]) >= 1):
-                opponentCard5.img = cardBack.subsample(5,5)
-                opponentCard5.config(image= opponentCard1.img)
-                opponentCard5.grid(row=1, column=4, sticky='news', padx=10)
-            if(len(gameData["Player_1"]["Hand"]) >= 1):
-                opponentCard6.img = cardBack.subsample(5,5)
-                opponentCard6.config(image= opponentCard1.img)
-                opponentCard6.grid(row=1, column=5, sticky='news', padx=10)
+            opponentCard1.grid_forget
+        if(len(opponentHand) >= 2):
+            card = PhotoImage(file="./images/" + opponentHand[1]["imgPath"])
+            opponentCard2.img = card.subsample(5,5)
+            opponentCard2.config(image= opponentCard2.img)
+            opponentCard2.grid(row=1, column=1, sticky='news', padx=10)
+        else:
+            opponentCard2.grid_forget
+        if(len(opponentHand) >= 3):
+            card = PhotoImage(file="./images/" + opponentHand[2]["imgPath"])
+            opponentCard3.img = card.subsample(5,5)
+            opponentCard3.config(image= opponentCard3.img)
+            opponentCard3.grid(row=1, column=2, sticky='news', padx=10)
+        else:
+            opponentCard3.grid_forget
+        if(len(opponentHand) >= 4):
+            card = PhotoImage(file="./images/" + opponentHand[3]["imgPath"])
+            opponentCard4.img = card.subsample(5,5)
+            opponentCard4.config(image= opponentCard4.img)
+            opponentCard4.grid(row=1, column=3, sticky='news', padx=10)
+        else:
+            opponentCard4.grid_forget
+        if(len(opponentHand) >= 5):
+            card = PhotoImage(file="./images/" + opponentHand[4]["imgPath"])
+            opponentCard5.img = card.subsample(5,5)
+            opponentCard5.config(image= opponentCard5.img)
+            opponentCard5.grid(row=1, column=4, sticky='news', padx=10)
+        else:
+            opponentCard5.grid_forget
+        if(len(opponentHand) >= 6):
+            card = PhotoImage(file="./images/" + opponentHand[5]["imgPath"])
+            opponentCard6.img = card.subsample(5,5)
+            opponentCard6.config(image= opponentCard6.img)
+            opponentCard6.grid(row=1, column=5, sticky='news', padx=10)
+        else:
+            opponentCard6.grid_forget
             
+
+def displayPlayerHand(gameData, playerHand):
     
-        
-        
+    if(len(playerHand) >= 1):
+        card = PhotoImage(file="./images/" + playerHand[0]["imgPath"])
+        myCard1.img = card.subsample(5,5)
+        myCard1.config(image= myCard1.img)
+        myCard1.grid(row=1, column=0, sticky='news', padx=10)
+    else:
+        myCard1.grid_forget
+    if(len(playerHand) >= 2):
+        card = PhotoImage(file="./images/" + playerHand[1]["imgPath"])
+        myCard2.img = card.subsample(5,5)
+        myCard2.config(image= myCard2.img)
+        myCard2.grid(row=1, column=1, sticky='news', padx=10)
+    else:
+        myCard2.grid_forget
+    if(len(playerHand) >= 3):
+        card = PhotoImage(file="./images/" + playerHand[2]["imgPath"])
+        myCard3.img = card.subsample(5,5)
+        myCard3.config(image= myCard3.img)
+        myCard3.grid(row=1, column=2, sticky='news', padx=10)
+    else:
+        myCard3.grid_forget
+    if(len(playerHand) >= 4):
+        card = PhotoImage(file="./images/" + playerHand[3]["imgPath"])
+        myCard4.img = card.subsample(5,5)
+        myCard4.config(image= myCard4.img)
+        myCard4.grid(row=1, column=3, sticky='news', padx=10)
+    else:
+        myCard4.grid_forget
+    if(len(playerHand) >= 5):
+        card = PhotoImage(file="./images/" + playerHand[4]["imgPath"])
+        myCard5.img = card.subsample(5,5)
+        myCard5.config(image= myCard5.img)
+        myCard5.grid(row=1, column=4, sticky='news', padx=10)
+    else:
+        myCard5.grid_forget
+    if(len(playerHand) >= 6):
+        card = PhotoImage(file="./images/" + playerHand[5]["imgPath"])
+        myCard6.img = card.subsample(5,5)
+        myCard6.config(image= myCard6.img)
+        myCard6.grid(row=1, column=5, sticky='news', padx=10)
+    else:
+        myCard6.grid_forget
+    
     
 def setMessage(msg):
     txtGameMessages.config(state='normal')
@@ -481,7 +517,28 @@ cutCardImg = PhotoImage(file="./images/cardClubs_Jack.png")
 cutCard.img = cutCardImg.subsample(5,5);
 cutCard.config(image = cutCard.img);
 
-btnCountHand = tkinter.Button(rallyFrame, width=100, text='Count Hand', font=('Arial',14))
+btnCountHand = tkinter.Button(rallyFrame, width=100, text='Count Hands', font=('Arial',14))
+
+playerLabel = tkinter.Label(usersFrame, text="User's Hand");
+
+myCard1 = tkinter.Label(usersFrame, width=100);
+myCard1.img = cardBack.subsample(5,5);
+myCard1.config(image= myCard1.img)
+myCard2 = tkinter.Label(usersFrame, width=100);
+myCard2.img = cardBack.subsample(5,5);
+myCard2.config(image= myCard2.img)
+myCard3 = tkinter.Label(usersFrame, width=100);
+myCard3.img = cardBack.subsample(5,5);
+myCard3.config(image= myCard3.img)
+myCard4 = tkinter.Label(usersFrame, width=100);
+myCard4.img = cardBack.subsample(5,5);
+myCard4.config(image= myCard4.img)
+myCard5 = tkinter.Label(usersFrame, width=100);
+myCard5.img = cardBack.subsample(5,5);
+myCard5.config(image= myCard5.img)
+myCard6 = tkinter.Label(usersFrame, width=100);
+myCard6.img = cardBack.subsample(5,5);
+myCard6.config(image= myCard6.img)
 
 opponentFrame.grid_propagate(0)
 rallyFrame.grid_propagate(0)
