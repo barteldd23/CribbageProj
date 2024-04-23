@@ -170,7 +170,8 @@ namespace Cribbage.WPFUI
             if (isLoggedIn)
             {
                 loggedInUser = JsonConvert.DeserializeObject<User>(userJson);
-                MessageBox.Show(loggedInUser.DisplayName);
+                //MessageBox.Show(loggedInUser.DisplayName);
+                NewGameVsComputer(loggedInUser);
                 //WPFUI.Login.LoggedInCheck(isLoggedIn, userJson);
             }
             else // not logged in
