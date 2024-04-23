@@ -44,6 +44,7 @@ namespace Cribbage.BL.Models
 
         public CribbageGame(User user1)
         {
+            Id = Guid.NewGuid();
             Date = DateTime.Now;
             GameName = user1.DisplayName + " Vs. Computer";
             Player_1 = new Player(user1);
@@ -51,6 +52,7 @@ namespace Cribbage.BL.Models
 
         public CribbageGame(User user1, User user2)
         {
+            Id = Guid.NewGuid();
             Date = DateTime.Now;
             Player_1 = new Player(user1);
             Player_2 = new Player(user2);

@@ -1,10 +1,6 @@
 ﻿using Cribbage.BL.Models;
-using Microsoft.Data.SqlClient;
-using System.Windows;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
-using System.Windows.Media;
 using Newtonsoft.Json;
-using System.Collections;
+using System.Windows;
 
 namespace Cribbage.WPFUI
 {
@@ -18,13 +14,9 @@ namespace Cribbage.WPFUI
         UserGame game;
         User loggedInUser;
         SignalRConnection cribbageHubConnection;
-        //public ObservableCollection<string> Stats;
-        Window landingPage;
 
         public LandingPage(User user)
         {
-            landingPage = this;
-            this.DataContext = this;
             InitializeComponent();
             lblWelcomeUser.Content = "Welcome " + user.FirstName + "!";
 
@@ -37,19 +29,6 @@ namespace Cribbage.WPFUI
             // Start the hub connection
             cribbageHubConnection = new SignalRConnection(hubAddress);
         }
-
-        //public LandingPage() {}
-
-        //private static void StaThreadWrapper(Action action)
-        //{
-        //    var t = new Thread(o =>
-        //    {
-        //        action();
-        //        System.Windows.Threading.Dispatcher.Run();
-        //    });
-        //    t.SetApartmentState(ApartmentState.STA);
-        //    t.Start();
-        //}
 
         public static Tuple<List<string>, List<DateTime>> SavedGamesCheck(bool isSuccess, string userGamesJson)
         {
@@ -68,14 +47,6 @@ namespace Cribbage.WPFUI
                     savedDates.Add(game.Date);
                 }
 
-                //StaThreadWrapper(() =>
-                //{
-                //    // NOTE: making a new page makes the listbox NULL!!
-                //    var games = new LandingPage();
-                //    //games.lstSavedGames.ItemsSource = LoadUserGames(userGames);
-                //    games.AddSavedGames(userGames);
-                //});
-
                 MessageBox.Show("Saved Games Check TRUE: " + savedGameNames[0] + " " + savedDates[0]);
 
                 return Tuple.Create(savedGameNames, savedDates);
@@ -90,29 +61,10 @@ namespace Cribbage.WPFUI
             }
         }
 
-        public void closePage()
+        public static void StartGameVsComputer(string message)
         {
-            landingPage.Close();
+            MessageBox.Show(message);
         }
-        
-        //private static ArrayList LoadUserGames(List<string> userGames)
-        //{
-        //    ArrayList gamesList = new ArrayList();
-        //    foreach (var game in userGames)
-        //    {
-        //        gamesList.Add(game);
-        //    }
-        //    return gamesList;
-        //}
-
-        //private void AddSavedGames(List<string> userGames)
-        //{
-        //    MessageBox.Show("game");
-        //    //foreach(var game in userGames)
-        //    //{
-        //    //    lstSavedGames.Items.Add(game);
-        //    //}
-        //}
 
 
         private void btnExit_Click(object sender, RoutedEventArgs e)
@@ -122,36 +74,12 @@ namespace Cribbage.WPFUI
 
         private void btnNewGameVsComputer_Click(object sender, RoutedEventArgs e)
         {
-
-
-            //Player computer = new Player();
-            //computer.Id = new Guid();
-            //computer.Email = "computer@computer.computer";
-            //computer.DisplayName = "Computer Bot";
-            //computer.FirstName = "Computer";
-            //computer.LastName = "Bot";
-            //computer.Password = "computer";
-            //computer.GamesStarted = 0;
-            //computer.GamesWon = 0;
-            //computer.GamesLost = 0;
-            //computer.WinStreak = 0;
-            //computer.AvgPtsPerGame = 0;
-
             cribbageHubConnection.NewGameVsComputer(loggedInUser);
-
-            //MainWindow mainWindow = new MainWindow(loggedInUser, computer);
-            //mainWindow.Show();
-            //this.Close();
         }
 
         private void btnNewGameVsPlayer_Click(object sender, RoutedEventArgs e)
         {
-
-
-            //Player human = new Player();
-            //MainWindow mainWindow = new MainWindow(loggedInUser, human);
-            //mainWindow.Show();
-            //this.Close();
+            cribbageHubConnection.NewGameVsPlayer(loggedInUser);
         }
 
         private void btnShowGameStats_Click(object sender, RoutedEventArgs e)

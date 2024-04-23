@@ -1,10 +1,11 @@
-﻿using Cribbage.BL.Models;
+﻿using Cribbage.API.Controllers;
+using Cribbage.BL.Models;
+using Cribbage.PL.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using System.Runtime.CompilerServices;
 using System.Windows;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Threading;
 
 namespace Cribbage.WPFUI
 {
@@ -13,32 +14,22 @@ namespace Cribbage.WPFUI
     /// </summary> 
     public partial class Login : Window
     {
+        private readonly ILogger<UserController> logger;
+        private readonly DbContextOptions<CribbageEntities> options;
         //string hubAddress = "https://bigprojectapi-300089145.azurewebsites.net/CribbageHub";
         string hubAddress = "https://localhost:7186/CribbageHub";
-        Window window1;
-        //public delegate void Callback(string message);
-        public delegate void Callback();
-        //public static System.Windows.Threading.Dispatcher
-        //    CurrentDispatcher
-        //{ get; }
 
-        //public System.Threading.Thread Thread { get; set;  }
+        public Login(ILogger<UserController> logger, DbContextOptions<CribbageEntities> options)
+        {
+            this.logger = logger;
+            this.options = options;
+        }
 
         public Login()
         {
             InitializeComponent();
             LoginVisible();
         }
-
-        // Create a method for a delegate.
-        public static void DelegateMethod()
-        {
-            CloseAllWindows();
-            //Window window = new Window(this);
-            //MessageBox.Show(message);
-        }
-
-
 
         private void btnExit_Click(object sender, RoutedEventArgs e)
         {
@@ -62,8 +53,10 @@ namespace Cribbage.WPFUI
                     // Start the hub connection
                     SignalRConnection cribbageHubConnection = new SignalRConnection(hubAddress);
                     cribbageHubConnection.Login(user);
-                    //Window window1 = new Window();
-                    //window1.Close();
+
+                    //bool loggedIn = new UserController(logger, options).Login(user);
+                    //MessageBox.Show("logged in! " + loggedIn);
+
                 }
                 else
                 {
@@ -75,7 +68,6 @@ namespace Cribbage.WPFUI
             {
                 throw ex;
             }
-            
         }
 
         private static void StaThreadWrapper(Action action)
@@ -100,23 +92,6 @@ namespace Cribbage.WPFUI
 
                 StaThreadWrapper(() =>
                 {
-                    // Instantiate the delegate.
-                    //Callback handler = DelegateMethod;
-
-                    // Call the delegate.
-                    //handler("Hello World");
-                    //handler();
-                    //Dispatcher.BeginInvoke();
-                    //Thread currentThread = Thread.CurrentThread;
-                    //MessageBox.Show(currentThread.ToString());
-
-                    //Thread.BeginThreadAffinity();
-
-                    //Dispatcher currentDispatcher = CurrentDispatcher;
-
-                    //MessageBox.Show(currentDispatcher.ToString());
-
-                    //CloseAllWindows();
                     var landingPage = new LandingPage(loggedInUser);
                     landingPage.Show();
                 });
@@ -174,15 +149,6 @@ namespace Cribbage.WPFUI
                 MessageBox.Show("User created");
                 StaThreadWrapper(() =>
                 {
-                    //    window1.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
-                    //new UpdateUIDelegate(
-                    //    {
-                    //        for (int intCounter = App.Current.Windows.Count - 1; intCounter > 0; intCounter--)
-                    //            App.Current.Windows[intCounter].Close();
-                    //    });
-
-   
-
                     var login = new Login();
                     login.Show();
                 });
@@ -190,14 +156,6 @@ namespace Cribbage.WPFUI
             else
             {
                 MessageBox.Show("Cannot create user");
-            }
-        }
-
-        private static void CloseAllWindows()
-        {
-            {
-                for (int intCounter = App.Current.Windows.Count - 1; intCounter >= 0; intCounter--)
-                    App.Current.Windows[intCounter].Hide();
             }
         }
 
