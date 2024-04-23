@@ -13,6 +13,7 @@
                     Card card = new Card();
                     card.face = (Faces)j;
                     card.suit = (Suits)i;
+                    card.imgPath = "card" + card.suit + "_" + card.face + ".png";
                     Cards.Add(card);
                 }
             }

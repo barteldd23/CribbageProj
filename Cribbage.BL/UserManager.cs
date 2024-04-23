@@ -242,7 +242,7 @@ namespace Cribbage.BL
                         if (updateRow != null)
                         {
                             updateRow.Email = user.Email.Trim();
-                            updateRow.Password = GetHash(user.Password.Trim());
+                            //updateRow.Password = GetHash(user.Password.Trim());
                             updateRow.FirstName = user.FirstName.Trim();
                             updateRow.LastName = user.LastName.Trim();
                             updateRow.GamesStarted = user.GamesStarted;

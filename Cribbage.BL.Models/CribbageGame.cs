@@ -9,6 +9,8 @@ namespace Cribbage.BL.Models
 {
     public class CribbageGame : Game
     {
+        public string WhatToDo {  get; set; }
+        public bool Computer { get; set; } = false;
         public Player Player_1 { get; set; }
         public Player Player_2 { get; set; }
         public int Dealer { get; set; } = 1;
@@ -56,6 +58,7 @@ namespace Cribbage.BL.Models
             Player_2 = new Player(user2);
             GameName = user1.DisplayName + " Vs. " + user2.DisplayName;
         }
+        public CribbageGame() { }
 
     }
 }
