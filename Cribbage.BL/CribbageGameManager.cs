@@ -8,6 +8,74 @@ namespace Cribbage.BL
     public static class CribbageGameManager
     {
         #region Play CribbageGame Methods
+        public static void NextDealer(CribbageGame cribbageGame)
+        {
+            if(cribbageGame.Dealer == 1)
+            {
+                cribbageGame.Dealer = 2;
+            }
+            else
+            {
+                cribbageGame.Dealer = 1;
+            }
+        }
+        public static void NextPlayerAfterRally(CribbageGame cribbageGame)
+        {
+            Player otherPlayer;
+            if (cribbageGame.LastPlayerPlayed == cribbageGame.Player_1)
+            {
+                otherPlayer = cribbageGame.Player_2;
+            }
+            else
+            {
+                otherPlayer = cribbageGame.Player_1;
+            }
+
+            if(otherPlayer.Hand.Count > 0)
+            {
+                cribbageGame.PlayerTurn = otherPlayer;
+                cribbageGame.WhatToDo = "playcard";
+            }
+        }
+        public static void NextPlayer(CribbageGame cribbageGame)
+        {
+            // Some one played a card and it was not 31 or someone said go
+
+            Player otherPlayer;
+            if (cribbageGame.PlayerTurn == cribbageGame.Player_1)
+            {
+                otherPlayer = cribbageGame.Player_2;
+            }
+            else
+            {
+                otherPlayer = cribbageGame.Player_1;
+            }
+            // scenarior p1 played a card, p2 has not said go and has cards. Needs to play a card or say go.
+            if (!otherPlayer.SaidGo && otherPlayer.Hand.Count > 0)
+            {
+                cribbageGame.PlayerTurn = otherPlayer;
+            }
+            //scenario, p1 played a card, p2 already said go or has no cards, p1 needs to play a card but might need to say go.
+            else if(!cribbageGame.PlayerTurn.SaidGo && cribbageGame.PlayerTurn.Hand.Count > 0)
+            {
+                // do nothing, playerTurn stays the same, p1 can play again, either playcard or go.
+            }
+            //Scenario: Both players can not play, should go to the person after the last played player.
+            //We dont know if p2 has no cards or just said go already.
+            else if(otherPlayer.Hand.Count > 0)
+            {
+                cribbageGame.PlayerTurn = otherPlayer;
+            }
+
+            if (CanPlay(cribbageGame))
+            {
+                cribbageGame.WhatToDo = "playcard";
+            }
+            else
+            {
+                cribbageGame.WhatToDo = "go";
+            }
+        }
         public static bool CheckWinner(CribbageGame cribbageGame)
         {
             // Checks scores of both players. If there is a winner, changer Winner property to that player.
@@ -49,11 +117,16 @@ namespace Cribbage.BL
         public static void Deal(CribbageGame cribbageGame)
         {
             // Add the top card of the deck to the Players hand. Then remove that card from the Deck. 
-            EndCountingRally(cribbageGame);
+            //EndCountingRally(cribbageGame);
+            cribbageGame.GoCount = 0;
+            cribbageGame.PlayedCards.Clear();
+            cribbageGame.CurrentRally.Clear();
             cribbageGame.Player_1.Hand.Clear();
             cribbageGame.Player_2.Hand.Clear();
             cribbageGame.Player_1.PlayedCards.Clear();
             cribbageGame.Player_2.PlayedCards.Clear();
+            cribbageGame.Player_1.SaidGo = false;
+            cribbageGame.Player_2.SaidGo = false;
             cribbageGame.Crib.Clear();
             cribbageGame.CutCard = null;
 
@@ -142,6 +215,19 @@ namespace Cribbage.BL
                 else cribbageGame.Player_2.Score += 2;
 
                 CheckWinner(cribbageGame);
+            }
+        }
+
+        public static void Cut(CribbageGame cribbageGame, int position)
+        {
+            if(position > 0 && position < 32)
+            {
+                cribbageGame.CutCard = cribbageGame.Deck.Cards[position - 1];
+                if(cribbageGame.CutCard.face == Faces.Jack)
+                {
+                    cribbageGame.PlayerTurn.Score += 2;
+                    CheckWinner(cribbageGame);
+                }
             }
         }
 
@@ -257,6 +343,22 @@ namespace Cribbage.BL
 
             return points;
         }
+
+        public static void Get_WhatToDO(CribbageGame cribbageGame)
+        {
+            if(CanPlay(cribbageGame))
+            {
+                cribbageGame.WhatToDo = "playcard";
+            }
+            else if(cribbageGame.PlayerTurn.Hand.Count > 0)
+            {
+                cribbageGame.WhatToDo = "go";
+            }
+            else if(cribbageGame.Player_1.Hand.Count == 0 && cribbageGame.Player_2.Hand.Count == 0)
+            {
+                cribbageGame.WhatToDo = "counthands";
+            }
+        }
         #endregion
 
         #region "Methods for counting rally"
@@ -271,22 +373,30 @@ namespace Cribbage.BL
             {
                 cribbageGame.PlayedCards.Add(card);
                 cribbageGame.CurrentRally.Add(card);
+                cribbageGame.LastPlayerPlayed = cribbageGame.PlayerTurn;
                 Check15(cribbageGame);
                 CheckPair(cribbageGame);
                 CheckRun(cribbageGame);
                 if (cribbageGame.CurrentCount == 31)
                 {
-                    cribbageGame.PlayerTurn.Score += 2;
+                    cribbageGame.PlayerTurn.Score += 1;
                     EndCountingRally(cribbageGame);
 
                 }
                 CheckWinner(cribbageGame);
-                cribbageGame.LastPlayerPlayed = cribbageGame.PlayerTurn;
                 cribbageGame.PlayerTurn.Hand.Remove(card);
                 cribbageGame.PlayerTurn.PlayedCards.Add(card);
+
+                //havent tested this.
+                if(cribbageGame.Player_1.Hand.Count == 0 && cribbageGame.Player_2.Hand.Count == 0)
+                {
+                    EndCountingRally(cribbageGame);
+                }
+                else
+                {
+                    NextPlayer(cribbageGame);
+                }
                 
-                // Probably needs more checking to see if the player has said GO.
-                cribbageGame.PlayerTurn = cribbageGame.PlayerTurn == cribbageGame.Player_1 ? cribbageGame.Player_2 : cribbageGame.Player_1;
                 return true;
             }
             else
@@ -298,10 +408,22 @@ namespace Cribbage.BL
 
         private static void EndCountingRally(CribbageGame cribbageGame)
         {
+            cribbageGame.LastPlayerPlayed.Score += 1;
             cribbageGame.CurrentRally = null;
             cribbageGame.CurrentRally = new List<Card>();
+            cribbageGame.GoCount = 0;
             cribbageGame.Player_1.SaidGo = false;
             cribbageGame.Player_2.SaidGo = false;
+            if(cribbageGame.Player_1.Hand.Count == 0 && cribbageGame.Player_2.Hand.Count == 0)
+            {
+                cribbageGame.WhatToDo = "counthands";
+                NextDealer(cribbageGame);
+            }
+            else
+            {
+                NextPlayerAfterRally(cribbageGame);
+            }
+            
 
         }
 
@@ -398,20 +520,26 @@ namespace Cribbage.BL
         }
         public static void Go(CribbageGame cribbageGame)
         {
-
-            if (cribbageGame.GoCount == 0)
+            Player otherPlayer;
+            if(cribbageGame.PlayerTurn == cribbageGame.Player_1)
             {
-                cribbageGame.PlayerTurn.SaidGo = true;
-                cribbageGame.GoCount++;
+                otherPlayer = cribbageGame.Player_2;
             }
             else
             {
-                cribbageGame.LastPlayerPlayed.Score += 1;
-                EndCountingRally(cribbageGame);
-                cribbageGame.GoCount = 0;
+                otherPlayer = cribbageGame.Player_1;
             }
 
-            cribbageGame.PlayerTurn = cribbageGame.PlayerTurn == cribbageGame.Player_1 ? cribbageGame.Player_2 : cribbageGame.Player_1;
+            if (cribbageGame.GoCount == 0 && otherPlayer.Hand.Count != 0)
+            {
+                cribbageGame.PlayerTurn.SaidGo = true;
+                cribbageGame.GoCount++;
+                NextPlayer(cribbageGame);
+            }
+            else
+            {
+                EndCountingRally(cribbageGame);
+            }
 
         }
 

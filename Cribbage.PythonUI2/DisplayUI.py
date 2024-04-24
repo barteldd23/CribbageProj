@@ -277,7 +277,21 @@ def setMessage(msg):
     txtGameMessages.insert('end', msg + '\n')
     txtGameMessages.config(state='disabled')
 ###################### Methods for Button clicks ###################
-   
+
+def onclick_Card1(event):
+    setMessage("Clicked Card1")
+def onclick_Card2(event):
+    pass
+def onclick_Card3(event):
+    pass
+def onclick_Card4(event):
+    pass
+def onclick_Card5(event):
+    pass
+def onclick_Card6(event):
+    pass
+
+  
 def getGameJson():
     return json.dumps(asdict(gameData))[9:-1]
 def getUserJson():
@@ -563,6 +577,7 @@ playerLabel = tkinter.Label(usersFrame, text="User's Hand");
 myCard1 = tkinter.Label(usersFrame, width=100);
 myCard1.img = cardBack.subsample(5,5);
 myCard1.config(image= myCard1.img)
+myCard1.bind("<Button-1>", onclick_Card1)
 myCard2 = tkinter.Label(usersFrame, width=100);
 myCard2.img = cardBack.subsample(5,5);
 myCard2.config(image= myCard2.img)

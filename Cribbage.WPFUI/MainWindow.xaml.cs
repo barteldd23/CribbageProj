@@ -2,7 +2,10 @@
 using Cribbage.BL.Models;
 using Microsoft.AspNetCore.SignalR.Client;
 using Newtonsoft.Json;
+using System.Drawing;
 using System.Windows;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace Cribbage.WPFUI
 {
@@ -66,8 +69,7 @@ namespace Cribbage.WPFUI
             {
                 if (opponentHand.Count >= 1)
                 {
-                    MessageBox.Show(opponentHand.Count + " " + opponentHand[0]);
-                    //imgOppenentCard1.Source = "images/" + opponentHand[0] + ".png";
+                    MessageBox.Show(opponentHand.Count + " " + opponentHand[0].imgPath);
                 }
             }
             else
