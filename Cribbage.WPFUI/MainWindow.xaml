@@ -20,7 +20,7 @@
         <Image x:Name="imgCribCard2" HorizontalAlignment="Right" Height="100" Margin="0,250,1204,0" VerticalAlignment="Top" Width="77" Source="images/cardBackBlue.png"/>
         <Image x:Name="imgCribCard3" HorizontalAlignment="Right" Height="100" Margin="0,360,1286,0" VerticalAlignment="Top" Width="67" Source="images/cardBackBlue.png"/>
         <Image x:Name="imgCribCard4" HorizontalAlignment="Right" Height="100" Margin="0,360,1210,0" VerticalAlignment="Top" Width="71" Source="images/cardBackBlue.png"/>
-        <Image x:Name="imgOppenentCard1" Height="100" Width="86" Source="images/cardBackBlue.png" Margin="222,0,1092,734" VerticalAlignment="Bottom" />
+        <Image x:Name="imgOppenentCard1" Height="100" Width="86" Source="images/cardBackBlue.png" Margin="222,0,1092,734" VerticalAlignment="Bottom"/>
         <Image x:Name="imgOppenentCard2" Height="100" Width="83" Source="images/cardBackBlue.png" Margin="310,0,1007,734" VerticalAlignment="Bottom"/>
         <Image x:Name="imgOppenentCard3" Height="100" Width="83" Source="images/cardBackBlue.png" Margin="396,0,921,734" VerticalAlignment="Bottom"/>
         <Image x:Name="imgOppenentCard4" Height="100" Width="83" Source="images/cardBackBlue.png" Margin="484,0,833,734" VerticalAlignment="Bottom"/>
@@ -33,12 +33,12 @@
         <Rectangle HorizontalAlignment="Left" Height="75" Margin="1115,0,0,709" Stroke="Black" VerticalAlignment="Bottom" Width="246"/>
         <Label x:Name="lblPlayer2DisplayName" Content="Player2 DisplayName" Margin="1115,0,0,746" FontSize="18" FontWeight="Bold" Height="38" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="246"/>
         <Label x:Name="lblPlayer2Score" Content="Player2 Score" HorizontalAlignment="Left" Margin="1115,0,0,709" FontSize="18" Width="117" Height="34" VerticalAlignment="Bottom"/>
-        <Image x:Name="imgPlayerCard1" Height="100" Width="83" Source="images/cardBackBlue.png" Margin="224,596,1093,189" />
-        <Image x:Name="imgPlayerCard2" Height="100" Width="83" Source="images/cardBackBlue.png" Margin="310,596,1006,189"/>
-        <Image x:Name="imgPlayerCard3" Height="100" Width="83" Source="images/cardBackBlue.png" Margin="396,596,921,189"/>
-        <Image x:Name="imgPlayerCard4" Height="100" Width="83" Source="images/cardBackBlue.png" Margin="484,596,833,189"/>
-        <Image x:Name="imgPlayerCard5" Height="100" Width="83" Source="images/cardBackBlue.png" Margin="566,596,751,189"/>
-        <Image x:Name="imgPlayerCard6" Height="100" Width="88" Source="images/cardBackBlue.png" Margin="644,596,668,189"/>
+        <Image x:Name="imgPlayerCard1" Height="100" Width="83" Source="images/cardBackBlue.png" Margin="224,596,1093,189" MouseDown="card1Selected"/>
+        <Image x:Name="imgPlayerCard2" Height="100" Width="83" Source="images/cardBackBlue.png" Margin="310,596,1006,189" MouseDown="card2Selected"/>
+        <Image x:Name="imgPlayerCard3" Height="100" Width="83" Source="images/cardBackBlue.png" Margin="396,596,921,189" MouseDown="card3Selected"/>
+        <Image x:Name="imgPlayerCard4" Height="100" Width="83" Source="images/cardBackBlue.png" Margin="484,596,833,189" MouseDown="card4Selected"/>
+        <Image x:Name="imgPlayerCard5" Height="100" Width="83" Source="images/cardBackBlue.png" Margin="566,596,751,189" MouseDown="card5Selected"/>
+        <Image x:Name="imgPlayerCard6" Height="100" Width="88" Source="images/cardBackBlue.png" Margin="644,596,668,189" MouseDown="card6Selected"/>
         <Button x:Name="btnSendToCrib" Content="Send To Crib" HorizontalAlignment="Right" Margin="0,750,1102,0" Width="115" Height="35" VerticalAlignment="Top" FontSize="18" Click="btnSendToCrib_Click"/>
         <Button x:Name="btnNextHand" Content="Next Hand" HorizontalAlignment="Right" Margin="0,750,965,0" Width="110" Height="35" VerticalAlignment="Top" FontSize="18" Click="btnNextHand_Click"/>
         <Button x:Name="btnPlayCard" Content="Play Card" HorizontalAlignment="Right" Margin="0,750,840,0" Width="105" Height="35" VerticalAlignment="Top" FontSize="18" Click="btnPlayCard_Click"/>
@@ -54,5 +54,14 @@
         <Image x:Name="imgPlayedCard8" Height="100" Width="83" Source="images/cardBackBlue.png" Margin="883,327,434,458"/>
         <Label x:Name="lblCutCard" Content="Cut Card" HorizontalAlignment="Left" Margin="954,98,0,0" VerticalAlignment="Top" Width="94" FontSize="20" FontWeight="Bold"/>
         <Image x:Name="imgCutCard" HorizontalAlignment="Left" Height="111" VerticalAlignment="Top" Width="74" Margin="964,138,0,0" Source="images/cardBackBlue.png"/>
+        <Label x:Name="lblOpponentHand" Content="Opponent Hand" HorizontalAlignment="Right" Margin="0,0,841,839" VerticalAlignment="Bottom" FontSize="18" FontWeight="Bold"/>
+        <Label x:Name="lblPlayerHand" Content="Player Hand" HorizontalAlignment="Right" Margin="0,557,858,0" VerticalAlignment="Top" FontSize="18" FontWeight="Bold"/>
+        <Rectangle x:Name="rec1" HorizontalAlignment="Left" Height="105" Margin="223,597,0,0" Stroke="#FFAC1D0F" VerticalAlignment="Top" Width="84" StrokeThickness="15"/>
+        <Rectangle x:Name="rec2" HorizontalAlignment="Left" Height="104" Margin="312,597,0,0" Stroke="#FFAC1D0F" VerticalAlignment="Top" Width="84" StrokeThickness="15"/>
+        <Rectangle x:Name="rec3" HorizontalAlignment="Left" Height="105" Margin="400,597,0,0" Stroke="#FFAC1D0F" VerticalAlignment="Top" Width="84" StrokeThickness="15"/>
+        <Rectangle x:Name="rec4" HorizontalAlignment="Left" Height="105" Margin="484,596,0,0" Stroke="#FFAC1D0F" VerticalAlignment="Top" Width="84" StrokeThickness="15"/>
+        <Rectangle x:Name="rec5" HorizontalAlignment="Left" Height="105" Margin="568,596,0,0" Stroke="#FFAC1D0F" VerticalAlignment="Top" Width="84" StrokeThickness="15"/>
+        <Rectangle x:Name="rec6" HorizontalAlignment="Left" Height="105" Margin="652,596,0,0" Stroke="#FFAC1D0F" VerticalAlignment="Top" Width="84" StrokeThickness="15"/>
+        <Button x:Name="btnRefreshCards" Content="Refresh Cards" HorizontalAlignment="Right" Margin="0,750,428,0" Width="130" Height="35" VerticalAlignment="Top" FontSize="18" Click="ReFreshCardsClick"/>
     </Grid>
 </Window>

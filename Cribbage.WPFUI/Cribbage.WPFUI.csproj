@@ -10,6 +10,225 @@
 
   <ItemGroup>
     <None Remove="cribbageboardoriginal.png" />
+    <None Remove="images\cardBackBlue.png" />
+    <None Remove="images\cardClubs_Ace.png" />
+    <None Remove="images\cardClubs_Eight.png" />
+    <None Remove="images\cardClubs_Five.png" />
+    <None Remove="images\cardClubs_Four.png" />
+    <None Remove="images\cardClubs_Jack.png" />
+    <None Remove="images\cardClubs_King.png" />
+    <None Remove="images\cardClubs_Nine.png" />
+    <None Remove="images\cardClubs_Queen.png" />
+    <None Remove="images\cardClubs_Seven.png" />
+    <None Remove="images\cardClubs_Six.png" />
+    <None Remove="images\cardClubs_Ten.png" />
+    <None Remove="images\cardClubs_Three.png" />
+    <None Remove="images\cardClubs_two.png" />
+    <None Remove="images\cardDiamonds_Ace.png" />
+    <None Remove="images\cardDiamonds_Eight.png" />
+    <None Remove="images\cardDiamonds_Five.png" />
+    <None Remove="images\cardDiamonds_Four.png" />
+    <None Remove="images\cardDiamonds_Jack.png" />
+    <None Remove="images\cardDiamonds_King.png" />
+    <None Remove="images\cardDiamonds_Nine.png" />
+    <None Remove="images\cardDiamonds_Queen.png" />
+    <None Remove="images\cardDiamonds_Seven.png" />
+    <None Remove="images\cardDiamonds_Six.png" />
+    <None Remove="images\cardDiamonds_Ten.png" />
+    <None Remove="images\cardDiamonds_Three.png" />
+    <None Remove="images\cardDiamonds_two.png" />
+    <None Remove="images\cardHearts_Ace.png" />
+    <None Remove="images\cardHearts_Eight.png" />
+    <None Remove="images\cardHearts_Five.png" />
+    <None Remove="images\cardHearts_Four.png" />
+    <None Remove="images\cardHearts_Jack.png" />
+    <None Remove="images\cardHearts_King.png" />
+    <None Remove="images\cardHearts_Nine.png" />
+    <None Remove="images\cardHearts_Queen.png" />
+    <None Remove="images\cardHearts_Seven.png" />
+    <None Remove="images\cardHearts_Six.png" />
+    <None Remove="images\cardHearts_Ten.png" />
+    <None Remove="images\cardHearts_Three.png" />
+    <None Remove="images\cardHearts_two.png" />
+    <None Remove="images\cardSpades_Ace.png" />
+    <None Remove="images\cardSpades_Eight.png" />
+    <None Remove="images\cardSpades_Five.png" />
+    <None Remove="images\cardSpades_Four.png" />
+    <None Remove="images\cardSpades_Jack.png" />
+    <None Remove="images\cardSpades_King.png" />
+    <None Remove="images\cardSpades_Nine.png" />
+    <None Remove="images\cardSpades_Queen.png" />
+    <None Remove="images\cardSpades_Seven.png" />
+    <None Remove="images\cardSpades_Six.png" />
+    <None Remove="images\cardSpades_Ten.png" />
+    <None Remove="images\cardSpades_Three.png" />
+    <None Remove="images\cardSpades_two.png" />
+    <None Remove="images\cribbageboard.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="images\cardBackBlue.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardClubs_Ace.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardClubs_Eight.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardClubs_Five.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardClubs_Four.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardClubs_Jack.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardClubs_King.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardClubs_Nine.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardClubs_Queen.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardClubs_Seven.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardClubs_Six.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardClubs_Ten.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardClubs_Three.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardClubs_two.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardDiamonds_Ace.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardDiamonds_Eight.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardDiamonds_Five.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardDiamonds_Four.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardDiamonds_Jack.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardDiamonds_King.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardDiamonds_Nine.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardDiamonds_Queen.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardDiamonds_Seven.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardDiamonds_Six.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardDiamonds_Ten.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardDiamonds_Three.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardDiamonds_two.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardHearts_Ace.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardHearts_Eight.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardHearts_Five.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardHearts_Four.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardHearts_Jack.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardHearts_King.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardHearts_Nine.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardHearts_Queen.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardHearts_Seven.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardHearts_Six.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardHearts_Ten.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardHearts_Three.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardHearts_two.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardSpades_Ace.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardSpades_Eight.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardSpades_Five.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardSpades_Four.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardSpades_Jack.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardSpades_King.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardSpades_Nine.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardSpades_Queen.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardSpades_Seven.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardSpades_Six.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardSpades_Ten.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardSpades_Three.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cardSpades_two.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\cribbageboard.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
