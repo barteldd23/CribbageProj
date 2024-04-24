@@ -2,6 +2,7 @@
 using Cribbage.BL.Models;
 using Microsoft.AspNetCore.SignalR.Client;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
@@ -14,17 +15,13 @@ namespace Cribbage.WPFUI
     {
         //string hubAddress = "https://bigprojectapi-300089145.azurewebsites.net/CribbageHub";
         string hubAddress = "https://localhost:7186/CribbageHub";
-        CribbageGame cribbageGame;
+        CribbageGame cribbageGame = new CribbageGame();
         //SignalRConnection cribbageHubConnection;
         HubConnection _connection;
         List<Card> opponentHand;
         List<Card> playerHand;
         List<Card> selectedCards = new List<Card>();
         User loggedInUser;
-
-        //Refresh the screen method needed 
-        //Read the "what to do property" --> goes to the correct method (switch statement) to set the screen
-        //Read the player turn --> match player turn id to user id
 
         public MainWindow()
         {
@@ -55,6 +52,8 @@ namespace Cribbage.WPFUI
             rec5.Visibility = Visibility.Collapsed;
             rec6.Visibility = Visibility.Collapsed;
 
+            btnRefreshCards.Visibility = Visibility.Collapsed;
+
             lblPlayer1DisplayName.Content = cribbageGame.Player_1.DisplayName + " Score";
             lblPlayer1Score.Content = cribbageGame.Player_1.Score;
             lblPlayerHand.Content = cribbageGame.Player_1.DisplayName + "'s Hand";
@@ -62,6 +61,11 @@ namespace Cribbage.WPFUI
             lblPlayer2DisplayName.Content = cribbageGame.Player_2.DisplayName + " Score";
             lblPlayer2Score.Content = cribbageGame.Player_2.Score;
             lblOpponentHand.Content = cribbageGame.Player_2.DisplayName + "'s Hand";
+
+            imgCribCard1.Source = null;
+            imgCribCard2.Source = null;
+            imgCribCard3.Source = null;
+            imgCribCard4.Source = null;
 
             if (cribbageGame.WhatToDo.ToString() == "SelectCribCards")
             {
@@ -86,6 +90,8 @@ namespace Cribbage.WPFUI
                     card.EndInit();
                     imgOppenentCard1.Source = card;
                 }
+                else
+                    imgOppenentCard1.Source = null;
                 if (opponentHand.Count >= 2)
                 {
                     card = new BitmapImage();
@@ -94,6 +100,8 @@ namespace Cribbage.WPFUI
                     card.EndInit();
                     imgOppenentCard2.Source = card;
                 }
+                else
+                    imgOppenentCard2.Source = null;
                 if (opponentHand.Count >= 3)
                 {
                     card = new BitmapImage();
@@ -102,6 +110,8 @@ namespace Cribbage.WPFUI
                     card.EndInit();
                     imgOppenentCard3.Source = card;
                 }
+                else
+                    imgOppenentCard3.Source = null;
                 if (opponentHand.Count >= 4)
                 {
                     card = new BitmapImage();
@@ -110,6 +120,8 @@ namespace Cribbage.WPFUI
                     card.EndInit();
                     imgOppenentCard4.Source = card;
                 }
+                else
+                    imgOppenentCard4.Source = null;
                 if (opponentHand.Count >= 5)
                 {
                     card = new BitmapImage();
@@ -118,6 +130,8 @@ namespace Cribbage.WPFUI
                     card.EndInit();
                     imgOppenentCard5.Source = card;
                 }
+                else
+                    imgOppenentCard5.Source = null;
                 if (opponentHand.Count >= 6)
                 {
                     card = new BitmapImage();
@@ -126,6 +140,8 @@ namespace Cribbage.WPFUI
                     card.EndInit();
                     imgOppenentCard6.Source = card;
                 }
+                else
+                    imgOppenentCard6.Source = null;
             }
             else
             {
@@ -137,6 +153,8 @@ namespace Cribbage.WPFUI
                     card.EndInit();
                     imgOppenentCard1.Source = card;
                 }
+                else
+                    imgOppenentCard1.Source = null;
                 if (opponentHand.Count >= 2)
                 {
                     card = new BitmapImage();
@@ -145,6 +163,8 @@ namespace Cribbage.WPFUI
                     card.EndInit();
                     imgOppenentCard2.Source = card;
                 }
+                else
+                    imgOppenentCard2.Source = null;
                 if (opponentHand.Count >= 3)
                 {
                     card = new BitmapImage();
@@ -153,6 +173,8 @@ namespace Cribbage.WPFUI
                     card.EndInit();
                     imgOppenentCard3.Source = card;
                 }
+                else
+                    imgOppenentCard3.Source = null;
                 if (opponentHand.Count >= 4)
                 {
                     card = new BitmapImage();
@@ -161,6 +183,8 @@ namespace Cribbage.WPFUI
                     card.EndInit();
                     imgOppenentCard4.Source = card;
                 }
+                else
+                    imgOppenentCard4.Source = null;
                 if (opponentHand.Count >= 5)
                 {
                     card = new BitmapImage();
@@ -169,6 +193,8 @@ namespace Cribbage.WPFUI
                     card.EndInit();
                     imgOppenentCard5.Source = card;
                 }
+                else
+                    imgOppenentCard5.Source = null;
                 if (opponentHand.Count >= 6)
                 {
                     card = new BitmapImage();
@@ -177,6 +203,8 @@ namespace Cribbage.WPFUI
                     card.EndInit();
                     imgOppenentCard6.Source = card;
                 }
+                else
+                    imgOppenentCard6.Source = null;
             }
         }
 
@@ -190,6 +218,8 @@ namespace Cribbage.WPFUI
                 card.EndInit();
                 imgPlayerCard1.Source = card;
             }
+            else
+                imgPlayerCard1.Source = null;
             if (playerHand.Count >= 2)
             {
                 card = new BitmapImage();
@@ -198,6 +228,8 @@ namespace Cribbage.WPFUI
                 card.EndInit();
                 imgPlayerCard2.Source = card;
             }
+            else
+                imgPlayerCard2.Source = null;
             if (playerHand.Count >= 3)
             {
                 card = new BitmapImage();
@@ -206,6 +238,8 @@ namespace Cribbage.WPFUI
                 card.EndInit();
                 imgPlayerCard3.Source = card;
             }
+            else
+                imgPlayerCard3.Source = null;
             if (playerHand.Count >= 4)
             {
                 card = new BitmapImage();
@@ -214,6 +248,8 @@ namespace Cribbage.WPFUI
                 card.EndInit();
                 imgPlayerCard4.Source = card;
             }
+            else
+                imgPlayerCard4.Source = null;
             if (playerHand.Count >= 5)
             {
                 card = new BitmapImage();
@@ -222,6 +258,8 @@ namespace Cribbage.WPFUI
                 card.EndInit();
                 imgPlayerCard5.Source = card;
             }
+            else
+                imgPlayerCard5.Source = null;
             if (playerHand.Count >= 6)
             {
                 card = new BitmapImage();
@@ -230,6 +268,8 @@ namespace Cribbage.WPFUI
                 card.EndInit();
                 imgPlayerCard6.Source = card;
             }
+            else
+                imgPlayerCard6.Source = null;
         }
         #endregion
 
@@ -255,13 +295,12 @@ namespace Cribbage.WPFUI
         {
             cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
 
-            //BitmapImage card = new BitmapImage();
-            //card.BeginInit();
-            //card.UriSource = new Uri("pack://siteoforigin:,,,/images/card" + cribbageGame.CutCard.suit.ToString() + "_" + cribbageGame.CutCard.face.ToString() + ".png");
-            //card.EndInit();
-            //imgCutCard.Source = card;
-            
-            MessageBox.Show("Cut card is " + cribbageGame.CutCard.name);
+            playerHand = cribbageGame.Player_1.Hand;
+            opponentHand = cribbageGame.Player_2.Hand;
+
+            //MessageBox.Show("Cut card is " + cribbageGame.CutCard.name);
+            MessageBox.Show("Player 1 hand count: " + playerHand.Count);
+            MessageBox.Show("Player 2 hand count: " + opponentHand.Count);
         }
 
         private void GameFinishedMessage(string cribbageGameJson)
@@ -366,6 +405,17 @@ namespace Cribbage.WPFUI
                     string strSelectedCards = JsonConvert.SerializeObject(selectedCards);
                     string userJson = JsonConvert.SerializeObject(loggedInUser);
                     _connection.InvokeAsync("CardsToCrib", cribbageGameJson, strSelectedCards, userJson);
+
+                    BitmapImage card = new BitmapImage();
+                    card.BeginInit();
+                    card.UriSource = new Uri("pack://siteoforigin:,,,/images/cardBackBlue.png");
+                    card.EndInit();
+                    imgCribCard1.Source = card;
+                    imgCribCard2.Source = card;
+                    imgCribCard3.Source = card;
+                    imgCribCard4.Source = card;
+
+                    btnRefreshCards.Visibility = Visibility.Visible;
                 }
                 catch (Exception ex)
                 {
@@ -481,9 +531,9 @@ namespace Cribbage.WPFUI
         }
         #endregion
 
-        private void updateCutCard(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void UpdateCutCard(CribbageGame cribbageGame)
         {
-            if(cribbageGame.CutCard.name != "")
+            if (cribbageGame.CutCard != null)
             {
                 BitmapImage card = new BitmapImage();
                 card.BeginInit();
@@ -491,6 +541,27 @@ namespace Cribbage.WPFUI
                 card.EndInit();
                 imgCutCard.Source = card;
             }
+        }
+
+
+        //Refresh the screen method 
+        //Read the "what to do property" --> goes to the correct method (switch statement) to set the screen
+        //Read the player turn --> match player turn id to user id
+        private void ReFreshCardsClick(object sender, RoutedEventArgs e)
+        {
+            rec1.Visibility = Visibility.Collapsed;
+            rec2.Visibility = Visibility.Collapsed;
+            rec3.Visibility = Visibility.Collapsed;
+            rec4.Visibility = Visibility.Collapsed;
+            rec5.Visibility = Visibility.Collapsed;
+            rec6.Visibility = Visibility.Collapsed;
+
+            selectedCards = new List<Card>();
+
+            displayPlayerHand(playerHand);
+            displayOpponentHand(opponentHand, true);
+
+            UpdateCutCard(cribbageGame);
         }
     }
 }
