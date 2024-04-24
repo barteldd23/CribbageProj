@@ -3,6 +3,7 @@ using Cribbage.BL.Models;
 using Microsoft.AspNetCore.SignalR.Client;
 using Newtonsoft.Json;
 using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace Cribbage.WPFUI
 {
@@ -67,7 +68,7 @@ namespace Cribbage.WPFUI
                 if (opponentHand.Count >= 1)
                 {
                     MessageBox.Show(opponentHand.Count + " " + opponentHand[0]);
-                    //imgOppenentCard1.Source = "images/" + opponentHand[0] + ".png";
+                    //imgOppenentCard1.Source = 
                 }
             }
             else
@@ -79,6 +80,7 @@ namespace Cribbage.WPFUI
         private void displayPlayerHand(List<Card> playerHand)
         {
             MessageBox.Show(playerHand.Count + " " + playerHand[0]);
+            //imgPlayerCard1.Source = "images/" + opponentHand[0] + ".png";
         }
 
         private static void StaThreadWrapper(Action action)
