@@ -292,8 +292,6 @@ namespace Cribbage.WPFUI
             if (isLoggedIn)
             {
                 loggedInUser = JsonConvert.DeserializeObject<User>(userJson);
-                //MessageBox.Show(loggedInUser.DisplayName);
-                
 
                 StaThreadWrapper(() =>
                 {
@@ -302,11 +300,6 @@ namespace Cribbage.WPFUI
                 });
 
                 //Dispatcher.Invoke(() => { this.Close(); });
-                
-                
-                //CloseCurrentPage();
-                //NewGameVsComputer(loggedInUser);
-                //WPFUI.Login.LoggedInCheck(isLoggedIn, userJson);
             }
             else // not logged in
             {
@@ -314,7 +307,6 @@ namespace Cribbage.WPFUI
                 //WPFUI.Login.LoggedInCheck(isLoggedIn, userJson);
             }
 
-            
         }
 
         private void CloseCurrentPage()

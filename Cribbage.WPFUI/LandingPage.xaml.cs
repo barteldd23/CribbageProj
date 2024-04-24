@@ -143,20 +143,18 @@ namespace Cribbage.WPFUI
                 .Build();
 
             _connection.On<string, string>("StartGame", (message, cribbageGameJson) => StartGameVsComputerMessage(message, cribbageGameJson));
-            _connection.On<string>("StartGameVsPlayer", (cribbageGameJson) => StartGameVsPlayerMessage(cribbageGameJson));
+            _connection.On<string, string>("StartGameVsPlayer", (message, cribbageGameJson) => StartGameVsPlayerMessage(message, cribbageGameJson));
 
             _connection.StartAsync();
         }
 
         private void StartGameVsComputerMessage(string message, string cribbageGameJson)
         {
-            MessageBox.Show(message + " " + cribbageGameJson);
+            CribbageGame cribbageGame = new CribbageGame();
+            cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
 
             StaThreadWrapper(() =>
             {
-                CribbageGame cribbageGame = new CribbageGame();
-                cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
-
                 var mainWindow = new MainWindow(cribbageGame);
                 mainWindow.Show();
             });
@@ -175,10 +173,9 @@ namespace Cribbage.WPFUI
             }
         }
 
-        private void StartGameVsPlayerMessage(string cribbageGameJson)
+        private void StartGameVsPlayerMessage(string message, string cribbageGameJson)
         {
-            MessageBox.Show(cribbageGameJson);
-            //LandingPage.StartGameVsComputer(message);
+            MessageBox.Show(message + " " + cribbageGameJson);
         }
 
         public void NewGameVsComputer(User user)
