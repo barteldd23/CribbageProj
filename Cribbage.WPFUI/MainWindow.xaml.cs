@@ -406,12 +406,27 @@ namespace Cribbage.WPFUI
                     string userJson = JsonConvert.SerializeObject(loggedInUser);
                     _connection.InvokeAsync("CardsToCrib", cribbageGameJson, strSelectedCards, userJson);
 
+                    //testing only!
                     BitmapImage card = new BitmapImage();
+                    card.BeginInit();
+                    card.UriSource = new Uri("pack://siteoforigin:,,,/images/" + selectedCards[0].imgPath);
+                    card.EndInit();
+                    imgCribCard1.Source = card;
+
+                    card = new BitmapImage();
+                    card.BeginInit();
+                    card.UriSource = new Uri("pack://siteoforigin:,,,/images/" + selectedCards[1].imgPath);
+                    card.EndInit();
+                    imgCribCard2.Source = card;
+
+                    // when done testing
+                    //BitmapImage card = new BitmapImage();
+                    card = new BitmapImage();
                     card.BeginInit();
                     card.UriSource = new Uri("pack://siteoforigin:,,,/images/cardBackBlue.png");
                     card.EndInit();
-                    imgCribCard1.Source = card;
-                    imgCribCard2.Source = card;
+                    //imgCribCard1.Source = card;
+                    //imgCribCard2.Source = card;
                     imgCribCard3.Source = card;
                     imgCribCard4.Source = card;
 
