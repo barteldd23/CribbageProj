@@ -19,6 +19,8 @@ namespace Cribbage.WPFUI
         //SignalRConnection cribbageHubConnection;
         User secondPlayer = new User();
         HubConnection _connection;
+        List<Card> opponentHand;
+        List<Card> playerHand;
 
         public MainWindow()
         {
@@ -26,17 +28,58 @@ namespace Cribbage.WPFUI
             InitializeComponent();
         }
 
-        public MainWindow(CribbageGame cribbageGame)
+        public MainWindow(CribbageGame cribbageGameInfo)
         {
+            cribbageGame = cribbageGameInfo;
+
+            // start the hub connection
             Start();
+
             InitializeComponent();
+            SetUpGame();
+
+        }
+
+        private void SetUpGame()
+        {
             lblPlayer1DisplayName.Content = cribbageGame.Player_1.DisplayName + " Score";
             lblPlayer1Score.Content = cribbageGame.Player_1.Score;
 
             lblPlayer2DisplayName.Content = cribbageGame.Player_2.DisplayName + " Score";
             lblPlayer2Score.Content = cribbageGame.Player_2.Score;
+
+            if(cribbageGame.WhatToDo.ToString() == "SelectCribCards")
+            {
+                playerHand = cribbageGame.Player_1.Hand;
+                opponentHand = cribbageGame.Player_2.Hand;
+
+                displayOpponentHand(opponentHand, true);
+                displayPlayerHand(playerHand);
+            }
+
+            //imgPlayerCard1.Source = cribbageGame.Player_1.Hand[0];
         }
 
+        private void displayOpponentHand(List<Card> opponentHand, bool isShown = false)
+        {
+            if(isShown)
+            {
+                if (opponentHand.Count >= 1)
+                {
+                    MessageBox.Show(opponentHand.Count + " " + opponentHand[0]);
+                    //imgOppenentCard1.Source = "images/" + opponentHand[0] + ".png";
+                }
+            }
+            else
+            {
+
+            }
+        }
+
+        private void displayPlayerHand(List<Card> playerHand)
+        {
+            throw new NotImplementedException();
+        }
 
         private static void StaThreadWrapper(Action action)
         {

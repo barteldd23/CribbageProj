@@ -9,8 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="cardBackBlue.png" />
-    <None Remove="cribbageboard.png" />
     <None Remove="cribbageboardoriginal.png" />
   </ItemGroup>
 
@@ -23,11 +21,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Cribbage.API\Cribbage.API.csproj" />
     <ProjectReference Include="..\Cribbage.BL.Models\Cribbage.BL.Models.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="cardBackBlue.png" />
-    <Resource Include="cribbageboard.png" />
   </ItemGroup>
 
 </Project>
