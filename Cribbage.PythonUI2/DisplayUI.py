@@ -19,9 +19,7 @@ from signalrcore.hub_connection_builder import HubConnectionBuilder
 
 @dataclass
 class CribbageGame:
-    
-    def insertJson(self,j):
-        self.__dict__ = json.loads(j)
+    data: [] 
 
 @dataclass
 class CribbageUser:
@@ -39,24 +37,46 @@ class CribbageUser:
     WinStreak: int = 0
     AvgPtsPerGame: float = 0
     
-
-    
     def insertJson(self, j):
         self.__dict__ = json.loads(j)
         
     def __post_init__(self) -> None:
         self.FullName = self.FirstName + " " + self.LastName
         self.LastFirstName = self.LastName + ", " + self.FirstName
+    
+@dataclass
+class Card:
+    face: int = 0
+    suit: str = ''
+    value: int =0
+    imgPath: str = ''
+    name: str = ''
+@dataclass
+class Hand:
+    cards: [] 
+    def insertJson(self, j):
+        self.__dict__ = json.loads(j)
+    
+
         
 ###################### Modular Variables #################
 
 pythonUser = CribbageUser()
 pythonUserJson = json.dumps(asdict(pythonUser))
-playerHand = NULL
-opponentHand = NULL
+playerHand = Hand([])
+gameData = CribbageGame([])
+opponentHand = Hand([])
 
-
+def setGameData(gameJson):
+    cribbageGame = json.loads(gameJson)
+    gameData.data = cribbageGame
 ###################### Methods for Received Hub Messages ##############
+def receivedCutCardMessage(gameJson, message):
+    setMessage(message)
+    setGameData(gameJson)
+    
+def receivedPlayHandMessage(gameJson, message):
+    setMessage(message)
         
 def receivedCreateUserMessage(isCreated, messageInfo):
     if(isCreated):
@@ -84,16 +104,18 @@ def receivedStartGameMessage(message, gameJson):
     #setMessage(gameJson)
     #cribbageGame = CribbageGame()
     #cribbageGame.insertJson(gameJson)
+    #cribbageGame.insertJson(gameJson)
     #print(cribbageGame);
-    cribbagGame = json.loads(gameJson)
-    print(cribbagGame)
-    hands = setHands(cribbagGame)
-    playerHand = hands[0]
-    opponentHand = hands[1]
+    cribbageGame = json.loads(gameJson)
+    gameData.data = cribbageGame
+    print(cribbageGame)
+    hands = setHands(cribbageGame)
+    playerHand.cards =hands[0]
+    opponentHand.cards = hands[1]
     print(playerHand)
     print(opponentHand)
     
-    setStartGameFrame(cribbagGame, playerHand, opponentHand)
+    setStartGameFrame(cribbageGame, playerHand, opponentHand)
     
 def setHands(gameData):
     if(pythonUser.Id == gameData["Player_1"]["Id"]):
@@ -116,42 +138,43 @@ def setStartGameFrame(gameData, playerHand, opponentHand):
     if(gameData['WhatToDo'] == 'SelectCribCards'):
         displayOpponentHand(gameData, opponentHand, True)
         displayPlayerHand(gameData, playerHand)
+        btnSendToCrib.grid(row=2, column=1, padx=5, pady=5, sticky='news')
         setMessage("in the if for selectCribCards")
     
 
 def displayOpponentHand(gameData, opponentHand, isShown):
     if(isShown == False):
-        if(len(opponentHand) >= 1):
+        if(len(opponentHand.cards) >= 1):
             opponentCard1.img = cardBack.subsample(5,5)
             opponentCard1.config(image= opponentCard1.img)
             opponentCard1.grid(row=1, column=0, sticky='news', padx=10)
         else:
             pass
-        if(len(opponentHand) >= 2):
+        if(len(opponentHand.cards) >= 2):
             opponentCard2.img = cardBack.subsample(5,5)
             opponentCard2.config(image= opponentCard2.img)
             opponentCard2.grid(row=1, column=1, sticky='news', padx=10)
         else:
             pass
-        if(len(opponentHand) >= 3):
+        if(len(opponentHand.cards) >= 3):
             opponentCard3.img = cardBack.subsample(5,5)
             opponentCard3.config(image= opponentCard3.img)
             opponentCard3.grid(row=1, column=2, sticky='news', padx=10)
         else:
             pass
-        if(len(opponentHand) >= 4):
+        if(len(opponentHand.cards) >= 4):
             opponentCard4.img = cardBack.subsample(5,5)
             opponentCard4.config(image= opponentCard4.img)
             opponentCard4.grid(row=1, column=3, sticky='news', padx=10)
         else:
             pass
-        if(len(opponentHand) >= 5):
+        if(len(opponentHand.cards) >= 5):
             opponentCard5.img = cardBack.subsample(5,5)
             opponentCard5.config(image= opponentCard5.img)
             opponentCard5.grid(row=1, column=4, sticky='news', padx=10)
         else:
             pass
-        if(len(opponentHand) >= 6):
+        if(len(opponentHand.cards) >= 6):
             opponentCard6.img = cardBack.subsample(5,5)
             opponentCard6.config(image= opponentCard6.img)
             opponentCard6.grid(row=1, column=5, sticky='news', padx=10)
@@ -159,43 +182,43 @@ def displayOpponentHand(gameData, opponentHand, isShown):
             pass
         
     else:
-        if(len(opponentHand) >= 1):
-            card = PhotoImage(file="./images/" + opponentHand[0]["imgPath"])
+        if(len(opponentHand.cards) >= 1):
+            card = PhotoImage(file="./images/" + opponentHand.cards[0]["imgPath"])
             opponentCard1.img = card.subsample(5,5)
             opponentCard1.config(image= opponentCard1.img)
             opponentCard1.grid(row=1, column=0, sticky='news', padx=10)
         else:
             opponentCard1.grid_forget
-        if(len(opponentHand) >= 2):
-            card = PhotoImage(file="./images/" + opponentHand[1]["imgPath"])
+        if(len(opponentHand.cards) >= 2):
+            card = PhotoImage(file="./images/" + opponentHand.cards[1]["imgPath"])
             opponentCard2.img = card.subsample(5,5)
             opponentCard2.config(image= opponentCard2.img)
             opponentCard2.grid(row=1, column=1, sticky='news', padx=10)
         else:
             opponentCard2.grid_forget
-        if(len(opponentHand) >= 3):
-            card = PhotoImage(file="./images/" + opponentHand[2]["imgPath"])
+        if(len(opponentHand.cards) >= 3):
+            card = PhotoImage(file="./images/" + opponentHand.cards[2]["imgPath"])
             opponentCard3.img = card.subsample(5,5)
             opponentCard3.config(image= opponentCard3.img)
             opponentCard3.grid(row=1, column=2, sticky='news', padx=10)
         else:
             opponentCard3.grid_forget
-        if(len(opponentHand) >= 4):
-            card = PhotoImage(file="./images/" + opponentHand[3]["imgPath"])
+        if(len(opponentHand.cards) >= 4):
+            card = PhotoImage(file="./images/" + opponentHand.cards[3]["imgPath"])
             opponentCard4.img = card.subsample(5,5)
             opponentCard4.config(image= opponentCard4.img)
             opponentCard4.grid(row=1, column=3, sticky='news', padx=10)
         else:
             opponentCard4.grid_forget
-        if(len(opponentHand) >= 5):
-            card = PhotoImage(file="./images/" + opponentHand[4]["imgPath"])
+        if(len(opponentHand.cards) >= 5):
+            card = PhotoImage(file="./images/" + opponentHand.cards[4]["imgPath"])
             opponentCard5.img = card.subsample(5,5)
             opponentCard5.config(image= opponentCard5.img)
             opponentCard5.grid(row=1, column=4, sticky='news', padx=10)
         else:
             opponentCard5.grid_forget
-        if(len(opponentHand) >= 6):
-            card = PhotoImage(file="./images/" + opponentHand[5]["imgPath"])
+        if(len(opponentHand.cards) >= 6):
+            card = PhotoImage(file="./images/" + opponentHand.cards[5]["imgPath"])
             opponentCard6.img = card.subsample(5,5)
             opponentCard6.config(image= opponentCard6.img)
             opponentCard6.grid(row=1, column=5, sticky='news', padx=10)
@@ -205,43 +228,43 @@ def displayOpponentHand(gameData, opponentHand, isShown):
 
 def displayPlayerHand(gameData, playerHand):
     
-    if(len(playerHand) >= 1):
-        card = PhotoImage(file="./images/" + playerHand[0]["imgPath"])
+    if(len(playerHand.cards) >= 1):
+        card = PhotoImage(file="./images/" + playerHand.cards[0]["imgPath"])
         myCard1.img = card.subsample(5,5)
         myCard1.config(image= myCard1.img)
         myCard1.grid(row=1, column=0, sticky='news', padx=10)
     else:
         myCard1.grid_forget
-    if(len(playerHand) >= 2):
-        card = PhotoImage(file="./images/" + playerHand[1]["imgPath"])
+    if(len(playerHand.cards) >= 2):
+        card = PhotoImage(file="./images/" + playerHand.cards[1]["imgPath"])
         myCard2.img = card.subsample(5,5)
         myCard2.config(image= myCard2.img)
         myCard2.grid(row=1, column=1, sticky='news', padx=10)
     else:
         myCard2.grid_forget
-    if(len(playerHand) >= 3):
-        card = PhotoImage(file="./images/" + playerHand[2]["imgPath"])
+    if(len(playerHand.cards) >= 3):
+        card = PhotoImage(file="./images/" + playerHand.cards[2]["imgPath"])
         myCard3.img = card.subsample(5,5)
         myCard3.config(image= myCard3.img)
         myCard3.grid(row=1, column=2, sticky='news', padx=10)
     else:
         myCard3.grid_forget
-    if(len(playerHand) >= 4):
-        card = PhotoImage(file="./images/" + playerHand[3]["imgPath"])
+    if(len(playerHand.cards) >= 4):
+        card = PhotoImage(file="./images/" + playerHand.cards[3]["imgPath"])
         myCard4.img = card.subsample(5,5)
         myCard4.config(image= myCard4.img)
         myCard4.grid(row=1, column=3, sticky='news', padx=10)
     else:
         myCard4.grid_forget
-    if(len(playerHand) >= 5):
-        card = PhotoImage(file="./images/" + playerHand[4]["imgPath"])
+    if(len(playerHand.cards) >= 5):
+        card = PhotoImage(file="./images/" + playerHand.cards[4]["imgPath"])
         myCard5.img = card.subsample(5,5)
         myCard5.config(image= myCard5.img)
         myCard5.grid(row=1, column=4, sticky='news', padx=10)
     else:
         myCard5.grid_forget
-    if(len(playerHand) >= 6):
-        card = PhotoImage(file="./images/" + playerHand[5]["imgPath"])
+    if(len(playerHand.cards) >= 6):
+        card = PhotoImage(file="./images/" + playerHand.cards[5]["imgPath"])
         myCard6.img = card.subsample(5,5)
         myCard6.config(image= myCard6.img)
         myCard6.grid(row=1, column=5, sticky='news', padx=10)
@@ -254,7 +277,21 @@ def setMessage(msg):
     txtGameMessages.insert('end', msg + '\n')
     txtGameMessages.config(state='disabled')
 ###################### Methods for Button clicks ###################
-        
+   
+def getGameJson():
+    return json.dumps(asdict(gameData))[9:-1]
+def getUserJson():
+    return json.dumps(asdict(pythonUser))
+def onClickSendToCrib():
+    cardsToSend= [playerHand.cards[0],playerHand.cards[1]]
+    cardsToSendJson = json.dumps(cardsToSend)
+    gameToSendJson = getGameJson()
+   # print(cardsToSendJson)
+    print('*********')
+    hub_connection.send("CardsToCrib",[gameToSendJson, cardsToSendJson, pythonUserJson])
+    #
+   # print(gameToSendJson)
+   
 def newVsComputer():
     pythonUserJson = json.dumps(asdict(pythonUser))
     hub_connection.send("NewGameVsComputer",[pythonUserJson])
@@ -343,6 +380,8 @@ hub_connection.on("ReceiveMessage", lambda msg: print("received message back fro
 hub_connection.on("LogInAttempt", lambda data: receivedLogInMessage(data[0],data[1],data[2]))
 hub_connection.on("CreateUserAttempt", lambda data: receivedCreateUserMessage(data[0],data[1]))
 hub_connection.on("StartGame", lambda data: receivedStartGameMessage(data[0],data[1]))
+hub_connection.on("CutCard", lambda data: receivedCutCardMessage(data[0], data[1]))
+hub_connection.on("PlayHand", lambda data: receivedPlayHandMessage(data[0], data[1]))
 hub_connection.start()
 
 
@@ -539,6 +578,11 @@ myCard5.config(image= myCard5.img)
 myCard6 = tkinter.Label(usersFrame, width=100);
 myCard6.img = cardBack.subsample(5,5);
 myCard6.config(image= myCard6.img)
+
+btnSendToCrib = tkinter.Button(usersFrame, text="Send To Crib", command=onClickSendToCrib)
+btnNextHand = tkinter.Button(usersFrame, text="Next Hand")
+btnPlayCard = tkinter.Button(usersFrame, text="Play Card")
+btnGo = tkinter.Button(usersFrame, text="Go");
 
 opponentFrame.grid_propagate(0)
 rallyFrame.grid_propagate(0)

@@ -232,5 +232,86 @@ namespace Cribbage.API.Hubs
             // serialize Game into Json
             // Send Json back to both players using the hub group
         }
+
+        public async Task CardsToCrib(string game, string cards, string userJson)
+        {
+            string cribbageGameJson;
+            try
+            {
+                CribbageGame cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(game);
+
+                List<Card> cardsToCrib = JsonConvert.DeserializeObject<List<Card>>(cards);
+                //User user = JsonConvert.DeserializeObject<User>(userJson);
+                User user = new User();
+
+                // Playing vs computer.
+                // Get computer cards to crib, and send them to crib.
+                // send message to client saying ready to play
+                if (cribbageGame.Computer && cardsToCrib.Count == 2)
+                {
+                    List<Card> computerCribCards = CribbageGameManager.Pick_Cards_To_Crib(cribbageGame.Player_2.Hand);
+                    CribbageGameManager.Give_To_Crib(cribbageGame, computerCribCards, cribbageGame.Player_2);
+                    CribbageGameManager.Give_To_Crib(cribbageGame, cardsToCrib, cribbageGame.Player_1);
+
+                    // If Computer Turn, have cut the deck
+                    if (cribbageGame.PlayerTurn.Id == cribbageGame.Player_2.Id)
+                    {
+                        CribbageGameManager.Cut(cribbageGame);
+                        cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
+
+                        // Game could technically end on a cut. Need to check for a winner.
+                        if (CribbageGameManager.CheckWinner(cribbageGame))
+                        {
+                            cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
+                            // maybe add return paramter of string message saying who won.
+                            await Clients.All.SendAsync("GameFinished", cribbageGameJson);
+
+
+                        }
+                        else
+                        {
+                            await Clients.All.SendAsync("PlayHand", cribbageGameJson, cribbageGame.PlayerTurn.DisplayName + " cut the " + cribbageGame.CutCard.name + "\n" + cribbageGame.PlayerTurn.DisplayName + "'s Turn.");
+
+                        }
+
+                    }
+                    else {
+                        // The users Turn and they need to cut a card
+                        cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
+                        await Clients.All.SendAsync("CutCard", cribbageGameJson, cribbageGame.PlayerTurn.DisplayName + " cut the deck.");
+                    }
+                    
+                }
+                // Playing vs another pseron
+                // only send to crib if they sent 2 cards to hub
+                // check if the other person already sent cards.
+                // if they did, send message to both players to cut the card.
+                else if(! cribbageGame.Computer && cardsToCrib.Count == 2) 
+                {
+                    if(user.Id == cribbageGame.Player_1.Id)
+                    {
+                        CribbageGameManager.Give_To_Crib(cribbageGame, cardsToCrib, cribbageGame.Player_1);
+                    }
+                    else
+                    {
+                        CribbageGameManager.Give_To_Crib(cribbageGame, cardsToCrib, cribbageGame.Player_2);
+                    }
+
+                    if(cribbageGame.Crib.Count == 4)
+                    {
+                        cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
+                        await Clients.All.SendAsync("CutCard", cribbageGameJson, cribbageGame.PlayerTurn.DisplayName + " cut the deck.");
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
+
+            
+        }
     }
 }
