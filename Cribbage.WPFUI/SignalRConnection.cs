@@ -22,8 +22,8 @@ namespace Cribbage.WPFUI
                 .Build();
 
             _connection.On<string, string>("ReceiveMessage", (s1, s2) => OnSend(s1, s2));
-            _connection.On<bool, string, string>("LogInAttempt", (isLoggedIn, message, userJson) => ReceivedLoginMessage(isLoggedIn, message, userJson));
-            _connection.On<bool, string>("CreateUserAttempt", (isSuccess, message) => CreateUserMessage(isSuccess, message));
+            //_connection.On<bool, string, string>("LogInAttempt", (isLoggedIn, message, userJson) => ReceivedLoginMessage(isLoggedIn, message, userJson));
+            //_connection.On<bool, string>("CreateUserAttempt", (isSuccess, message) => CreateUserMessage(isSuccess, message));
             _connection.On<bool, string>("SavedGames", (isSuccess, userGamesJson) => SavedGamesMessage(isSuccess, userGamesJson));
             _connection.On<string>("StartGameVsComputer", (cribbageGameJson) => StartGameVsComputerMessage(cribbageGameJson));
             _connection.On<string>("StartGameVsPlayer", (message) => StartGameVsPlayerMessage(message));
@@ -95,17 +95,17 @@ namespace Cribbage.WPFUI
             }
         }
 
-        private void CreateUserMessage(bool isSuccess, string message)
-        {
-            if (isSuccess)
-            {
-                WPFUI.Login.CreateUserCheck(isSuccess);
-            }
-            else // not logged in
-            {
-                WPFUI.Login.CreateUserCheck(isSuccess);
-            }
-        }
+        //private void CreateUserMessage(bool isSuccess, string message)
+        //{
+        //    if (isSuccess)
+        //    {
+        //        WPFUI.Login.CreateUserCheck(isSuccess);
+        //    }
+        //    else // not logged in
+        //    {
+        //        WPFUI.Login.CreateUserCheck(isSuccess);
+        //    }
+        //}
 
         public void RegisterUser(User user)
         {
@@ -121,19 +121,19 @@ namespace Cribbage.WPFUI
             }
         }
 
-        private void ReceivedLoginMessage(bool isLoggedIn, string message, string userJson)
-        {
-            if(isLoggedIn)
-            {
-                MessageBox.Show("Got logged in");
-                WPFUI.Login.LoggedInCheck(isLoggedIn, userJson);
-            }
-            else // not logged in
-            {
-                MessageBox.Show("Failed log in");
-                WPFUI.Login.LoggedInCheck(isLoggedIn, userJson);
-            }
-        }
+        //private void ReceivedLoginMessage(bool isLoggedIn, string message, string userJson)
+        //{
+        //    if(isLoggedIn)
+        //    {
+        //        MessageBox.Show("Got logged in");
+        //        WPFUI.Login.LoggedInCheck(isLoggedIn, userJson);
+        //    }
+        //    else // not logged in
+        //    {
+        //        MessageBox.Show("Failed log in");
+        //        WPFUI.Login.LoggedInCheck(isLoggedIn, userJson);
+        //    }
+        //}
 
         public void Login(User user)
         {

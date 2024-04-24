@@ -1,4 +1,5 @@
 ﻿using Cribbage.BL.Models;
+using Microsoft.AspNetCore.SignalR.Client;
 using Newtonsoft.Json;
 using System.Windows;
 
@@ -13,10 +14,18 @@ namespace Cribbage.WPFUI
         string hubAddress = "https://localhost:7186/CribbageHub";
         UserGame game;
         User loggedInUser;
-        SignalRConnection cribbageHubConnection;
+        HubConnection _connection;
+        //SignalRConnection cribbageHubConnection;
+
+        public LandingPage()
+        {
+            Start();
+            InitializeComponent();
+        }
 
         public LandingPage(User user)
         {
+            Start();
             InitializeComponent();
             lblWelcomeUser.Content = "Welcome " + user.FirstName + "!";
 
@@ -27,7 +36,8 @@ namespace Cribbage.WPFUI
             lblOpenASavedGame.Visibility = Visibility.Collapsed;
 
             // Start the hub connection
-            cribbageHubConnection = new SignalRConnection(hubAddress);
+            //cribbageHubConnection = new SignalRConnection(hubAddress);
+   
         }
 
         public static Tuple<List<string>, List<DateTime>> SavedGamesCheck(bool isSuccess, string userGamesJson)
@@ -74,12 +84,12 @@ namespace Cribbage.WPFUI
 
         private void btnNewGameVsComputer_Click(object sender, RoutedEventArgs e)
         {
-            cribbageHubConnection.NewGameVsComputer(loggedInUser);
+            NewGameVsComputer(loggedInUser);
         }
 
         private void btnNewGameVsPlayer_Click(object sender, RoutedEventArgs e)
         {
-            cribbageHubConnection.NewGameVsPlayer(loggedInUser);
+            NewGameVsPlayer(loggedInUser);
         }
 
         private void btnShowGameStats_Click(object sender, RoutedEventArgs e)
@@ -107,9 +117,83 @@ namespace Cribbage.WPFUI
             }
             else
             {
-                cribbageHubConnection.GetSavedGames(loggedInUser);
+                //GetSavedGames(loggedInUser);
                 lstSavedGames.Items.Add("Total Games Started: " + loggedInUser.GamesStarted);
             }
         }
+
+        private static void StaThreadWrapper(Action action)
+        {
+            var t = new Thread(o =>
+            {
+                action();
+                System.Windows.Threading.Dispatcher.Run();
+            });
+            t.SetApartmentState(ApartmentState.STA);
+            t.Name = "newThread";
+            t.Start();
+        }
+
+        #region "SignalRConnection"
+
+        public void Start()
+        {
+            _connection = new HubConnectionBuilder()
+                .WithUrl(hubAddress)
+                .Build();
+
+            _connection.On<string, string>("StartGame", (message, cribbageGameJson) => StartGameVsComputerMessage(message, cribbageGameJson));
+            _connection.On<string>("StartGameVsPlayer", (cribbageGameJson) => StartGameVsPlayerMessage(cribbageGameJson));
+
+            _connection.StartAsync();
+        }
+
+        private void StartGameVsComputerMessage(string message, string cribbageGameJson)
+        {
+            MessageBox.Show(message + " " + cribbageGameJson);
+
+            StaThreadWrapper(() =>
+            {
+                CribbageGame cribbageGame = new CribbageGame();
+                cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
+
+                var mainWindow = new MainWindow(cribbageGame);
+                mainWindow.Show();
+            });
+        }
+
+        public void NewGameVsPlayer(User user)
+        {
+            try
+            {
+                string strUser = JsonConvert.SerializeObject(user);
+                _connection.InvokeAsync("NewGameVsPlayer", strUser);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void StartGameVsPlayerMessage(string cribbageGameJson)
+        {
+            MessageBox.Show(cribbageGameJson);
+            //LandingPage.StartGameVsComputer(message);
+        }
+
+        public void NewGameVsComputer(User user)
+        {
+            //Start();
+            try
+            {
+                string strUser = JsonConvert.SerializeObject(user);
+                _connection.InvokeAsync("NewGameVsComputer", strUser);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
     }
+        #endregion
 }

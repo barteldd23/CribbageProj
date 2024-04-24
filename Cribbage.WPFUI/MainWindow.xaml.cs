@@ -24,43 +24,24 @@ namespace Cribbage.WPFUI
         {
             Start();
 
-            string email = "tester@gmail.com";
-            string password = "maple";
-
-            //loggedInUser.Id = Guid.NewGuid();
-            //loggedInUser.Email = "firsttester@test.test";
-            //loggedInUser.DisplayName = "FirstTester";
-            //loggedInUser.FirstName = "First";
-            //loggedInUser.LastName = "Tester";
-            //loggedInUser.Password = "test";
-            //loggedInUser.GamesStarted = 0;
-            //loggedInUser.GamesWon = 0;
-            //loggedInUser.GamesLost = 0;
-            //loggedInUser.WinStreak = 0;
-            //loggedInUser.AvgPtsPerGame = 0;
-
-            //secondPlayer.Id = Guid.NewGuid();
-            //secondPlayer.Email = "secondtester@test.test";
-            //secondPlayer.DisplayName = "SecondTester";
-            //secondPlayer.FirstName = "Second";
-            //secondPlayer.LastName = "Tester";
-            //secondPlayer.Password = "test";
-            //secondPlayer.GamesStarted = 0;
-            //secondPlayer.GamesWon = 0;
-            //secondPlayer.GamesLost = 0;
-            //secondPlayer.WinStreak = 0;
-            //secondPlayer.AvgPtsPerGame = 0;
-
-            
+            //string email = "tester@gmail.com";
+            //string password = "maple";
+           
 
             //Player firstPlayer = new Player(loggedInUser);
             //NewGameVsComputer(loggedInUser);
 
             InitializeComponent();
 
-            Login(email, password);
+            //Login(email, password);
 
             //SetUpGame(loggedInUser, secondPlayer);
+        }
+
+        public MainWindow(CribbageGame cribbageGame)
+        {
+            InitializeComponent();
+            MessageBox.Show(cribbageGame.Player_1.ToString());
         }
 
         public MainWindow(User user, Player player)
@@ -106,8 +87,6 @@ namespace Cribbage.WPFUI
                 .WithUrl(hubAddress)
                 .Build();
 
-            _connection.On<bool, string, string>("LogInAttempt", (isLoggedIn, message, userJson) => ReceivedLoginMessage(isLoggedIn, message, userJson));
-            _connection.On<string>("StartGameVsComputer", (cribbageGameJson) => StartGameVsComputerMessage(cribbageGameJson));
             _connection.On<string>("StartGameVsPlayer", (cribbageGameJson) => StartGameVsPlayerMessage(cribbageGameJson));
 
             _connection.StartAsync();

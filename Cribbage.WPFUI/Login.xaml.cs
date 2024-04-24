@@ -1,6 +1,7 @@
 ﻿using Cribbage.API.Controllers;
 using Cribbage.BL.Models;
 using Cribbage.PL.Data;
+using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -18,17 +19,22 @@ namespace Cribbage.WPFUI
         private readonly DbContextOptions<CribbageEntities> options;
         //string hubAddress = "https://bigprojectapi-300089145.azurewebsites.net/CribbageHub";
         string hubAddress = "https://localhost:7186/CribbageHub";
+        HubConnection _connection;
+        User loggedInUser = new User();
 
-        public Login(ILogger<UserController> logger, DbContextOptions<CribbageEntities> options)
-        {
-            this.logger = logger;
-            this.options = options;
-        }
+        //public Login(ILogger<UserController> logger, DbContextOptions<CribbageEntities> options)
+        //{
+        //    this.logger = logger;
+        //    this.options = options;
+        //}
 
         public Login()
         {
+            Start();
             InitializeComponent();
             LoginVisible();
+            txtLoginEmail.Text = "tester@gmail.com";
+            pbxPasswordBox.Password = "maple";
         }
 
         private void btnExit_Click(object sender, RoutedEventArgs e)
@@ -41,7 +47,8 @@ namespace Cribbage.WPFUI
             try
             {
                 string email = txtLoginEmail.Text.Trim();
-                string password = pbxPasswordBox.Password.ToString().Trim();
+                //string password = pbxPasswordBox.Password.ToString().Trim();
+                string password = "maple";
 
                 User user = new User();
 
@@ -51,11 +58,13 @@ namespace Cribbage.WPFUI
                 if (email != string.Empty && password != string.Empty)
                 {
                     // Start the hub connection
-                    SignalRConnection cribbageHubConnection = new SignalRConnection(hubAddress);
-                    cribbageHubConnection.Login(user);
+                    //SignalRConnection cribbageHubConnection = new SignalRConnection(hubAddress);
+                    //cribbageHubConnection.Login(user);
 
                     //bool loggedIn = new UserController(logger, options).Login(user);
                     //MessageBox.Show("logged in! " + loggedIn);
+
+                    UserLogin(email, password);
 
                 }
                 else
@@ -73,7 +82,7 @@ namespace Cribbage.WPFUI
         private static void StaThreadWrapper(Action action)
         {
             var t = new Thread(o =>
-            {   
+            {
                 action();
                 System.Windows.Threading.Dispatcher.Run();
             });
@@ -83,24 +92,24 @@ namespace Cribbage.WPFUI
         }
 
         //opens the landing page if the user is logged in successfully
-        public static void LoggedInCheck(bool loggedIn, string userJson) 
-        {
-            if(loggedIn)
-            {
-                User loggedInUser = new User();
-                loggedInUser = JsonConvert.DeserializeObject<User>(userJson);
+        //public static void LoggedInCheck(bool loggedIn, string userJson) 
+        //{
+        //    if(loggedIn)
+        //    {
+        //        User loggedInUser = new User();
+        //        loggedInUser = JsonConvert.DeserializeObject<User>(userJson);
 
-                StaThreadWrapper(() =>
-                {
-                    var landingPage = new LandingPage(loggedInUser);
-                    landingPage.Show();
-                });
-            }
-            else
-            {
-                MessageBox.Show("Cannot log in with the provided credentials");
-            }
-        }
+        //        StaThreadWrapper(() =>
+        //        {
+        //            var landingPage = new LandingPage(loggedInUser);
+        //            landingPage.Show();
+        //        });
+        //    }
+        //    else
+        //    {
+        //        MessageBox.Show("Cannot log in with the provided credentials");
+        //    }
+        //}
 
         private void btnRegister_Click(object sender, RoutedEventArgs e)
         {
@@ -142,22 +151,22 @@ namespace Cribbage.WPFUI
             lblError.Visibility = Visibility.Collapsed;
         }
 
-        public static void CreateUserCheck(bool isSuccess)
-        {
-            if (isSuccess)
-            {
-                MessageBox.Show("User created");
-                StaThreadWrapper(() =>
-                {
-                    var login = new Login();
-                    login.Show();
-                });
-            }
-            else
-            {
-                MessageBox.Show("Cannot create user");
-            }
-        }
+        //public static void CreateUserCheck(bool isSuccess)
+        //{
+        //    if (isSuccess)
+        //    {
+        //        MessageBox.Show("User created");
+        //        StaThreadWrapper(() =>
+        //        {
+        //            var login = new Login();
+        //            login.Show();
+        //        });
+        //    }
+        //    else
+        //    {
+        //        MessageBox.Show("Cannot create user");
+        //    }
+        //}
 
         private void LoginVisible()
         {
@@ -232,8 +241,8 @@ namespace Cribbage.WPFUI
                     && user.Password != string.Empty)
                 {
                     // Start the hub connection
-                    SignalRConnection cribbageHubConnection = new SignalRConnection(hubAddress);
-                    cribbageHubConnection.RegisterUser(user);
+                    //SignalRConnection cribbageHubConnection = new SignalRConnection(hubAddress);
+                    //cribbageHubConnection.RegisterUser(user);
                 }
                 else
                 {
@@ -249,5 +258,70 @@ namespace Cribbage.WPFUI
                 throw;
             }
         }
+
+        #region "SignalRConnection"
+
+        public void Start()
+        {
+            _connection = new HubConnectionBuilder()
+                .WithUrl(hubAddress)
+                .Build();
+
+            _connection.On<bool, string, string>("LogInAttempt", (isLoggedIn, message, userJson) => ReceivedLoginMessage(isLoggedIn, message, userJson));
+            
+       
+
+            _connection.StartAsync();
+        }
+
+       public void UserLogin(string email, string password)
+        {
+            //Start();
+            try
+            {
+                _connection.InvokeAsync("Login", email, password);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void ReceivedLoginMessage(bool isLoggedIn, string message, string userJson)
+        {
+            if (isLoggedIn)
+            {
+                loggedInUser = JsonConvert.DeserializeObject<User>(userJson);
+                //MessageBox.Show(loggedInUser.DisplayName);
+                
+
+                StaThreadWrapper(() =>
+                {
+                    var landingPage = new LandingPage(loggedInUser);
+                    landingPage.Show();
+                });
+
+                //Dispatcher.Invoke(() => { this.Close(); });
+                
+                
+                //CloseCurrentPage();
+                //NewGameVsComputer(loggedInUser);
+                //WPFUI.Login.LoggedInCheck(isLoggedIn, userJson);
+            }
+            else // not logged in
+            {
+                MessageBox.Show("Failed log in");
+                //WPFUI.Login.LoggedInCheck(isLoggedIn, userJson);
+            }
+
+            
+        }
+
+        private void CloseCurrentPage()
+        {
+            Dispatcher.Invoke(() => { this.Close(); });
+        }
+
+        #endregion
     }
 }
