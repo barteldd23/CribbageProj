@@ -65,94 +65,160 @@ namespace Cribbage.WPFUI
 
         private void displayOpponentHand(List<Card> opponentHand, bool isShown = false)
         {
-            if(isShown)
+            BitmapImage card = new BitmapImage();
+            if (isShown)
             {
                 if (opponentHand.Count >= 1)
                 {
-                    BitmapImage card = new BitmapImage();
+                    
                     card.BeginInit();
                     card.UriSource = new Uri("pack://siteoforigin:,,,/images/" + opponentHand[0].imgPath);
                     card.EndInit();
                     imgOppenentCard1.Source = card;
-
+                }
+                if (opponentHand.Count >= 2)
+                {
                     card = new BitmapImage();
                     card.BeginInit();
                     card.UriSource = new Uri("pack://siteoforigin:,,,/images/" + opponentHand[1].imgPath);
                     card.EndInit();
                     imgOppenentCard2.Source = card;
-
+                }
+                if (opponentHand.Count >= 3)
+                {
                     card = new BitmapImage();
                     card.BeginInit();
                     card.UriSource = new Uri("pack://siteoforigin:,,,/images/" + opponentHand[2].imgPath);
                     card.EndInit();
                     imgOppenentCard3.Source = card;
-
+                }
+                if (opponentHand.Count >= 4)
+                {
                     card = new BitmapImage();
                     card.BeginInit();
                     card.UriSource = new Uri("pack://siteoforigin:,,,/images/" + opponentHand[3].imgPath);
                     card.EndInit();
                     imgOppenentCard4.Source = card;
-
+                }
+                if (opponentHand.Count >= 5)
+                {
                     card = new BitmapImage();
                     card.BeginInit();
                     card.UriSource = new Uri("pack://siteoforigin:,,,/images/" + opponentHand[4].imgPath);
                     card.EndInit();
                     imgOppenentCard5.Source = card;
-
+                }
+                if (opponentHand.Count >= 6)
+                {
                     card = new BitmapImage();
                     card.BeginInit();
                     card.UriSource = new Uri("pack://siteoforigin:,,,/images/" + opponentHand[5].imgPath);
                     card.EndInit();
                     imgOppenentCard6.Source = card;
-
                 }
             }
             else
             {
+                if (opponentHand.Count >= 1)
+                {
 
+                    card.BeginInit();
+                    card.UriSource = new Uri("pack://siteoforigin:,,,/images/cardBackBlue.png");
+                    card.EndInit();
+                    imgOppenentCard1.Source = card;
+                }
+                if (opponentHand.Count >= 2)
+                {
+                    card = new BitmapImage();
+                    card.BeginInit();
+                    card.UriSource = new Uri("pack://siteoforigin:,,,/images/cardBackBlue.png");
+                    card.EndInit();
+                    imgOppenentCard2.Source = card;
+                }
+                if (opponentHand.Count >= 3)
+                {
+                    card = new BitmapImage();
+                    card.BeginInit();
+                    card.UriSource = new Uri("pack://siteoforigin:,,,/images/cardBackBlue.png");
+                    card.EndInit();
+                    imgOppenentCard3.Source = card;
+                }
+                if (opponentHand.Count >= 4)
+                {
+                    card = new BitmapImage();
+                    card.BeginInit();
+                    card.UriSource = new Uri("pack://siteoforigin:,,,/images/cardBackBlue.png");
+                    card.EndInit();
+                    imgOppenentCard4.Source = card;
+                }
+                if (opponentHand.Count >= 5)
+                {
+                    card = new BitmapImage();
+                    card.BeginInit();
+                    card.UriSource = new Uri("pack://siteoforigin:,,,/images/cardBackBlue.png");
+                    card.EndInit();
+                    imgOppenentCard5.Source = card;
+                }
+                if (opponentHand.Count >= 6)
+                {
+                    card = new BitmapImage();
+                    card.BeginInit();
+                    card.UriSource = new Uri("pack://siteoforigin:,,,/images/cardBackBlue.png");
+                    card.EndInit();
+                    imgOppenentCard6.Source = card;
+                }
             }
         }
 
         private void displayPlayerHand(List<Card> playerHand)
         {
+            BitmapImage card = new BitmapImage();
             if (playerHand.Count >= 1)
-            {
-                BitmapImage card = new BitmapImage();
+            {               
                 card.BeginInit();
                 card.UriSource = new Uri("pack://siteoforigin:,,,/images/" + playerHand[0].imgPath);
                 card.EndInit();
                 imgPlayerCard1.Source = card;
-
+            }
+            if (playerHand.Count >= 2)
+            {
                 card = new BitmapImage();
                 card.BeginInit();
                 card.UriSource = new Uri("pack://siteoforigin:,,,/images/" + playerHand[1].imgPath);
                 card.EndInit();
                 imgPlayerCard2.Source = card;
-
+            }
+            if (playerHand.Count >= 3)
+            {
                 card = new BitmapImage();
                 card.BeginInit();
                 card.UriSource = new Uri("pack://siteoforigin:,,,/images/" + playerHand[2].imgPath);
                 card.EndInit();
                 imgPlayerCard3.Source = card;
-
+            }
+            if (playerHand.Count >= 4)
+            {
                 card = new BitmapImage();
                 card.BeginInit();
                 card.UriSource = new Uri("pack://siteoforigin:,,,/images/" + playerHand[3].imgPath);
                 card.EndInit();
                 imgPlayerCard4.Source = card;
-
+            }
+            if (playerHand.Count >= 5)
+            {
                 card = new BitmapImage();
                 card.BeginInit();
                 card.UriSource = new Uri("pack://siteoforigin:,,,/images/" + playerHand[4].imgPath);
                 card.EndInit();
                 imgPlayerCard5.Source = card;
-
+            }
+            if (playerHand.Count >= 6)
+            {
                 card = new BitmapImage();
                 card.BeginInit();
                 card.UriSource = new Uri("pack://siteoforigin:,,,/images/" + playerHand[5].imgPath);
                 card.EndInit();
                 imgPlayerCard6.Source = card;
-
             }
         }
 
