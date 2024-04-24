@@ -155,7 +155,7 @@ namespace Cribbage.WPFUI
 
             StaThreadWrapper(() =>
             {
-                var mainWindow = new MainWindow(cribbageGame);
+                var mainWindow = new MainWindow(cribbageGame, loggedInUser);
                 mainWindow.Show();
             });
         }
