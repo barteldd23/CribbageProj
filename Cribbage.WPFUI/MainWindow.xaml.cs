@@ -22,6 +22,7 @@ namespace Cribbage.WPFUI
         HubConnection _connection;
         List<Card> opponentHand;
         List<Card> playerHand;
+        List<Card> selectedCards = new List<Card>();
 
         //Refresh the screen method needed 
         //Read the "what to do property" --> goes to the correct method (switch statement) to set the screen
@@ -47,13 +48,22 @@ namespace Cribbage.WPFUI
 
         private void SetUpGame()
         {
+            rec1.Visibility = Visibility.Collapsed;
+            rec2.Visibility = Visibility.Collapsed;
+            rec3.Visibility = Visibility.Collapsed;
+            rec4.Visibility = Visibility.Collapsed;
+            rec5.Visibility = Visibility.Collapsed;
+            rec6.Visibility = Visibility.Collapsed;
+
             lblPlayer1DisplayName.Content = cribbageGame.Player_1.DisplayName + " Score";
             lblPlayer1Score.Content = cribbageGame.Player_1.Score;
+            lblPlayerHand.Content = cribbageGame.Player_1.DisplayName + "'s Hand";
 
             lblPlayer2DisplayName.Content = cribbageGame.Player_2.DisplayName + " Score";
             lblPlayer2Score.Content = cribbageGame.Player_2.Score;
+            lblOpponentHand.Content = cribbageGame.Player_2.DisplayName + "'s Hand";
 
-            if(cribbageGame.WhatToDo.ToString() == "SelectCribCards")
+            if (cribbageGame.WhatToDo.ToString() == "SelectCribCards")
             {
                 playerHand = cribbageGame.Player_1.Hand;
                 opponentHand = cribbageGame.Player_2.Hand;
@@ -314,7 +324,14 @@ namespace Cribbage.WPFUI
 
         private void btnSendToCrib_Click(object sender, RoutedEventArgs e)
         {
-            
+            if(selectedCards.Count == 2)
+            {
+                MessageBox.Show("2 cards selected! Good Job!");
+            }
+            else
+            {
+                MessageBox.Show("Select a total of 2 cards to go to the Crib");
+            }
         }
 
         private void btnGo_Click(object sender, RoutedEventArgs e)
@@ -332,6 +349,88 @@ namespace Cribbage.WPFUI
 
         }
 
-       
+        private void card1Selected(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (rec1.Visibility == Visibility.Collapsed)
+            {
+                rec1.Visibility = Visibility.Visible;
+                selectedCards.Add(playerHand[0]);
+            }
+            else
+            {
+                rec1.Visibility = Visibility.Collapsed;
+                selectedCards.Remove(playerHand[0]);
+            }
+        }
+
+        private void card2Selected(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (rec2.Visibility == Visibility.Collapsed)
+            {
+                rec2.Visibility = Visibility.Visible;
+                selectedCards.Add(playerHand[1]);
+            }
+            else
+            {
+                rec2.Visibility = Visibility.Collapsed;
+                selectedCards.Remove(playerHand[1]);
+            }
+        }
+
+        private void card3Selected(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (rec3.Visibility == Visibility.Collapsed)
+            {
+                rec3.Visibility = Visibility.Visible;
+                selectedCards.Add(playerHand[2]);
+            }
+            else
+            {
+                rec3.Visibility = Visibility.Collapsed;
+                selectedCards.Remove(playerHand[2]);
+            }
+        }
+
+        private void card4Selected(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (rec4.Visibility == Visibility.Collapsed)
+            {
+                rec4.Visibility = Visibility.Visible;
+                selectedCards.Add(playerHand[3]);
+            }
+            else
+            {
+                rec4.Visibility = Visibility.Collapsed;
+                selectedCards.Remove(playerHand[3]);
+            }
+        }
+
+        private void card5Selected(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (rec5.Visibility == Visibility.Collapsed)
+            {
+                rec5.Visibility = Visibility.Visible;
+                selectedCards.Add(playerHand[4]);
+            }
+            else
+            {
+                rec5.Visibility = Visibility.Collapsed;
+                selectedCards.Remove(playerHand[4]);
+            }
+        }
+
+        private void card6Selected(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (rec6.Visibility == Visibility.Collapsed)
+            {
+                rec6.Visibility = Visibility.Visible;
+                selectedCards.Add(playerHand[5]);
+            }
+            else
+            {
+                rec6.Visibility = Visibility.Collapsed;
+                selectedCards.Remove(playerHand[5]);
+            }
+        }
     }
 }
