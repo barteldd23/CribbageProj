@@ -23,6 +23,10 @@ namespace Cribbage.WPFUI
         List<Card> opponentHand;
         List<Card> playerHand;
 
+        //Refresh the screen method needed 
+        //Read the "what to do property" --> goes to the correct method (switch statement) to set the screen
+        //Read the player turn --> match player turn id to user id
+
         public MainWindow()
         {
             Start();
@@ -57,8 +61,6 @@ namespace Cribbage.WPFUI
                 displayOpponentHand(opponentHand, true);
                 displayPlayerHand(playerHand);
             }
-
-            //imgPlayerCard1.Source = cribbageGame.Player_1.Hand[0];
         }
 
         private void displayOpponentHand(List<Card> opponentHand, bool isShown = false)
@@ -67,8 +69,42 @@ namespace Cribbage.WPFUI
             {
                 if (opponentHand.Count >= 1)
                 {
-                    MessageBox.Show(opponentHand.Count + " " + opponentHand[0]);
-                    //imgOppenentCard1.Source = 
+                    BitmapImage card = new BitmapImage();
+                    card.BeginInit();
+                    card.UriSource = new Uri("pack://siteoforigin:,,,/images/" + opponentHand[0].imgPath);
+                    card.EndInit();
+                    imgOppenentCard1.Source = card;
+
+                    card = new BitmapImage();
+                    card.BeginInit();
+                    card.UriSource = new Uri("pack://siteoforigin:,,,/images/" + opponentHand[1].imgPath);
+                    card.EndInit();
+                    imgOppenentCard2.Source = card;
+
+                    card = new BitmapImage();
+                    card.BeginInit();
+                    card.UriSource = new Uri("pack://siteoforigin:,,,/images/" + opponentHand[2].imgPath);
+                    card.EndInit();
+                    imgOppenentCard3.Source = card;
+
+                    card = new BitmapImage();
+                    card.BeginInit();
+                    card.UriSource = new Uri("pack://siteoforigin:,,,/images/" + opponentHand[3].imgPath);
+                    card.EndInit();
+                    imgOppenentCard4.Source = card;
+
+                    card = new BitmapImage();
+                    card.BeginInit();
+                    card.UriSource = new Uri("pack://siteoforigin:,,,/images/" + opponentHand[4].imgPath);
+                    card.EndInit();
+                    imgOppenentCard5.Source = card;
+
+                    card = new BitmapImage();
+                    card.BeginInit();
+                    card.UriSource = new Uri("pack://siteoforigin:,,,/images/" + opponentHand[5].imgPath);
+                    card.EndInit();
+                    imgOppenentCard6.Source = card;
+
                 }
             }
             else
@@ -79,8 +115,45 @@ namespace Cribbage.WPFUI
 
         private void displayPlayerHand(List<Card> playerHand)
         {
-            MessageBox.Show(playerHand.Count + " " + playerHand[0]);
-            //imgPlayerCard1.Source = "images/" + opponentHand[0] + ".png";
+            if (playerHand.Count >= 1)
+            {
+                BitmapImage card = new BitmapImage();
+                card.BeginInit();
+                card.UriSource = new Uri("pack://siteoforigin:,,,/images/" + playerHand[0].imgPath);
+                card.EndInit();
+                imgPlayerCard1.Source = card;
+
+                card = new BitmapImage();
+                card.BeginInit();
+                card.UriSource = new Uri("pack://siteoforigin:,,,/images/" + playerHand[1].imgPath);
+                card.EndInit();
+                imgPlayerCard2.Source = card;
+
+                card = new BitmapImage();
+                card.BeginInit();
+                card.UriSource = new Uri("pack://siteoforigin:,,,/images/" + playerHand[2].imgPath);
+                card.EndInit();
+                imgPlayerCard3.Source = card;
+
+                card = new BitmapImage();
+                card.BeginInit();
+                card.UriSource = new Uri("pack://siteoforigin:,,,/images/" + playerHand[3].imgPath);
+                card.EndInit();
+                imgPlayerCard4.Source = card;
+
+                card = new BitmapImage();
+                card.BeginInit();
+                card.UriSource = new Uri("pack://siteoforigin:,,,/images/" + playerHand[4].imgPath);
+                card.EndInit();
+                imgPlayerCard5.Source = card;
+
+                card = new BitmapImage();
+                card.BeginInit();
+                card.UriSource = new Uri("pack://siteoforigin:,,,/images/" + playerHand[5].imgPath);
+                card.EndInit();
+                imgPlayerCard6.Source = card;
+
+            }
         }
 
         private static void StaThreadWrapper(Action action)
