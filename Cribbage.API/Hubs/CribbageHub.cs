@@ -32,6 +32,7 @@ namespace Cribbage.API.Hubs
 
             string message;
             bool isLoggedIn;
+
             string userJson = "";
             try
             {

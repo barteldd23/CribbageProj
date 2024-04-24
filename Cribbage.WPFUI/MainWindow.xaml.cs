@@ -19,83 +19,78 @@ namespace Cribbage.WPFUI
         //SignalRConnection cribbageHubConnection;
         User secondPlayer = new User();
         HubConnection _connection;
+        List<Card> opponentHand;
+        List<Card> playerHand;
 
         public MainWindow()
         {
             Start();
-
-            string email = "tester@gmail.com";
-            string password = "maple";
-
-            //loggedInUser.Id = Guid.NewGuid();
-            //loggedInUser.Email = "firsttester@test.test";
-            //loggedInUser.DisplayName = "FirstTester";
-            //loggedInUser.FirstName = "First";
-            //loggedInUser.LastName = "Tester";
-            //loggedInUser.Password = "test";
-            //loggedInUser.GamesStarted = 0;
-            //loggedInUser.GamesWon = 0;
-            //loggedInUser.GamesLost = 0;
-            //loggedInUser.WinStreak = 0;
-            //loggedInUser.AvgPtsPerGame = 0;
-
-            //secondPlayer.Id = Guid.NewGuid();
-            //secondPlayer.Email = "secondtester@test.test";
-            //secondPlayer.DisplayName = "SecondTester";
-            //secondPlayer.FirstName = "Second";
-            //secondPlayer.LastName = "Tester";
-            //secondPlayer.Password = "test";
-            //secondPlayer.GamesStarted = 0;
-            //secondPlayer.GamesWon = 0;
-            //secondPlayer.GamesLost = 0;
-            //secondPlayer.WinStreak = 0;
-            //secondPlayer.AvgPtsPerGame = 0;
-
-            
-
-            //Player firstPlayer = new Player(loggedInUser);
-            //NewGameVsComputer(loggedInUser);
-
             InitializeComponent();
-
-            Login(email, password);
-
-            //SetUpGame(loggedInUser, secondPlayer);
         }
 
-        public MainWindow(User user, Player player)
+        public MainWindow(CribbageGame cribbageGameInfo)
         {
+            cribbageGame = cribbageGameInfo;
+
+            // start the hub connection
+            Start();
+
             InitializeComponent();
-            secondPlayer = player;
-            loggedInUser = user;
+            SetUpGame();
 
-            // need to convert User to Player --> it keeps crashing
+        }
 
-            if (player.Email == "computer@computer.computer")
+        private void SetUpGame()
+        {
+            lblPlayer1DisplayName.Content = cribbageGame.Player_1.DisplayName + " Score";
+            lblPlayer1Score.Content = cribbageGame.Player_1.Score;
+
+            lblPlayer2DisplayName.Content = cribbageGame.Player_2.DisplayName + " Score";
+            lblPlayer2Score.Content = cribbageGame.Player_2.Score;
+
+            if(cribbageGame.WhatToDo.ToString() == "SelectCribCards")
             {
-                lblPlayer1DisplayName.Content = player.DisplayName + " Score";
-                cribbageGame.Player_1 = player;
+                playerHand = cribbageGame.Player_1.Hand;
+                opponentHand = cribbageGame.Player_2.Hand;
 
-                lblPlayer2DisplayName.Content = user.DisplayName + " Score";
-
-                //Player secondPlayer = new Player(user);
-                //cribbageGame.Player_2 = secondPlayer;
+                displayOpponentHand(opponentHand, true);
+                displayPlayerHand(playerHand);
             }
-            else if (cribbageGame.Player_1 == null)
+
+            //imgPlayerCard1.Source = cribbageGame.Player_1.Hand[0];
+        }
+
+        private void displayOpponentHand(List<Card> opponentHand, bool isShown = false)
+        {
+            if(isShown)
             {
-                lblPlayer1DisplayName.Content = user.DisplayName;
-                //Player firstPlayer = new Player(user);
-                //cribbageGame.Player_1 = firstPlayer;
+                if (opponentHand.Count >= 1)
+                {
+                    MessageBox.Show(opponentHand.Count + " " + opponentHand[0]);
+                    //imgOppenentCard1.Source = "images/" + opponentHand[0] + ".png";
+                }
             }
             else
             {
-                lblPlayer2DisplayName.Content = user.DisplayName;
-                //Player secondPlayer = new Player(user);
-                //cribbageGame.Player_2 = secondPlayer;
-            }
 
-            // Start the hub connection
-            //cribbageHubConnection = new SignalRConnection(hubAddress);
+            }
+        }
+
+        private void displayPlayerHand(List<Card> playerHand)
+        {
+            MessageBox.Show(playerHand.Count + " " + playerHand[0]);
+        }
+
+        private static void StaThreadWrapper(Action action)
+        {
+            var t = new Thread(o =>
+            {
+                action();
+                System.Windows.Threading.Dispatcher.Run();
+            });
+            t.SetApartmentState(ApartmentState.STA);
+            t.Name = "newThread";
+            t.Start();
         }
 
         #region "SignalRConnection"
@@ -106,17 +101,24 @@ namespace Cribbage.WPFUI
                 .WithUrl(hubAddress)
                 .Build();
 
-            _connection.On<bool, string, string>("LogInAttempt", (isLoggedIn, message, userJson) => ReceivedLoginMessage(isLoggedIn, message, userJson));
-            _connection.On<string>("StartGameVsComputer", (cribbageGameJson) => StartGameVsComputerMessage(cribbageGameJson));
-            _connection.On<string>("StartGameVsPlayer", (cribbageGameJson) => StartGameVsPlayerMessage(cribbageGameJson));
+            _connection.On<string, string>("StartGame", (message, cribbageGameJson) => StartGameVsComputerMessage(message, cribbageGameJson));
+            _connection.On<string, string>("StartGameVsPlayer", (message, cribbageGameJson) => StartGameVsPlayerMessage(message, cribbageGameJson));
 
             _connection.StartAsync();
         }
 
-        private void StartGameVsPlayerMessage(string cribbageGameJson)
+        private void StartGameVsComputerMessage(string message, string cribbageGameJson)
         {
-            MessageBox.Show(cribbageGameJson);
-            //LandingPage.StartGameVsPlayer(message);
+            CribbageGame cribbageGame = new CribbageGame();
+            cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
+
+            MessageBox.Show(message + " " + cribbageGame.WhatToDo);
+
+            StaThreadWrapper(() =>
+            {
+                var mainWindow = new MainWindow(cribbageGame);
+                mainWindow.Show();
+            });
         }
 
         public void NewGameVsPlayer(User user)
@@ -132,10 +134,9 @@ namespace Cribbage.WPFUI
             }
         }
 
-        private void StartGameVsComputerMessage(string cribbageGameJson)
+        private void StartGameVsPlayerMessage(string message, string cribbageGameJson)
         {
-            MessageBox.Show(cribbageGameJson);
-            //LandingPage.StartGameVsComputer(message);
+            MessageBox.Show(message + " " + cribbageGameJson);
         }
 
         public void NewGameVsComputer(User user)
@@ -152,49 +153,7 @@ namespace Cribbage.WPFUI
             }
         }
 
-        public void Login(string email, string password)
-        {
-            //Start();
-            try
-            {
-                _connection.InvokeAsync("Login", email, password);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-
-        private void ReceivedLoginMessage(bool isLoggedIn, string message, string userJson)
-        {
-            if (isLoggedIn)
-            {
-                loggedInUser = JsonConvert.DeserializeObject<User>(userJson);
-                //MessageBox.Show(loggedInUser.DisplayName);
-                NewGameVsComputer(loggedInUser);
-                //WPFUI.Login.LoggedInCheck(isLoggedIn, userJson);
-            }
-            else // not logged in
-            {
-                MessageBox.Show("Failed log in");
-                //WPFUI.Login.LoggedInCheck(isLoggedIn, userJson);
-            }
-        }
-
         #endregion
-
-        private void SetUpGame(User user1, User user2)
-        {
-            Player firstPlayer = new Player(user1);
-            Player secondPlayer = new Player(user2);
-
-            lblPlayer1DisplayName.Content = firstPlayer.DisplayName + " Score";
-            lblPlayer1Score.Content = firstPlayer.Score;
-
-            lblPlayer2DisplayName.Content = secondPlayer.DisplayName + " Score";
-            lblPlayer2Score.Content = secondPlayer.Score;
-        }
-
 
         private void QuitGame_Click(object sender, RoutedEventArgs e)
         {
