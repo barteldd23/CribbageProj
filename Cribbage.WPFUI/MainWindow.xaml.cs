@@ -78,7 +78,7 @@ namespace Cribbage.WPFUI
 
         private void displayPlayerHand(List<Card> playerHand)
         {
-            throw new NotImplementedException();
+            MessageBox.Show(playerHand.Count + " " + playerHand[0]);
         }
 
         private static void StaThreadWrapper(Action action)
