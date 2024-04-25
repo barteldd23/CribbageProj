@@ -430,6 +430,18 @@ def getGameJson():
     return json.dumps(asdict(gameData))[9:-1]
 def getUserJson():
     return json.dumps(asdict(pythonUser))
+
+
+def onClick_PlayCard():
+    if(len(selectedCards) == 1):
+        cardsToSend= [playerHand.cards[selectedCards[0]]]
+        cardsToSendJson = json.dumps(cardsToSend)
+        gameToSendJson = getGameJson()
+       # print(cardsToSendJson)
+        print('*********')
+        hub_connection.send("CardsToCrib",[gameToSendJson, cardsToSendJson])
+    else:
+        messagebox.showerror('Select Cards To Send To The Crib', 'Please select exactly two cards to send to the crib')
 def onClickSendToCrib():
     if(len(selectedCards) == 2):
         cardsToSend= [playerHand.cards[selectedCards[0]],playerHand.cards[selectedCards[1]]]
@@ -450,6 +462,7 @@ def newVsComputer():
 def newVsPlayer():
     pass
 
+    
 def onClickNewUser():
     loginFrame.pack_forget()
     newPlayerFrame.pack()
@@ -756,7 +769,7 @@ myCard6.bind("<Button-1>", onclick_Card6)
 
 btnSendToCrib = tkinter.Button(usersFrame, text="Send To Crib", command=onClickSendToCrib)
 btnNextHand = tkinter.Button(usersFrame, text="Next Hand")
-btnPlayCard = tkinter.Button(usersFrame, text="Play Card")
+btnPlayCard = tkinter.Button(usersFrame, text="Play Card", command=onClick_PlayCard)
 btnGo = tkinter.Button(usersFrame, text="Go");
 
 opponentFrame.grid_propagate(0)
