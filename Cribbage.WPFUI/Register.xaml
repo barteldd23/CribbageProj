@@ -1,0 +1,28 @@
+﻿<Window x:Class="Cribbage.WPFUI.Register"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Cribbage.WPFUI"
+        mc:Ignorable="d"
+        Title="Register" Height="630" Width="695" Background="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}" SizeToContent="Height" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen">
+    <Grid Background="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}" Height="600" VerticalAlignment="Top" HorizontalAlignment="Center" Width="675" Margin="0,10,0,0">
+        <Label x:Name="lblError" Content="" HorizontalAlignment="Left" Margin="254,281,0,0" VerticalAlignment="Top" FontSize="22" FontWeight="Bold"/>
+        <Label x:Name="lblFirstName" Content="First Name" HorizontalAlignment="Left" Margin="83,88,0,0" VerticalAlignment="Top" Width="115" FontSize="20"/>
+        <TextBox x:Name="txtFirstName" HorizontalAlignment="Left" Margin="203,88,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="375" Height="34" FontSize="18" TabIndex="1"/>
+        <Label x:Name="lblLastName" Content="Last Name" HorizontalAlignment="Left" Margin="83,129,0,0" VerticalAlignment="Top" Width="115" FontSize="20"/>
+        <TextBox x:Name="txtLastName" HorizontalAlignment="Left" Margin="203,129,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="375" Height="34" FontSize="18" TabIndex="2"/>
+        <Label x:Name="lblDisplayName" Content="Display Name" HorizontalAlignment="Left" Margin="53,179,0,0" VerticalAlignment="Top" Width="135" FontSize="20"/>
+        <TextBox x:Name="txtDisplayName" HorizontalAlignment="Left" Margin="203,179,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="375" Height="34" FontSize="18" TabIndex="3"/>
+        <Button x:Name="btnRegisterSubmit" Content="Register" HorizontalAlignment="Left" Margin="215,390,0,0" VerticalAlignment="Top" Width="162" Height="55" FontSize="20" Click="btnRegisterSubmit_Click" TabIndex="7" IsDefault="True"/>
+        <Button x:Name="btnBack" Content="Back" HorizontalAlignment="Left" Margin="398,390,0,0" VerticalAlignment="Top" Width="162" Height="55" FontSize="20" Click="btnBack_Click" TabIndex="8"/>
+        <Label x:Name="lblRegisterError" Content="" HorizontalAlignment="Left" Margin="188,487,0,0" VerticalAlignment="Top" FontSize="22" FontWeight="Bold"/>
+        <Label x:Name="lblRegisterEmail" Content="Email" HorizontalAlignment="Left" Margin="128,222,0,0" VerticalAlignment="Top" Width="60" FontSize="20"/>
+        <TextBox x:Name="txtEmail" HorizontalAlignment="Left" Margin="203,222,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="375" Height="34" FontSize="18" TabIndex="4"/>
+        <Label x:Name="lblRegisterPassword" Content="Password" HorizontalAlignment="Left" Margin="93,272,0,0" VerticalAlignment="Top" Width="105" FontSize="20"/>
+        <Label x:Name="lblReEnterPassword" Content="Re-enter Password" HorizontalAlignment="Left" Margin="13,321,0,0" VerticalAlignment="Top" Width="175" FontSize="20"/>
+        <PasswordBox x:Name="pbxSetPassword" HorizontalAlignment="Left" Margin="203,272,0,0" VerticalAlignment="Top" Width="375" Height="34" TabIndex="5"/>
+        <PasswordBox x:Name="pbxReEnterPassword" HorizontalAlignment="Left" Margin="203,321,0,0" VerticalAlignment="Top" Width="375" Height="34" TabIndex="6"/>
+        <Label x:Name="lblNewUserRegistration" Content="New User Registration" HorizontalAlignment="Left" Margin="275,10,0,0" VerticalAlignment="Top" FontSize="22" Width="230"/>
+    </Grid>
+</Window>

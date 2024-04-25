@@ -32,6 +32,8 @@ namespace Cribbage.API.Hubs
 
             string message;
             bool isLoggedIn;
+            bool isSuccess = false;
+            string userGamesJson = "";
 
             string userJson = "";
             try
@@ -41,7 +43,25 @@ namespace Cribbage.API.Hubs
                 isLoggedIn = new UserManager(options).Login(user);
                 // Send Back Success/fail to client only
 
-                if (isLoggedIn) { message = "Logged in as: " + user.DisplayName; }
+                if (isLoggedIn) 
+                { 
+                    message = "Logged in as: " + user.DisplayName;
+
+                    List<Guid> savedGameIds = new UserGameManager(options).GetGames(user.Id);
+                    Game game;
+                    List<Game> savedGames = new List<Game>();
+
+                    foreach (Guid savedGameId in savedGameIds)
+                    {
+                        game = new GameManager(options).LoadById(savedGameId);
+                        savedGames.Add(game);
+                    }
+
+                    if (savedGames != null) isSuccess = true; // what happens if they don't have any games?
+                    else isSuccess = false;
+
+                    userGamesJson = JsonConvert.SerializeObject(savedGames);
+                }
                 else { message = "Error. Try Again"; }
 
                 await Clients.All.SendAsync("ReceiveMessage", message, message);
@@ -50,14 +70,16 @@ namespace Cribbage.API.Hubs
                 // On success: serialize User into Json
                 userJson = JsonConvert.SerializeObject(user);
                 // Send Back User Json to client only
-                await Clients.Caller.SendAsync("LogInAttempt", isLoggedIn, message, userJson);
+                await Clients.Caller.SendAsync("LogInAttempt", isLoggedIn, isSuccess, message, userJson, userGamesJson);
             }
             catch (Exception ex)
             {
                 isLoggedIn = false;
+                isSuccess = false;
+                userGamesJson = null;
                 message = "Login Failed";
                 await Clients.All.SendAsync("ReceiveMessage", message, message);
-                await Clients.Caller.SendAsync("LogInAttempt", isLoggedIn, message, userJson);
+                await Clients.Caller.SendAsync("LogInAttempt", isLoggedIn, isSuccess, message, userJson, userGamesJson);
             }
         }
 
@@ -91,46 +113,6 @@ namespace Cribbage.API.Hubs
                 await Clients.Caller.SendAsync("CreateUserAttempt", isSuccess, message);
             }
 
-        }
-
-        public async Task GetSavedGames(string user)
-        {
-            bool isSuccess = false;
-            string userGamesJson;
-            try
-            {
-                // De-serialize string to user object
-                User newUser;
-
-                newUser = JsonConvert.DeserializeObject<User>(user);
-
-                // Get the saved games for the user
-                List<Guid> savedGameIds = new UserGameManager(options).GetGames(newUser.Id);
-                Game game;
-                List<Game> savedGames = new List<Game>();
-
-                foreach (Guid savedGameId in savedGameIds)
-                {
-                    game = new GameManager(options).LoadById(savedGameId);
-                    savedGames.Add(game);
-                }
-
-                if (savedGames != null) isSuccess = true; // what happens if they don't have any games?
-
-                userGamesJson = JsonConvert.SerializeObject(savedGames);
-
-                // Send Back Success/Fail to client only
-                //Do we want them to log in still after creating an account?
-                await Clients.Caller.SendAsync("SavedGames", isSuccess, userGamesJson);
-
-                // send List of available games to join to client only
-            }
-            catch (Exception)
-            {
-                isSuccess = false;
-                userGamesJson = null;
-                await Clients.Caller.SendAsync("SavedGames", isSuccess, userGamesJson);
-            }
         }
 
         public async Task SendMessage(string user, string message)

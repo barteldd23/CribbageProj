@@ -1,8 +1,6 @@
-﻿using Cribbage.BL;
-using Cribbage.BL.Models;
+﻿using Cribbage.BL.Models;
 using Microsoft.AspNetCore.SignalR.Client;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
@@ -16,7 +14,6 @@ namespace Cribbage.WPFUI
         //string hubAddress = "https://bigprojectapi-300089145.azurewebsites.net/CribbageHub";
         string hubAddress = "https://localhost:7186/CribbageHub";
         CribbageGame cribbageGame = new CribbageGame();
-        //SignalRConnection cribbageHubConnection;
         HubConnection _connection;
         List<Card> opponentHand;
         List<Card> playerHand;
@@ -65,6 +62,8 @@ namespace Cribbage.WPFUI
             lblPlayer2DisplayName.Content = cribbageGame.Player_2.DisplayName + " Score";
             lblPlayer2Score.Content = cribbageGame.Player_2.Score;
             lblOpponentHand.Content = cribbageGame.Player_2.DisplayName + "'s Hand";
+
+            lblPlayersCrib.Content = cribbageGame.Dealer.ToString() + "'s Crib";
 
             imgCribCard1.Source = null;
             imgCribCard2.Source = null;
@@ -316,9 +315,14 @@ namespace Cribbage.WPFUI
         {
             try
             {
-                string cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-                string cardJson = JsonConvert.SerializeObject(card);
-                _connection.InvokeAsync("PlayCard", cribbageGameJson, cardJson);
+                if (selectedCards.Count == 1)
+                {
+                    string cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
+                    string cardJson = JsonConvert.SerializeObject(card);
+                    _connection.InvokeAsync("PlayCard", cribbageGameJson, cardJson);
+                }
+                else
+                    MessageBox.Show("Select one card to play.");
             }
             catch (Exception ex)
             {
@@ -357,8 +361,7 @@ namespace Cribbage.WPFUI
         private void CutCardMessage(string cribbageGameJson, string message)
         {
             cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
-
-            MessageBox.Show(message);
+            //MessageBox.Show(message);
         }
 
         private void StartGameVsComputerMessage(string message, string cribbageGameJson)
@@ -370,7 +373,7 @@ namespace Cribbage.WPFUI
             StaThreadWrapper(() =>
             {
                 var mainWindow = new MainWindow(cribbageGame, loggedInUser);
-                mainWindow.Show();
+                mainWindow.ShowDialog();
             });
         }
 
@@ -394,7 +397,6 @@ namespace Cribbage.WPFUI
 
         public void NewGameVsComputer(User user)
         {
-            //Start();
             try
             {
                 string strUser = JsonConvert.SerializeObject(user);
@@ -429,12 +431,27 @@ namespace Cribbage.WPFUI
 
         private void NewGame_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow mainWindow = new MainWindow();
-            //MainWindow mainWindow = new MainWindow(loggedInUser, secondPlayer);
-            mainWindow.Show();
+            if (cribbageGame.Computer)
+            {
+                try
+                {
+                    string strUser = JsonConvert.SerializeObject(loggedInUser);
+                    _connection.InvokeAsync("NewGameVsComputer", strUser);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+
+            StaThreadWrapper(() =>
+            {
+                var mainWindow = new MainWindow(cribbageGame, loggedInUser);
+                mainWindow.ShowDialog();
+            });
 
             // need to save prior to closing 
-            this.Close();
+            this.Hide();
         }
 
         private void btnSendToCrib_Click(object sender, RoutedEventArgs e)
@@ -607,7 +624,7 @@ namespace Cribbage.WPFUI
         //Refresh the screen method 
         //Read the "what to do property" --> goes to the correct method (switch statement) to set the screen
         //Read the player turn --> match player turn id to user id
-        private void ReFreshCardsClick(object sender, RoutedEventArgs e)
+        private void RefreshCardsClick(object sender, RoutedEventArgs e)
         {
             rec1.Visibility = Visibility.Collapsed;
             rec2.Visibility = Visibility.Collapsed;
@@ -615,6 +632,9 @@ namespace Cribbage.WPFUI
             rec4.Visibility = Visibility.Collapsed;
             rec5.Visibility = Visibility.Collapsed;
             rec6.Visibility = Visibility.Collapsed;
+
+            lblPlayer1Score.Content = cribbageGame.Player_1.Score;
+            lblPlayer2Score.Content = cribbageGame.Player_2.Score;
 
             selectedCards = new List<Card>();
             
@@ -629,7 +649,12 @@ namespace Cribbage.WPFUI
             if (cribbageGame.PlayerTurn.Id != loggedInUser.Id && cribbageGame.Computer)
             {
                 PickCardToPlay(cribbageGame);
-            }            
+            }
+            else if (cribbageGame.PlayerTurn.Id == loggedInUser.Id)
+            {
+                btnPlayCard.Visibility = Visibility.Visible;
+                btnGo.Visibility = Visibility.Visible;  
+            }
         }
 
 

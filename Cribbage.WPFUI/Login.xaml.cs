@@ -1,9 +1,5 @@
-﻿using Cribbage.API.Controllers;
-using Cribbage.BL.Models;
-using Cribbage.PL.Data;
+﻿using Cribbage.BL.Models;
 using Microsoft.AspNetCore.SignalR.Client;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.Windows;
 using System.Windows.Media;
@@ -15,31 +11,24 @@ namespace Cribbage.WPFUI
     /// </summary> 
     public partial class Login : Window
     {
-        private readonly ILogger<UserController> logger;
-        private readonly DbContextOptions<CribbageEntities> options;
         //string hubAddress = "https://bigprojectapi-300089145.azurewebsites.net/CribbageHub";
         string hubAddress = "https://localhost:7186/CribbageHub";
         HubConnection _connection;
         User loggedInUser = new User();
 
-        //public Login(ILogger<UserController> logger, DbContextOptions<CribbageEntities> options)
-        //{
-        //    this.logger = logger;
-        //    this.options = options;
-        //}
-
         public Login()
         {
+            
             Start();
             InitializeComponent();
-            LoginVisible();
+            txtLoginEmail.Focus();
             txtLoginEmail.Text = "tester@gmail.com";
             pbxPasswordBox.Password = "maple";
         }
 
         private void btnExit_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
+            this.Close();
         }
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)
@@ -57,15 +46,9 @@ namespace Cribbage.WPFUI
 
                 if (email != string.Empty && password != string.Empty)
                 {
-                    // Start the hub connection
-                    //SignalRConnection cribbageHubConnection = new SignalRConnection(hubAddress);
-                    //cribbageHubConnection.Login(user);
-
-                    //bool loggedIn = new UserController(logger, options).Login(user);
-                    //MessageBox.Show("logged in! " + loggedIn);
-
                     UserLogin(email, password);
 
+                    this.Close();
                 }
                 else
                 {
@@ -91,192 +74,27 @@ namespace Cribbage.WPFUI
             t.Start();
         }
 
-        //opens the landing page if the user is logged in successfully
-        //public static void LoggedInCheck(bool loggedIn, string userJson) 
-        //{
-        //    if(loggedIn)
-        //    {
-        //        User loggedInUser = new User();
-        //        loggedInUser = JsonConvert.DeserializeObject<User>(userJson);
-
-        //        StaThreadWrapper(() =>
-        //        {
-        //            var landingPage = new LandingPage(loggedInUser);
-        //            landingPage.Show();
-        //        });
-        //    }
-        //    else
-        //    {
-        //        MessageBox.Show("Cannot log in with the provided credentials");
-        //    }
-        //}
-
         private void btnRegister_Click(object sender, RoutedEventArgs e)
         {
-            RegistrationVisible();
-        }
-
-        private void RegistrationVisible()
-        {
-            txtFirstName.Visibility = Visibility.Visible;
-            txtLastName.Visibility = Visibility.Visible;
-            txtDisplayName.Visibility = Visibility.Visible;
-            txtEmail.Visibility = Visibility.Visible;
-            pbxSetPassword.Visibility = Visibility.Visible;
-            pbxReEnterPassword.Visibility = Visibility.Visible;
-            btnRegisterSubmit.Visibility = Visibility.Visible;
-            btnBack.Visibility = Visibility.Visible;
-            lblFirstName.Visibility = Visibility.Visible;
-            lblLastName.Visibility = Visibility.Visible;
-            lblDisplayName.Visibility = Visibility.Visible;
-            lblRegisterEmail.Visibility = Visibility.Visible;
-            lblRegisterPassword.Visibility = Visibility.Visible;
-            lblReEnterPassword.Visibility = Visibility.Visible;
-            lblNewUserRegistration.Visibility = Visibility.Visible;
-            lblRegisterError.Content = "";
-            lblRegisterError.Visibility = Visibility.Visible;
-
-            txtFirstName.Focus();
-
-            txtLoginEmail.Visibility = Visibility.Collapsed;
-            pbxPasswordBox.Visibility = Visibility.Collapsed;
-            btnLogin.Visibility = Visibility.Collapsed;
-            btnExit.Visibility = Visibility.Collapsed;
-            lblEmail.Visibility = Visibility.Collapsed;
-            lblPassword.Visibility = Visibility.Collapsed;
-            lblReturningUser.Visibility = Visibility.Collapsed;
-            btnRegister.Visibility = Visibility.Collapsed;
-            lblNewUser.Visibility = Visibility.Collapsed;
-            lblError.Content = "";
-            lblError.Visibility = Visibility.Collapsed;
-        }
-
-        //public static void CreateUserCheck(bool isSuccess)
-        //{
-        //    if (isSuccess)
-        //    {
-        //        MessageBox.Show("User created");
-        //        StaThreadWrapper(() =>
-        //        {
-        //            var login = new Login();
-        //            login.Show();
-        //        });
-        //    }
-        //    else
-        //    {
-        //        MessageBox.Show("Cannot create user");
-        //    }
-        //}
-
-        private void LoginVisible()
-        {
-            txtFirstName.Visibility = Visibility.Collapsed;
-            txtLastName.Visibility = Visibility.Collapsed;
-            txtDisplayName.Visibility = Visibility.Collapsed;
-            txtEmail.Visibility = Visibility.Collapsed;
-            pbxSetPassword.Visibility = Visibility.Collapsed;
-            pbxReEnterPassword.Visibility = Visibility.Collapsed;
-            btnRegisterSubmit.Visibility = Visibility.Collapsed;
-            btnBack.Visibility = Visibility.Collapsed;
-            lblFirstName.Visibility = Visibility.Collapsed;
-            lblLastName.Visibility = Visibility.Collapsed;
-            lblDisplayName.Visibility = Visibility.Collapsed;
-            lblRegisterEmail.Visibility = Visibility.Collapsed;
-            lblRegisterPassword.Visibility = Visibility.Collapsed;
-            lblReEnterPassword.Visibility = Visibility.Collapsed;
-            lblNewUserRegistration.Visibility = Visibility.Collapsed;
-            lblRegisterError.Content = "";
-            lblRegisterError.Visibility = Visibility.Collapsed;
-
-            txtLoginEmail.Visibility = Visibility.Visible;
-            pbxPasswordBox.Visibility = Visibility.Visible;
-            btnLogin.Visibility = Visibility.Visible;
-            btnExit.Visibility = Visibility.Visible;
-            lblEmail.Visibility = Visibility.Visible;
-            lblPassword.Visibility = Visibility.Visible;
-            lblReturningUser.Visibility = Visibility.Visible;
-            btnRegister.Visibility = Visibility.Visible;
-            lblNewUser.Visibility = Visibility.Visible;
-            lblError.Content = "";
-            lblError.Visibility = Visibility.Visible;
-
-            txtLoginEmail.Focus();
-        }
-
-        private void btnBack_Click(object sender, RoutedEventArgs e)
-        {
-            LoginVisible();
-        }
-
-        private void btnRegisterSubmit_Click(object sender, RoutedEventArgs e)
-        {
-            //need to test that the registration works before opening a new game and closing the page
-            try
-            {
-                string firstName = txtFirstName.Text.Trim();
-                string lastName = txtLastName.Text.Trim();
-                string displayName = txtDisplayName.Text.Trim();
-                string email = txtEmail.Text.Trim();
-                string setPassword = pbxSetPassword.Password.ToString().Trim();
-                string checkPassword = pbxReEnterPassword.Password.ToString().Trim();
-
-                User user = new User();
-
-                user.FirstName = firstName;
-                user.LastName = lastName;
-                user.DisplayName = displayName;
-                user.Email = email;
-
-                if (setPassword == checkPassword)
-                {
-                    user.Password = setPassword;
-                }
-                else
-                {
-                    user.Password = string.Empty;
-                }
-
-                if (firstName != string.Empty && lastName != string.Empty
-                    && displayName != string.Empty && email != string.Empty
-                    && user.Password != string.Empty)
-                {
-                    // Start the hub connection
-                    //SignalRConnection cribbageHubConnection = new SignalRConnection(hubAddress);
-                    //cribbageHubConnection.RegisterUser(user);
-                }
-                else
-                {
-                    lblRegisterError.Foreground = new SolidColorBrush(Colors.DarkMagenta);
-                    lblRegisterError.Content = "Unable to register.";
-                }
-            }
-            catch (Exception ex)
-            {
-                lblRegisterError.Foreground = new SolidColorBrush(Colors.DarkMagenta);
-                lblRegisterError.Content = ex.Message;
-
-                throw;
-            }
+            Register register = new Register();
+            register.ShowDialog();
         }
 
         #region "SignalRConnection"
 
-        public void Start()
+        private void Start()
         {
             _connection = new HubConnectionBuilder()
                 .WithUrl(hubAddress)
                 .Build();
 
-            _connection.On<bool, string, string>("LogInAttempt", (isLoggedIn, message, userJson) => ReceivedLoginMessage(isLoggedIn, message, userJson));
-            
-       
+            _connection.On<bool, bool, string, string, string>("LogInAttempt", (isLoggedIn, isSuccess, message, userJson, userGamesJson) => ReceivedLoginMessage(isLoggedIn, isSuccess, message, userJson, userGamesJson));
 
             _connection.StartAsync();
         }
 
-       public void UserLogin(string email, string password)
+        private void UserLogin(string email, string password)
         {
-            //Start();
             try
             {
                 _connection.InvokeAsync("Login", email, password);
@@ -287,7 +105,7 @@ namespace Cribbage.WPFUI
             }
         }
 
-        private void ReceivedLoginMessage(bool isLoggedIn, string message, string userJson)
+        private void ReceivedLoginMessage(bool isLoggedIn, bool isSuccess, string message, string userJson, string userGamesJson)
         {
             if (isLoggedIn)
             {
@@ -295,25 +113,22 @@ namespace Cribbage.WPFUI
 
                 StaThreadWrapper(() =>
                 {
-                    var landingPage = new LandingPage(loggedInUser);
-                    landingPage.Show();
+                    var landingPage = new LandingPage(loggedInUser, isSuccess, userGamesJson);
+                    landingPage.ShowDialog();
                 });
 
-                //Dispatcher.Invoke(() => { this.Close(); });
+                Dispatcher.Invoke(() => { this.Close(); });
             }
             else // not logged in
             {
                 MessageBox.Show("Failed log in");
-                //WPFUI.Login.LoggedInCheck(isLoggedIn, userJson);
+                StaThreadWrapper(() =>
+                {
+                    var login = new Login();
+                    login.ShowDialog();
+                });
             }
-
         }
-
-        private void CloseCurrentPage()
-        {
-            Dispatcher.Invoke(() => { this.Close(); });
-        }
-
         #endregion
     }
 }
