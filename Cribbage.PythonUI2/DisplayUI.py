@@ -439,7 +439,7 @@ def onClick_PlayCard():
         gameToSendJson = getGameJson()
        # print(cardsToSendJson)
         print('*********')
-        hub_connection.send("CardsToCrib",[gameToSendJson, cardsToSendJson])
+        hub_connection.send("PlayCard",[gameToSendJson, cardsToSendJson])
     else:
         messagebox.showerror('Select Cards To Send To The Crib', 'Please select exactly two cards to send to the crib')
 def onClickSendToCrib():
