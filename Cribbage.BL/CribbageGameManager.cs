@@ -42,7 +42,7 @@ namespace Cribbage.BL
             // Some one played a card and it was not 31 or someone said go
 
             Player otherPlayer;
-            if (cribbageGame.PlayerTurn == cribbageGame.Player_1)
+            if (cribbageGame.PlayerTurn.Id == cribbageGame.Player_1.Id)
             {
                 otherPlayer = cribbageGame.Player_2;
             }
@@ -410,7 +410,6 @@ namespace Cribbage.BL
 
                 cribbageGame.PlayerTurn.PlayedCards.Add(card);
 
-                //havent tested this.
                 if(cribbageGame.Player_1.Hand.Count == 0 && cribbageGame.Player_2.Hand.Count == 0)
                 {
                     EndCountingRally(cribbageGame);
