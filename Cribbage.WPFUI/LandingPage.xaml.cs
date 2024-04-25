@@ -37,13 +37,17 @@ namespace Cribbage.WPFUI
 
             loggedInUser = user;
 
+            ShowStats();
+            SavedGamesCheck(isSuccess, userGamesJson);
+        }
+
+        public void ShowStats()
+        {
             lstStats.Items.Add("Total Games Started: " + loggedInUser.GamesStarted);
             lstStats.Items.Add("Games Won: " + loggedInUser.GamesWon);
             lstStats.Items.Add("Games Lost: " + loggedInUser.GamesLost);
             lstStats.Items.Add("Win Streak: " + loggedInUser.WinStreak);
             lstStats.Items.Add("Average Points Per Game: " + loggedInUser.AvgPtsPerGame);
-
-            SavedGamesCheck(isSuccess, userGamesJson);
         }
 
         public void SavedGamesCheck(bool isSuccess, string userGamesJson)

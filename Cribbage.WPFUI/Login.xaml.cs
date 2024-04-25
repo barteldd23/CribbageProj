@@ -120,7 +120,7 @@ namespace Cribbage.WPFUI
                 StaThreadWrapper(() =>
                 {
                     var landingPage = new LandingPage(loggedInUser, isSuccess, userGamesJson);
-                    landingPage.Show();
+                    landingPage.ShowDialog();
                 });
 
                 Dispatcher.Invoke(() => { this.Close(); });
@@ -128,6 +128,11 @@ namespace Cribbage.WPFUI
             else // not logged in
             {
                 MessageBox.Show("Failed log in");
+                StaThreadWrapper(() =>
+                {
+                    var login = new Login();
+                    login.ShowDialog();
+                });
             }
 
         }
