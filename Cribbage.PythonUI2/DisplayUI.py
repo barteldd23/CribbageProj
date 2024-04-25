@@ -531,7 +531,8 @@ hub_connection = HubConnectionBuilder()\
 .build()
     
 hub_connection.on("ReceiveMessage", lambda msg: print("received message back from hub." + msg[0]))
-hub_connection.on("LogInAttempt", lambda data: receivedLogInMessage(data[0],data[1],data[2]))
+# book isloggedin, bool issuccess (savedgames), string message, string userJson, string userGames Json
+hub_connection.on("LogInAttempt", lambda data: receivedLogInMessage(data[0],data[2],data[3]))
 hub_connection.on("CreateUserAttempt", lambda data: receivedCreateUserMessage(data[0],data[1]))
 hub_connection.on("StartGame", lambda data: receivedStartGameMessage(data[0],data[1]))
 hub_connection.on("CardWasCut", lambda data: receivedCardWasCutMessage(data[0], data[1]))
