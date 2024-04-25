@@ -20,6 +20,7 @@ namespace Cribbage.WPFUI
         List<Card> selectedCards = new List<Card>();
         User loggedInUser;
         string dealer;
+        string currentCount;
 
         public MainWindow()
         {
@@ -305,6 +306,7 @@ namespace Cribbage.WPFUI
             _connection.On<string, string>("CutCard", (cribbageGameJson, message) => CutCardMessage(cribbageGameJson, message));
             _connection.On<string>("GameFinished", (cribbageGameJson) => GameFinishedMessage(cribbageGameJson));
             _connection.On<string, string>("PlayHand", (cribbageGameJson, message) => PlayHandMessage(cribbageGameJson, message));
+            //update CribCards to Action and update below code to match / refresh each time
             _connection.On<string, string>("Action", (cribbageGameJson, message) => PlayedCardMessage(cribbageGameJson, message));
 
             _connection.StartAsync();
@@ -313,6 +315,9 @@ namespace Cribbage.WPFUI
         private void PlayedCardMessage(string cribbageGameJson, string message)
         {
             cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
+            playerHand = cribbageGame.Player_1.Hand;
+            opponentHand = cribbageGame.Player_2.Hand;
+            currentCount = cribbageGame.CurrentCount.ToString();
         }
 
         public void PlayCard(CribbageGame cribbageGame, Card card)
@@ -638,6 +643,8 @@ namespace Cribbage.WPFUI
 
             lblPlayer1Score.Content = cribbageGame.Player_1.Score;
             lblPlayer2Score.Content = cribbageGame.Player_2.Score;
+
+            lblCurrentCount.Content = cribbageGame.CurrentCount;
 
             selectedCards = new List<Card>();
             
