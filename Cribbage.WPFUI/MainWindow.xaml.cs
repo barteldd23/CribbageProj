@@ -71,6 +71,15 @@ namespace Cribbage.WPFUI
             imgCribCard3.Source = null;
             imgCribCard4.Source = null;
 
+            imgPlayedCard1.Source = null;
+            imgPlayedCard2.Source = null;
+            imgPlayedCard3.Source = null;
+            imgPlayedCard4.Source = null;
+            imgPlayedCard5.Source = null;
+            imgPlayedCard6.Source = null;
+            imgPlayedCard7.Source = null;
+            imgPlayedCard8.Source = null;
+
             lblMessageToPlayers.Content = "Pick 2 cards to send to the Crib.";
 
             if (cribbageGame.WhatToDo.ToString() == "SelectCribCards")
@@ -304,6 +313,12 @@ namespace Cribbage.WPFUI
             playerHand = cribbageGame.Player_1.Hand;
             opponentHand = cribbageGame.Player_2.Hand;
 
+            if(cribbageGame.PlayerTurn.Id != loggedInUser.Id /*&& cribbageGame.PlayerTurn.Id == computer.Id*/)
+            {
+
+            }
+
+            //MessageBox.Show(message);
             //MessageBox.Show("Cut card is " + cribbageGame.CutCard.name);
             //MessageBox.Show("Player 1 hand count: " + playerHand.Count);
             //MessageBox.Show("Player 2 hand count: " + opponentHand.Count);
@@ -581,13 +596,13 @@ namespace Cribbage.WPFUI
             rec6.Visibility = Visibility.Collapsed;
 
             selectedCards = new List<Card>();
-
+            
             displayPlayerHand(playerHand);
             displayOpponentHand(opponentHand, true);
 
             UpdateCutCard(cribbageGame);
 
-            lblMessageToPlayers.Content = cribbageGame.WhatToDo;
+            lblMessageToPlayers.Content = cribbageGame.WhatToDo + " Player's Turn: " + cribbageGame.PlayerTurn.DisplayName;
         }
     }
 }

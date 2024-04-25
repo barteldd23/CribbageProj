@@ -40,7 +40,7 @@ namespace Cribbage.API.Hubs
                 User user = new User { Email = email, Password = password };
                 isLoggedIn = new UserManager(options).Login(user);
                 // Send Back Success/fail to client only
-                
+
                 if (isLoggedIn) { message = "Logged in as: " + user.DisplayName; }
                 else { message = "Error. Try Again"; }
 
@@ -70,13 +70,13 @@ namespace Cribbage.API.Hubs
             {
                 // De-serialize string to user object
                 User newUser;
-                
+
                 newUser = JsonConvert.DeserializeObject<User>(user);
 
                 // Try to create in DB
                 int rows = new UserManager(options).Insert(newUser);
-                if (rows == 1 ) isSuccess = true;
-                
+                if (rows == 1) isSuccess = true;
+
                 //userJson = JsonConvert.SerializeObject(newUser);
 
                 // Send Back Success/Fail to client only
@@ -90,7 +90,7 @@ namespace Cribbage.API.Hubs
                 message = "User already exists for that email";
                 await Clients.Caller.SendAsync("CreateUserAttempt", isSuccess, message);
             }
-            
+
         }
 
         public async Task GetSavedGames(string user)
@@ -101,7 +101,7 @@ namespace Cribbage.API.Hubs
             {
                 // De-serialize string to user object
                 User newUser;
-                
+
                 newUser = JsonConvert.DeserializeObject<User>(user);
 
                 // Get the saved games for the user
@@ -109,13 +109,13 @@ namespace Cribbage.API.Hubs
                 Game game;
                 List<Game> savedGames = new List<Game>();
 
-                foreach(Guid savedGameId in savedGameIds)
+                foreach (Guid savedGameId in savedGameIds)
                 {
                     game = new GameManager(options).LoadById(savedGameId);
                     savedGames.Add(game);
                 }
 
-                if (savedGames != null ) isSuccess = true; // what happens if they don't have any games?
+                if (savedGames != null) isSuccess = true; // what happens if they don't have any games?
 
                 userGamesJson = JsonConvert.SerializeObject(savedGames);
 
@@ -185,7 +185,7 @@ namespace Cribbage.API.Hubs
 
                 throw;
             }
-            
+
         }
         public async Task NewGameVsPlayer(string user)
         {
@@ -261,11 +261,11 @@ namespace Cribbage.API.Hubs
                     if (cribbageGame.PlayerTurn.Id == cribbageGame.Player_2.Id)
                     {
                         CribbageGameManager.Cut(cribbageGame);
-                        cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
 
                         // Game could technically end on a cut. Need to check for a winner.
                         if (CribbageGameManager.CheckWinner(cribbageGame))
                         {
+                            cribbageGame.WhatToDo = "StartNewGame";
                             cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
                             // maybe add return paramter of string message saying who won.
                             await Clients.All.SendAsync("GameFinished", cribbageGameJson);
@@ -274,25 +274,29 @@ namespace Cribbage.API.Hubs
                         }
                         else
                         {
+                            cribbageGame.WhatToDo = "StartRally";
+                            cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
                             await Clients.All.SendAsync("PlayHand", cribbageGameJson, cribbageGame.PlayerTurn.DisplayName + " cut the " + cribbageGame.CutCard.name + "\n" + cribbageGame.PlayerTurn.DisplayName + "'s Turn.");
 
                         }
 
                     }
-                    else {
+                    else
+                    {
                         // The users Turn and they need to cut a card
+                        cribbageGame.WhatToDo = "CutDeck";
                         cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
                         await Clients.All.SendAsync("CutCard", cribbageGameJson, cribbageGame.PlayerTurn.DisplayName + " cut the deck.");
                     }
-                    
+
                 }
                 // Playing vs another pseron
                 // only send to crib if they sent 2 cards to hub
                 // check if the other person already sent cards.
                 // if they did, send message to both players to cut the card.
-                else if(! cribbageGame.Computer && cardsToCrib.Count == 2) 
+                else if (!cribbageGame.Computer && cardsToCrib.Count == 2)
                 {
-                    if(user.Id == cribbageGame.Player_1.Id)
+                    if (user.Id == cribbageGame.Player_1.Id)
                     {
                         CribbageGameManager.Give_To_Crib(cribbageGame, cardsToCrib, cribbageGame.Player_1);
                     }
@@ -301,7 +305,7 @@ namespace Cribbage.API.Hubs
                         CribbageGameManager.Give_To_Crib(cribbageGame, cardsToCrib, cribbageGame.Player_2);
                     }
 
-                    if(cribbageGame.Crib.Count == 4)
+                    if (cribbageGame.Crib.Count == 4)
                     {
                         cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
                         await Clients.All.SendAsync("CutCard", cribbageGameJson, cribbageGame.PlayerTurn.DisplayName + " cut the deck.");
@@ -313,9 +317,18 @@ namespace Cribbage.API.Hubs
 
                 throw;
             }
-            
+        }
 
-            
+        public async Task PlayCard(string game, string cards, string userJson)
+        {
+            try
+            {
+
+            }
+            catch
+            {
+
+            }
         }
     }
 }
