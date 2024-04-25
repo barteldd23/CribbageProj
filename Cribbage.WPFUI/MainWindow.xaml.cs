@@ -19,6 +19,7 @@ namespace Cribbage.WPFUI
         List<Card> playerHand;
         List<Card> selectedCards = new List<Card>();
         User loggedInUser;
+        string dealer;
 
         public MainWindow()
         {
@@ -42,6 +43,9 @@ namespace Cribbage.WPFUI
         #region "GameSetup"
         private void SetUpGame()
         {
+            if (cribbageGame.Dealer == 1) dealer = cribbageGame.Player_1.DisplayName;
+            else dealer = cribbageGame.Player_2.DisplayName;
+
             rec1.Visibility = Visibility.Collapsed;
             rec2.Visibility = Visibility.Collapsed;
             rec3.Visibility = Visibility.Collapsed;
@@ -63,7 +67,7 @@ namespace Cribbage.WPFUI
             lblPlayer2Score.Content = cribbageGame.Player_2.Score;
             lblOpponentHand.Content = cribbageGame.Player_2.DisplayName + "'s Hand";
 
-            lblPlayersCrib.Content = cribbageGame.Dealer.ToString() + "'s Crib";
+            lblPlayersCrib.Content = dealer + "'s Crib";
 
             imgCribCard1.Source = null;
             imgCribCard2.Source = null;
@@ -300,7 +304,7 @@ namespace Cribbage.WPFUI
             _connection.On<string, string>("StartGameVsPlayer", (message, cribbageGameJson) => StartGameVsPlayerMessage(message, cribbageGameJson));
             _connection.On<string, string>("CutCard", (cribbageGameJson, message) => CutCardMessage(cribbageGameJson, message));
             _connection.On<string>("GameFinished", (cribbageGameJson) => GameFinishedMessage(cribbageGameJson));
-            _connection.On<string, string>("PlayHand", (cribbageGameJson, message) => PlayHandMessage(cribbageGameJson, message));
+            _connection.On<string, string>("Action", (cribbageGameJson, message) => PlayHandMessage(cribbageGameJson, message));
             _connection.On<string, string>("PlayedCard", (cribbageGameJson, message) => PlayedCardMessage(cribbageGameJson, message));
 
             _connection.StartAsync();
@@ -456,7 +460,7 @@ namespace Cribbage.WPFUI
 
         private void btnSendToCrib_Click(object sender, RoutedEventArgs e)
         {
-            if(selectedCards.Count == 2)
+            if (selectedCards.Count == 2)
             {
                 try
                 {
@@ -465,34 +469,10 @@ namespace Cribbage.WPFUI
                     string userJson = JsonConvert.SerializeObject(loggedInUser);
                     _connection.InvokeAsync("CardsToCrib", cribbageGameJson, strSelectedCards, userJson);
 
-                    //testing only!
-                    BitmapImage card = new BitmapImage();
-                    card.BeginInit();
-                    card.UriSource = new Uri("pack://siteoforigin:,,,/images/" + selectedCards[0].imgPath);
-                    card.EndInit();
-                    imgCribCard1.Source = card;
-
-                    card = new BitmapImage();
-                    card.BeginInit();
-                    card.UriSource = new Uri("pack://siteoforigin:,,,/images/" + selectedCards[1].imgPath);
-                    card.EndInit();
-                    imgCribCard2.Source = card;
-
-                    // when done testing
-                    //BitmapImage card = new BitmapImage();
-                    card = new BitmapImage();
-                    card.BeginInit();
-                    card.UriSource = new Uri("pack://siteoforigin:,,,/images/cardBackBlue.png");
-                    card.EndInit();
-                    //imgCribCard1.Source = card;
-                    //imgCribCard2.Source = card;
-                    imgCribCard3.Source = card;
-                    imgCribCard4.Source = card;
-
                     btnRefreshCards.Visibility = Visibility.Visible;
                     btnSendToCrib.Visibility = Visibility.Collapsed;
 
-                    lblMessageToPlayers.Content = "Click Refresh Cards to Update Screen.";
+                    lblMessageToPlayers.Content = "Click 'Refresh Cards' to update the screen.";
                 }
                 catch (Exception ex)
                 {
@@ -740,6 +720,97 @@ namespace Cribbage.WPFUI
             }
             else
                 imgPlayedCard8.Source = null;
+        }
+
+        private void displayCribCards(bool isShown = false)
+        {
+            BitmapImage card = new BitmapImage();
+            if (isShown)
+            {
+                if (cribbageGame.Crib.Count >= 1)
+                {
+
+                    card.BeginInit();
+                    card.UriSource = new Uri("pack://siteoforigin:,,,/images/" + cribbageGame.Crib[0].imgPath);
+                    card.EndInit();
+                    imgCribCard1.Source = card;
+                }
+                else
+                    imgCribCard1.Source = null;
+                if (cribbageGame.Crib.Count >= 2)
+                {
+                    card = new BitmapImage();
+                    card.BeginInit();
+                    card.UriSource = new Uri("pack://siteoforigin:,,,/images/" + cribbageGame.Crib[1].imgPath);
+                    card.EndInit();
+                    imgCribCard2.Source = card;
+                }
+                else
+                    imgCribCard2.Source = null;
+                if (cribbageGame.Crib.Count >= 3)
+                {
+                    card = new BitmapImage();
+                    card.BeginInit();
+                    card.UriSource = new Uri("pack://siteoforigin:,,,/images/" + cribbageGame.Crib[2].imgPath);
+                    card.EndInit();
+                    imgCribCard3.Source = card;
+                }
+                else
+                    imgCribCard3.Source = null;
+                if (cribbageGame.Crib.Count >= 4)
+                {
+                    card = new BitmapImage();
+                    card.BeginInit();
+                    card.UriSource = new Uri("pack://siteoforigin:,,,/images/" + cribbageGame.Crib[3].imgPath);
+                    card.EndInit();
+                    imgCribCard4.Source = card;
+                }
+                else
+                    imgCribCard4.Source = null;
+            }
+            else
+            {
+                if (cribbageGame.Crib.Count >= 1)
+                {
+
+                    card.BeginInit();
+                    card.UriSource = new Uri("pack://siteoforigin:,,,/images/cardBackBlue.png");
+                    card.EndInit();
+                    imgCribCard1.Source = card;
+                }
+                else
+                    imgCribCard1.Source = null;
+                if (cribbageGame.Crib.Count >= 2)
+                {
+                    card = new BitmapImage();
+                    card.BeginInit();
+                    card.UriSource = new Uri("pack://siteoforigin:,,,/images/cardBackBlue.png");
+                    card.EndInit();
+                    imgCribCard2.Source = card;
+                }
+                else
+                    imgCribCard2.Source = null;
+                if (cribbageGame.Crib.Count >= 3)
+                {
+                    card = new BitmapImage();
+                    card.BeginInit();
+                    card.UriSource = new Uri("pack://siteoforigin:,,,/images/cardBackBlue.png");
+                    card.EndInit();
+                    imgCribCard3.Source = card;
+                }
+                else
+                    imgCribCard3.Source = null;
+                if (cribbageGame.Crib.Count >= 4)
+                {
+                    card = new BitmapImage();
+                    card.BeginInit();
+                    card.UriSource = new Uri("pack://siteoforigin:,,,/images/cardBackBlue.png");
+                    card.EndInit();
+                    imgCribCard4.Source = card;
+                }
+                else
+                    imgCribCard4.Source = null;
+            }
         }
         #endregion
     }
