@@ -4,19 +4,24 @@
     {
         public List<Card> Cards { get; set; } = new List<Card>();
 
-        public Deck() 
+        public Deck(bool newDeck) 
         {
-            for (int i = 1; i<= 4; i++)
+            if (newDeck)
             {
-                for (int j = 1; j <= 13; j++)
+                for (int i = 1; i <= 4; i++)
                 {
-                    Card card = new Card();
-                    card.face = (Faces)j;
-                    card.suit = (Suits)i;
-                    card.imgPath = "card" + card.suit + "_" + card.face + ".png";
-                    Cards.Add(card);
+                    for (int j = 1; j <= 13; j++)
+                    {
+                        Card card = new Card();
+                        card.face = (Faces)j;
+                        card.suit = (Suits)i;
+                        card.imgPath = "card" + card.suit + "_" + card.face + ".png";
+                        Cards.Add(card);
+                    }
                 }
             }
+            
         }
+        public Deck() { }
     }
 }

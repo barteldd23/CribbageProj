@@ -100,7 +100,7 @@ namespace Cribbage.BL
         public static void ShuffleDeck(CribbageGame cribbageGame)
         {
             // Go through each card twice. Randomly switch it with a different Index Location
-            cribbageGame.Deck = new Deck();
+            cribbageGame.Deck = new Deck(true);
 
             Random rnd = new Random();
             for (int j = 0; j < 2; j++)
@@ -238,22 +238,13 @@ namespace Cribbage.BL
             foreach (Card card in cards)
             {
                 cribbageGame.Crib.Add(card);
-                if (player == cribbageGame.Player_2)
+                if (player == cribbageGame.Player_1)
                 {
-                    cribbageGame.Player_2.Hand.Remove(card);
+                    // .Remove(card) wasn't working properly
+                    Card x = cribbageGame.Player_1.Hand.Where(x => x.name == card.name).FirstOrDefault();
+                    cribbageGame.Player_1.Hand.Remove(x);
                 }
-            }
-            
-            if (player == cribbageGame.Player_1)
-            {
-                for (var i = 0; i < cribbageGame.Player_1.Hand.Count; i++)
-                {
-                    if (cribbageGame.Crib[0].name != cribbageGame.Player_1.Hand[i].name && cribbageGame.Crib[1].name != cribbageGame.Player_1.Hand[i].name && cribbageGame.Crib[2].name != cribbageGame.Player_1.Hand[i].name && cribbageGame.Crib[3].name != cribbageGame.Player_1.Hand[i].name)
-                    {
-                        notCribCards.Add(cribbageGame.Player_1.Hand[i]);
-                    }
-                }
-                cribbageGame.Player_1.Hand = notCribCards;
+                else cribbageGame.Player_2.Hand.Remove(card);
             }
             
         }
