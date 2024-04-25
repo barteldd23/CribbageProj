@@ -17,7 +17,7 @@ namespace Cribbage.BL.Models
         public Player PlayerTurn { get; set; }
         public int GoCount { get; set; } = 0;
         public Player LastPlayerPlayed { get; set; }
-        public Deck Deck { get; set; } = new Deck();
+        public Deck Deck { get; set; }
         public List<Card> Crib { get; set; } = new List<Card>();
         public Card CutCard { get; set; }
         public List<Card> PlayedCards { get; set; } = new List<Card>();
@@ -42,12 +42,12 @@ namespace Cribbage.BL.Models
             return count;
         }
 
-        public CribbageGame(User user1)
+        public CribbageGame(bool needDeck)
         {
-            Id = Guid.NewGuid();
-            Date = DateTime.Now;
-            GameName = user1.DisplayName + " Vs. Computer";
-            Player_1 = new Player(user1);
+            if (needDeck)
+            {
+                Deck = new Deck();
+            }
         }
 
         public CribbageGame(User user1, User user2)
@@ -57,6 +57,7 @@ namespace Cribbage.BL.Models
             Player_1 = new Player(user1);
             Player_2 = new Player(user2);
             GameName = user1.DisplayName + " Vs. " + user2.DisplayName;
+            Deck = new Deck(true);
         }
         public CribbageGame() { }
 

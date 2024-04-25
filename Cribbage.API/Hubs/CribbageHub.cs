@@ -196,9 +196,11 @@ namespace Cribbage.API.Hubs
 
             try
             {
+                /*
                 User player1 = JsonConvert.DeserializeObject<User>(user);
 
                 // Create a Game, only 1 person assigned to it.
+
                 CribbageGame cribbageGame = new CribbageGame(player1);
 
                 // Wait for 2nd person
@@ -218,6 +220,7 @@ namespace Cribbage.API.Hubs
 
                 // Send CribbageGame back to only that person.
                 await Clients.Caller.SendAsync("StartGameVsPlayer", cribbageGameJson);
+                */
             }
             catch (Exception)
             {
