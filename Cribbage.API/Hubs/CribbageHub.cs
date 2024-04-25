@@ -314,15 +314,50 @@ namespace Cribbage.API.Hubs
             }
         }
 
-        public async Task PlayCard(string game, string cards, string userJson)
+        public async Task PickCardToPlay(string game)
         {
+            string cribbageGameJson;
+            string card;
+
             try
             {
+                CribbageGame cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(game);
+                Card pickedCard = CribbageGameManager.Pick_Card_To_Play(cribbageGame);
 
+                cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
+                card = JsonConvert.SerializeObject(pickedCard);
+
+                PlayCard(cribbageGameJson, card);
             }
-            catch
+            catch (Exception)
             {
+                throw;
+            }
+        }
 
+        public async Task PlayCard(string game, string card)
+        {
+            string cribbageGameJson;    
+            
+            try
+            {
+                CribbageGame cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(game);
+                Card pickedCard = JsonConvert.DeserializeObject<Card>(card);
+
+                if(CribbageGameManager.PlayCard(cribbageGame, pickedCard))
+                {
+                    cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
+                    await Clients.All.SendAsync("PlayedCard", cribbageGameJson, "Player Turn: " + cribbageGame.PlayerTurn.DisplayName);
+                }
+                else
+                {
+                    cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
+                    await Clients.All.SendAsync("PlayedCard", cribbageGameJson, "Unable to play cards. Player Turn: " + cribbageGame.PlayerTurn.DisplayName);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
     }

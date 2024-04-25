@@ -376,6 +376,8 @@ namespace Cribbage.BL
             // Check if played card gets points with being 15 total, a pair, or a run.
             // add 2 points if total is 31.
 
+            Card removed;
+
             if (card.value + cribbageGame.CurrentCount <= 31)
             {
                 cribbageGame.PlayedCards.Add(card);
@@ -388,10 +390,24 @@ namespace Cribbage.BL
                 {
                     cribbageGame.PlayerTurn.Score += 1;
                     EndCountingRally(cribbageGame);
-
                 }
                 CheckWinner(cribbageGame);
-                cribbageGame.PlayerTurn.Hand.Remove(card);
+
+                if(cribbageGame.Player_1.Id == cribbageGame.PlayerTurn.Id)
+                {
+                    removed = cribbageGame.Player_1.Hand.Where(removed => removed.name == card.name).FirstOrDefault();
+                    cribbageGame.Player_1.Hand.Remove(removed);
+
+                    cribbageGame.Player_1.PlayedCards.Add(removed);
+                }
+                else
+                {
+                    removed = cribbageGame.Player_2.Hand.Where(removed => removed.name == card.name).FirstOrDefault();
+                    cribbageGame.Player_2.Hand.Remove(removed);
+
+                    cribbageGame.Player_2.PlayedCards.Add(removed);
+                }
+
                 cribbageGame.PlayerTurn.PlayedCards.Add(card);
 
                 //havent tested this.
