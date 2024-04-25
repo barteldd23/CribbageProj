@@ -313,11 +313,6 @@ namespace Cribbage.WPFUI
             playerHand = cribbageGame.Player_1.Hand;
             opponentHand = cribbageGame.Player_2.Hand;
 
-            if(cribbageGame.PlayerTurn.Id != loggedInUser.Id /*&& cribbageGame.PlayerTurn.Id == computer.Id*/)
-            {
-
-            }
-
             //MessageBox.Show(message);
             //MessageBox.Show("Cut card is " + cribbageGame.CutCard.name);
             //MessageBox.Show("Player 1 hand count: " + playerHand.Count);
