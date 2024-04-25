@@ -16,12 +16,6 @@ namespace Cribbage.WPFUI
         HubConnection _connection;
         User loggedInUser = new User();
 
-        //public Login(ILogger<UserController> logger, DbContextOptions<CribbageEntities> options)
-        //{
-        //    this.logger = logger;
-        //    this.options = options;
-        //}
-
         public Login()
         {
             
@@ -134,7 +128,6 @@ namespace Cribbage.WPFUI
                     login.ShowDialog();
                 });
             }
-
         }
         #endregion
     }

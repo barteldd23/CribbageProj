@@ -12,7 +12,6 @@ namespace Cribbage.WPFUI
     {
         //string hubAddress = "https://bigprojectapi-300089145.azurewebsites.net/CribbageHub";
         string hubAddress = "https://localhost:7186/CribbageHub";
-        UserGame game;
         User loggedInUser;
         HubConnection _connection;
 
@@ -55,7 +54,6 @@ namespace Cribbage.WPFUI
             if (isSuccess)
             {
                 //MessageBox.Show("UserGamesJson: " + userGamesJson);
-               
                List<Game> userGames = JsonConvert.DeserializeObject<List<Game>>(userGamesJson);
 
                foreach(Game game in userGames)
@@ -119,8 +117,7 @@ namespace Cribbage.WPFUI
 
         private void StartGameVsComputerMessage(string message, string cribbageGameJson)
         {
-            CribbageGame cribbageGame = new CribbageGame();
-            cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
+            CribbageGame cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
 
             StaThreadWrapper(() =>
             {
@@ -149,7 +146,6 @@ namespace Cribbage.WPFUI
 
         public void NewGameVsComputer(User user)
         {
-            //Start();
             try
             {
                 string strUser = JsonConvert.SerializeObject(user);

@@ -13,7 +13,6 @@ namespace Cribbage.WPFUI
     {
         //string hubAddress = "https://bigprojectapi-300089145.azurewebsites.net/CribbageHub";
         string hubAddress = "https://localhost:7186/CribbageHub";
-        User loggedInUser;
         HubConnection _connection;
 
         public Register()
@@ -71,7 +70,6 @@ namespace Cribbage.WPFUI
             }
         }
 
-
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
@@ -115,8 +113,6 @@ namespace Cribbage.WPFUI
                 MessageBox.Show(ex.Message);
             }
         }
-
-
         #endregion
     }
 }
