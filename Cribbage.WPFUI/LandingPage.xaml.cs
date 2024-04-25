@@ -15,59 +15,53 @@ namespace Cribbage.WPFUI
         UserGame game;
         User loggedInUser;
         HubConnection _connection;
-        //SignalRConnection cribbageHubConnection;
 
         public LandingPage()
         {
             Start();
             InitializeComponent();
+
+            if (loggedInUser == null)
+            {
+                Login login = new Login();
+                login.ShowDialog();
+            }
+            this.Hide();
         }
 
-        public LandingPage(User user)
+        public LandingPage(User user, bool isSuccess, string userGamesJson)
         {
             Start();
             InitializeComponent();
             lblWelcomeUser.Content = "Welcome " + user.FirstName + "!";
 
             loggedInUser = user;
-            lstSavedGames.Visibility = Visibility.Collapsed;
-            lstStats.Visibility = Visibility.Collapsed;
-            lblGameStats.Visibility = Visibility.Collapsed;
-            lblOpenASavedGame.Visibility = Visibility.Collapsed;
 
-            // Start the hub connection
-            //cribbageHubConnection = new SignalRConnection(hubAddress);
-   
+            lstStats.Items.Add("Total Games Started: " + loggedInUser.GamesStarted);
+            lstStats.Items.Add("Games Won: " + loggedInUser.GamesWon);
+            lstStats.Items.Add("Games Lost: " + loggedInUser.GamesLost);
+            lstStats.Items.Add("Win Streak: " + loggedInUser.WinStreak);
+            lstStats.Items.Add("Average Points Per Game: " + loggedInUser.AvgPtsPerGame);
+
+            SavedGamesCheck(isSuccess, userGamesJson);
         }
 
-        public static Tuple<List<string>, List<DateTime>> SavedGamesCheck(bool isSuccess, string userGamesJson)
+        public void SavedGamesCheck(bool isSuccess, string userGamesJson)
         {
             if (isSuccess)
             {
-                MessageBox.Show("UserGamesJson: " + userGamesJson);
-                List<Game> userGames = new List<Game>();
-                userGames = JsonConvert.DeserializeObject<List<Game>>(userGamesJson);
-                string gameName;
-                List<string> savedGameNames = new List<string>();
-                List<DateTime> savedDates = new List<DateTime>();
+                //MessageBox.Show("UserGamesJson: " + userGamesJson);
+               
+               List<Game> userGames = JsonConvert.DeserializeObject<List<Game>>(userGamesJson);
 
-                foreach(Game game in userGames)
-                {
-                    savedGameNames.Add(game.GameName);
-                    savedDates.Add(game.Date);
-                }
-
-                MessageBox.Show("Saved Games Check TRUE: " + savedGameNames[0] + " " + savedDates[0]);
-
-                return Tuple.Create(savedGameNames, savedDates);
+               foreach(Game game in userGames)
+               {
+                    lstSavedGames.Items.Add(game.Date.ToShortDateString() + " " + game.GameName);
+               }
             }
             else
             {
-                List<string> savedGameNames = new List<string>();
-                List<DateTime> savedDates = new List<DateTime>();
-
                 MessageBox.Show("Saved Games Check FALSE");
-                return Tuple.Create(savedGameNames, savedDates);
             }
         }
 
@@ -85,41 +79,12 @@ namespace Cribbage.WPFUI
         private void btnNewGameVsComputer_Click(object sender, RoutedEventArgs e)
         {
             NewGameVsComputer(loggedInUser);
+            this.Hide();
         }
 
         private void btnNewGameVsPlayer_Click(object sender, RoutedEventArgs e)
         {
             NewGameVsPlayer(loggedInUser);
-        }
-
-        private void btnShowGameStats_Click(object sender, RoutedEventArgs e)
-        {
-            lstStats.Visibility = Visibility.Visible;
-            lblGameStats.Visibility = Visibility.Visible;
-            btnShowGameStats.Visibility = Visibility.Collapsed;
-
-            lstStats.Items.Add("Total Games Started: " + loggedInUser.GamesStarted);
-            lstStats.Items.Add("Games Won: " + loggedInUser.GamesWon);
-            lstStats.Items.Add("Games Lost: " + loggedInUser.GamesLost);
-            lstStats.Items.Add("Win Streak: " + loggedInUser.WinStreak);
-            lstStats.Items.Add("Average Points Per Game: " + loggedInUser.AvgPtsPerGame);
-        }
-
-        private void btnShowSavedGames_Click(object sender, RoutedEventArgs e)
-        {
-            lstSavedGames.Visibility = Visibility.Visible;
-            lblOpenASavedGame.Visibility = Visibility.Visible;
-            btnShowSavedGames.Visibility = Visibility.Collapsed;
-
-            if(loggedInUser.GamesStarted == 0)
-            {
-                lstSavedGames.Items.Add("Total Games Started: " + loggedInUser.GamesStarted);
-            }
-            else
-            {
-                //GetSavedGames(loggedInUser);
-                lstSavedGames.Items.Add("Total Games Started: " + loggedInUser.GamesStarted);
-            }
         }
 
         private static void StaThreadWrapper(Action action)

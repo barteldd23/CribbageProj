@@ -1,8 +1,6 @@
-﻿using Cribbage.BL;
-using Cribbage.BL.Models;
+﻿using Cribbage.BL.Models;
 using Microsoft.AspNetCore.SignalR.Client;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
@@ -65,6 +63,8 @@ namespace Cribbage.WPFUI
             lblPlayer2DisplayName.Content = cribbageGame.Player_2.DisplayName + " Score";
             lblPlayer2Score.Content = cribbageGame.Player_2.Score;
             lblOpponentHand.Content = cribbageGame.Player_2.DisplayName + "'s Hand";
+
+            lblPlayersCrib.Content = cribbageGame.Dealer.ToString() + "'s Crib";
 
             imgCribCard1.Source = null;
             imgCribCard2.Source = null;
@@ -316,9 +316,14 @@ namespace Cribbage.WPFUI
         {
             try
             {
-                string cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-                string cardJson = JsonConvert.SerializeObject(card);
-                _connection.InvokeAsync("PlayCard", cribbageGameJson, cardJson);
+                if (selectedCards.Count == 1)
+                {
+                    string cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
+                    string cardJson = JsonConvert.SerializeObject(card);
+                    _connection.InvokeAsync("PlayCard", cribbageGameJson, cardJson);
+                }
+                else
+                    MessageBox.Show("Select one card to play.");
             }
             catch (Exception ex)
             {
@@ -616,6 +621,9 @@ namespace Cribbage.WPFUI
             rec5.Visibility = Visibility.Collapsed;
             rec6.Visibility = Visibility.Collapsed;
 
+            lblPlayer1Score.Content = cribbageGame.Player_1.Score;
+            lblPlayer2Score.Content = cribbageGame.Player_2.Score;
+
             selectedCards = new List<Card>();
             
             displayPlayerHand(playerHand);
@@ -629,7 +637,12 @@ namespace Cribbage.WPFUI
             if (cribbageGame.PlayerTurn.Id != loggedInUser.Id && cribbageGame.Computer)
             {
                 PickCardToPlay(cribbageGame);
-            }            
+            }
+            else if (cribbageGame.PlayerTurn.Id == loggedInUser.Id)
+            {
+                btnPlayCard.Visibility = Visibility.Visible;
+                btnGo.Visibility = Visibility.Visible;  
+            }
         }
 
 
