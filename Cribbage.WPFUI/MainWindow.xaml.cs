@@ -304,15 +304,15 @@ namespace Cribbage.WPFUI
             _connection.On<string, string>("StartGameVsPlayer", (message, cribbageGameJson) => StartGameVsPlayerMessage(message, cribbageGameJson));
             _connection.On<string, string>("CutCard", (cribbageGameJson, message) => CutCardMessage(cribbageGameJson, message));
             _connection.On<string>("GameFinished", (cribbageGameJson) => GameFinishedMessage(cribbageGameJson));
-            _connection.On<string, string>("Action", (cribbageGameJson, message) => PlayHandMessage(cribbageGameJson, message));
-            _connection.On<string, string>("PlayedCard", (cribbageGameJson, message) => PlayedCardMessage(cribbageGameJson, message));
+            _connection.On<string, string>("PlayHand", (cribbageGameJson, message) => PlayHandMessage(cribbageGameJson, message));
+            _connection.On<string, string>("Action", (cribbageGameJson, message) => PlayedCardMessage(cribbageGameJson, message));
 
             _connection.StartAsync();
         }
 
         private void PlayedCardMessage(string cribbageGameJson, string message)
         {
-            MessageBox.Show(message + " Number of cards in hand: " + cribbageGame.Player_2.Hand.Count + " player 1: " + cribbageGame.Player_1.Hand.Count);
+            cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
         }
 
         public void PlayCard(CribbageGame cribbageGame, Card card)
@@ -323,6 +323,7 @@ namespace Cribbage.WPFUI
                 {
                     string cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
                     string cardJson = JsonConvert.SerializeObject(card);
+
                     _connection.InvokeAsync("PlayCard", cribbageGameJson, cardJson);
                 }
                 else
@@ -365,7 +366,6 @@ namespace Cribbage.WPFUI
         private void CutCardMessage(string cribbageGameJson, string message)
         {
             cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
-            //MessageBox.Show(message);
         }
 
         private void StartGameVsComputerMessage(string message, string cribbageGameJson)
@@ -492,7 +492,30 @@ namespace Cribbage.WPFUI
 
         private void btnPlayCard_Click(object sender, RoutedEventArgs e)
         {
+            if (selectedCards.Count == 1)
+            {
+                try
+                {
+                    string cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
+                    string strSelectedCard = JsonConvert.SerializeObject(selectedCards);
+                    string userJson = JsonConvert.SerializeObject(loggedInUser);
+                    _connection.InvokeAsync("PlayCard", cribbageGameJson, strSelectedCard);
 
+                    btnRefreshCards.Visibility = Visibility.Visible;
+                    btnPlayCard.Visibility = Visibility.Collapsed;
+                    btnGo.Visibility = Visibility.Collapsed;
+
+                    lblMessageToPlayers.Content = "Click 'Refresh Cards' to update the screen.";
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Select one card to play, to create a current count sum <= 31. OR press 'Go'.");
+            }
         }
 
         private void btnNextHand_Click(object sender, RoutedEventArgs e)
@@ -621,6 +644,7 @@ namespace Cribbage.WPFUI
             displayPlayerHand(playerHand);
             displayOpponentHand(opponentHand, true);
             displayPlayedCards();
+            displayCribCards(true);
 
             UpdateCutCard(cribbageGame);
 

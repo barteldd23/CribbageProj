@@ -262,7 +262,7 @@ namespace Cribbage.API.Hubs
                             CribbageGameManager.PlayCard(cribbageGame, card);
                             message += cribbageGame.CurrentCount.ToString() + "\n";
                             cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-                            await Clients.All.SendAsync("Action", cribbageGameJson, message + cribbageGame.PlayerTurn.DisplayName + "'s Turn.");
+                            await Clients.All.SendAsync("PlayHand", cribbageGameJson, message + cribbageGame.PlayerTurn.DisplayName + "'s Turn.");
                         }
                     }
                     else
@@ -330,7 +330,9 @@ namespace Cribbage.API.Hubs
             try
             {
                 CribbageGame cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(game);
-                Card pickedCard = JsonConvert.DeserializeObject<Card>(card);
+                List<Card> pickedCards = JsonConvert.DeserializeObject<List<Card>>(card);
+
+                Card pickedCard = pickedCards[0];
 
                 if(CribbageGameManager.PlayCard(cribbageGame, pickedCard))
                 {
