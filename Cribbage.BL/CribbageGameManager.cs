@@ -246,6 +246,17 @@ namespace Cribbage.BL
                 }
                 else cribbageGame.Player_2.Hand.Remove(card);
             }
+            if(cribbageGame.PlayerTurn.Id == player.Id)
+            {
+                if(player.Id == cribbageGame.Player_1.Id)
+                {
+                    cribbageGame.PlayerTurn = cribbageGame.Player_1;
+                }
+                else
+                {
+                    cribbageGame.PlayerTurn = cribbageGame.Player_2;
+                }
+            }
             
         }
 

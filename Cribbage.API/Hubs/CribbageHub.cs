@@ -245,16 +245,10 @@ namespace Cribbage.API.Hubs
                         CribbageGameManager.Cut(cribbageGame);
                         cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
                         await Clients.All.SendAsync("CardWasCut", cribbageGameJson, cribbageGame.PlayerTurn.DisplayName + " cut the " + cribbageGame.CutCard.name + "\n" + cribbageGame.PlayerTurn.DisplayName + "'s Turn.");
-
+                        await Task.Delay(3000);
                         // Game could technically end on a cut. Need to check for a winner.
-                        if (CribbageGameManager.CheckWinner(cribbageGame))
-                        {
-                            cribbageGame.WhatToDo = "startnewgame";
-                            cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-                            // maybe add return paramter of string message saying who won.
-                            await Clients.All.SendAsync("GameFinished", cribbageGameJson);
-                        }
-                        else
+                        CheckCompletedGame(cribbageGame);
+                        if (!cribbageGame.Complete)
                         {
                             cribbageGame.WhatToDo = "playcard";
                             Card card = CribbageGameManager.Pick_Card_To_Play(cribbageGame);
@@ -330,18 +324,21 @@ namespace Cribbage.API.Hubs
             try
             {
                 CribbageGame cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(game);
-                Card pickedCard = JsonConvert.DeserializeObject<Card>(card);
-
+                List<Card> pickedCards = JsonConvert.DeserializeObject<List<Card>>(card);
+                Card pickedCard = pickedCards[0];
                 if(CribbageGameManager.PlayCard(cribbageGame, pickedCard))
                 {
                     cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
                     await Clients.All.SendAsync("Action", cribbageGameJson, "Player Turn: " + cribbageGame.PlayerTurn.DisplayName);
+                    CheckCompletedGame(cribbageGame);
 
-                    while (cribbageGame.Computer 
-                            && cribbageGame.PlayerTurn == cribbageGame.Player_2 
+                    while (!cribbageGame.Complete 
+                            && cribbageGame.Computer
+                            && cribbageGame.PlayerTurn == cribbageGame.Player_2
                             && (cribbageGame.WhatToDo == "playcard" || cribbageGame.WhatToDo == "go"))
                     {
-                        if(cribbageGame.WhatToDo == "playcard")
+                        await Task.Delay(3000);
+                        if (cribbageGame.WhatToDo == "playcard")
                         {
                             Card computerCard = CribbageGameManager.Pick_Card_To_Play(cribbageGame);
                             string message = cribbageGame.PlayerTurn.DisplayName + " played the " + computerCard.name + "\n";
@@ -349,7 +346,8 @@ namespace Cribbage.API.Hubs
                             message += cribbageGame.CurrentCount.ToString() + "\n";
                             cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
                             await Clients.All.SendAsync("Action", cribbageGameJson, message + cribbageGame.PlayerTurn.DisplayName + "'s Turn.");
-                        }else if(cribbageGame.WhatToDo == "go")
+                        }
+                        else if (cribbageGame.WhatToDo == "go")
                         {
                             string message = cribbageGame.PlayerTurn.DisplayName + " said go.\n";
                             CribbageGameManager.Go(cribbageGame);
@@ -359,7 +357,7 @@ namespace Cribbage.API.Hubs
                         }
                     }
 
-                    if(cribbageGame.WhatToDo == "counthands")
+                    if (!cribbageGame.Complete && cribbageGame.WhatToDo == "counthands")
                     {
                         string message = "All cards played. Count Hands";
                         await Clients.All.SendAsync("RallyOver", cribbageGameJson, message);
@@ -375,6 +373,22 @@ namespace Cribbage.API.Hubs
             {
                 throw;
             }
+        }
+
+        private void CheckCompletedGame(CribbageGame cribbageGame)
+        {
+            if (cribbageGame.Complete)
+            {
+                GameComplete(cribbageGame);
+            }
+        }
+
+        private async void GameComplete(CribbageGame cribbageGame)
+        {
+            cribbageGame.WhatToDo = "startnewgame";
+            string cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
+            // maybe add return paramter of string message saying who won.
+            await Clients.All.SendAsync("GameFinished", cribbageGameJson);
         }
     }
 }
