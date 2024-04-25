@@ -53,6 +53,10 @@ namespace Cribbage.WPFUI
             rec6.Visibility = Visibility.Collapsed;
 
             btnRefreshCards.Visibility = Visibility.Collapsed;
+            btnNextHand.Visibility = Visibility.Collapsed;
+            btnPlayCard.Visibility = Visibility.Collapsed;
+            btnGo.Visibility = Visibility.Collapsed;
+            btnCountCards.Visibility = Visibility.Collapsed;
 
             lblPlayer1DisplayName.Content = cribbageGame.Player_1.DisplayName + " Score";
             lblPlayer1Score.Content = cribbageGame.Player_1.Score;
@@ -66,6 +70,8 @@ namespace Cribbage.WPFUI
             imgCribCard2.Source = null;
             imgCribCard3.Source = null;
             imgCribCard4.Source = null;
+
+            lblMessageToPlayers.Content = "Pick 2 cards to send to the Crib.";
 
             if (cribbageGame.WhatToDo.ToString() == "SelectCribCards")
             {
@@ -299,8 +305,8 @@ namespace Cribbage.WPFUI
             opponentHand = cribbageGame.Player_2.Hand;
 
             //MessageBox.Show("Cut card is " + cribbageGame.CutCard.name);
-            MessageBox.Show("Player 1 hand count: " + playerHand.Count);
-            MessageBox.Show("Player 2 hand count: " + opponentHand.Count);
+            //MessageBox.Show("Player 1 hand count: " + playerHand.Count);
+            //MessageBox.Show("Player 2 hand count: " + opponentHand.Count);
         }
 
         private void GameFinishedMessage(string cribbageGameJson)
@@ -431,6 +437,9 @@ namespace Cribbage.WPFUI
                     imgCribCard4.Source = card;
 
                     btnRefreshCards.Visibility = Visibility.Visible;
+                    btnSendToCrib.Visibility = Visibility.Collapsed;
+
+                    lblMessageToPlayers.Content = "Click Refresh Cards to Update Screen.";
                 }
                 catch (Exception ex)
                 {
@@ -577,6 +586,8 @@ namespace Cribbage.WPFUI
             displayOpponentHand(opponentHand, true);
 
             UpdateCutCard(cribbageGame);
+
+            lblMessageToPlayers.Content = cribbageGame.WhatToDo;
         }
     }
 }

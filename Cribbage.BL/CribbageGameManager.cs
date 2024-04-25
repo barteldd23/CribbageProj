@@ -233,13 +233,29 @@ namespace Cribbage.BL
 
         public static void Give_To_Crib(CribbageGame cribbageGame, List<Card> cards, Player player)
         {
+            List<Card> notCribCards = new List<Card>();
             // Adds a List of cards to the crib and removes it from that players hand
             foreach (Card card in cards)
             {
                 cribbageGame.Crib.Add(card);
-                if (player == cribbageGame.Player_1) cribbageGame.Player_1.Hand.Remove(card);
-                else cribbageGame.Player_2.Hand.Remove(card);
+                if (player == cribbageGame.Player_2)
+                {
+                    cribbageGame.Player_2.Hand.Remove(card);
+                }
             }
+            
+            if (player == cribbageGame.Player_1)
+            {
+                for (var i = 0; i < cribbageGame.Player_1.Hand.Count; i++)
+                {
+                    if (cribbageGame.Crib[0].name != cribbageGame.Player_1.Hand[i].name && cribbageGame.Crib[1].name != cribbageGame.Player_1.Hand[i].name && cribbageGame.Crib[2].name != cribbageGame.Player_1.Hand[i].name && cribbageGame.Crib[3].name != cribbageGame.Player_1.Hand[i].name)
+                    {
+                        notCribCards.Add(cribbageGame.Player_1.Hand[i]);
+                    }
+                }
+                cribbageGame.Player_1.Hand = notCribCards;
+            }
+            
         }
 
         public static List<Card> Pick_Cards_To_Crib(List<Card> hand)
