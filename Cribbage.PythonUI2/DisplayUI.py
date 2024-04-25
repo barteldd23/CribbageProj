@@ -6,7 +6,7 @@ from tkinter import ttk
 import tkinter
 from tkinter import messagebox
 from tkinter.tix import COLUMN
-from turtle import bgcolor
+from turtle import bgcolor, seth
 from dataclasses import dataclass, field, asdict
 import json
 import uuid
@@ -66,6 +66,7 @@ pythonUserJson = json.dumps(asdict(pythonUser))
 playerHand = Hand([])
 gameData = CribbageGame([])
 opponentHand = Hand([])
+selectedCards = []
 
 def setGameData(gameJson):
     cribbageGame = json.loads(gameJson)
@@ -74,9 +75,14 @@ def setGameData(gameJson):
 def receivedCutCardMessage(gameJson, message):
     setMessage(message)
     setGameData(gameJson)
+    displayCutCard(True)
+    refreshScreen()
     
 def receivedPlayHandMessage(gameJson, message):
     setMessage(message)
+    setGameData(gameJson)
+    displayCutCard(True)
+    refreshScreen()
         
 def receivedCreateUserMessage(isCreated, messageInfo):
     if(isCreated):
@@ -106,43 +112,93 @@ def receivedStartGameMessage(message, gameJson):
     #cribbageGame.insertJson(gameJson)
     #cribbageGame.insertJson(gameJson)
     #print(cribbageGame);
-    cribbageGame = json.loads(gameJson)
-    gameData.data = cribbageGame
-    print(cribbageGame)
-    hands = setHands(cribbageGame)
-    playerHand.cards =hands[0]
-    opponentHand.cards = hands[1]
+    setGameData(gameJson)
+    
     print(playerHand)
     print(opponentHand)
     
-    setStartGameFrame(cribbageGame, playerHand, opponentHand)
+    setStartGameFrame(playerHand, opponentHand)
+    print('setStartGameFrame')
+    refreshScreen()
     
-def setHands(gameData):
-    if(pythonUser.Id == gameData["Player_1"]["Id"]):
-        return [gameData["Player_1"]["Hand"], gameData["Player_2"]["Hand"] ]
+def setGameData(gameJson):
+    cribbageGame = json.loads(gameJson)
+    gameData.data = cribbageGame
+    print(cribbageGame)
+    hands = setHands()
+    playerHand.cards =hands[0]
+    opponentHand.cards = hands[1]
+def setHands():
+    if(pythonUser.Id == gameData.data["Player_1"]["Id"]):
+        return [gameData.data["Player_1"]["Hand"], gameData.data["Player_2"]["Hand"] ]
     else:
-        return [gameData["Player_2"]["Hand"], gameData["Player_1"]["Hand"] ]
+        return [gameData.data["Player_2"]["Hand"], gameData.data["Player_1"]["Hand"] ]
     
-def setStartGameFrame(gameData, playerHand, opponentHand):
-    if(pythonUser.Id == gameData["Player_1"]["Id"]):
-        userDisplayName = gameData["Player_1"]["DisplayName"]
-        opponentDisplayName = gameData["Player_2"]["DisplayName"]
+def setStartGameFrame(playerHand, opponentHand):
+    if(pythonUser.Id == gameData.data["Player_1"]["Id"]):
+        userDisplayName = gameData.data["Player_1"]["DisplayName"]
+        opponentDisplayName = gameData.data["Player_2"]["DisplayName"]
     else:
-        userDisplayName = gameData["Player_2"]["DisplayName"]
-        opponentDisplayName = gameData["Player_1"]["DisplayName"]
+        userDisplayName = gameData.data["Player_2"]["DisplayName"]
+        opponentDisplayName = gameData.data["Player_1"]["DisplayName"]
     playerLabel.config(text=userDisplayName)
     opponentLabel.config(text=opponentDisplayName)
     playerLabel.grid(row=0, column=2, columnspan=2, padx=5, pady=5, sticky='news')
     opponentLabel.grid(row=0, column=2, columnspan=2, padx=5, pady=5, sticky='news')
 
-    if(gameData['WhatToDo'] == 'SelectCribCards'):
-        displayOpponentHand(gameData, opponentHand, True)
-        displayPlayerHand(gameData, playerHand)
+    # if(gameData['WhatToDo'] == 'SelectCribCards'):
+    #     displayOpponentHand(gameData, opponentHand, True)
+    #     displayPlayerHand(gameData, playerHand)
+    #     btnSendToCrib.grid(row=2, column=1, padx=5, pady=5, sticky='news')
+    #     setMessage("in the if for selectCribCards")
+    
+def unselectCards():
+    myCard1.config(border=0)
+    myCard2.config(border=0)
+    myCard3.config(border=0)
+    myCard4.config(border=0)
+    myCard5.config(border=0)
+    myCard6.config(border=0)
+    selectedCards.clear()
+    
+    print(selectedCards)
+def forgetButtons():
+    btnSendToCrib.grid_forget
+    btnGo.grid_forget
+    btnPlayCard.grid_forget
+    btnCountHand.grid_forget
+    btnNextHand.grid_forget
+
+def refreshScreen():
+    print('refresh start')
+    unselectCards()
+    print('unselected cards')
+    forgetButtons()
+    print('forgot buttons')
+    if(gameData.data['PlayerTurn']['Id'] == pythonUser.Id):
+        myTurn = True
+    else:
+        myTurn = False
+    
+    print('myturn: ' + str(myTurn))
+    
+    displayOpponentHand(True)
+    displayPlayerHand()
+    
+    if(gameData.data['WhatToDo'] == 'SelectCribCards' and len(playerHand.cards) > 4):
         btnSendToCrib.grid(row=2, column=1, padx=5, pady=5, sticky='news')
         setMessage("in the if for selectCribCards")
+    if(gameData.data['WhatToDo'] == 'cutdeck' and myTurn):
+        print('Inside cutdeck and myturn')
+    if(gameData.data['WhatToDo'] == 'playcard' and myTurn):
+        btnPlayCard.grid(row=3, column=3, padx=5, pady=5, sticky='news')
+    if(gameData.data['WhatToDo'] == 'go' and myTurn):
+        btnGo.grid(row=3, column=4, padx=5, pady=5, sticky='news')
+    if(gameData.data['WhatToDo'] == 'counthands'):
+        btnCountHand.grid(row=3, column=10, padx=5, pady=5, sticky='news')
     
-
-def displayOpponentHand(gameData, opponentHand, isShown):
+    
+def displayOpponentHand(isShown):
     if(isShown == False):
         if(len(opponentHand.cards) >= 1):
             opponentCard1.img = cardBack.subsample(5,5)
@@ -226,7 +282,7 @@ def displayOpponentHand(gameData, opponentHand, isShown):
             opponentCard6.grid_forget
             
 
-def displayPlayerHand(gameData, playerHand):
+def displayPlayerHand():
     
     if(len(playerHand.cards) >= 1):
         card = PhotoImage(file="./images/" + playerHand.cards[0]["imgPath"])
@@ -271,7 +327,18 @@ def displayPlayerHand(gameData, playerHand):
     else:
         myCard6.grid_forget
     
-    
+def displayCutCard(isShowing):
+    cutCardLabel.grid(row=0, column=10, sticky='s')
+    if(isShowing):
+        card = PhotoImage(file="./images/" + gameData.data["CutCard"]["imgPath"])
+        myCard6.img = card.subsample(5,5)
+        myCard6.config(image= myCard6.img)
+        myCard6.grid(row=1, column=5, sticky='news', padx=10)
+    else:
+        cutCard.img = cardBack.subsample(5,5)
+        cutCard.config(image= opponentCard1.img)
+        cutCard.grid(row=1, column=0, sticky='news', padx=10)
+        
 def setMessage(msg):
     txtGameMessages.config(state='normal')
     txtGameMessages.insert('end', msg + '\n')
@@ -279,17 +346,47 @@ def setMessage(msg):
 ###################### Methods for Button clicks ###################
 
 def onclick_Card1(event):
-    setMessage("Clicked Card1")
+    if(myCard1.cget('border') == 0):
+        myCard1.config(border=5)
+        selectedCards.append(0)
+    else:
+        myCard1.config(border=0)
+        selectedCards.remove(0)
 def onclick_Card2(event):
-    pass
+    if(myCard2.cget('border') == 0):
+        myCard2.config(border=5)
+        selectedCards.append(1)
+    else:
+        myCard2.config(border=0)
+        selectedCards.remove(1)
 def onclick_Card3(event):
-    pass
+    if(myCard3.cget('border') == 0):
+        myCard3.config(border=5)
+        selectedCards.append(2)
+    else:
+        myCard3.config(border=0)
+        selectedCards.remove(2)
 def onclick_Card4(event):
-    pass
+    if(myCard4.cget('border') == 0):
+        myCard4.config(border=5)
+        selectedCards.append(3)
+    else:
+        myCard4.config(border=0)
+        selectedCards.remove(3)
 def onclick_Card5(event):
-    pass
+    if(myCard5.cget('border') == 0):
+        myCard5.config(border=5)
+        selectedCards.append(4)
+    else:
+        myCard5.config(border=0)
+        selectedCards.remove(4)
 def onclick_Card6(event):
-    pass
+    if(myCard6.cget('border') == 0):
+        myCard6.config(border=5)
+        selectedCards.append(5)
+    else:
+        myCard6.config(border=0)
+        selectedCards.remove(5)
 
   
 def getGameJson():
@@ -297,12 +394,15 @@ def getGameJson():
 def getUserJson():
     return json.dumps(asdict(pythonUser))
 def onClickSendToCrib():
-    cardsToSend= [playerHand.cards[0],playerHand.cards[1]]
-    cardsToSendJson = json.dumps(cardsToSend)
-    gameToSendJson = getGameJson()
-   # print(cardsToSendJson)
-    print('*********')
-    hub_connection.send("CardsToCrib",[gameToSendJson, cardsToSendJson, pythonUserJson])
+    if(len(selectedCards) == 2):
+        cardsToSend= [playerHand.cards[selectedCards[0]],playerHand.cards[selectedCards[1]]]
+        cardsToSendJson = json.dumps(cardsToSend)
+        gameToSendJson = getGameJson()
+       # print(cardsToSendJson)
+        print('*********')
+        hub_connection.send("CardsToCrib",[gameToSendJson, cardsToSendJson, pythonUserJson])
+    else:
+        messagebox.showerror('Select Cards To Send To The Crib', 'Please select exactly two cards to send to the crib')
     #
    # print(gameToSendJson)
    
@@ -565,6 +665,7 @@ scrollbar = tkinter.Scrollbar(rallyFrame, orient=VERTICAL, command=txtGameMessag
 scrollbar.grid(row=3, column=9, sticky='ns')
 txtGameMessages.config(yscrollcommand = scrollbar.set)
 
+cutCardLabel = tkinter.Label(rallyFrame, text='Cut Card', font=('Arial',18))
 cutCard = tkinter.Label(rallyFrame, width=150)
 cutCardImg = PhotoImage(file="./images/cardClubs_Jack.png")
 cutCard.img = cutCardImg.subsample(5,5);
@@ -574,25 +675,30 @@ btnCountHand = tkinter.Button(rallyFrame, width=100, text='Count Hands', font=('
 
 playerLabel = tkinter.Label(usersFrame, text="User's Hand");
 
-myCard1 = tkinter.Label(usersFrame, width=100);
+myCard1 = tkinter.Label(usersFrame, width=100, border=0, relief=SOLID);
 myCard1.img = cardBack.subsample(5,5);
 myCard1.config(image= myCard1.img)
 myCard1.bind("<Button-1>", onclick_Card1)
-myCard2 = tkinter.Label(usersFrame, width=100);
+myCard2 = tkinter.Label(usersFrame, width=100, border=0, relief=SOLID);
 myCard2.img = cardBack.subsample(5,5);
 myCard2.config(image= myCard2.img)
-myCard3 = tkinter.Label(usersFrame, width=100);
+myCard2.bind("<Button-1>", onclick_Card2)
+myCard3 = tkinter.Label(usersFrame, width=100, border=0, relief=SOLID);
 myCard3.img = cardBack.subsample(5,5);
 myCard3.config(image= myCard3.img)
-myCard4 = tkinter.Label(usersFrame, width=100);
+myCard3.bind("<Button-1>", onclick_Card3)
+myCard4 = tkinter.Label(usersFrame, width=100, border=0, relief=SOLID);
 myCard4.img = cardBack.subsample(5,5);
 myCard4.config(image= myCard4.img)
-myCard5 = tkinter.Label(usersFrame, width=100);
+myCard4.bind("<Button-1>", onclick_Card4)
+myCard5 = tkinter.Label(usersFrame, width=100, border=0, relief=SOLID);
 myCard5.img = cardBack.subsample(5,5);
 myCard5.config(image= myCard5.img)
-myCard6 = tkinter.Label(usersFrame, width=100);
+myCard5.bind("<Button-1>", onclick_Card5)
+myCard6 = tkinter.Label(usersFrame, width=100, border=0, relief=SOLID);
 myCard6.img = cardBack.subsample(5,5);
 myCard6.config(image= myCard6.img)
+myCard6.bind("<Button-1>", onclick_Card6)
 
 btnSendToCrib = tkinter.Button(usersFrame, text="Send To Crib", command=onClickSendToCrib)
 btnNextHand = tkinter.Button(usersFrame, text="Next Hand")
