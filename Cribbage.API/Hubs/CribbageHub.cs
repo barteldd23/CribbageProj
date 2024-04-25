@@ -265,30 +265,25 @@ namespace Cribbage.API.Hubs
                         // Game could technically end on a cut. Need to check for a winner.
                         if (CribbageGameManager.CheckWinner(cribbageGame))
                         {
-                            cribbageGame.WhatToDo = "StartNewGame";
+                            cribbageGame.WhatToDo = "startnewgame";
                             cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
                             // maybe add return paramter of string message saying who won.
                             await Clients.All.SendAsync("GameFinished", cribbageGameJson);
-
-
                         }
                         else
                         {
-                            cribbageGame.WhatToDo = "StartRally";
+                            cribbageGame.WhatToDo = "playcard";
                             cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
                             await Clients.All.SendAsync("PlayHand", cribbageGameJson, cribbageGame.PlayerTurn.DisplayName + " cut the " + cribbageGame.CutCard.name + "\n" + cribbageGame.PlayerTurn.DisplayName + "'s Turn.");
-
                         }
-
                     }
                     else
                     {
                         // The users Turn and they need to cut a card
-                        cribbageGame.WhatToDo = "CutDeck";
+                        cribbageGame.WhatToDo = "cutdeck";
                         cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
                         await Clients.All.SendAsync("CutCard", cribbageGameJson, cribbageGame.PlayerTurn.DisplayName + " cut the deck.");
                     }
-
                 }
                 // Playing vs another pseron
                 // only send to crib if they sent 2 cards to hub
