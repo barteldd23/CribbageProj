@@ -68,20 +68,26 @@ gameData = CribbageGame([])
 opponentHand = Hand([])
 selectedCards = []
 
-def setGameData(gameJson):
-    cribbageGame = json.loads(gameJson)
+def setGameData(dataJson):
+    cribbageGame = json.loads(dataJson)
+    gameData.data = NULL
     gameData.data = cribbageGame
 ###################### Methods for Received Hub Messages ##############
-def receivedCutCardMessage(gameJson, message):
+def receivedCardWasCutMessage(gameJson, message):
     setMessage(message)
     setGameData(gameJson)
     displayCutCard(True)
     refreshScreen()
     
-def receivedPlayHandMessage(gameJson, message):
+def receivedCutCardMessage(gameJson, message):
     setMessage(message)
     setGameData(gameJson)
-    displayCutCard(True)
+    displayCutCard(False)
+    refreshScreen()
+    
+def receivedActionMessage(gameJson, message):
+    setMessage(message)
+    setGameData(gameJson)
     refreshScreen()
         
 def receivedCreateUserMessage(isCreated, messageInfo):
@@ -126,8 +132,11 @@ def setGameData(gameJson):
     gameData.data = cribbageGame
     print(cribbageGame)
     hands = setHands()
+    playerHand.cards = NULL
+    opponentHand.cards = NULL
     playerHand.cards =hands[0]
     opponentHand.cards = hands[1]
+    
 def setHands():
     if(pythonUser.Id == gameData.data["Player_1"]["Id"]):
         return [gameData.data["Player_1"]["Hand"], gameData.data["Player_2"]["Hand"] ]
@@ -141,10 +150,22 @@ def setStartGameFrame(playerHand, opponentHand):
     else:
         userDisplayName = gameData.data["Player_2"]["DisplayName"]
         opponentDisplayName = gameData.data["Player_1"]["DisplayName"]
+        
     playerLabel.config(text=userDisplayName)
     opponentLabel.config(text=opponentDisplayName)
+    lblP1DisplayName.config(text = gameData.data["Player_1"]["DisplayName"])
+    lblP2DisplayName.config(text = gameData.data["Player_2"]["DisplayName"])
+    lblP1Score.config(text = gameData.data["Player_1"]["Score"])
+    lblP2Score.config(text = gameData.data["Player_2"]["Score"])
+    
     playerLabel.grid(row=0, column=2, columnspan=2, padx=5, pady=5, sticky='news')
     opponentLabel.grid(row=0, column=2, columnspan=2, padx=5, pady=5, sticky='news')
+    lblP1DisplayName.grid(row=1, column=0, padx=5, pady=5, sticky='news')
+    lblP1Score.grid(row=1, column=1, padx=5, pady=5, sticky='news')
+    lblP2DisplayName.grid(row=2, column=0, padx=5, pady=5, sticky='news')
+    lblP2Score.grid(row=2, column=1, padx=5, pady=5, sticky='news')
+    
+    
 
     # if(gameData['WhatToDo'] == 'SelectCribCards'):
     #     displayOpponentHand(gameData, opponentHand, True)
@@ -163,11 +184,14 @@ def unselectCards():
     
     print(selectedCards)
 def forgetButtons():
-    btnSendToCrib.grid_forget
-    btnGo.grid_forget
-    btnPlayCard.grid_forget
-    btnCountHand.grid_forget
-    btnNextHand.grid_forget
+    btnSendToCrib.grid_forget()
+    btnGo.grid_forget()
+    btnPlayCard.grid_forget()
+    btnCountHand.grid_forget()
+    btnNextHand.grid_forget()
+    btnCutPosition.grid_forget()
+    txtCutPosition.grid_forget()
+    lblCutPosition.grid_forget()
 
 def refreshScreen():
     print('refresh start')
@@ -182,6 +206,7 @@ def refreshScreen():
     
     print('myturn: ' + str(myTurn))
     
+    displayCurrentCount()
     displayOpponentHand(True)
     displayPlayerHand()
     
@@ -196,46 +221,55 @@ def refreshScreen():
         btnGo.grid(row=3, column=4, padx=5, pady=5, sticky='news')
     if(gameData.data['WhatToDo'] == 'counthands'):
         btnCountHand.grid(row=3, column=10, padx=5, pady=5, sticky='news')
+    if(gameData.data['WhatToDo'] == 'cutdeck'):
+        lblCutPosition.grid(row=1, column=2,padx=5, pady=5, sticky='news')
+        txtCutPosition.grid(row=1, column=3,padx=5, pady=5, sticky='news')
+        btnCutPosition.grid(row=1, column=4,padx=5, pady=5, sticky='news')
     
+def displayCurrentCount():
+    currentCountMsg = 'Current Count: ' + str(gameData.data["CurrentCount"])
+    lblCurrentCount.config(text=currentCountMsg)
+    lblCurrentCount.grid(row=0, column=0, columnspan=10, sticky='news')
     
 def displayOpponentHand(isShown):
+    print('in display Opp Hand. Hand Count: ' + str(len(opponentHand.cards)))
     if(isShown == False):
         if(len(opponentHand.cards) >= 1):
             opponentCard1.img = cardBack.subsample(5,5)
             opponentCard1.config(image= opponentCard1.img)
             opponentCard1.grid(row=1, column=0, sticky='news', padx=10)
         else:
-            pass
+            opponentCard1.grid_forget()
         if(len(opponentHand.cards) >= 2):
             opponentCard2.img = cardBack.subsample(5,5)
             opponentCard2.config(image= opponentCard2.img)
             opponentCard2.grid(row=1, column=1, sticky='news', padx=10)
         else:
-            pass
+            opponentCard2.grid_forget()
         if(len(opponentHand.cards) >= 3):
             opponentCard3.img = cardBack.subsample(5,5)
             opponentCard3.config(image= opponentCard3.img)
             opponentCard3.grid(row=1, column=2, sticky='news', padx=10)
         else:
-            pass
+            opponentCard3.grid_forget()
         if(len(opponentHand.cards) >= 4):
             opponentCard4.img = cardBack.subsample(5,5)
             opponentCard4.config(image= opponentCard4.img)
             opponentCard4.grid(row=1, column=3, sticky='news', padx=10)
         else:
-            pass
+            opponentCard4.grid_forget()
         if(len(opponentHand.cards) >= 5):
             opponentCard5.img = cardBack.subsample(5,5)
             opponentCard5.config(image= opponentCard5.img)
             opponentCard5.grid(row=1, column=4, sticky='news', padx=10)
         else:
-            pass
+            opponentCard5.grid_forget()
         if(len(opponentHand.cards) >= 6):
             opponentCard6.img = cardBack.subsample(5,5)
             opponentCard6.config(image= opponentCard6.img)
             opponentCard6.grid(row=1, column=5, sticky='news', padx=10)
         else:
-            pass
+            opponentCard6.grid_forget()
         
     else:
         if(len(opponentHand.cards) >= 1):
@@ -244,45 +278,46 @@ def displayOpponentHand(isShown):
             opponentCard1.config(image= opponentCard1.img)
             opponentCard1.grid(row=1, column=0, sticky='news', padx=10)
         else:
-            opponentCard1.grid_forget
+            opponentCard1.grid_forget()
         if(len(opponentHand.cards) >= 2):
             card = PhotoImage(file="./images/" + opponentHand.cards[1]["imgPath"])
             opponentCard2.img = card.subsample(5,5)
             opponentCard2.config(image= opponentCard2.img)
             opponentCard2.grid(row=1, column=1, sticky='news', padx=10)
         else:
-            opponentCard2.grid_forget
+            opponentCard2.grid_forget()
         if(len(opponentHand.cards) >= 3):
             card = PhotoImage(file="./images/" + opponentHand.cards[2]["imgPath"])
             opponentCard3.img = card.subsample(5,5)
             opponentCard3.config(image= opponentCard3.img)
             opponentCard3.grid(row=1, column=2, sticky='news', padx=10)
         else:
-            opponentCard3.grid_forget
+            opponentCard3.grid_forget()
         if(len(opponentHand.cards) >= 4):
             card = PhotoImage(file="./images/" + opponentHand.cards[3]["imgPath"])
             opponentCard4.img = card.subsample(5,5)
             opponentCard4.config(image= opponentCard4.img)
             opponentCard4.grid(row=1, column=3, sticky='news', padx=10)
         else:
-            opponentCard4.grid_forget
+            opponentCard4.grid_forget()
         if(len(opponentHand.cards) >= 5):
             card = PhotoImage(file="./images/" + opponentHand.cards[4]["imgPath"])
             opponentCard5.img = card.subsample(5,5)
             opponentCard5.config(image= opponentCard5.img)
             opponentCard5.grid(row=1, column=4, sticky='news', padx=10)
         else:
-            opponentCard5.grid_forget
+            opponentCard5.grid_forget()
         if(len(opponentHand.cards) >= 6):
             card = PhotoImage(file="./images/" + opponentHand.cards[5]["imgPath"])
             opponentCard6.img = card.subsample(5,5)
             opponentCard6.config(image= opponentCard6.img)
             opponentCard6.grid(row=1, column=5, sticky='news', padx=10)
         else:
-            opponentCard6.grid_forget
+            opponentCard6.grid_forget()
             
 
 def displayPlayerHand():
+    print('in display Player Hand. Hand Count: ' + str(len(opponentHand.cards)))
     
     if(len(playerHand.cards) >= 1):
         card = PhotoImage(file="./images/" + playerHand.cards[0]["imgPath"])
@@ -290,54 +325,56 @@ def displayPlayerHand():
         myCard1.config(image= myCard1.img)
         myCard1.grid(row=1, column=0, sticky='news', padx=10)
     else:
-        myCard1.grid_forget
+        myCard1.grid_forget()
     if(len(playerHand.cards) >= 2):
         card = PhotoImage(file="./images/" + playerHand.cards[1]["imgPath"])
         myCard2.img = card.subsample(5,5)
         myCard2.config(image= myCard2.img)
         myCard2.grid(row=1, column=1, sticky='news', padx=10)
     else:
-        myCard2.grid_forget
+        myCard2.grid_forget()
     if(len(playerHand.cards) >= 3):
         card = PhotoImage(file="./images/" + playerHand.cards[2]["imgPath"])
         myCard3.img = card.subsample(5,5)
         myCard3.config(image= myCard3.img)
         myCard3.grid(row=1, column=2, sticky='news', padx=10)
     else:
-        myCard3.grid_forget
+        myCard3.grid_forget()
     if(len(playerHand.cards) >= 4):
         card = PhotoImage(file="./images/" + playerHand.cards[3]["imgPath"])
         myCard4.img = card.subsample(5,5)
         myCard4.config(image= myCard4.img)
         myCard4.grid(row=1, column=3, sticky='news', padx=10)
     else:
-        myCard4.grid_forget
+        myCard4.grid_forget()
     if(len(playerHand.cards) >= 5):
         card = PhotoImage(file="./images/" + playerHand.cards[4]["imgPath"])
         myCard5.img = card.subsample(5,5)
         myCard5.config(image= myCard5.img)
         myCard5.grid(row=1, column=4, sticky='news', padx=10)
     else:
-        myCard5.grid_forget
+        myCard5.grid_forget()
     if(len(playerHand.cards) >= 6):
         card = PhotoImage(file="./images/" + playerHand.cards[5]["imgPath"])
         myCard6.img = card.subsample(5,5)
         myCard6.config(image= myCard6.img)
         myCard6.grid(row=1, column=5, sticky='news', padx=10)
     else:
-        myCard6.grid_forget
+        myCard6.grid_forget()
     
 def displayCutCard(isShowing):
     cutCardLabel.grid(row=0, column=10, sticky='s')
     if(isShowing):
+        print('in display cut card true')
         card = PhotoImage(file="./images/" + gameData.data["CutCard"]["imgPath"])
-        myCard6.img = card.subsample(5,5)
-        myCard6.config(image= myCard6.img)
-        myCard6.grid(row=1, column=5, sticky='news', padx=10)
+        cutCard.img = card.subsample(5,5)
+        cutCard.config(image= cutCard.img)
+        cutCard.grid(row=1, column=10, sticky='n', padx=5)
     else:
+        print('in display cut card false')
         cutCard.img = cardBack.subsample(5,5)
         cutCard.config(image= opponentCard1.img)
-        cutCard.grid(row=1, column=0, sticky='news', padx=10)
+        cutCard.grid(row=1, column=10, sticky='news', padx=5)
         
 def setMessage(msg):
     txtGameMessages.config(state='normal')
@@ -478,6 +515,9 @@ def onClickCancelUser():
     newPlayerFrame.pack_forget()
     loginFrame.pack()
 
+def onClick_btnCutPosition():
+    cutposition = txtCutPosition.get()
+    messagebox.showinfo('cut position', )
     #messagebox.showinfo(message='email: ' + email + ' password: ' + password)
 
 
@@ -494,8 +534,9 @@ hub_connection.on("ReceiveMessage", lambda msg: print("received message back fro
 hub_connection.on("LogInAttempt", lambda data: receivedLogInMessage(data[0],data[1],data[2]))
 hub_connection.on("CreateUserAttempt", lambda data: receivedCreateUserMessage(data[0],data[1]))
 hub_connection.on("StartGame", lambda data: receivedStartGameMessage(data[0],data[1]))
-hub_connection.on("CutCard", lambda data: receivedCutCardMessage(data[0], data[1]))
-hub_connection.on("PlayHand", lambda data: receivedPlayHandMessage(data[0], data[1]))
+hub_connection.on("CardWasCut", lambda data: receivedCardWasCutMessage(data[0], data[1]))
+hub_connection.on("Action", lambda data: receivedActionMessage(data[0], data[1]))
+hub_connection.on("CutCard", lambda data: receivedCutCardMessage(data[0],data[1]))
 hub_connection.start()
 
 
@@ -655,8 +696,9 @@ playedCard8 = tkinter.Label(rallyFrame, width=75);
 playedCard8.img = smallCardBack;
 playedCard8.config(image = playedCard8.img);
 
+lblCurrentCount = tkinter.Label(rallyFrame, text='Current Count:', font=('Arial',14))
 
-txtGameMessages = tkinter.Text(rallyFrame, width=80, height=3, state='disabled')
+txtGameMessages = tkinter.Text(rallyFrame, width=80, height=5, state='disabled')
 txtGameMessages.config(state='normal')
 txtGameMessages.insert('1.0', 'Initial Message\n')
 txtGameMessages.config(state='disabled')
@@ -664,6 +706,17 @@ txtGameMessages.grid(row=3, column=0, columnspan=8, sticky='ews')
 scrollbar = tkinter.Scrollbar(rallyFrame, orient=VERTICAL, command=txtGameMessages.yview)
 scrollbar.grid(row=3, column=9, sticky='ns')
 txtGameMessages.config(yscrollcommand = scrollbar.set)
+
+lblCutPosition = tkinter.Label(rallyFrame, text='Enter card position to cut (1-40)', font=('Arial',14))
+def validateNumerical(P):
+    if str.isdigit(P) or P == "":
+        return True
+    else:
+        return False
+
+# Create an Entry widget
+txtCutPosition = Entry(rallyFrame, validate='all', validatecommand=(validateNumerical, '%P'), font=('Arial',14))
+btnCutPosition = tkinter.Button(rallyFrame, text='Cut', font=('Arial',14), command=onClick_btnCutPosition)
 
 cutCardLabel = tkinter.Label(rallyFrame, text='Cut Card', font=('Arial',18))
 cutCard = tkinter.Label(rallyFrame, width=150)
@@ -723,6 +776,13 @@ lblAvailableGames = tkinter.Label(availableGamesFrame, text="AvailableGamesFrame
 lblCribFrame.grid(row=0, column=0, sticky='news')
 lblScoreFrame.grid(row=0, column=0, sticky='news')
 lblAvailableGames.grid(row=0, column=0, sticky='news')
+
+############## Score Frame ###################################
+lblP1DisplayName = tkinter.Label(scoreFrame, font=('Arial',14))
+lblP1Score = tkinter.Label(scoreFrame, font=('Arial',14))
+
+lblP2DisplayName = tkinter.Label(scoreFrame, font=('Arial',14))
+lblP2Score = tkinter.Label(scoreFrame, font=('Arial',14))
 
 
 ################ Login Widgets ###############################

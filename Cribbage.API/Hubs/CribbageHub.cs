@@ -243,6 +243,8 @@ namespace Cribbage.API.Hubs
                     if (cribbageGame.PlayerTurn.Id == cribbageGame.Player_2.Id)
                     {
                         CribbageGameManager.Cut(cribbageGame);
+                        cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
+                        await Clients.All.SendAsync("CardWasCut", cribbageGameJson, cribbageGame.PlayerTurn.DisplayName + " cut the " + cribbageGame.CutCard.name + "\n" + cribbageGame.PlayerTurn.DisplayName + "'s Turn.");
 
                         // Game could technically end on a cut. Need to check for a winner.
                         if (CribbageGameManager.CheckWinner(cribbageGame))
@@ -255,8 +257,12 @@ namespace Cribbage.API.Hubs
                         else
                         {
                             cribbageGame.WhatToDo = "playcard";
+                            Card card = CribbageGameManager.Pick_Card_To_Play(cribbageGame);
+                            string message = cribbageGame.PlayerTurn.DisplayName + " played the " + card.name + "\n";
+                            CribbageGameManager.PlayCard(cribbageGame, card);
+                            message += cribbageGame.CurrentCount.ToString() + "\n";
                             cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-                            await Clients.All.SendAsync("PlayHand", cribbageGameJson, cribbageGame.PlayerTurn.DisplayName + " cut the " + cribbageGame.CutCard.name + "\n" + cribbageGame.PlayerTurn.DisplayName + "'s Turn.");
+                            await Clients.All.SendAsync("Action", cribbageGameJson, message + cribbageGame.PlayerTurn.DisplayName + "'s Turn.");
                         }
                     }
                     else
