@@ -254,9 +254,9 @@ namespace Cribbage.API.Hubs
                             Card card = CribbageGameManager.Pick_Card_To_Play(cribbageGame);
                             string message = cribbageGame.PlayerTurn.DisplayName + " played the " + card.name + "\n";
                             CribbageGameManager.PlayCard(cribbageGame, card);
-                            message += cribbageGame.CurrentCount.ToString() + "\n";
+                            message += "Current Count: " + cribbageGame.CurrentCount.ToString() + "\n";
                             cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-                            await Clients.All.SendAsync("PlayHand", cribbageGameJson, message + cribbageGame.PlayerTurn.DisplayName + "'s Turn.");
+                            await Clients.All.SendAsync("Action", cribbageGameJson, message + cribbageGame.PlayerTurn.DisplayName + "'s Turn.");
                         }
                     }
                     else
