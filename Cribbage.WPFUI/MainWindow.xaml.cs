@@ -526,6 +526,21 @@ namespace Cribbage.WPFUI
         {
 
         }
+
+        private void btnCountCards_Click(object sender, RoutedEventArgs e)
+        {
+            playerHand = cribbageGame.Player_1.PlayedCards;
+            opponentHand = cribbageGame.Player_2.PlayedCards;
+            cribbageGame.PlayedCards = null;
+
+
+            //displayOpponentHand(opponentHand, true);
+            //displayPlayerHand(playerHand);
+            displayPlayedCards();
+
+            btnNextHand.Visibility = Visibility.Visible;
+            btnCountCards.Visibility = Visibility.Collapsed;
+        }
         #endregion
 
         #region "CardsSelected"
