@@ -354,7 +354,7 @@ namespace Cribbage.API.Hubs
                 cribbageGame.WhatToDo = "playcard";
 
                 cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-                await Clients.All.SendAsync("CardCut", cribbageGameJson, cribbageGame.PlayerTurn.DisplayName + " cut the " + cribbageGame.CutCard.name + "\n" + cribbageGame.PlayerTurn.DisplayName + "'s Turn.");
+                await Clients.All.SendAsync("CardWasCut", cribbageGameJson, cribbageGame.PlayerTurn.DisplayName + " cut the " + cribbageGame.CutCard.name + "\n" + cribbageGame.PlayerTurn.DisplayName + "'s Turn.");
             }
             catch (Exception)
             {

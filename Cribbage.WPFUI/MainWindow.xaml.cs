@@ -309,7 +309,7 @@ namespace Cribbage.WPFUI
             _connection.On<string, string>("StartGameVsPlayer", (message, cribbageGameJson) => StartGameVsPlayerMessage(message, cribbageGameJson));
             _connection.On<string, string>("StartNewHand", (message, cribbageGameJson) => StartNewHandMessage(message, cribbageGameJson));
             _connection.On<string, string>("CutCard", (cribbageGameJson, message) => CutCardMessage(cribbageGameJson, message));
-            _connection.On<string, string>("CardCut", (cribbageGameJson, message) => CardCutMessage(cribbageGameJson, message));
+            _connection.On<string, string>("CardWasCut", (cribbageGameJson, message) => CardCutMessage(cribbageGameJson, message));
             _connection.On<string, string>("Action", (cribbageGameJson, message) => PlayCardMessage(cribbageGameJson, message));
             _connection.On<string, string>("HandsCounted", (cribbageGameJson, message) => HandsCountedMessage(cribbageGameJson, message));
             _connection.On<string>("GameFinished", (cribbageGameJson) => GameFinishedMessage(cribbageGameJson));
@@ -321,6 +321,9 @@ namespace Cribbage.WPFUI
         private void CardCutMessage(string cribbageGameJson, string message)
         {
             cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
+            playerHand = cribbageGame.Player_1.Hand;
+            opponentHand = cribbageGame.Player_2.Hand;
+            currentCount = cribbageGame.CurrentCount.ToString();
             signalRMessage = message;
         }
 
