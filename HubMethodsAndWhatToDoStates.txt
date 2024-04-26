@@ -1,0 +1,49 @@
+********** Hub async Method Names**********
+
+	Login (string email, string password)
+
+	CreateUser (string userJson)
+
+	SendGameMessage (string message) // I am not using this at the moment.
+
+	NewGameVsComputer (string userJson)
+
+	NewGameVsPlayer (string userJson)
+
+	JoinGame (string gameJson, userJson)
+
+	CardsToCrib (string cribbageGameJson, string List<card>Json, userJson)
+
+	PlayCard (string cribbageGameJson, string cardJson)
+
+********* Message Tittles , Client Side Listen for **********
+
+	LogInAttempt (isLoggedIn, isSuccess, message, userJson, userGamesJson)
+	
+	CreateUserAttempt (isSuccess, message)
+	
+	StartGame (message , cribbageGameJson)
+	
+	CardWasCut (cribbageGameJson, message)
+	
+	Action (cribbageGameJson, message)
+	
+	CutCard (cribbageGameJson, message)
+	
+	RallyOver (cribbageGameJson, message)
+	
+	GameFinished (cribbageGameJson) // Maybe change when we get to it.
+
+********* WhatToDo values *********************************
+	
+	SelectCribCards
+	
+	cutdeck
+	
+	playcard
+	
+	go
+	
+	counthands
+	
+	startnewgame

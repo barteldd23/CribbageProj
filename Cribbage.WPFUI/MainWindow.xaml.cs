@@ -484,7 +484,7 @@ namespace Cribbage.WPFUI
 
         private void btnGo_Click(object sender, RoutedEventArgs e)
         {
-
+            cribbageGame.WhatToDo = "go";
         }
 
         private void btnPlayCard_Click(object sender, RoutedEventArgs e)
