@@ -454,6 +454,14 @@ namespace Cribbage.BL
         private static void EndCountingRally(CribbageGame cribbageGame)
         {
             cribbageGame.LastPlayerPlayed.Score += 1;
+            if(cribbageGame.LastPlayerPlayed.Id == cribbageGame.Player_1.Id)
+            {
+                cribbageGame.Player_1.Score += 1;
+            }
+            else
+            {
+                cribbageGame.Player_2.Score += 1;
+            }
             cribbageGame.CurrentRally = null;
             cribbageGame.CurrentRally = new List<Card>();
             cribbageGame.GoCount = 0;
