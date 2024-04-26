@@ -422,10 +422,21 @@ namespace Cribbage.BL
                     cribbageGame.Player_2.PlayedCards.Add(removed);
                     cribbageGame.Player_2.Score = cribbageGame.PlayerTurn.Score;
                 }
+
                 if (cribbageGame.CurrentCount == 31)
                 {
-                    cribbageGame.PlayerTurn.Score += 1;
+                    if(cribbageGame.PlayerTurn.Id == cribbageGame.Player_1.Id)
+                    {
+                        cribbageGame.Player_1.Score += 1;
+                    }
+                    else
+                    {
+                        cribbageGame.Player_2.Score += 1;
+                    }
+
                     EndCountingRally(cribbageGame);
+                    CheckWinner(cribbageGame);
+                    return true;
 
                 }
 
@@ -453,7 +464,7 @@ namespace Cribbage.BL
 
         private static void EndCountingRally(CribbageGame cribbageGame)
         {
-            cribbageGame.LastPlayerPlayed.Score += 1;
+            //cribbageGame.LastPlayerPlayed.Score += 1;
             if(cribbageGame.LastPlayerPlayed.Id == cribbageGame.Player_1.Id)
             {
                 cribbageGame.Player_1.Score += 1;
@@ -490,7 +501,7 @@ namespace Cribbage.BL
 
             // Need to test this. Also check that PlayedCards list is not changed.
             // make sure it is sorting by enum number instead of enum word.
-            var cardsSorted = cribbageGame.PlayedCards.OrderBy(c => c.face).ToList();
+            var cardsSorted = cribbageGame.CurrentRally.OrderBy(c => c.face).ToList();
             int attempt = 1;
             while (cardsSorted.Count >= 3)
             {
@@ -517,7 +528,7 @@ namespace Cribbage.BL
 
                 // Makes a new sorted list but after you remove the first card(s) played.
                 cardsSorted = null;
-                cardsSorted = cribbageGame.PlayedCards.GetRange(attempt, cribbageGame.PlayedCards.Count - attempt);
+                cardsSorted = cribbageGame.PlayedCards.GetRange(attempt, cribbageGame.CurrentRally.Count - attempt);
                 cardsSorted = cardsSorted.OrderBy(c => c.face).ToList();
                 attempt++;
             }
@@ -530,9 +541,9 @@ namespace Cribbage.BL
         {
             // Check if Last 2 cards are a match. keep checking. When not a match, break out and add the points to players score.
             int pts_To_Add = 0;
-            for (int i = 1; i < cribbageGame.PlayedCards.Count; i++)
+            for (int i = 1; i < cribbageGame.CurrentRally.Count; i++)
             {
-                if (cribbageGame.PlayedCards[cribbageGame.PlayedCards.Count - i].face == cribbageGame.PlayedCards[cribbageGame.PlayedCards.Count - i - 1].face)
+                if (cribbageGame.CurrentRally[cribbageGame.CurrentRally.Count - i].face == cribbageGame.CurrentRally[cribbageGame.CurrentRally.Count - i - 1].face)
                 {
                     // First match, add 2 points.
                     // Second match (3 of a kind or 3 pairs) add 4 more points
@@ -574,7 +585,7 @@ namespace Cribbage.BL
         public static void Go(CribbageGame cribbageGame)
         {
             Player otherPlayer;
-            if(cribbageGame.PlayerTurn == cribbageGame.Player_1)
+            if(cribbageGame.PlayerTurn.Id == cribbageGame.Player_1.Id)
             {
                 otherPlayer = cribbageGame.Player_2;
             }

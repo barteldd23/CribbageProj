@@ -420,14 +420,14 @@ def displayPlayedCads():
         card = PhotoImage(file="./images/" + playedCards.cards[6]["imgPath"])
         playedCard7.img = card.subsample(5,5)
         playedCard7.config(image= playedCard7.img)
-        playedCard7.grid(row=1, column=5, sticky='news', padx=10)
+        playedCard7.grid(row=1, column=6, sticky='news', padx=10)
     else:
         playedCard7.grid_forget()
     if(len(playedCards.cards) >= 8):
         card = PhotoImage(file="./images/" + playedCards.cards[7]["imgPath"])
         playedCard8.img = card.subsample(5,5)
         playedCard8.config(image= playedCard8.img)
-        playedCard8.grid(row=1, column=5, sticky='news', padx=10)
+        playedCard8.grid(row=1, column=7, sticky='news', padx=10)
     else:
         playedCard8.grid_forget()
         
