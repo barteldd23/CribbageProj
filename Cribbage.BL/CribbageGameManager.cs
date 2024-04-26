@@ -22,7 +22,7 @@ namespace Cribbage.BL
         public static void NextPlayerAfterRally(CribbageGame cribbageGame)
         {
             Player otherPlayer;
-            if (cribbageGame.LastPlayerPlayed == cribbageGame.Player_1)
+            if (cribbageGame.LastPlayerPlayed.Id == cribbageGame.Player_1.Id)
             {
                 otherPlayer = cribbageGame.Player_2;
             }
@@ -405,14 +405,8 @@ namespace Cribbage.BL
                 Check15(cribbageGame);
                 CheckPair(cribbageGame);
                 CheckRun(cribbageGame);
-                if (cribbageGame.CurrentCount == 31)
-                {
-                    cribbageGame.PlayerTurn.Score += 1;
-                    EndCountingRally(cribbageGame);
-                }
-                
 
-                if(cribbageGame.Player_1.Id == cribbageGame.PlayerTurn.Id)
+                if (cribbageGame.Player_1.Id == cribbageGame.PlayerTurn.Id)
                 {
                     removed = cribbageGame.Player_1.Hand.Where(c => c.name == card.name).FirstOrDefault();
 
@@ -422,11 +416,17 @@ namespace Cribbage.BL
                 }
                 else
                 {
-                    removed = cribbageGame.Player_2.Hand.Where(removed => removed.name == card.name).FirstOrDefault();
+                    removed = cribbageGame.Player_2.Hand.Where(c => c.name == card.name).FirstOrDefault();
 
                     cribbageGame.Player_2.Hand.Remove(removed);
                     cribbageGame.Player_2.PlayedCards.Add(removed);
                     cribbageGame.Player_2.Score = cribbageGame.PlayerTurn.Score;
+                }
+                if (cribbageGame.CurrentCount == 31)
+                {
+                    cribbageGame.PlayerTurn.Score += 1;
+                    EndCountingRally(cribbageGame);
+
                 }
 
                 CheckWinner(cribbageGame);

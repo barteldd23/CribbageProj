@@ -383,7 +383,7 @@ namespace Cribbage.API.Hubs
 
                     while (!cribbageGame.Complete 
                             && cribbageGame.Computer
-                            && cribbageGame.PlayerTurn == cribbageGame.Player_2
+                            && cribbageGame.PlayerTurn.Id == cribbageGame.Player_2.Id
                             && (cribbageGame.WhatToDo == "playcard" || cribbageGame.WhatToDo == "go"))
                     {
                         await Task.Delay(3000);
@@ -438,7 +438,7 @@ namespace Cribbage.API.Hubs
 
                 while (!cribbageGame.Complete
                             && cribbageGame.Computer
-                            && cribbageGame.PlayerTurn == cribbageGame.Player_2
+                            && cribbageGame.PlayerTurn.Id == cribbageGame.Player_2.Id
                             && (cribbageGame.WhatToDo == "playcard" || cribbageGame.WhatToDo == "go"))
                 {
                     await Task.Delay(3000);
