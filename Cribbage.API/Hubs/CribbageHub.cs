@@ -401,6 +401,32 @@ namespace Cribbage.API.Hubs
             }
         }
 
+        public async Task CountHands(string game)
+        {
+            string cribbageGameJson;
+
+            try
+            {
+                CribbageGame cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(game);
+                string message;
+
+                CribbageGameManager.CountHands(cribbageGame);
+
+                if(cribbageGame.Dealer == 1)
+                {
+                    message = cribbageGame.Player_2.DisplayName + "'s hand had " + cribbageGame.Player_2.HandPoints + " points\n";
+
+                    
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
         private void CheckCompletedGame(CribbageGame cribbageGame)
         {
             if (cribbageGame.Complete)
