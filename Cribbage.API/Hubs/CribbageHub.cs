@@ -408,7 +408,7 @@ namespace Cribbage.API.Hubs
             try
             {
                 CribbageGame cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(game);
-                string message;
+                string message = "";
 
                 CribbageGameManager.CountHands(cribbageGame);
 
@@ -416,8 +416,56 @@ namespace Cribbage.API.Hubs
                 {
                     message = cribbageGame.Player_2.DisplayName + "'s hand had " + cribbageGame.Player_2.HandPoints + " points\n";
 
-                    
+                    if(!cribbageGame.Complete)
+                    {
+                        // Game not over, everything counted.
+                        message += cribbageGame.Player_1.DisplayName + "'s hand had " + cribbageGame.Player_1.HandPoints + " points\n";
+                        message += cribbageGame.Player_1.DisplayName + "'s crib had " + cribbageGame.Player_1.CribPoints + " points\n";
+                    }
+                    else if (cribbageGame.Complete && cribbageGame.Player_1.CribPoints != 0)
+                    {
+                        // Game is over after p1 counted crib.
+                        message += cribbageGame.Player_1.DisplayName + "'s hand had " + cribbageGame.Player_1.HandPoints + " points\n";
+                        message += cribbageGame.Player_1.DisplayName + "'s crib had " + cribbageGame.Player_1.CribPoints + " points\n";
+
+                    }
+                    else if (cribbageGame.Complete && cribbageGame.Player_1.HandPoints != 0 && cribbageGame.Player_1.CribPoints == 0)
+                    {
+                        // Game is ove after p1 counted their hand
+                        message += cribbageGame.Player_1.DisplayName + "'s hand had " + cribbageGame.Player_1.HandPoints + " points\n";
+
+                    }
+                    // No messages added if p2 won the game after counting their hand.
                 }
+                else if (cribbageGame.Dealer != 1)
+                {
+                    message = cribbageGame.Player_1.DisplayName + "'s hand had " + cribbageGame.Player_1.HandPoints + " points\n";
+
+                    if (!cribbageGame.Complete)
+                    {
+                        // Game not over, everything counted.
+                        message += cribbageGame.Player_2.DisplayName + "'s hand had " + cribbageGame.Player_2.HandPoints + " points\n";
+                        message += cribbageGame.Player_2.DisplayName + "'s crib had " + cribbageGame.Player_2.CribPoints + " points\n";
+                    }
+                    else if (cribbageGame.Complete && cribbageGame.Player_2.CribPoints != 0)
+                    {
+                        // Game is over after p2 counted crib.
+                        message += cribbageGame.Player_2.DisplayName + "'s hand had " + cribbageGame.Player_2.HandPoints + " points\n";
+                        message += cribbageGame.Player_2.DisplayName + "'s crib had " + cribbageGame.Player_2.CribPoints + " points\n";
+
+                    }
+                    else if (cribbageGame.Complete && cribbageGame.Player_2.HandPoints != 0 && cribbageGame.Player_2.CribPoints == 0)
+                    {
+                        // Game is ove after p2 counted their hand
+                        message += cribbageGame.Player_2.DisplayName + "'s hand had " + cribbageGame.Player_2.HandPoints + " points\n";
+
+                    }
+                    // No messages added if p1 won the game after counting their hand.
+                }
+
+                cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
+                await Clients.All.SendAsync("HandsCounted", cribbageGameJson, message);
+
             }
             catch (Exception)
             {
