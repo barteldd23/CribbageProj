@@ -62,7 +62,7 @@
         <Rectangle x:Name="rec4" HorizontalAlignment="Left" Height="105" Margin="484,596,0,0" Stroke="#FFAC1D0F" VerticalAlignment="Top" Width="84" StrokeThickness="15"/>
         <Rectangle x:Name="rec5" HorizontalAlignment="Left" Height="105" Margin="568,596,0,0" Stroke="#FFAC1D0F" VerticalAlignment="Top" Width="84" StrokeThickness="15"/>
         <Rectangle x:Name="rec6" HorizontalAlignment="Left" Height="105" Margin="652,596,0,0" Stroke="#FFAC1D0F" VerticalAlignment="Top" Width="84" StrokeThickness="15"/>
-        <Button x:Name="btnRefreshCards" Content="Refresh Cards" HorizontalAlignment="Right" Margin="0,799,427,0" Width="130" Height="35" VerticalAlignment="Top" FontSize="18" Click="RefreshCardsClick"/>
+        <Button x:Name="btnRefreshScreen" Content="Refresh Screen" HorizontalAlignment="Right" Margin="0,799,427,0" Width="130" Height="35" VerticalAlignment="Top" FontSize="18" Click="btnRefreshScreen_Click"/>
         <Label x:Name="lblMessageToPlayers" Content="Message To Players" HorizontalAlignment="Right" Margin="0,479,362,0" Width="806" Height="55" VerticalAlignment="Top" FontSize="20" FontWeight="Bold" Foreground="#FFAB1313"/>
         <Label Content="Current Count:" HorizontalAlignment="Left" Margin="429,235,0,0" VerticalAlignment="Top" FontSize="20" FontWeight="Bold"/>
         <Label x:Name="lblCurrentCount" Content="" HorizontalAlignment="Left" Margin="587,235,0,0" VerticalAlignment="Top" FontSize="20" FontWeight="Bold"/>
