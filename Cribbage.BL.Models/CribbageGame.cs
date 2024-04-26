@@ -46,7 +46,7 @@ namespace Cribbage.BL.Models
         {
             if (needDeck)
             {
-                Deck = new Deck();
+                Deck = new Deck(needDeck);
             }
         }
 

@@ -211,7 +211,7 @@ namespace Cribbage.API.Hubs
             }
         }
 
-        public async Task JoinGame(string user, string game)
+        public async Task JoinGame(string game, string user)
         {
             // Assign 2nd person to that Game. and hub group
             // Add Game to DB.
@@ -326,10 +326,12 @@ namespace Cribbage.API.Hubs
                 CribbageGame cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(game);
                 List<Card> pickedCards = JsonConvert.DeserializeObject<List<Card>>(card);
                 Card pickedCard = pickedCards[0];
-                if(CribbageGameManager.PlayCard(cribbageGame, pickedCard))
+                string message1 = cribbageGame.PlayerTurn.DisplayName + " played the " + pickedCard.name + "\n";
+                if (CribbageGameManager.PlayCard(cribbageGame, pickedCard))
                 {
                     cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-                    await Clients.All.SendAsync("Action", cribbageGameJson, "Player Turn: " + cribbageGame.PlayerTurn.DisplayName);
+                    message1 += "Player Turn: " + cribbageGame.PlayerTurn.DisplayName;
+                    await Clients.All.SendAsync("Action", cribbageGameJson, message1);
                     CheckCompletedGame(cribbageGame);
 
                     while (!cribbageGame.Complete 
@@ -366,7 +368,7 @@ namespace Cribbage.API.Hubs
                 else
                 {
                     cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-                    await Clients.All.SendAsync("Action", cribbageGameJson, "Unable to play cards. Player Turn: " + cribbageGame.PlayerTurn.DisplayName);
+                    await Clients.Caller.SendAsync("Action", cribbageGameJson, "Unable to play cards. Player Turn: " + cribbageGame.PlayerTurn.DisplayName);
                 }
             }
             catch (Exception)
@@ -375,7 +377,7 @@ namespace Cribbage.API.Hubs
             }
         }
 
-        private void CheckCompletedGame(CribbageGame cribbageGame)
+        private async void CheckCompletedGame(CribbageGame cribbageGame)
         {
             if (cribbageGame.Complete)
             {
