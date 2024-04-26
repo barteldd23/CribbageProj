@@ -222,9 +222,9 @@ namespace Cribbage.API.Hubs
                 if (cribbageGame.Computer)
                 {
                     // Initialize Game, shuffle and deal,
+                    CribbageGameManager.NextDealer(cribbageGame);
                     CribbageGameManager.ShuffleDeck(cribbageGame);
                     CribbageGameManager.Deal(cribbageGame);
-                    CribbageGameManager.NextDealer(cribbageGame);
                     cribbageGame.WhatToDo = "SelectCribCards";
 
                     // Serialize CribbageGame into Json
@@ -238,9 +238,9 @@ namespace Cribbage.API.Hubs
                     //need to wait for 2nd player / only update screen after they are all set 
 
                     // Initialize Game, shuffle and deal,
+                    CribbageGameManager.NextDealer(cribbageGame);
                     CribbageGameManager.ShuffleDeck(cribbageGame);
                     CribbageGameManager.Deal(cribbageGame);
-                    CribbageGameManager.NextDealer(cribbageGame);
                     cribbageGame.WhatToDo = "SelectCribCards";
 
                     // Serialize CribbageGame into Json
@@ -339,6 +339,25 @@ namespace Cribbage.API.Hubs
             catch (Exception)
             {
 
+                throw;
+            }
+        }
+
+        public async Task CutDeck(string game)
+        {
+            string cribbageGameJson;
+
+            try
+            {
+                CribbageGame cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(game);
+                CribbageGameManager.Cut(cribbageGame);
+                cribbageGame.WhatToDo = "playcard";
+
+                cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
+                await Clients.All.SendAsync("CardCut", cribbageGameJson, cribbageGame.PlayerTurn.DisplayName + " cut the " + cribbageGame.CutCard.name + "\n" + cribbageGame.PlayerTurn.DisplayName + "'s Turn.");
+            }
+            catch (Exception)
+            {
                 throw;
             }
         }

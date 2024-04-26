@@ -61,6 +61,7 @@ namespace Cribbage.WPFUI
             btnPlayCard.Visibility = Visibility.Collapsed;
             btnGo.Visibility = Visibility.Collapsed;
             btnCountCards.Visibility = Visibility.Collapsed;
+            btnCutDeck.Visibility = Visibility.Collapsed;
             btnSendToCrib.Visibility = Visibility.Visible;
 
             lblPlayer1DisplayName.Content = cribbageGame.Player_1.DisplayName + " Score";
@@ -308,10 +309,25 @@ namespace Cribbage.WPFUI
             _connection.On<string, string>("StartGameVsPlayer", (message, cribbageGameJson) => StartGameVsPlayerMessage(message, cribbageGameJson));
             _connection.On<string, string>("StartNewHand", (message, cribbageGameJson) => StartNewHandMessage(message, cribbageGameJson));
             _connection.On<string, string>("CutCard", (cribbageGameJson, message) => CutCardMessage(cribbageGameJson, message));
-            _connection.On<string>("GameFinished", (cribbageGameJson) => GameFinishedMessage(cribbageGameJson));
+            _connection.On<string, string>("CardCut", (cribbageGameJson, message) => CardCutMessage(cribbageGameJson, message));
             _connection.On<string, string>("Action", (cribbageGameJson, message) => PlayCardMessage(cribbageGameJson, message));
+            _connection.On<string, string>("HandsCounted", (cribbageGameJson, message) => HandsCountedMessage(cribbageGameJson, message));
+            _connection.On<string>("GameFinished", (cribbageGameJson) => GameFinishedMessage(cribbageGameJson));
+            
 
             _connection.StartAsync();
+        }
+
+        private void CardCutMessage(string cribbageGameJson, string message)
+        {
+            cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
+            signalRMessage = message;
+        }
+
+        private void HandsCountedMessage(string cribbageGameJson, string message)
+        {
+            cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
+            signalRMessage = message;
         }
 
         private void StartNewHandMessage(string message, string cribbageGameJson)
@@ -377,6 +393,7 @@ namespace Cribbage.WPFUI
         private void CutCardMessage(string cribbageGameJson, string message)
         {
             cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
+            signalRMessage = message;
         }
 
         private void StartGameVsComputerMessage(string message, string cribbageGameJson)
@@ -554,22 +571,50 @@ namespace Cribbage.WPFUI
 
         private void btnCountCards_Click(object sender, RoutedEventArgs e)
         {
-            playerHand = cribbageGame.Player_1.PlayedCards;
-            opponentHand = cribbageGame.Player_2.PlayedCards;
-            cribbageGame.PlayedCards = new List<Card>();
+            try
+            {
+                string cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
+                _connection.InvokeAsync("CountHands", cribbageGameJson);
 
+                playerHand = cribbageGame.Player_1.PlayedCards;
+                opponentHand = cribbageGame.Player_2.PlayedCards;
+                cribbageGame.PlayedCards = new List<Card>();
 
-            displayOpponentHand(opponentHand, true);
-            displayPlayerHand(playerHand);
-            displayPlayedCards();
+                displayOpponentHand(opponentHand, true);
+                displayPlayerHand(playerHand);
+                displayCribCards(true);
+                displayPlayedCards();
 
-            btnNextHand.Visibility = Visibility.Visible;
-            btnCountCards.Visibility = Visibility.Collapsed;
+                btnNextHand.Visibility = Visibility.Visible;
+                btnCountCards.Visibility = Visibility.Collapsed;
 
-            lblMessageToPlayers.Content = "Click 'Next Hand' to deal next hand.";
+                lblMessageToPlayers.Content = "Click 'Next Hand' to deal next hand.";
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void btnCutDeck_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
+                _connection.InvokeAsync("CutDeck", cribbageGameJson);
+
+                btnCutDeck.Visibility = Visibility.Collapsed;
+                lblMessageToPlayers.Content = "Click 'Refresh Screen' to update the screen.";
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
         #endregion
-         
+
         #region "CardsSelected"
 
         private void card1Selected(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -666,7 +711,13 @@ namespace Cribbage.WPFUI
             if(newHand)
             {
                 SetUpGame();
+                UpdateCutCard(cribbageGame);
                 newHand = false;
+            }
+            else if(cribbageGame.WhatToDo == "cutdeck")
+            {
+                lblMessageToPlayers.Content = signalRMessage;
+                btnCutDeck.Visibility = Visibility.Visible;
             }
             else
             {
@@ -679,6 +730,7 @@ namespace Cribbage.WPFUI
 
                 //Messages to players updated
                 lstMessages.Items.Add(signalRMessage);
+                this.lstMessages.SelectedIndex = this.lstMessages.Items.Count - 1;
                 lblMessageToPlayers.Content = " Player's Turn: " + cribbageGame.PlayerTurn.DisplayName;
 
                 //Update the cards, buttons, and selections
@@ -734,6 +786,14 @@ namespace Cribbage.WPFUI
                 BitmapImage card = new BitmapImage();
                 card.BeginInit();
                 card.UriSource = new Uri("pack://siteoforigin:,,,/images/card" + cribbageGame.CutCard.suit.ToString() + "_" + cribbageGame.CutCard.face.ToString() + ".png");
+                card.EndInit();
+                imgCutCard.Source = card;
+            }
+            else
+            {
+                BitmapImage card = new BitmapImage();
+                card.BeginInit();
+                card.UriSource = new Uri("pack://siteoforigin:,,,/images/cardBackBlue.png");
                 card.EndInit();
                 imgCutCard.Source = card;
             }
@@ -914,5 +974,7 @@ namespace Cribbage.WPFUI
             }
         }
         #endregion
+
+
     }
 }
