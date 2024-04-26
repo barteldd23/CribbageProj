@@ -590,12 +590,31 @@ namespace Cribbage.BL.Test
         [TestMethod]
         public void playCardTest6()
         {
-            CribbageGame cribbage = new CribbageGame();
+            CribbageGame cribbage = new CribbageGame(true);
             Player player1 = new Player();
             Player player2 = new Player();
             cribbage.Player_1 = player1;
             cribbage.Player_2 = player2;
+
+            List<Card> p1Cards =
+            [
+                cribbage.Deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Six).FirstOrDefault(),
+                cribbage.Deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Two).FirstOrDefault(),
+                cribbage.Deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Ace).FirstOrDefault(),
+            ];
+
+            List<Card> p2Cards =
+            [
+                cribbage.Deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Ten).FirstOrDefault(),
+                cribbage.Deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.King).FirstOrDefault(),
+                cribbage.Deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Five).FirstOrDefault(),
+            ];
+
+            cribbage.Player_1.Hand = p1Cards;
+            cribbage.Player_2.Hand = p2Cards;
             cribbage.PlayerTurn = cribbage.Player_1;
+
+
 
             List<Card> cards =
             [
@@ -604,11 +623,14 @@ namespace Cribbage.BL.Test
                 cribbage.Deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Seven).FirstOrDefault(),
             ];
             cribbage.PlayedCards = cards;
+            cribbage.CurrentRally.Add(cards[0]);
+            cribbage.CurrentRally.Add(cards[1]);
+            cribbage.CurrentRally.Add(cards[2]);
 
             Card card = new Card();
             card = cribbage.Deck.Cards.Where(c => c.suit == Suits.Spades && c.face == Faces.Six).FirstOrDefault();
 
-            CribbageGameManager.PlayCard(cribbage, card);
+            CribbageGameManager.PlayCard(cribbage, cribbage.Player_1.Hand[0]);
 
             Assert.AreEqual(4, cribbage.PlayedCards.Count);
             Assert.AreEqual(3, cribbage.Player_1.Score);
@@ -1481,6 +1503,68 @@ namespace Cribbage.BL.Test
             Assert.AreEqual(cribbage.WhatToDo, "playcard");
             Assert.AreEqual(cribbage.Player_1.Hand.Count, 1);
             Assert.AreEqual(3, cribbage.PlayedCards.Count);
+            Assert.AreEqual(0, cribbage.CurrentRally.Count);
+            Assert.AreEqual(cribbage.CurrentCount, 0);
+            Assert.AreEqual(0, cribbage.GoCount);
+            Assert.AreEqual(false, cribbage.Player_1.SaidGo);
+            Assert.AreEqual(false, cribbage.Player_2.SaidGo);
+        }
+        [TestMethod]
+        public void PlayCardNexAlreadySaidGoI0Cards()
+        {
+            CribbageGame cribbage = new CribbageGame(true);
+            Player player1 = new Player();
+            Player player2 = new Player();
+            player1.DisplayName = "p1";
+            player2.DisplayName = "p2";
+
+            List<Card> p1cards =
+            [
+                cribbage.Deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Ace).FirstOrDefault(),
+            ];
+
+            List<Card> p2cards =
+            [
+                cribbage.Deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Jack).FirstOrDefault(),
+                cribbage.Deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Ten).FirstOrDefault(),
+            ];
+
+            List<Card> playedCards = new List<Card>();
+            playedCards.Add(cribbage.Deck.Cards.Where(c => c.suit == Suits.Clubs && c.face == Faces.Jack).FirstOrDefault());
+            playedCards.Add(cribbage.Deck.Cards.Where(c => c.suit == Suits.Clubs && c.face == Faces.Four).FirstOrDefault());
+            playedCards.Add(cribbage.Deck.Cards.Where(c => c.suit == Suits.Clubs && c.face == Faces.Queen).FirstOrDefault());
+            playedCards.Add(cribbage.Deck.Cards.Where(c => c.suit == Suits.Hearts && c.face == Faces.Two).FirstOrDefault());
+            playedCards.Add(cribbage.Deck.Cards.Where(c => c.suit == Suits.Spades && c.face == Faces.Two).FirstOrDefault());
+
+
+            cribbage.Player_1 = player1;
+            cribbage.Player_2 = player2;
+            cribbage.Player_1.Hand.Add(p1cards[0]);
+            cribbage.Player_2.Hand.Add(p2cards[0]);
+            cribbage.Player_2.Hand.Add(p2cards[1]);
+            cribbage.PlayerTurn = cribbage.Player_1;
+
+            cribbage.PlayedCards.Add(playedCards[0]);
+            cribbage.PlayedCards.Add(playedCards[1]);
+            cribbage.PlayedCards.Add(playedCards[2]);
+            cribbage.PlayedCards.Add(playedCards[3]);
+            cribbage.PlayedCards.Add(playedCards[4]);
+
+            cribbage.CurrentRally.Add(playedCards[0]);
+            cribbage.CurrentRally.Add(playedCards[1]);
+            cribbage.CurrentRally.Add(playedCards[2]);
+            cribbage.CurrentRally.Add(playedCards[3]);
+            cribbage.CurrentRally.Add(playedCards[4]);
+
+            cribbage.GoCount = 1;
+            cribbage.Player_2.SaidGo = true;
+            cribbage.LastPlayerPlayed = cribbage.Player_1;
+
+            CribbageGameManager.PlayCard(cribbage, cribbage.Player_1.Hand[0]);
+            Assert.AreEqual(cribbage.PlayerTurn, cribbage.Player_2);
+            Assert.AreEqual(cribbage.WhatToDo, "playcard");
+            Assert.AreEqual(cribbage.Player_1.Hand.Count, 0);
+            Assert.AreEqual(6, cribbage.PlayedCards.Count);
             Assert.AreEqual(0, cribbage.CurrentRally.Count);
             Assert.AreEqual(cribbage.CurrentCount, 0);
             Assert.AreEqual(0, cribbage.GoCount);

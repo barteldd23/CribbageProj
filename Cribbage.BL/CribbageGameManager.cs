@@ -60,6 +60,10 @@ namespace Cribbage.BL
             {
                 // do nothing, playerTurn stays the same, p1 can play again, either playcard or go.
             }
+            else if(cribbageGame.PlayerTurn.Hand.Count == 0)
+            {
+                EndCountingRally(cribbageGame);
+            }
             //Scenario: Both players can not play, should go to the person after the last played player.
             //We dont know if p2 has no cards or just said go already.
             else if(otherPlayer.Hand.Count > 0)
@@ -402,26 +406,30 @@ namespace Cribbage.BL
                     cribbageGame.PlayerTurn.Score += 1;
                     EndCountingRally(cribbageGame);
                 }
-                CheckWinner(cribbageGame);
+                
 
                 if(cribbageGame.Player_1.Id == cribbageGame.PlayerTurn.Id)
                 {
-                    removed = cribbageGame.Player_1.Hand.Where(removed => removed.name == card.name).FirstOrDefault();
-                    cribbageGame.Player_1.Hand.Remove(removed);
+                    removed = cribbageGame.Player_1.Hand.Where(c => c.name == card.name).FirstOrDefault();
 
+                    cribbageGame.Player_1.Hand.Remove(removed);
                     cribbageGame.Player_1.PlayedCards.Add(removed);
+                    cribbageGame.Player_1.Score = cribbageGame.PlayerTurn.Score;
                 }
                 else
                 {
                     removed = cribbageGame.Player_2.Hand.Where(removed => removed.name == card.name).FirstOrDefault();
-                    cribbageGame.Player_2.Hand.Remove(removed);
 
+                    cribbageGame.Player_2.Hand.Remove(removed);
                     cribbageGame.Player_2.PlayedCards.Add(removed);
+                    cribbageGame.Player_2.Score = cribbageGame.PlayerTurn.Score;
                 }
 
-                cribbageGame.PlayerTurn.PlayedCards.Add(card);
+                CheckWinner(cribbageGame);
 
-                if(cribbageGame.Player_1.Hand.Count == 0 && cribbageGame.Player_2.Hand.Count == 0)
+                //cribbageGame.PlayerTurn.PlayedCards.Add(card);
+
+                if (cribbageGame.Player_1.Hand.Count == 0 && cribbageGame.Player_2.Hand.Count == 0)
                 {
                     EndCountingRally(cribbageGame);
                 }

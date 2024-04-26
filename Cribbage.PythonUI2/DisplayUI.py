@@ -67,6 +67,8 @@ playerHand = Hand([])
 gameData = CribbageGame([])
 opponentHand = Hand([])
 selectedCards = []
+playedCards = Hand([])
+currentRallyCards = []
 
 def setGameData(dataJson):
     cribbageGame = json.loads(dataJson)
@@ -136,6 +138,12 @@ def setGameData(gameJson):
     opponentHand.cards = NULL
     playerHand.cards =hands[0]
     opponentHand.cards = hands[1]
+    playedCards.cards = gameData.data["PlayedCards"]
+    currentRallyCards = gameData.data["CurrentRally"]
+    print('*********************************')
+    print(playedCards)
+    print('*********************************')
+    print(currentRallyCards)
     
 def setHands():
     if(pythonUser.Id == gameData.data["Player_1"]["Id"]):
@@ -153,10 +161,9 @@ def setStartGameFrame(playerHand, opponentHand):
         
     playerLabel.config(text=userDisplayName)
     opponentLabel.config(text=opponentDisplayName)
-    lblP1DisplayName.config(text = gameData.data["Player_1"]["DisplayName"])
-    lblP2DisplayName.config(text = gameData.data["Player_2"]["DisplayName"])
-    lblP1Score.config(text = gameData.data["Player_1"]["Score"])
-    lblP2Score.config(text = gameData.data["Player_2"]["Score"])
+    
+    displayPlayerScores()
+    
     
     playerLabel.grid(row=0, column=2, columnspan=2, padx=5, pady=5, sticky='news')
     opponentLabel.grid(row=0, column=2, columnspan=2, padx=5, pady=5, sticky='news')
@@ -194,21 +201,25 @@ def forgetButtons():
     lblCutPosition.grid_forget()
 
 def refreshScreen():
-    print('refresh start')
+   # print('refresh start')
     unselectCards()
-    print('unselected cards')
+   # print('unselected cards')
     forgetButtons()
-    print('forgot buttons')
+   # print('forgot buttons')
     if(gameData.data['PlayerTurn']['Id'] == pythonUser.Id):
         myTurn = True
     else:
         myTurn = False
     
-    print('myturn: ' + str(myTurn))
-    
+    #print('myturn: ' + str(myTurn))
+    print('******************************')
+    print('Refresh Screen')
+    print('******************************')
     displayCurrentCount()
     displayOpponentHand(True)
     displayPlayerHand()
+    displayPlayedCads()
+    displayPlayerScores()
     
     if(gameData.data['WhatToDo'] == 'SelectCribCards' and len(playerHand.cards) > 4):
         btnSendToCrib.grid(row=2, column=1, padx=5, pady=5, sticky='news')
@@ -361,6 +372,71 @@ def displayPlayerHand():
         myCard6.grid(row=1, column=5, sticky='news', padx=10)
     else:
         myCard6.grid_forget()
+
+def displayPlayedCads():
+    if(len(playedCards.cards) >= 1):
+        card = PhotoImage(file="./images/" + playedCards.cards[0]["imgPath"])
+        playedCard1.img = card.subsample(5,5)
+        playedCard1.config(image= playedCard1.img)
+        playedCard1.grid(row=1, column=0, sticky='news', padx=10)
+    else:
+        playedCard1.grid_forget()
+    if(len(playedCards.cards) >= 2):
+        card = PhotoImage(file="./images/" + playedCards.cards[1]["imgPath"])
+        playedCard2.img = card.subsample(5,5)
+        playedCard2.config(image= playedCard2.img)
+        playedCard2.grid(row=1, column=1, sticky='news', padx=10)
+    else:
+        playedCard2.grid_forget()
+    if(len(playedCards.cards) >= 3):
+        card = PhotoImage(file="./images/" + playedCards.cards[2]["imgPath"])
+        playedCard3.img = card.subsample(5,5)
+        playedCard3.config(image= playedCard3.img)
+        playedCard3.grid(row=1, column=2, sticky='news', padx=10)
+    else:
+        playedCard3.grid_forget()
+    if(len(playedCards.cards) >= 4):
+        card = PhotoImage(file="./images/" + playedCards.cards[3]["imgPath"])
+        playedCard4.img = card.subsample(5,5)
+        playedCard4.config(image= playedCard4.img)
+        playedCard4.grid(row=1, column=3, sticky='news', padx=10)
+    else:
+        playedCard4.grid_forget()
+    if(len(playedCards.cards) >= 5):
+        card = PhotoImage(file="./images/" + playedCards.cards[4]["imgPath"])
+        playedCard5.img = card.subsample(5,5)
+        playedCard5.config(image= playedCard5.img)
+        playedCard5.grid(row=1, column=4, sticky='news', padx=10)
+    else:
+        playedCard5.grid_forget()
+    if(len(playedCards.cards) >= 6):
+        card = PhotoImage(file="./images/" + playedCards.cards[5]["imgPath"])
+        playedCard6.img = card.subsample(5,5)
+        playedCard6.config(image= playedCard6.img)
+        playedCard6.grid(row=1, column=5, sticky='news', padx=10)
+    else:
+        playedCard6.grid_forget()
+    if(len(playedCards.cards) >= 7):
+        card = PhotoImage(file="./images/" + playedCards.cards[6]["imgPath"])
+        playedCard7.img = card.subsample(5,5)
+        playedCard7.config(image= playedCard7.img)
+        playedCard7.grid(row=1, column=5, sticky='news', padx=10)
+    else:
+        playedCard7.grid_forget()
+    if(len(playedCards.cards) >= 8):
+        card = PhotoImage(file="./images/" + playedCards.cards[7]["imgPath"])
+        playedCard8.img = card.subsample(5,5)
+        playedCard8.config(image= playedCard8.img)
+        playedCard8.grid(row=1, column=5, sticky='news', padx=10)
+    else:
+        playedCard8.grid_forget()
+        
+    
+def displayPlayerScores():
+    lblP1DisplayName.config(text = gameData.data["Player_1"]["DisplayName"])
+    lblP2DisplayName.config(text = gameData.data["Player_2"]["DisplayName"])
+    lblP1Score.config(text = gameData.data["Player_1"]["Score"])
+    lblP2Score.config(text = gameData.data["Player_2"]["Score"])
     
 def displayCutCard(isShowing):
     cutCardLabel.grid(row=0, column=10, sticky='s')
@@ -439,7 +515,7 @@ def onClick_PlayCard():
         gameToSendJson = getGameJson()
        # print(cardsToSendJson)
         print('*********')
-        hub_connection.send("CardsToCrib",[gameToSendJson, cardsToSendJson])
+        hub_connection.send("PlayCard",[gameToSendJson, cardsToSendJson])
     else:
         messagebox.showerror('Select Cards To Send To The Crib', 'Please select exactly two cards to send to the crib')
 def onClickSendToCrib():
@@ -738,7 +814,7 @@ cutCardImg = PhotoImage(file="./images/cardClubs_Jack.png")
 cutCard.img = cutCardImg.subsample(5,5);
 cutCard.config(image = cutCard.img);
 
-btnCountHand = tkinter.Button(rallyFrame, width=100, text='Count Hands', font=('Arial',14))
+btnCountHand = tkinter.Button(rallyFrame, text='Count Hands', font=('Arial',12))
 
 playerLabel = tkinter.Label(usersFrame, text="User's Hand");
 
