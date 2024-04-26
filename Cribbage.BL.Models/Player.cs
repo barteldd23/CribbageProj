@@ -5,7 +5,7 @@
         public List<Card> Hand { get; set; } = new List<Card>();
         public List<Card> PlayedCards { get; set; } = new List<Card>();
         public int HandPoints { get; set; } = 0;
-
+        public int CribPoints {  get; set; } = 0;
         public int Score { get; set; } = 0;
         public bool SaidGo { get; set; } = false;
 
