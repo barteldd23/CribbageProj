@@ -776,6 +776,7 @@ namespace Cribbage.WPFUI
             else
             {
                 btnCountCards.Visibility = Visibility.Visible;
+                lblMessageToPlayers.Content = "Click 'Count Cards' to count the cards.";
             }
         }
 
