@@ -89,11 +89,13 @@ namespace Cribbage.BL
             {
                 cribbageGame.Winner = cribbageGame.Player_1.Id;
                 cribbageGame.Complete = true;
+                cribbageGame.WhatToDo = "startnewgame";
             }
             else if (cribbageGame.Player_2.Score >= 121)
             {
                 cribbageGame.Winner = cribbageGame.Player_2.Id;
                 cribbageGame.Complete = true;
+                cribbageGame.WhatToDo = "startnewgame";
             }
             return cribbageGame.Complete;
         }
@@ -131,6 +133,8 @@ namespace Cribbage.BL
             cribbageGame.Player_2.PlayedCards.Clear();
             cribbageGame.Player_1.SaidGo = false;
             cribbageGame.Player_2.SaidGo = false;
+            cribbageGame.Player_1.CribPoints = 0;
+            cribbageGame.Player_2.CribPoints = 0;
             cribbageGame.Crib.Clear();
             cribbageGame.CutCard = null;
 
@@ -458,7 +462,7 @@ namespace Cribbage.BL
             if(cribbageGame.Player_1.Hand.Count == 0 && cribbageGame.Player_2.Hand.Count == 0)
             {
                 cribbageGame.WhatToDo = "counthands";
-                NextDealer(cribbageGame);
+               // NextDealer(cribbageGame);
             }
             else
             {
@@ -650,9 +654,51 @@ namespace Cribbage.BL
         #endregion
 
         #region "Count Hand Points"
+
+        public static void CountHands(CribbageGame cribbageGame)
+        {
+            cribbageGame.Player_1.Hand = cribbageGame.Player_1.PlayedCards;
+            cribbageGame.Player_2.Hand = cribbageGame.Player_2.PlayedCards;
+            cribbageGame.Player_1.Hand.Add(cribbageGame.CutCard);
+            cribbageGame.Player_2.Hand.Add(cribbageGame.CutCard);
+            cribbageGame.Crib.Add(cribbageGame.CutCard);
+            cribbageGame.WhatToDo = "startnewhand";
+
+            if (cribbageGame.Dealer == 1)
+            {
+                cribbageGame.Player_2.HandPoints = CountHand(cribbageGame, cribbageGame.Player_2.Hand);
+                cribbageGame.Player_2.Score += cribbageGame.Player_2.HandPoints;
+
+                if (CheckWinner(cribbageGame))
+                    return;
+
+                cribbageGame.Player_1.HandPoints = CountHand(cribbageGame, cribbageGame.Player_1.Hand);
+                cribbageGame.Player_1.Score += cribbageGame.Player_1.HandPoints;
+                if (CheckWinner(cribbageGame))
+                    return;
+
+                cribbageGame.Player_1.CribPoints = CountHand(cribbageGame, cribbageGame.Crib, true);
+                cribbageGame.Player_1.Score += cribbageGame.Player_1.CribPoints;
+            }
+            else if (cribbageGame.Dealer != 1)
+            {
+                cribbageGame.Player_1.HandPoints = CountHand(cribbageGame, cribbageGame.Player_1.Hand);
+                cribbageGame.Player_1.Score += cribbageGame.Player_1.HandPoints;
+
+                if (CheckWinner(cribbageGame))
+                    return;
+
+                cribbageGame.Player_2.HandPoints = CountHand(cribbageGame, cribbageGame.Player_2.Hand);
+                cribbageGame.Player_2.Score += cribbageGame.Player_2.HandPoints;
+                if (CheckWinner(cribbageGame))
+                    return;
+
+                cribbageGame.Player_2.CribPoints = CountHand(cribbageGame, cribbageGame.Crib, true);
+                cribbageGame.Player_2.Score += cribbageGame.Player_2.CribPoints;
+            }
+        }
         public static int CountHand(CribbageGame cribbageGame, List<Card> hand, bool crib = false)
         {
-            hand.Add(cribbageGame.CutCard);
             int points_to_add = 0;
 
             //Check for pairs with 2 cards
