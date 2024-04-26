@@ -507,7 +507,10 @@ def getGameJson():
 def getUserJson():
     return json.dumps(asdict(pythonUser))
 
-
+def onClick_Go():
+    gameToSendJson = getGameJson()
+    print('******Pushed GO Button ********')
+    hub_connection.send("Go",[gameToSendJson])
 def onClick_PlayCard():
     if(len(selectedCards) == 1):
         cardsToSend= [playerHand.cards[selectedCards[0]]]
@@ -846,7 +849,7 @@ myCard6.bind("<Button-1>", onclick_Card6)
 btnSendToCrib = tkinter.Button(usersFrame, text="Send To Crib", command=onClickSendToCrib)
 btnNextHand = tkinter.Button(usersFrame, text="Next Hand")
 btnPlayCard = tkinter.Button(usersFrame, text="Play Card", command=onClick_PlayCard)
-btnGo = tkinter.Button(usersFrame, text="Go");
+btnGo = tkinter.Button(usersFrame, text="Go", width=100, command=onClick_Go);
 
 opponentFrame.grid_propagate(0)
 rallyFrame.grid_propagate(0)
