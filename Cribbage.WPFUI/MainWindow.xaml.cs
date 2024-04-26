@@ -22,6 +22,7 @@ namespace Cribbage.WPFUI
         string dealer;
         string currentCount;
         string signalRMessage;
+        bool newHand = false;
 
         public MainWindow()
         {
@@ -55,11 +56,12 @@ namespace Cribbage.WPFUI
             rec5.Visibility = Visibility.Collapsed;
             rec6.Visibility = Visibility.Collapsed;
 
-            btnRefreshCards.Visibility = Visibility.Collapsed;
+            btnRefreshScreen.Visibility = Visibility.Collapsed;
             btnNextHand.Visibility = Visibility.Collapsed;
             btnPlayCard.Visibility = Visibility.Collapsed;
             btnGo.Visibility = Visibility.Collapsed;
             btnCountCards.Visibility = Visibility.Collapsed;
+            btnSendToCrib.Visibility = Visibility.Visible;
 
             lblPlayer1DisplayName.Content = cribbageGame.Player_1.DisplayName + " Score";
             lblPlayer1Score.Content = cribbageGame.Player_1.Score;
@@ -304,11 +306,23 @@ namespace Cribbage.WPFUI
 
             _connection.On<string, string>("StartGame", (message, cribbageGameJson) => StartGameVsComputerMessage(message, cribbageGameJson));
             _connection.On<string, string>("StartGameVsPlayer", (message, cribbageGameJson) => StartGameVsPlayerMessage(message, cribbageGameJson));
+            _connection.On<string, string>("StartNewHand", (message, cribbageGameJson) => StartNewHandMessage(message, cribbageGameJson));
             _connection.On<string, string>("CutCard", (cribbageGameJson, message) => CutCardMessage(cribbageGameJson, message));
             _connection.On<string>("GameFinished", (cribbageGameJson) => GameFinishedMessage(cribbageGameJson));
             _connection.On<string, string>("Action", (cribbageGameJson, message) => PlayCardMessage(cribbageGameJson, message));
 
             _connection.StartAsync();
+        }
+
+        private void StartNewHandMessage(string message, string cribbageGameJson)
+        {
+            cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
+            playerHand = cribbageGame.Player_1.Hand;
+            opponentHand = cribbageGame.Player_2.Hand;
+            currentCount = cribbageGame.CurrentCount.ToString();
+            signalRMessage = "";
+            signalRMessage = message;
+            newHand = true;
         }
 
         private void PlayCardMessage(string cribbageGameJson, string message)
@@ -466,10 +480,10 @@ namespace Cribbage.WPFUI
                     string userJson = JsonConvert.SerializeObject(loggedInUser);
                     _connection.InvokeAsync("CardsToCrib", cribbageGameJson, strSelectedCards, userJson);
 
-                    btnRefreshCards.Visibility = Visibility.Visible;
+                    btnRefreshScreen.Visibility = Visibility.Visible;
                     btnSendToCrib.Visibility = Visibility.Collapsed;
 
-                    lblMessageToPlayers.Content = "Click 'Refresh Cards' to update the screen.";
+                    lblMessageToPlayers.Content = "Click 'Refresh Screen' to update the screen.";
                 }
                 catch (Exception ex)
                 {
@@ -485,13 +499,12 @@ namespace Cribbage.WPFUI
         private void btnGo_Click(object sender, RoutedEventArgs e)
         {
             string cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-            string userJson = JsonConvert.SerializeObject(loggedInUser);
-            _connection.InvokeAsync("Go", cribbageGameJson, userJson);
+            _connection.InvokeAsync("Go", cribbageGameJson);
 
             btnPlayCard.Visibility = Visibility.Collapsed;    
             btnGo.Visibility = Visibility.Collapsed;
 
-            lblMessageToPlayers.Content = "Click 'Refresh Cards' to update the screen.";
+            lblMessageToPlayers.Content = "Click 'Refresh Screen' to update the screen.";
         }
 
         private void btnPlayCard_Click(object sender, RoutedEventArgs e)
@@ -505,11 +518,11 @@ namespace Cribbage.WPFUI
                     string userJson = JsonConvert.SerializeObject(loggedInUser);
                     _connection.InvokeAsync("PlayCard", cribbageGameJson, strSelectedCard);
 
-                    btnRefreshCards.Visibility = Visibility.Visible;
+                    btnRefreshScreen.Visibility = Visibility.Visible;
                     btnPlayCard.Visibility = Visibility.Collapsed;
                     btnGo.Visibility = Visibility.Collapsed;
 
-                    lblMessageToPlayers.Content = "Click 'Refresh Cards' to update the screen.";
+                    lblMessageToPlayers.Content = "Click 'Refresh Screen' to update the screen.";
                 }
                 catch (Exception ex)
                 {
@@ -518,31 +531,45 @@ namespace Cribbage.WPFUI
             }
             else
             {
-                MessageBox.Show("Select one card to play to create a current count sum <= 31. OR press 'Go'.");
+                MessageBox.Show("Select one card to play to create a current count sum <= 31.");
             }
         }
 
         private void btnNextHand_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                string cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
+                _connection.InvokeAsync("NewHand", cribbageGameJson);
 
+                btnNextHand.Visibility = Visibility.Collapsed;
+
+                lblMessageToPlayers.Content = "Click 'Refresh Screen' to update the screen.";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void btnCountCards_Click(object sender, RoutedEventArgs e)
         {
             playerHand = cribbageGame.Player_1.PlayedCards;
             opponentHand = cribbageGame.Player_2.PlayedCards;
-            cribbageGame.PlayedCards = null;
+            cribbageGame.PlayedCards = new List<Card>();
 
 
-            //displayOpponentHand(opponentHand, true);
-            //displayPlayerHand(playerHand);
+            displayOpponentHand(opponentHand, true);
+            displayPlayerHand(playerHand);
             displayPlayedCards();
 
             btnNextHand.Visibility = Visibility.Visible;
             btnCountCards.Visibility = Visibility.Collapsed;
+
+            lblMessageToPlayers.Content = "Click 'Next Hand' to deal next hand.";
         }
         #endregion
-
+         
         #region "CardsSelected"
 
         private void card1Selected(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -634,27 +661,35 @@ namespace Cribbage.WPFUI
         //Refresh the screen method 
         //Read the "what to do property" --> goes to the correct method (switch statement) to set the screen
         //Read the player turn --> match player turn id to user id
-        private void RefreshCardsClick(object sender, RoutedEventArgs e)
+        private void btnRefreshScreen_Click(object sender, RoutedEventArgs e)
         {
-            //Player scores updated
-            lblPlayer1Score.Content = cribbageGame.Player_1.Score;
-            lblPlayer2Score.Content = cribbageGame.Player_2.Score;
+            if(newHand)
+            {
+                SetUpGame();
+                newHand = false;
+            }
+            else
+            {
+                //Player scores updated
+                lblPlayer1Score.Content = cribbageGame.Player_1.Score;
+                lblPlayer2Score.Content = cribbageGame.Player_2.Score;
 
-            //Current count updated
-            lblCurrentCount.Content = cribbageGame.CurrentCount;
-            
-            //Messages to players updated
-            lstMessages.Items.Add(signalRMessage);
-            lblMessageToPlayers.Content = " Player's Turn: " + cribbageGame.PlayerTurn.DisplayName;
+                //Current count updated
+                lblCurrentCount.Content = cribbageGame.CurrentCount;
 
-            //Update the cards, buttons, and selections
-            displayPlayerHand(playerHand);
-            displayOpponentHand(opponentHand, true);
-            displayPlayedCards();
-            displayCribCards(true);
-            UpdateCutCard(cribbageGame);
-            RemoveSelectedItems();
-            UpdateButtonSelection();           
+                //Messages to players updated
+                lstMessages.Items.Add(signalRMessage);
+                lblMessageToPlayers.Content = " Player's Turn: " + cribbageGame.PlayerTurn.DisplayName;
+
+                //Update the cards, buttons, and selections
+                displayPlayerHand(playerHand);
+                displayOpponentHand(opponentHand, true);
+                displayPlayedCards();
+                displayCribCards(true);
+                UpdateCutCard(cribbageGame);
+                RemoveSelectedItems();
+                UpdateButtonSelection();
+            }
         }
 
         private void RemoveSelectedItems()
@@ -674,15 +709,16 @@ namespace Cribbage.WPFUI
 
             if (cribbageGame.GoCount != 2 && (opponentHand.Count >= 1 || playerHand.Count >= 1))
             {
-                if (cribbageGame.PlayerTurn.Id != loggedInUser.Id && cribbageGame.Computer)
+                if (cribbageGame.PlayerTurn.Id == loggedInUser.Id) 
                 {
-                    PickCardToPlay(cribbageGame);
-                }
-                // need to adjust buttons based on "CanPlay" method
-                else if (cribbageGame.PlayerTurn.Id == loggedInUser.Id) 
-                {
-                    btnPlayCard.Visibility = Visibility.Visible;
-                    btnGo.Visibility = Visibility.Visible;
+                    if (cribbageGame.WhatToDo == "playcard" && playerHand.Count >= 1)
+                    {
+                        btnPlayCard.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        btnGo.Visibility = Visibility.Visible;
+                    }
                 } 
             }
             else
@@ -774,7 +810,7 @@ namespace Cribbage.WPFUI
                 imgPlayedCard7.Source = card;
             }
             else
-                imgPlayerCard6.Source = null;
+                imgPlayedCard7.Source = null;
             if (cribbageGame.PlayedCards.Count >= 8)
             {
                 card = new BitmapImage();
