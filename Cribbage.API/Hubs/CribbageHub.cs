@@ -320,6 +320,8 @@ namespace Cribbage.API.Hubs
         public async Task PlayCard(string game, string card)
         {
             string cribbageGameJson;    
+
+            // need to add the "CanPlay" method somewhere in here
             
             try
             {
@@ -345,7 +347,7 @@ namespace Cribbage.API.Hubs
                             Card computerCard = CribbageGameManager.Pick_Card_To_Play(cribbageGame);
                             string message = cribbageGame.PlayerTurn.DisplayName + " played the " + computerCard.name + "\n";
                             CribbageGameManager.PlayCard(cribbageGame, computerCard);
-                            message += cribbageGame.CurrentCount.ToString() + "\n";
+                            message += "Current Count: " + cribbageGame.CurrentCount.ToString() + "\n";
                             cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
                             await Clients.All.SendAsync("Action", cribbageGameJson, message + cribbageGame.PlayerTurn.DisplayName + "'s Turn.");
                         }
@@ -353,7 +355,7 @@ namespace Cribbage.API.Hubs
                         {
                             string message = cribbageGame.PlayerTurn.DisplayName + " said go.\n";
                             CribbageGameManager.Go(cribbageGame);
-                            message += cribbageGame.CurrentCount.ToString() + "\n";
+                            message += "Current Count: " + cribbageGame.CurrentCount.ToString() + "\n";
                             cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
                             await Clients.All.SendAsync("Action", cribbageGameJson, message + cribbageGame.PlayerTurn.DisplayName + "'s Turn.");
                         }
@@ -377,75 +379,29 @@ namespace Cribbage.API.Hubs
             }
         }
 
-        public async Task CountHands(string game)
+        public async Task Go(string game, string user)
         {
             string cribbageGameJson;
 
             try
             {
                 CribbageGame cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(game);
+                User currentUser = JsonConvert.DeserializeObject<User>(user);
+                string message;
 
-                CribbageGameManager.CountHands(cribbageGame);
-                string message = "****Hands Counted****\n";
-                if (cribbageGame.Dealer == 1)
-                {
-                    message += cribbageGame.Player_2.DisplayName + "'s hand had " + cribbageGame.Player_2.HandPoints + " points.\n";
-                    if( !cribbageGame.Complete )
-                    {
-                        // game isnt complete, everything was counted.
-                        message += cribbageGame.Player_1.DisplayName + "'s hand had " + cribbageGame.Player_1.HandPoints + " points.\n";
-                        message += cribbageGame.Player_1.DisplayName + "'s crib had " + cribbageGame.Player_1.CribPoints + " points.\n";
-                    }else if ( cribbageGame.Complete && cribbageGame.Player_1.CribPoints == 0 )
-                    {
-                        // p1 won after counting their hand. Did not count their crib.
-                        message += cribbageGame.Player_1.DisplayName + "'s hand had " + cribbageGame.Player_1.HandPoints + " points.\n";
-                    }else if ( cribbageGame.Complete && cribbageGame.Player_1.HandPoints == 0 && cribbageGame.Player_1.CribPoints > 0 )
-                    {
-                        // p1 won after counting their crib.
-                        message += cribbageGame.Player_1.DisplayName + "'s hand had " + cribbageGame.Player_1.HandPoints + " points.\n";
-                        message += cribbageGame.Player_1.DisplayName + "'s crib had " + cribbageGame.Player_1.CribPoints + " points.\n";
-
-                    }
-                    // No message added if p2 won after counting their hand.
-                }
-                else // p2 was the dealer
-                {
-                    message += cribbageGame.Player_1.DisplayName + "'s hand had " + cribbageGame.Player_1.HandPoints + " points.\n";
-                    if (!cribbageGame.Complete)
-                    {
-                        // game isnt complete, everything was counted.
-                        message += cribbageGame.Player_2.DisplayName + "'s hand had " + cribbageGame.Player_2.HandPoints + " points.\n";
-                        message += cribbageGame.Player_2.DisplayName + "'s crib had " + cribbageGame.Player_2.CribPoints + " points.\n";
-                    }
-                    else if (cribbageGame.Complete && cribbageGame.Player_2.CribPoints == 0)
-                    {
-                        // p2 won after counting their hand. Did not count their crib.
-                        message += cribbageGame.Player_2.DisplayName + "'s hand had " + cribbageGame.Player_2.HandPoints + " points.\n";
-                    }
-                    else if (cribbageGame.Complete && cribbageGame.Player_1.HandPoints == 0 && cribbageGame.Player_1.CribPoints > 0)
-                    {
-                        // p2 won after counting their crib.
-                        message += cribbageGame.Player_2.DisplayName + "'s hand had " + cribbageGame.Player_2.HandPoints + " points.\n";
-                        message += cribbageGame.Player_2.DisplayName + "'s crib had " + cribbageGame.Player_2.CribPoints + " points.\n";
-
-                    }
-                    // No message added if p1 won after counting their hand.
-                }
-
+                message = cribbageGame.PlayerTurn.DisplayName + " said go.\n";
+                CribbageGameManager.Go(cribbageGame);
+                message += "Current Count: " + cribbageGame.CurrentCount.ToString() + "\n";
                 cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-                await Clients.Caller.SendAsync("HandsCounted", cribbageGameJson, message);
-
-
-
+                await Clients.All.SendAsync("Action", cribbageGameJson, message + cribbageGame.PlayerTurn.DisplayName + "'s Turn.");
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
 
-        private async void CheckCompletedGame(CribbageGame cribbageGame)
+        private void CheckCompletedGame(CribbageGame cribbageGame)
         {
             if (cribbageGame.Complete)
             {
