@@ -320,6 +320,8 @@ namespace Cribbage.API.Hubs
         public async Task PlayCard(string game, string card)
         {
             string cribbageGameJson;    
+
+            // need to add the "CanPlay" method somewhere in here
             
             try
             {
@@ -343,7 +345,7 @@ namespace Cribbage.API.Hubs
                             Card computerCard = CribbageGameManager.Pick_Card_To_Play(cribbageGame);
                             string message = cribbageGame.PlayerTurn.DisplayName + " played the " + computerCard.name + "\n";
                             CribbageGameManager.PlayCard(cribbageGame, computerCard);
-                            message += cribbageGame.CurrentCount.ToString() + "\n";
+                            message += "Current Count: " + cribbageGame.CurrentCount.ToString() + "\n";
                             cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
                             await Clients.All.SendAsync("Action", cribbageGameJson, message + cribbageGame.PlayerTurn.DisplayName + "'s Turn.");
                         }
@@ -351,7 +353,7 @@ namespace Cribbage.API.Hubs
                         {
                             string message = cribbageGame.PlayerTurn.DisplayName + " said go.\n";
                             CribbageGameManager.Go(cribbageGame);
-                            message += cribbageGame.CurrentCount.ToString() + "\n";
+                            message += "Current Count: " + cribbageGame.CurrentCount.ToString() + "\n";
                             cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
                             await Clients.All.SendAsync("Action", cribbageGameJson, message + cribbageGame.PlayerTurn.DisplayName + "'s Turn.");
                         }
@@ -368,6 +370,28 @@ namespace Cribbage.API.Hubs
                     cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
                     await Clients.All.SendAsync("Action", cribbageGameJson, "Unable to play cards. Player Turn: " + cribbageGame.PlayerTurn.DisplayName);
                 }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task Go(string game, string user)
+        {
+            string cribbageGameJson;
+
+            try
+            {
+                CribbageGame cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(game);
+                User currentUser = JsonConvert.DeserializeObject<User>(user);
+                string message;
+
+                message = cribbageGame.PlayerTurn.DisplayName + " said go.\n";
+                CribbageGameManager.Go(cribbageGame);
+                message += "Current Count: " + cribbageGame.CurrentCount.ToString() + "\n";
+                cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
+                await Clients.All.SendAsync("Action", cribbageGameJson, message + cribbageGame.PlayerTurn.DisplayName + "'s Turn.");
             }
             catch (Exception)
             {
