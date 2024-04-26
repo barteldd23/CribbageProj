@@ -74,23 +74,31 @@ def setGameData(dataJson):
     cribbageGame = json.loads(dataJson)
     gameData.data = NULL
     gameData.data = cribbageGame
+    
+
 ###################### Methods for Received Hub Messages ##############
+
+def receivedHandsCountedMessage(gameJson, message):
+    setMessage(message)
+    setGameData(gameJson)
+    displayCutCard(True)
+    refreshScreen(True)
 def receivedCardWasCutMessage(gameJson, message):
     setMessage(message)
     setGameData(gameJson)
     displayCutCard(True)
-    refreshScreen()
+    refreshScreen(False)
     
 def receivedCutCardMessage(gameJson, message):
     setMessage(message)
     setGameData(gameJson)
     displayCutCard(False)
-    refreshScreen()
+    refreshScreen(False)
     
 def receivedActionMessage(gameJson, message):
     setMessage(message)
     setGameData(gameJson)
-    refreshScreen()
+    refreshScreen(False)
         
 def receivedCreateUserMessage(isCreated, messageInfo):
     if(isCreated):
@@ -122,12 +130,12 @@ def receivedStartGameMessage(message, gameJson):
     #print(cribbageGame);
     setGameData(gameJson)
     
-    print(playerHand)
-    print(opponentHand)
+    #print(playerHand)
+    #print(opponentHand)
     
     setStartGameFrame(playerHand, opponentHand)
     print('setStartGameFrame')
-    refreshScreen()
+    refreshScreen(False)
     
 def setGameData(gameJson):
     cribbageGame = json.loads(gameJson)
@@ -200,7 +208,7 @@ def forgetButtons():
     txtCutPosition.grid_forget()
     lblCutPosition.grid_forget()
 
-def refreshScreen():
+def refreshScreen(showOpponent):
    # print('refresh start')
     unselectCards()
    # print('unselected cards')
@@ -216,7 +224,7 @@ def refreshScreen():
     print('Refresh Screen')
     print('******************************')
     displayCurrentCount()
-    displayOpponentHand(True)
+    displayOpponentHand(showOpponent)
     displayPlayerHand()
     displayPlayedCads()
     displayPlayerScores()
@@ -378,56 +386,56 @@ def displayPlayedCads():
         card = PhotoImage(file="./images/" + playedCards.cards[0]["imgPath"])
         playedCard1.img = card.subsample(5,5)
         playedCard1.config(image= playedCard1.img)
-        playedCard1.grid(row=1, column=0, sticky='news', padx=10)
+        playedCard1.grid(row=1, column=0, sticky='news', padx=2)
     else:
         playedCard1.grid_forget()
     if(len(playedCards.cards) >= 2):
         card = PhotoImage(file="./images/" + playedCards.cards[1]["imgPath"])
         playedCard2.img = card.subsample(5,5)
         playedCard2.config(image= playedCard2.img)
-        playedCard2.grid(row=1, column=1, sticky='news', padx=10)
+        playedCard2.grid(row=1, column=1, sticky='news', padx=2)
     else:
         playedCard2.grid_forget()
     if(len(playedCards.cards) >= 3):
         card = PhotoImage(file="./images/" + playedCards.cards[2]["imgPath"])
         playedCard3.img = card.subsample(5,5)
         playedCard3.config(image= playedCard3.img)
-        playedCard3.grid(row=1, column=2, sticky='news', padx=10)
+        playedCard3.grid(row=1, column=2, sticky='news', padx=2)
     else:
         playedCard3.grid_forget()
     if(len(playedCards.cards) >= 4):
         card = PhotoImage(file="./images/" + playedCards.cards[3]["imgPath"])
         playedCard4.img = card.subsample(5,5)
         playedCard4.config(image= playedCard4.img)
-        playedCard4.grid(row=1, column=3, sticky='news', padx=10)
+        playedCard4.grid(row=1, column=3, sticky='news', padx=2)
     else:
         playedCard4.grid_forget()
     if(len(playedCards.cards) >= 5):
         card = PhotoImage(file="./images/" + playedCards.cards[4]["imgPath"])
         playedCard5.img = card.subsample(5,5)
         playedCard5.config(image= playedCard5.img)
-        playedCard5.grid(row=1, column=4, sticky='news', padx=10)
+        playedCard5.grid(row=1, column=4, sticky='news', padx=2)
     else:
         playedCard5.grid_forget()
     if(len(playedCards.cards) >= 6):
         card = PhotoImage(file="./images/" + playedCards.cards[5]["imgPath"])
         playedCard6.img = card.subsample(5,5)
         playedCard6.config(image= playedCard6.img)
-        playedCard6.grid(row=1, column=5, sticky='news', padx=10)
+        playedCard6.grid(row=1, column=5, sticky='news', padx=2)
     else:
         playedCard6.grid_forget()
     if(len(playedCards.cards) >= 7):
         card = PhotoImage(file="./images/" + playedCards.cards[6]["imgPath"])
         playedCard7.img = card.subsample(5,5)
         playedCard7.config(image= playedCard7.img)
-        playedCard7.grid(row=1, column=6, sticky='news', padx=10)
+        playedCard7.grid(row=1, column=6, sticky='news', padx=2)
     else:
         playedCard7.grid_forget()
     if(len(playedCards.cards) >= 8):
         card = PhotoImage(file="./images/" + playedCards.cards[7]["imgPath"])
         playedCard8.img = card.subsample(5,5)
         playedCard8.config(image= playedCard8.img)
-        playedCard8.grid(row=1, column=7, sticky='news', padx=10)
+        playedCard8.grid(row=1, column=7, sticky='news', padx=2)
     else:
         playedCard8.grid_forget()
         
@@ -507,6 +515,10 @@ def getGameJson():
 def getUserJson():
     return json.dumps(asdict(pythonUser))
 
+def onClick_CountHand():
+    gameToSendJson = getGameJson()
+    print('******Pushed GO Button ********')
+    hub_connection.send("CountHands",[gameToSendJson])
 def onClick_Go():
     gameToSendJson = getGameJson()
     print('******Pushed GO Button ********')
@@ -630,6 +642,7 @@ hub_connection.on("StartGame", lambda data: receivedStartGameMessage(data[0],dat
 hub_connection.on("CardWasCut", lambda data: receivedCardWasCutMessage(data[0], data[1]))
 hub_connection.on("Action", lambda data: receivedActionMessage(data[0], data[1]))
 hub_connection.on("CutCard", lambda data: receivedCutCardMessage(data[0],data[1]))
+hub_connection.on("HandsCounted", lambda data: receivedHandsCountedMessage(data[0],data[1]))
 hub_connection.start()
 
 
@@ -693,7 +706,8 @@ availableGamesFrame.grid_propagate(0)
 cribFrame.grid(row=0, column=0, sticky='news')
 playFrame.grid(row=0, column=1, sticky='news')
 scoreFrame.grid(row=0, column=2, sticky='news')
-availableGamesFrame.grid(row=0, column=3, sticky='news')
+
+#availableGamesFrame.grid(row=0, column=3, sticky='news')
 
 # cribFrame.pack(side='left')
 # playFrame.pack(side='left')
@@ -795,9 +809,9 @@ txtGameMessages = tkinter.Text(rallyFrame, width=80, height=5, state='disabled')
 txtGameMessages.config(state='normal')
 txtGameMessages.insert('1.0', 'Initial Message\n')
 txtGameMessages.config(state='disabled')
-txtGameMessages.grid(row=3, column=0, columnspan=8, sticky='ews')
+txtGameMessages.grid(row=2, column=0, columnspan=8, sticky='ews')
 scrollbar = tkinter.Scrollbar(rallyFrame, orient=VERTICAL, command=txtGameMessages.yview)
-scrollbar.grid(row=3, column=9, sticky='ns')
+scrollbar.grid(row=2, column=8, sticky='ns')
 txtGameMessages.config(yscrollcommand = scrollbar.set)
 
 lblCutPosition = tkinter.Label(rallyFrame, text='Enter card position to cut (1-40)', font=('Arial',14))
@@ -817,7 +831,7 @@ cutCardImg = PhotoImage(file="./images/cardClubs_Jack.png")
 cutCard.img = cutCardImg.subsample(5,5);
 cutCard.config(image = cutCard.img);
 
-btnCountHand = tkinter.Button(rallyFrame, text='Count Hands', font=('Arial',12))
+btnCountHand = tkinter.Button(rallyFrame, text='Count Hands', font=('Arial',12), command=onClick_CountHand)
 
 playerLabel = tkinter.Label(usersFrame, text="User's Hand");
 
