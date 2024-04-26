@@ -487,6 +487,11 @@ namespace Cribbage.WPFUI
             string cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
             string userJson = JsonConvert.SerializeObject(loggedInUser);
             _connection.InvokeAsync("Go", cribbageGameJson, userJson);
+
+            btnPlayCard.Visibility = Visibility.Collapsed;    
+            btnGo.Visibility = Visibility.Collapsed;
+
+            lblMessageToPlayers.Content = "Click 'Refresh Cards' to update the screen.";
         }
 
         private void btnPlayCard_Click(object sender, RoutedEventArgs e)
