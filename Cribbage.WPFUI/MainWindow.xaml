@@ -27,12 +27,12 @@
         <Image x:Name="imgOppenentCard5" Height="100" Width="83" Source="images/cardBackBlue.png" Margin="566,0,751,734" VerticalAlignment="Bottom"/>
         <Image x:Name="imgOppenentCard6" Height="100" Width="83" Source="images/cardBackBlue.png" Margin="646,0,670,734" VerticalAlignment="Bottom"/>
         <Image x:Name="imgCribbageBoard" Margin="1174,235,0,0" Height="558" VerticalAlignment="Top" Source="images/cribbageboard.png" HorizontalAlignment="Left" Width="174"/>
-        <Rectangle Margin="1115,0,0,784" Stroke="Black" HorizontalAlignment="Left" Width="246" Height="77" VerticalAlignment="Bottom"/>
-        <Label x:Name="lblPlayer1DisplayName" Content="Player1 DisplayName" Margin="1115,0,0,823" FontSize="18" FontWeight="Bold" Height="38" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="246"/>
-        <Label x:Name="lblPlayer1Score" Content="Player1 Score" HorizontalAlignment="Left" Margin="1115,0,0,784" FontSize="18" Width="117" Height="39" VerticalAlignment="Bottom" />
-        <Rectangle HorizontalAlignment="Left" Height="75" Margin="1115,0,0,709" Stroke="Black" VerticalAlignment="Bottom" Width="246"/>
-        <Label x:Name="lblPlayer2DisplayName" Content="Player2 DisplayName" Margin="1115,0,0,746" FontSize="18" FontWeight="Bold" Height="38" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="246"/>
-        <Label x:Name="lblPlayer2Score" Content="Player2 Score" HorizontalAlignment="Left" Margin="1115,0,0,709" FontSize="18" Width="117" Height="34" VerticalAlignment="Bottom"/>
+        <Rectangle Margin="1115,0,0,786" Stroke="Black" HorizontalAlignment="Left" Width="246" Height="75" VerticalAlignment="Bottom"/>
+        <Label x:Name="lblPlayer1DisplayName" Content="Player1 DisplayName" Margin="875,0,0,818" FontSize="18" FontWeight="Bold" Height="38" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="241"/>
+        <Label x:Name="lblPlayer1Score" Content="Player1 Score" HorizontalAlignment="Left" Margin="875,0,0,791" FontSize="18" Width="120" Height="32" VerticalAlignment="Bottom" />
+        <Rectangle HorizontalAlignment="Left" Height="75" Margin="869,0,0,786" Stroke="Black" VerticalAlignment="Bottom" Width="246"/>
+        <Label x:Name="lblPlayer2DisplayName" Content="Player2 DisplayName" Margin="1120,0,0,818" FontSize="18" FontWeight="Bold" Height="38" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="241"/>
+        <Label x:Name="lblPlayer2Score" Content="Player2 Score" HorizontalAlignment="Left" Margin="1120,0,0,791" FontSize="18" Width="118" Height="32" VerticalAlignment="Bottom"/>
         <Image x:Name="imgPlayerCard1" Height="100" Width="83" Source="images/cardBackBlue.png" Margin="224,596,1093,189" MouseDown="card1Selected"/>
         <Image x:Name="imgPlayerCard2" Height="100" Width="83" Source="images/cardBackBlue.png" Margin="310,596,1006,189" MouseDown="card2Selected"/>
         <Image x:Name="imgPlayerCard3" Height="100" Width="83" Source="images/cardBackBlue.png" Margin="396,596,921,189" MouseDown="card3Selected"/>
@@ -52,8 +52,8 @@
         <Image x:Name="imgPlayedCard6" Height="100" Width="83" Source="images/cardBackBlue.png" Margin="712,327,605,458"/>
         <Image x:Name="imgPlayedCard7" Height="100" Width="83" Source="images/cardBackBlue.png" Margin="800,327,517,458"/>
         <Image x:Name="imgPlayedCard8" Height="100" Width="83" Source="images/cardBackBlue.png" Margin="883,327,434,458"/>
-        <Label x:Name="lblCutCard" Content="Cut Card" HorizontalAlignment="Left" Margin="954,98,0,0" VerticalAlignment="Top" Width="94" FontSize="20" FontWeight="Bold"/>
-        <Image x:Name="imgCutCard" HorizontalAlignment="Left" Height="111" VerticalAlignment="Top" Width="74" Margin="964,138,0,0" Source="images/cardBackBlue.png"/>
+        <Label x:Name="lblCutCard" Content="Cut Card" HorizontalAlignment="Left" Margin="991,131,0,0" VerticalAlignment="Top" Width="94" FontSize="20" FontWeight="Bold"/>
+        <Image x:Name="imgCutCard" HorizontalAlignment="Left" Height="111" VerticalAlignment="Top" Width="74" Margin="1001,173,0,0" Source="images/cardBackBlue.png"/>
         <Label x:Name="lblOpponentHand" Content="Opponent Hand" HorizontalAlignment="Right" Margin="0,0,841,839" VerticalAlignment="Bottom" FontSize="18" FontWeight="Bold"/>
         <Label x:Name="lblPlayerHand" Content="Player Hand" HorizontalAlignment="Right" Margin="0,557,858,0" VerticalAlignment="Top" FontSize="18" FontWeight="Bold"/>
         <Rectangle x:Name="rec1" HorizontalAlignment="Left" Height="105" Margin="223,597,0,0" Stroke="#FFAC1D0F" VerticalAlignment="Top" Width="84" StrokeThickness="15"/>
@@ -66,7 +66,7 @@
         <Label x:Name="lblMessageToPlayers" Content="Message To Players" HorizontalAlignment="Right" Margin="0,479,362,0" Width="806" Height="55" VerticalAlignment="Top" FontSize="20" FontWeight="Bold" Foreground="#FFAB1313"/>
         <Label Content="Current Count:" HorizontalAlignment="Left" Margin="429,235,0,0" VerticalAlignment="Top" FontSize="20" FontWeight="Bold"/>
         <Label x:Name="lblCurrentCount" Content="" HorizontalAlignment="Left" Margin="587,235,0,0" VerticalAlignment="Top" FontSize="20" FontWeight="Bold"/>
-        <ListBox x:Name="lstMessages" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="765,539,0,0" HorizontalAlignment="Left" Width="380" Height="206" VerticalAlignment="Top" FontSize="16"/>
+        <ListBox x:Name="lstMessages" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="765,539,0,0" HorizontalAlignment="Left" Width="380" Height="206" VerticalAlignment="Top" FontSize="16" ScrollViewer.CanContentScroll="False" ScrollViewer.VerticalScrollBarVisibility="Visible"/>
         <Button x:Name="btnCutDeck" Content="Cut Deck" HorizontalAlignment="Right" Margin="0,799,1238,0" Width="115" Height="35" VerticalAlignment="Top" FontSize="18" Click="btnCutDeck_Click"/>
     </Grid>
 </Window>
