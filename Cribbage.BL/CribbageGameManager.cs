@@ -588,10 +588,12 @@ namespace Cribbage.BL
             if(cribbageGame.PlayerTurn.Id == cribbageGame.Player_1.Id)
             {
                 otherPlayer = cribbageGame.Player_2;
+                cribbageGame.PlayerTurn = cribbageGame.Player_1;
             }
             else
             {
                 otherPlayer = cribbageGame.Player_1;
+                cribbageGame.PlayerTurn = cribbageGame.Player_2;
             }
 
             if (cribbageGame.GoCount == 0 && otherPlayer.Hand.Count != 0)
