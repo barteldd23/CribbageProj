@@ -88,6 +88,12 @@ namespace Cribbage.WPFUI
             imgPlayedCard7.Source = null;
             imgPlayedCard8.Source = null;
 
+            cribbageGame.CutCard = null;
+            UpdateCutCard(cribbageGame);
+
+            lstMessages.Items.Clear();
+            newHand = false;
+
             lblMessageToPlayers.Content = "Pick 2 cards to send to the Crib.";
 
             if (cribbageGame.WhatToDo.ToString() == "SelectCribCards")
@@ -563,6 +569,7 @@ namespace Cribbage.WPFUI
                 string cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
                 _connection.InvokeAsync("NewHand", cribbageGameJson);
 
+                newHand = true;
                 btnNextHand.Visibility = Visibility.Collapsed;
                 btnRefreshScreen.Visibility = Visibility.Visible;
                 lblMessageToPlayers.Content = "Click 'Refresh Screen' to update the screen.";
@@ -716,12 +723,11 @@ namespace Cribbage.WPFUI
             if(newHand)
             {
                 SetUpGame();
-                UpdateCutCard(cribbageGame);
-                newHand = false;
             }
             else if(cribbageGame.WhatToDo == "cutdeck")
             {
                 lblMessageToPlayers.Content = signalRMessage;
+                lstMessages.Items.Clear();
                 btnRefreshScreen.Visibility = Visibility.Collapsed;
                 btnCutDeck.Visibility = Visibility.Visible;
             }
