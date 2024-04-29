@@ -301,7 +301,7 @@ namespace Cribbage.API.Hubs
                         CribbageGameManager.Cut(cribbageGame);
                         cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
                         await Clients.All.SendAsync("CardWasCut", cribbageGameJson, cribbageGame.PlayerTurn.DisplayName + " cut the " + cribbageGame.CutCard.name + "\n" + cribbageGame.PlayerTurn.DisplayName + "'s turn");
-                        await Task.Delay(3000);
+                        await Task.Delay(1000);
                         // Game could technically end on a cut. Need to check for a winner.
                         CheckCompletedGame(cribbageGame);
                         if (!cribbageGame.Complete)
@@ -413,7 +413,7 @@ namespace Cribbage.API.Hubs
                             && cribbageGame.PlayerTurn.Id == cribbageGame.Player_2.Id
                             && (cribbageGame.WhatToDo == "playcard" || cribbageGame.WhatToDo == "go"))
                     {
-                        await Task.Delay(3000);
+                        await Task.Delay(1000);
                         if (cribbageGame.WhatToDo == "playcard")
                         {
                             Card computerCard = CribbageGameManager.Pick_Card_To_Play(cribbageGame);
@@ -427,13 +427,11 @@ namespace Cribbage.API.Hubs
                             if (canPlay)
                             {
                                 cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-                               // await Clients.All.SendAsync("Action", cribbageGameJson, message + cribbageGame.PlayerTurn.DisplayName + "'s turn");
                             }
                             else if (cribbageGame.PlayerTurn.Hand.Count > 0)
                             {
                                 cribbageGame.WhatToDo = "go";
                                 cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-                               // await Clients.All.SendAsync("Action", cribbageGameJson, message + cribbageGame.PlayerTurn.DisplayName + "'s turn");
                             }
                         }
                         else if (cribbageGame.WhatToDo == "go")
@@ -444,7 +442,7 @@ namespace Cribbage.API.Hubs
                             cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
                             await Clients.All.SendAsync("Action", cribbageGameJson, message + cribbageGame.PlayerTurn.DisplayName + "'s turn");
 
-                            //bool canPlay = CribbageGameManager.CanPlay(cribbageGame);
+                            bool canPlay = CribbageGameManager.CanPlay(cribbageGame);
 
                             if (canPlay)
                             {
@@ -490,27 +488,12 @@ namespace Cribbage.API.Hubs
                 message = cribbageGame.PlayerTurn.DisplayName + " said go.\n";
                 CribbageGameManager.Go(cribbageGame);
 
-                //bool canPlay = CribbageGameManager.CanPlay(cribbageGame);
-
-                //if (canPlay)
-                //{
-                //    cribbageGame.WhatToDo = "playcard";
-                //    cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-                //    await Clients.All.SendAsync("Action", cribbageGameJson, message + cribbageGame.PlayerTurn.DisplayName + "'s turn");
-                //}
-                //else
-                //{
-                //    cribbageGame.WhatToDo = "go";
-                //    cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-                //    await Clients.All.SendAsync("Action", cribbageGameJson, message + cribbageGame.PlayerTurn.DisplayName + "'s turn");
-                //}
-
                 while (!cribbageGame.Complete
                             && cribbageGame.Computer
                             && cribbageGame.PlayerTurn.Id == cribbageGame.Player_2.Id
                             && (cribbageGame.WhatToDo == "playcard" || cribbageGame.WhatToDo == "go"))
                 {
-                    await Task.Delay(3000);
+                    await Task.Delay(1000);
                     if (cribbageGame.WhatToDo == "playcard")
                     {
                         Card computerCard = CribbageGameManager.Pick_Card_To_Play(cribbageGame);
