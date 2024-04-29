@@ -327,6 +327,15 @@ namespace Cribbage.WPFUI
             signalRMessage = message;
         }
 
+        private void CutCardMessage(string cribbageGameJson, string message)
+        {
+            cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
+            playerHand = cribbageGame.Player_1.Hand;
+            opponentHand = cribbageGame.Player_2.Hand;
+            currentCount = cribbageGame.CurrentCount.ToString();
+            signalRMessage = message;
+        }
+
         private void HandsCountedMessage(string cribbageGameJson, string message)
         {
             cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
@@ -391,12 +400,6 @@ namespace Cribbage.WPFUI
             cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
 
             MessageBox.Show(cribbageGame.Winner.ToString());
-        }
-
-        private void CutCardMessage(string cribbageGameJson, string message)
-        {
-            cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
-            signalRMessage = message;
         }
 
         private void StartGameVsComputerMessage(string message, string cribbageGameJson)

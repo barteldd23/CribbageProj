@@ -39,7 +39,7 @@ namespace Cribbage.BL
         }
         public static void NextPlayer(CribbageGame cribbageGame)
         {
-            // Some one played a card and it was not 31 or someone said go
+            // Someone played a card and it was not 31 or someone said go
 
             Player otherPlayer;
             if (cribbageGame.PlayerTurn.Id == cribbageGame.Player_1.Id)
@@ -50,7 +50,7 @@ namespace Cribbage.BL
             {
                 otherPlayer = cribbageGame.Player_1;
             }
-            // scenarior p1 played a card, p2 has not said go and has cards. Needs to play a card or say go.
+            // scenario p1 played a card, p2 has not said go and has cards. Needs to play a card or say go.
             if (!otherPlayer.SaidGo && otherPlayer.Hand.Count > 0)
             {
                 cribbageGame.PlayerTurn = otherPlayer;
