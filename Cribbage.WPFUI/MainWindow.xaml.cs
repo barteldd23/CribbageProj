@@ -88,11 +88,6 @@ namespace Cribbage.WPFUI
             imgPlayedCard7.Source = null;
             imgPlayedCard8.Source = null;
 
-            cribbageGame.CutCard = null;
-            UpdateCutCard(cribbageGame);
-
-            lstMessages.Items.Clear();
-            newHand = false;
 
             lblMessageToPlayers.Content = "Pick 2 cards to send to the Crib.";
 
@@ -356,7 +351,6 @@ namespace Cribbage.WPFUI
             currentCount = cribbageGame.CurrentCount.ToString();
             signalRMessage = "";
             signalRMessage = message;
-            newHand = true;
         }
 
         private void PlayCardMessage(string cribbageGameJson, string message)
@@ -566,11 +560,21 @@ namespace Cribbage.WPFUI
         {
             try
             {
+                // Reset the cards
+                cribbageGame.PlayedCards.Clear();
+                cribbageGame.Player_1.Hand.Clear();
+                cribbageGame.Player_2.Hand.Clear();
+                cribbageGame.Player_1.PlayedCards.Clear();
+                cribbageGame.Player_2.PlayedCards.Clear();
+                cribbageGame.Crib.Clear();
+                cribbageGame.CutCard = null;
+                
                 string cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
                 _connection.InvokeAsync("NewHand", cribbageGameJson);
 
                 newHand = true;
                 btnNextHand.Visibility = Visibility.Collapsed;
+                lstMessages.Items.Clear();
                 btnRefreshScreen.Visibility = Visibility.Visible;
                 lblMessageToPlayers.Content = "Click 'Refresh Screen' to update the screen.";
             }
@@ -598,6 +602,8 @@ namespace Cribbage.WPFUI
 
                 btnNextHand.Visibility = Visibility.Visible;
                 btnCountCards.Visibility = Visibility.Collapsed;
+
+                WaitForActions();
                 btnRefreshScreen.Visibility = Visibility.Collapsed;
                 lblMessageToPlayers.Content = "Click 'Next Hand' to deal next hand.";
             }
@@ -624,6 +630,11 @@ namespace Cribbage.WPFUI
 
                 throw;
             }
+        }
+
+        public async Task WaitForActions()
+        {
+            await Task.Delay(3000);
         }
         #endregion
 
@@ -723,6 +734,10 @@ namespace Cribbage.WPFUI
             if(newHand)
             {
                 SetUpGame();
+
+                UpdateCutCard(cribbageGame);
+
+                newHand = false;
             }
             else if(cribbageGame.WhatToDo == "cutdeck")
             {
