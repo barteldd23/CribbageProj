@@ -52,5 +52,11 @@ namespace Cribbage.BL.Test
             Guid playerId = new UserManager(options).Load().FirstOrDefault().Id;
             Assert.AreEqual(2, new UserGameManager(options).GetGames(playerId).Count());
         }
+
+        [TestMethod]
+        public void UpdateCribbageGameTest()
+        {
+
+        }
     }
 }
