@@ -57,7 +57,8 @@ namespace Cribbage.BL
                     }
                     else
                     {
-                        throw new Exception("No games found for this player.");
+                        return list;
+                       // throw new Exception("No games found for this player.");
                     }
                 }
             }
@@ -103,6 +104,48 @@ namespace Cribbage.BL
             {
                 throw e;
             }
+        }
+        public int Update(CribbageGame cribbageGame, bool rollback = false)
+        {
+            try
+            {
+                int results;
+                using (CribbageEntities dc = new CribbageEntities(options))
+                {
+                    IDbContextTransaction transaction = null;
+                    if (rollback) transaction = dc.Database.BeginTransaction();
+
+                    //string gameId = cribbageGame.Id.ToString();
+                    //string p1Id = cribbageGame.Player_1.Id.ToString();
+                    //string p2Id = cribbageGame.Player_2.Id.ToString();
+                    tblUserGame updateRow1 = dc.tblUserGames.FirstOrDefault(r => r.GameId == cribbageGame.Id && r.PlayerId == cribbageGame.Player_1.Id);
+                    tblUserGame updateRow2 = updateRow2 = dc.tblUserGames.FirstOrDefault(r => r.GameId == cribbageGame.Id && r.PlayerId == cribbageGame.Player_2.Id);
+                    
+
+                    if (updateRow1 != null)
+                    {
+                        updateRow1.PlayerScore = cribbageGame.Team1_Score;
+                        updateRow2.PlayerScore = cribbageGame.Team2_Score;
+
+                        dc.tblUserGames.Update(updateRow1);
+                        dc.tblUserGames.Update(updateRow2);
+
+                        results = dc.SaveChanges();
+
+                        if (rollback) transaction.Rollback();
+                    }
+                    else
+                    {
+                        throw new Exception("Row not found");
+                    }
+                }
+                return results;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
         }
 
         public int Delete(Guid id, bool rollback = false)
