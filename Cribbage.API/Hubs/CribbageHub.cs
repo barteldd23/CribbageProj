@@ -595,16 +595,32 @@ namespace Cribbage.API.Hubs
         {
             if (cribbageGame.Complete)
             {
-                GameComplete(cribbageGame);
+                string cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
+                GameComplete(cribbageGameJson);
             }
         }
 
-        private async void GameComplete(CribbageGame cribbageGame)
+        private async void GameComplete(string game)
         {
+            string message;
+            CribbageGame cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(game);
             cribbageGame.WhatToDo = "startnewgame";
+            
+
+            if (cribbageGame.Player_1.Score > cribbageGame.Player_2.Score)
+            {
+                cribbageGame.Winner = cribbageGame.Player_1.Id;
+                message = "Game Over./nWinner: " + cribbageGame.Player_1.DisplayName;
+
+            }
+            else
+            {
+                cribbageGame.Winner = cribbageGame.Player_2.Id;
+                message = "Game Over./nWinner: " + cribbageGame.Player_2.DisplayName;
+            }
+
             string cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-            // maybe add return paramter of string message saying who won.
-            await Clients.All.SendAsync("GameFinished", cribbageGameJson);
+            await Clients.All.SendAsync("GameFinished", cribbageGameJson, message);
         }
     }
 }
