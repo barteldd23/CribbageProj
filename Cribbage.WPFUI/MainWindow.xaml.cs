@@ -88,6 +88,12 @@ namespace Cribbage.WPFUI
             imgPlayedCard7.Source = null;
             imgPlayedCard8.Source = null;
 
+            cribbageGame.CutCard = null;
+            UpdateCutCard(cribbageGame);
+
+            lstMessages.Items.Clear();
+            newHand = false;
+
             lblMessageToPlayers.Content = "Pick 2 cards to send to the Crib.";
 
             if (cribbageGame.WhatToDo.ToString() == "SelectCribCards")
@@ -505,7 +511,6 @@ namespace Cribbage.WPFUI
 
                     btnRefreshScreen.Visibility = Visibility.Visible;
                     btnSendToCrib.Visibility = Visibility.Collapsed;
-
                     lblMessageToPlayers.Content = "Click 'Refresh Screen' to update the screen.";
                 }
                 catch (Exception ex)
@@ -526,7 +531,7 @@ namespace Cribbage.WPFUI
 
             btnPlayCard.Visibility = Visibility.Collapsed;    
             btnGo.Visibility = Visibility.Collapsed;
-
+            btnRefreshScreen.Visibility = Visibility.Visible;
             lblMessageToPlayers.Content = "Click 'Refresh Screen' to update the screen.";
         }
 
@@ -544,7 +549,6 @@ namespace Cribbage.WPFUI
                     btnRefreshScreen.Visibility = Visibility.Visible;
                     btnPlayCard.Visibility = Visibility.Collapsed;
                     btnGo.Visibility = Visibility.Collapsed;
-
                     lblMessageToPlayers.Content = "Click 'Refresh Screen' to update the screen.";
                 }
                 catch (Exception ex)
@@ -565,8 +569,9 @@ namespace Cribbage.WPFUI
                 string cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
                 _connection.InvokeAsync("NewHand", cribbageGameJson);
 
+                newHand = true;
                 btnNextHand.Visibility = Visibility.Collapsed;
-
+                btnRefreshScreen.Visibility = Visibility.Visible;
                 lblMessageToPlayers.Content = "Click 'Refresh Screen' to update the screen.";
             }
             catch (Exception ex)
@@ -593,7 +598,7 @@ namespace Cribbage.WPFUI
 
                 btnNextHand.Visibility = Visibility.Visible;
                 btnCountCards.Visibility = Visibility.Collapsed;
-
+                btnRefreshScreen.Visibility = Visibility.Collapsed;
                 lblMessageToPlayers.Content = "Click 'Next Hand' to deal next hand.";
             }
             catch (Exception ex)
@@ -611,6 +616,7 @@ namespace Cribbage.WPFUI
                 _connection.InvokeAsync("CutDeck", cribbageGameJson);
 
                 btnCutDeck.Visibility = Visibility.Collapsed;
+                btnRefreshScreen.Visibility = Visibility.Visible;
                 lblMessageToPlayers.Content = "Click 'Refresh Screen' to update the screen.";
             }
             catch (Exception)
@@ -717,12 +723,12 @@ namespace Cribbage.WPFUI
             if(newHand)
             {
                 SetUpGame();
-                UpdateCutCard(cribbageGame);
-                newHand = false;
             }
             else if(cribbageGame.WhatToDo == "cutdeck")
             {
                 lblMessageToPlayers.Content = signalRMessage;
+                lstMessages.Items.Clear();
+                btnRefreshScreen.Visibility = Visibility.Collapsed;
                 btnCutDeck.Visibility = Visibility.Visible;
             }
             else
@@ -736,7 +742,9 @@ namespace Cribbage.WPFUI
 
                 //Messages to players updated
                 lstMessages.Items.Add(signalRMessage);
-                this.lstMessages.SelectedIndex = this.lstMessages.Items.Count - 1;
+                lstMessages.SelectedIndex = lstMessages.Items.Count - 1;
+                lstMessages.ScrollIntoView(lstMessages.SelectedItem);
+
                 lblMessageToPlayers.Content = " Player's Turn: " + cribbageGame.PlayerTurn.DisplayName;
 
                 //Update the cards, buttons, and selections
@@ -772,16 +780,19 @@ namespace Cribbage.WPFUI
                     if (cribbageGame.WhatToDo == "playcard" && playerHand.Count >= 1)
                     {
                         btnPlayCard.Visibility = Visibility.Visible;
+                        btnRefreshScreen.Visibility = Visibility.Collapsed;
                     }
                     else
                     {
                         btnGo.Visibility = Visibility.Visible;
+                        btnRefreshScreen.Visibility = Visibility.Collapsed;
                     }
                 } 
             }
             else
             {
                 btnCountCards.Visibility = Visibility.Visible;
+                btnRefreshScreen.Visibility = Visibility.Collapsed;
                 lblMessageToPlayers.Content = "Click 'Count Cards' to count the cards.";
             }
         }
