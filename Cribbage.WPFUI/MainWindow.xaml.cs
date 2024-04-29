@@ -630,6 +630,7 @@ namespace Cribbage.WPFUI
                 btnNextHand.Visibility = Visibility.Visible;
                 btnCountCards.Visibility = Visibility.Collapsed;
                 btnRefreshScreen.Visibility = Visibility.Collapsed;
+                //btnRefreshScreen.Visibility = Visibility.Visible;
                 lblMessageToPlayers.Content = "Click 'Next Hand' to deal next hand.";
             }
             catch (Exception ex)
