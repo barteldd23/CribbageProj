@@ -428,13 +428,13 @@ namespace Cribbage.API.Hubs
                             if (canPlay)
                             {
                                 cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-                                await Clients.All.SendAsync("Action", cribbageGameJson, message + cribbageGame.PlayerTurn.DisplayName + "'s turn");
+                               // await Clients.All.SendAsync("Action", cribbageGameJson, message + cribbageGame.PlayerTurn.DisplayName + "'s turn");
                             }
-                            else
+                            else if (cribbageGame.PlayerTurn.Hand.Count > 0)
                             {
                                 cribbageGame.WhatToDo = "go";
                                 cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-                                await Clients.All.SendAsync("Action", cribbageGameJson, message + cribbageGame.PlayerTurn.DisplayName + "'s turn");
+                               // await Clients.All.SendAsync("Action", cribbageGameJson, message + cribbageGame.PlayerTurn.DisplayName + "'s turn");
                             }
                         }
                         else if (cribbageGame.WhatToDo == "go")
@@ -452,7 +452,7 @@ namespace Cribbage.API.Hubs
                                 cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
                                 await Clients.All.SendAsync("Action", cribbageGameJson, message + cribbageGame.PlayerTurn.DisplayName + "'s turn");
                             }
-                            else
+                            else if (cribbageGame.PlayerTurn.Hand.Count > 0)
                             {
                                 cribbageGame.WhatToDo = "go";
                                 cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
