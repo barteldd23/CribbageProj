@@ -575,6 +575,7 @@ namespace Cribbage.WPFUI
                 newHand = true;
                 btnNextHand.Visibility = Visibility.Collapsed;
                 lstMessages.Items.Clear();
+
                 btnRefreshScreen.Visibility = Visibility.Visible;
                 lblMessageToPlayers.Content = "Click 'Refresh Screen' to update the screen.";
             }
@@ -602,8 +603,6 @@ namespace Cribbage.WPFUI
 
                 btnNextHand.Visibility = Visibility.Visible;
                 btnCountCards.Visibility = Visibility.Collapsed;
-
-                WaitForActions();
                 btnRefreshScreen.Visibility = Visibility.Collapsed;
                 lblMessageToPlayers.Content = "Click 'Next Hand' to deal next hand.";
             }
@@ -630,11 +629,6 @@ namespace Cribbage.WPFUI
 
                 throw;
             }
-        }
-
-        public async Task WaitForActions()
-        {
-            await Task.Delay(3000);
         }
         #endregion
 
