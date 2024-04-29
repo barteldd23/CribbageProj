@@ -560,18 +560,31 @@ namespace Cribbage.WPFUI
         {
             try
             {
+                // Refresh the hub connection
+                Start();
+
                 // Reset the cards
                 cribbageGame.PlayedCards.Clear();
                 cribbageGame.Player_1.Hand.Clear();
+                playerHand.Clear();
                 cribbageGame.Player_2.Hand.Clear();
+                opponentHand.Clear();
                 cribbageGame.Player_1.PlayedCards.Clear();
                 cribbageGame.Player_2.PlayedCards.Clear();
                 cribbageGame.Crib.Clear();
                 cribbageGame.CutCard = null;
+
+                UpdateCutCard(cribbageGame);
+                displayCribCards();
+                displayPlayedCards();
+                displayOpponentHand(opponentHand, true);
+                displayPlayerHand(playerHand);
                 
+                // Send a message to the hub
                 string cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
                 _connection.InvokeAsync("NewHand", cribbageGameJson);
 
+                // Fix the screen
                 newHand = true;
                 btnNextHand.Visibility = Visibility.Collapsed;
                 lstMessages.Items.Clear();
