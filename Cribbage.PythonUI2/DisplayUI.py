@@ -68,7 +68,8 @@ gameData = CribbageGame([])
 opponentHand = Hand([])
 selectedCards = []
 playedCards = Hand([])
-currentRallyCards = []
+currentRallyCards = Hand([])
+cribCards = Hand([])
 
 def setGameData(dataJson):
     cribbageGame = json.loads(dataJson)
@@ -77,28 +78,32 @@ def setGameData(dataJson):
     
 
 ###################### Methods for Received Hub Messages ##############
-
+def receivedStartNewHandMessage(message, gameJson):
+    setMessage(message)
+    setGameData(gameJson)
+    displayCutCard(False)
+    refreshScreen(False, False)
 def receivedHandsCountedMessage(gameJson, message):
     setMessage(message)
     setGameData(gameJson)
     displayCutCard(True)
-    refreshScreen(True)
+    refreshScreen(True, True)
 def receivedCardWasCutMessage(gameJson, message):
     setMessage(message)
     setGameData(gameJson)
     displayCutCard(True)
-    refreshScreen(False)
+    refreshScreen(False, False)
     
 def receivedCutCardMessage(gameJson, message):
     setMessage(message)
     setGameData(gameJson)
     displayCutCard(False)
-    refreshScreen(False)
+    refreshScreen(False, False)
     
 def receivedActionMessage(gameJson, message):
     setMessage(message)
     setGameData(gameJson)
-    refreshScreen(False)
+    refreshScreen(False, False)
         
 def receivedCreateUserMessage(isCreated, messageInfo):
     if(isCreated):
@@ -135,7 +140,7 @@ def receivedStartGameMessage(message, gameJson):
     
     setStartGameFrame(playerHand, opponentHand)
     print('setStartGameFrame')
-    refreshScreen(False)
+    refreshScreen(False, False)
     
 def setGameData(gameJson):
     cribbageGame = json.loads(gameJson)
@@ -148,6 +153,7 @@ def setGameData(gameJson):
     opponentHand.cards = hands[1]
     playedCards.cards = gameData.data["PlayedCards"]
     currentRallyCards = gameData.data["CurrentRally"]
+    cribCards.cards = gameData.data["Crib"]
     print('*********************************')
     print(playedCards)
     print('*********************************')
@@ -208,7 +214,7 @@ def forgetButtons():
     txtCutPosition.grid_forget()
     lblCutPosition.grid_forget()
 
-def refreshScreen(showOpponent):
+def refreshScreen(showOpponent, showCrib):
    # print('refresh start')
     unselectCards()
    # print('unselected cards')
@@ -229,6 +235,8 @@ def refreshScreen(showOpponent):
     displayPlayerHand()
     displayPlayedCads()
     displayPlayerScores()
+    #displayCribCards(showCrib)
+    displayCribCards(True)
     
     if(gameData.data['WhatToDo'] == 'SelectCribCards' and len(playerHand.cards) > 4):
         btnSendToCrib.grid(row=2, column=1, padx=5, pady=5, sticky='news')
@@ -245,6 +253,10 @@ def refreshScreen(showOpponent):
         lblCutPosition.grid(row=1, column=2,padx=5, pady=5, sticky='news')
         txtCutPosition.grid(row=1, column=3,padx=5, pady=5, sticky='news')
         btnCutPosition.grid(row=1, column=4,padx=5, pady=5, sticky='news')
+    if(gameData.data['WhatToDo'] == 'startnewhand'):
+        btnNextHand.grid(row=3, column=3, padx=5, pady=5, sticky='news' )
+    if(gameData.data['WhatToDo'] == 'startnewgame'):
+        pass
     
 def displayCurrentCount():
     currentCountMsg = 'Current Count: ' + str(gameData.data["CurrentCount"])
@@ -440,7 +452,68 @@ def displayPlayedCads():
     else:
         playedCard8.grid_forget()
         
+def displayCribCards(isShowing):
+    if(gameData.data["Dealer"] == 1):
+        cribMsg = gameData.data["Player_1"]["DisplayName"] + '\'s Crib'
+    else:
+        cribMsg = gameData.data["Player_2"]["DisplayName"]
+    txtCrib.config(text=cribMsg)
+    txtCrib.grid(row=0, column=0, columnspan=2)
     
+    if(isShowing):
+        if(len(cribCards.cards) >= 1):
+            card = PhotoImage(file="./images/" + cribCards.cards[0]["imgPath"])
+            cribCard1.img = card.subsample(5,5)
+            cribCard1.config(image= cribCard1.img)
+            cribCard1.grid(row=1, column=0, sticky='news', padx=2)
+        else:
+            cribCard1.grid_forget()
+        if(len(cribCards.cards) >= 2):
+            card = PhotoImage(file="./images/" + cribCards.cards[1]["imgPath"])
+            cribCard2.img = card.subsample(5,5)
+            cribCard2.config(image= cribCard2.img)
+            cribCard2.grid(row=1, column=1, sticky='news', padx=2)
+        else:
+            cribCard2.grid_forget()
+        if(len(cribCards.cards) >= 3):
+            card = PhotoImage(file="./images/" + cribCards.cards[2]["imgPath"])
+            cribCard3.img = card.subsample(5,5)
+            cribCard3.config(image= cribCard3.img)
+            cribCard3.grid(row=2, column=0, sticky='news', padx=2)
+        else:
+            cribCard3.grid_forget()
+        if(len(cribCards.cards) >= 4):
+            card = PhotoImage(file="./images/" + cribCards.cards[3]["imgPath"])
+            cribCard4.img = card.subsample(5,5)
+            cribCard4.config(image= cribCard4.img)
+            cribCard4.grid(row=2, column=1, sticky='news', padx=2)
+        else:
+            cribCard4.grid_forget()
+    else:
+        if(len(cribCards.cards) >= 1):
+            cribCard1.img = cardBack.subsample(5,5)
+            cribCard1.config(image= cribCard1.img)
+            cribCard1.grid(row=1, column=0, sticky='news', padx=2)
+        else:
+            cribCard1.grid_forget()
+        if(len(cribCards.cards) >= 2):
+            cribCard2.img = cardBack.subsample(5,5)
+            cribCard2.config(image= cribCard2.img)
+            cribCard2.grid(row=1, column=1, sticky='news', padx=2)
+        else:
+            cribCard2.grid_forget()
+        if(len(cribCards.cards) >= 3):
+            cribCard3.img = cardBack.subsample(5,5)
+            cribCard3.config(image= cribCard3.img)
+            cribCard3.grid(row=2, column=0, sticky='news', padx=2)
+        else:
+            cribCard3.grid_forget()
+        if(len(cribCards.cards) >= 4):
+            cribCard4.img = cardBack.subsample(5,5)
+            cribCard4.config(image= cribCard4.img)
+            cribCard4.grid(row=2, column=1, sticky='news', padx=2)
+        else:
+            cribCard4.grid_forget()
 def displayPlayerScores():
     lblP1DisplayName.config(text = gameData.data["Player_1"]["DisplayName"])
     lblP2DisplayName.config(text = gameData.data["Player_2"]["DisplayName"])
@@ -547,6 +620,10 @@ def onClickSendToCrib():
     #
    # print(gameToSendJson)
    
+def onClick_NextHand():
+    gameToSendJson = getGameJson()
+    print('******Pushed NextHand Button ********')
+    hub_connection.send("NewHand",[gameToSendJson])
 def newVsComputer():
     pythonUserJson = json.dumps(asdict(pythonUser))
     hub_connection.send("NewGameVsComputer",[pythonUserJson])
@@ -622,7 +699,10 @@ def onClickCancelUser():
 
 def onClick_btnCutPosition():
     cutposition = txtCutPosition.get()
-    messagebox.showinfo('cut position', )
+    messagebox.showinfo('cut position', cutposition)
+    gameToSendJson = getGameJson()
+    print('******Pushed CutCard Button ********')
+    hub_connection.send("CutDeck",[gameToSendJson])
     #messagebox.showinfo(message='email: ' + email + ' password: ' + password)
 
 
@@ -644,6 +724,7 @@ hub_connection.on("CardWasCut", lambda data: receivedCardWasCutMessage(data[0], 
 hub_connection.on("Action", lambda data: receivedActionMessage(data[0], data[1]))
 hub_connection.on("CutCard", lambda data: receivedCutCardMessage(data[0],data[1]))
 hub_connection.on("HandsCounted", lambda data: receivedHandsCountedMessage(data[0],data[1]))
+hub_connection.on("StartNewHand", lambda data: receivedStartNewHandMessage(data[0],data[1]))
 hub_connection.start()
 
 
@@ -676,9 +757,9 @@ loggedInFrame = tkinter.Frame(bg='blue')
 newPlayerFrame = tkinter.Frame(bg='blue')
 
 #################### gameFrame Frames
-cribFrame = tkinter.Frame(gameFrame, width=200, height=900, relief=RIDGE, bg='#333333')
+cribFrame = tkinter.Frame(gameFrame, width=300, height=900, relief=RIDGE, bg='#333333')
 playFrame = tkinter.Frame(gameFrame, width=800, height=900, relief=RIDGE, bg='blue')
-scoreFrame = tkinter.Frame(gameFrame, width=200, height=900, relief=RIDGE, bg='green')
+scoreFrame = tkinter.Frame(gameFrame, width=300, height=900, relief=RIDGE, bg='green')
 availableGamesFrame = tkinter.Frame(gameFrame, width=200, height=900, relief=RIDGE, bg='red')
 
 
@@ -755,6 +836,21 @@ opponentLabel = tkinter.Label(opponentFrame, text="Oppenents Hand");
     
 cardBack = PhotoImage(file="./images/cardBackBlue.png")
 smallCardBack = cardBack.subsample(5,5);
+
+
+txtCrib = tkinter.Label(cribFrame, text="Player1's Crib:")
+cribCard1 = tkinter.Label(cribFrame, width=50);
+cribCard1.img = smallCardBack;
+cribCard1.config(image = cribCard1.img);
+cribCard2 = tkinter.Label(cribFrame, width=50);
+cribCard2.img = smallCardBack;
+cribCard2.config(image = cribCard2.img);
+cribCard3 = tkinter.Label(cribFrame, width=50);
+cribCard3.img = smallCardBack;
+cribCard3.config(image = cribCard3.img);
+cribCard4 = tkinter.Label(cribFrame, width=50);
+cribCard4.img = smallCardBack;
+cribCard4.config(image = cribCard4.img);
 
 #     # Setting the image this way should prevent garbage collection of the image.
 opponentCard1 = tkinter.Label(opponentFrame);
@@ -862,9 +958,10 @@ myCard6.config(image= myCard6.img)
 myCard6.bind("<Button-1>", onclick_Card6)
 
 btnSendToCrib = tkinter.Button(usersFrame, text="Send To Crib", command=onClickSendToCrib)
-btnNextHand = tkinter.Button(usersFrame, text="Next Hand")
+btnNextHand = tkinter.Button(usersFrame, text="Next Hand", command=onClick_NextHand)
 btnPlayCard = tkinter.Button(usersFrame, text="Play Card", command=onClick_PlayCard)
 btnGo = tkinter.Button(usersFrame, text="Go", width=100, command=onClick_Go);
+btnNewGame = tkinter.Button(usersFrame, text="Another Game")
 
 opponentFrame.grid_propagate(0)
 rallyFrame.grid_propagate(0)
@@ -876,12 +973,12 @@ usersFrame.grid(row=2, column=0, sticky='news')
 
 
 ############# Test Lables ####################################
-lblCribFrame = tkinter.Label(cribFrame, text="cribFrame")
+#lblCribFrame = tkinter.Label(cribFrame, text="cribFrame")
 
 lblScoreFrame = tkinter.Label(scoreFrame, text="scoreFrame")
 lblAvailableGames = tkinter.Label(availableGamesFrame, text="AvailableGamesFrame")
 
-lblCribFrame.grid(row=0, column=0, sticky='news')
+#lblCribFrame.grid(row=0, column=0, sticky='news')
 lblScoreFrame.grid(row=0, column=0, sticky='news')
 lblAvailableGames.grid(row=0, column=0, sticky='news')
 
@@ -918,7 +1015,7 @@ btnNewUser.grid(row=3, column=1, pady=5, padx=5, sticky='w')
 lblErrorMessage.grid(row=4, column=0, columnspan=2, pady=5, padx=5)
 
 
-lblCribFrame.grid(row=0, column=0, sticky='news', pady=10, padx=10)
+#lblCribFrame.grid(row=0, column=0, sticky='news', pady=10, padx=10)
 
 lblAvailableGames.pack()
 
