@@ -37,7 +37,7 @@ namespace Cribbage.API.Hubs
 
             string userJson = "";
             try
-            {
+            { // need to add more for hashed passwords
                 // Try logging in.
                 User user = new User { Email = email, Password = password };
                 isLoggedIn = new UserManager(options).Login(user);
@@ -642,13 +642,14 @@ namespace Cribbage.API.Hubs
             if (cribbageGame.Player_1.Score > cribbageGame.Player_2.Score)
             {
                 cribbageGame.Winner = cribbageGame.Player_1.Id;
-                message = "Game Over./nWinner: " + cribbageGame.Player_1.DisplayName;
-
+                message = "Game Over.";
+                message += "Winner: " + cribbageGame.Player_1.DisplayName;
             }
             else
             {
                 cribbageGame.Winner = cribbageGame.Player_2.Id;
-                message = "Game Over./nWinner: " + cribbageGame.Player_2.DisplayName;
+                message = "Game Over.";
+                message += "Winner: " + cribbageGame.Player_2.DisplayName;
             }
 
             string cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
