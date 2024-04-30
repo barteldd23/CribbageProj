@@ -78,6 +78,11 @@ def setGameData(dataJson):
     
 
 ###################### Methods for Received Hub Messages ##############
+
+def receivedGameFinishedMessage(gameJson, message):
+    setMessage(message)
+    setGameData(gameJson)
+    refreshScreen(True, True)
 def receivedStartNewHandMessage(message, gameJson):
     setMessage(message)
     setGameData(gameJson)
@@ -250,13 +255,13 @@ def refreshScreen(showOpponent, showCrib):
     if(gameData.data['WhatToDo'] == 'counthands'):
         btnCountHand.grid(row=3, column=10, padx=5, pady=5, sticky='news')
     if(gameData.data['WhatToDo'] == 'cutdeck'):
-        lblCutPosition.grid(row=1, column=2,padx=5, pady=5, sticky='news')
-        txtCutPosition.grid(row=1, column=3,padx=5, pady=5, sticky='news')
-        btnCutPosition.grid(row=1, column=4,padx=5, pady=5, sticky='news')
+        lblCutPosition.grid(row=1, column=2,padx=5, pady=5, sticky='ew')
+        txtCutPosition.grid(row=1, column=3,padx=5, pady=5, sticky='e')
+        btnCutPosition.grid(row=1, column=4,padx=5, pady=5, sticky='ew')
     if(gameData.data['WhatToDo'] == 'startnewhand'):
         btnNextHand.grid(row=3, column=3, padx=5, pady=5, sticky='news' )
     if(gameData.data['WhatToDo'] == 'startnewgame'):
-        pass
+        btnNewGame.grid(row=3, column=0, columnspan=10, padx=5, pady=5, sticky='news')
     
 def displayCurrentCount():
     currentCountMsg = 'Current Count: ' + str(gameData.data["CurrentCount"])
@@ -589,6 +594,13 @@ def getGameJson():
 def getUserJson():
     return json.dumps(asdict(pythonUser))
 
+def onClick_NewGame():
+    if(gameData.data["Computer"]):
+        messagebox.showinfo('','Start Game vs Computer')
+        newVsComputer()
+    else:
+        messagebox.showinfo('','Start Game vs Player')
+
 def onClick_CountHand():
     gameToSendJson = getGameJson()
     print('******Pushed GO Button ********')
@@ -725,6 +737,7 @@ hub_connection.on("Action", lambda data: receivedActionMessage(data[0], data[1])
 hub_connection.on("CutCard", lambda data: receivedCutCardMessage(data[0],data[1]))
 hub_connection.on("HandsCounted", lambda data: receivedHandsCountedMessage(data[0],data[1]))
 hub_connection.on("StartNewHand", lambda data: receivedStartNewHandMessage(data[0],data[1]))
+hub_connection.on("GameFinished", lambda data: receivedGameFinishedMessage(data[0], data[1]))
 hub_connection.start()
 
 
@@ -961,7 +974,7 @@ btnSendToCrib = tkinter.Button(usersFrame, text="Send To Crib", command=onClickS
 btnNextHand = tkinter.Button(usersFrame, text="Next Hand", command=onClick_NextHand)
 btnPlayCard = tkinter.Button(usersFrame, text="Play Card", command=onClick_PlayCard)
 btnGo = tkinter.Button(usersFrame, text="Go", width=100, command=onClick_Go);
-btnNewGame = tkinter.Button(usersFrame, text="Another Game")
+btnNewGame = tkinter.Button(usersFrame, text="Another Game", command=onClick_NewGame)
 
 opponentFrame.grid_propagate(0)
 rallyFrame.grid_propagate(0)
