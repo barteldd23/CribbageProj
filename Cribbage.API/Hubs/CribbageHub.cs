@@ -363,27 +363,7 @@ namespace Cribbage.API.Hubs
 
                 cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
                 await Clients.All.SendAsync("CardWasCut", cribbageGameJson, cribbageGame.PlayerTurn.DisplayName + " cut the " + cribbageGame.CutCard.name + "\n" + cribbageGame.PlayerTurn.DisplayName + "'s turn");
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        public async Task PickCardToPlay(string game)
-        {
-            string cribbageGameJson;
-            string card;
-
-            try
-            {
-                CribbageGame cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(game);
-                Card pickedCard = CribbageGameManager.Pick_Card_To_Play(cribbageGame);
-
-                cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-                card = JsonConvert.SerializeObject(pickedCard);
-
-                PlayCard(cribbageGameJson, card);
+                CheckCompletedGame(cribbageGame);
             }
             catch (Exception)
             {
@@ -613,6 +593,7 @@ namespace Cribbage.API.Hubs
 
                 cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
                 await Clients.All.SendAsync("HandsCounted", cribbageGameJson, message);
+                CheckCompletedGame(cribbageGame);
 
             }
             catch (Exception)
@@ -623,36 +604,35 @@ namespace Cribbage.API.Hubs
 
         }
 
-        private void CheckCompletedGame(CribbageGame cribbageGame)
+        private async void CheckCompletedGame(CribbageGame cribbageGame)
         {
             if (cribbageGame.Complete)
             {
+                string message;
+                //cribbageGame.WhatToDo = "startnewgame";
+
+
+                if (cribbageGame.Player_1.Score > cribbageGame.Player_2.Score)
+                {
+                    cribbageGame.Winner = cribbageGame.Player_1.Id;
+                    message = "Game Over.\nWinner: " + cribbageGame.Player_1.DisplayName;
+
+                }
+                else
+                {
+                    cribbageGame.Winner = cribbageGame.Player_2.Id;
+                    message = "Game Over.\nWinner: " + cribbageGame.Player_2.DisplayName;
+                }
+
+                cribbageGame.Team1_Score = cribbageGame.Player_1.Score;
+                cribbageGame.Team2_Score = cribbageGame.Player_2.Score;
+                new UserGameManager(options).Update(cribbageGame);
+                new GameManager(options).Update(cribbageGame);
+
                 string cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-                GameComplete(cribbageGameJson);
+                await Clients.All.SendAsync("GameFinished", cribbageGameJson, message);
             }
         }
-
-        private async void GameComplete(string game)
-        {
-            string message;
-            CribbageGame cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(game);
-            cribbageGame.WhatToDo = "startnewgame";
-            
-
-            if (cribbageGame.Player_1.Score > cribbageGame.Player_2.Score)
-            {
-                cribbageGame.Winner = cribbageGame.Player_1.Id;
-                message = "Game Over./nWinner: " + cribbageGame.Player_1.DisplayName;
-
-            }
-            else
-            {
-                cribbageGame.Winner = cribbageGame.Player_2.Id;
-                message = "Game Over./nWinner: " + cribbageGame.Player_2.DisplayName;
-            }
-
-            string cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-            await Clients.All.SendAsync("GameFinished", cribbageGameJson, message);
-        }
+        
     }
 }
