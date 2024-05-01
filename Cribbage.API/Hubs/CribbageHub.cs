@@ -597,7 +597,7 @@ namespace Cribbage.API.Hubs
             }
         }
 
- // Pseudo Code for Player vs Player
+        // Pseudo Code for Player vs Player
 
         ////Purpose is to create a cribbage game in the state of waiting for someone else to join.
 
@@ -624,7 +624,8 @@ namespace Cribbage.API.Hubs
 
         //****Problem**** How do we delete games when someone quits the program or disconects before someone joins their game?
         //put them in another "waiting" state as player 1 or send them back to their "Home" page to try again
-
+        //****Problem**** How do we get games that are resumed i.e they DB already has both playerId's stored
+        //and then one of them wants to resume it later.
 
 
         ////Purpose is to join a game that someone is there and waiting for you to join.
@@ -651,7 +652,7 @@ namespace Cribbage.API.Hubs
         //**Additional comments**
 
         //May have to add a property to cribbagegame class or Player class. Maybe a bool to indicate if they are ready for things like next hand or play another game. Next hand shouldn't be dealt unless both players are ready.
-            //We can add a "Ready" button and wait until both click "Ready" to deal, etc.
+        //We can add a "Ready" button and wait until both click "Ready" to deal, etc.
         //UI's would have to add code to handle all new messages sent back to them and display widgets/controls properly
     }
 }
