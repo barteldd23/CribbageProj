@@ -647,7 +647,7 @@ namespace Cribbage.BL
                 {
                     if (card.value + cribbageGame.CurrentCount == 15 ||
                         card.value + cribbageGame.CurrentCount == 31 ||
-                        card.face == cribbageGame.PlayedCards.Last().face)
+                        (card.face == cribbageGame.PlayedCards.Last().face && card.value + cribbageGame.CurrentCount <= 31))
                     {
                         return card;
                     }
