@@ -39,11 +39,11 @@
         <Image x:Name="imgPlayerCard4" Height="100" Width="83" Source="images/cardBackBlue.png" Margin="484,596,833,189" MouseDown="card4Selected"/>
         <Image x:Name="imgPlayerCard5" Height="100" Width="83" Source="images/cardBackBlue.png" Margin="566,596,751,189" MouseDown="card5Selected"/>
         <Image x:Name="imgPlayerCard6" Height="100" Width="88" Source="images/cardBackBlue.png" Margin="644,596,668,189" MouseDown="card6Selected"/>
-        <Button x:Name="btnSendToCrib" Content="Send To Crib" HorizontalAlignment="Right" Margin="0,799,1101,0" Width="115" Height="35" VerticalAlignment="Top" FontSize="18" Click="btnSendToCrib_Click"/>
-        <Button x:Name="btnNextHand" Content="Next Hand" HorizontalAlignment="Right" Margin="0,799,964,0" Width="110" Height="35" VerticalAlignment="Top" FontSize="18" Click="btnNextHand_Click"/>
-        <Button x:Name="btnPlayCard" Content="Play Card" HorizontalAlignment="Right" Margin="0,799,839,0" Width="105" Height="35" VerticalAlignment="Top" FontSize="18" Click="btnPlayCard_Click"/>
-        <Button x:Name="btnGo" Content="Go" HorizontalAlignment="Right" Margin="0,799,719,0" Width="100" Height="35" VerticalAlignment="Top" FontSize="18" Click="btnGo_Click"/>
-        <Button x:Name="btnCountCards" Content="Count Cards" HorizontalAlignment="Right" Margin="0,799,569,0" Width="130" Height="35" VerticalAlignment="Top" FontSize="18" Click="btnCountCards_Click"/>
+        <Button x:Name="btnSendToCrib" Content="Send To Crib" HorizontalAlignment="Right" Margin="0,799,1210,0" Width="115" Height="35" VerticalAlignment="Top" FontSize="18" Click="btnSendToCrib_Click" RenderTransformOrigin="-0.426,0.573"/>
+        <Button x:Name="btnNextHand" Content="Next Hand" HorizontalAlignment="Right" Margin="0,799,1093,0" Width="110" Height="35" VerticalAlignment="Top" FontSize="18" Click="btnNextHand_Click"/>
+        <Button x:Name="btnPlayCard" Content="Play Card" HorizontalAlignment="Right" Margin="0,799,841,0" Width="105" Height="35" VerticalAlignment="Top" FontSize="18" Click="btnPlayCard_Click"/>
+        <Button x:Name="btnGo" Content="Go" HorizontalAlignment="Right" Margin="0,799,732,0" Width="100" Height="35" VerticalAlignment="Top" FontSize="18" Click="btnGo_Click"/>
+        <Button x:Name="btnCountCards" Content="Count Cards" HorizontalAlignment="Right" Margin="0,799,952,0" Width="130" Height="35" VerticalAlignment="Top" FontSize="18" Click="btnCountCards_Click"/>
         <Image x:Name="imgPlayedCard1" Height="100" Width="83" Source="images/cardBackBlue.png" Margin="277,327,1040,458"/>
         <Image x:Name="imgPlayedCard2" Height="100" Width="90" Source="images/cardBackBlue.png" Margin="359,327,951,458"/>
         <Image x:Name="imgPlayedCard3" Height="100" Width="83" Source="images/cardBackBlue.png" Margin="449,327,868,458"/>
@@ -62,11 +62,15 @@
         <Rectangle x:Name="rec4" HorizontalAlignment="Left" Height="105" Margin="484,596,0,0" Stroke="#FFAC1D0F" VerticalAlignment="Top" Width="84" StrokeThickness="15"/>
         <Rectangle x:Name="rec5" HorizontalAlignment="Left" Height="105" Margin="568,596,0,0" Stroke="#FFAC1D0F" VerticalAlignment="Top" Width="84" StrokeThickness="15"/>
         <Rectangle x:Name="rec6" HorizontalAlignment="Left" Height="105" Margin="652,596,0,0" Stroke="#FFAC1D0F" VerticalAlignment="Top" Width="84" StrokeThickness="15"/>
-        <Button x:Name="btnRefreshScreen" Content="Refresh Screen" HorizontalAlignment="Right" Margin="0,799,427,0" Width="130" Height="35" VerticalAlignment="Top" FontSize="18" Click="btnRefreshScreen_Click"/>
+        <Button x:Name="btnRefreshScreen" Content="Refresh Screen" HorizontalAlignment="Right" Margin="0,799,586,0" Width="130" Height="35" VerticalAlignment="Top" FontSize="18" Click="btnRefreshScreen_Click"/>
         <Label x:Name="lblMessageToPlayers" Content="Message To Players" HorizontalAlignment="Right" Margin="0,479,362,0" Width="806" Height="55" VerticalAlignment="Top" FontSize="20" FontWeight="Bold" Foreground="#FFAB1313"/>
         <Label Content="Current Count:" HorizontalAlignment="Left" Margin="429,235,0,0" VerticalAlignment="Top" FontSize="20" FontWeight="Bold"/>
         <Label x:Name="lblCurrentCount" Content="" HorizontalAlignment="Left" Margin="587,235,0,0" VerticalAlignment="Top" FontSize="20" FontWeight="Bold"/>
         <ListBox x:Name="lstMessages" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="765,539,0,0" HorizontalAlignment="Left" Width="380" Height="206" VerticalAlignment="Top" FontSize="16" ScrollViewer.CanContentScroll="False" ScrollViewer.VerticalScrollBarVisibility="Visible"/>
-        <Button x:Name="btnCutDeck" Content="Cut Deck" HorizontalAlignment="Right" Margin="0,799,1238,0" Width="115" Height="35" VerticalAlignment="Top" FontSize="18" Click="btnCutDeck_Click"/>
+        <Button x:Name="btnCutDeck" Content="Cut Deck" HorizontalAlignment="Right" Margin="0,799,465,0" Width="116" Height="35" VerticalAlignment="Top" FontSize="18" Click="btnCutDeck_Click"/>
+        <Button x:Name="btnEndGame" Content="END GAME" HorizontalAlignment="Left" Margin="10,642,0,0" VerticalAlignment="Top" Height="57" Width="186" FontSize="20" Click="btnEndGame_Click"/>
+        <Button x:Name="btnNewGame" Content="New Game" HorizontalAlignment="Left" Margin="148,725,0,0" VerticalAlignment="Top" Height="57" Width="186" FontSize="20" Click="NewGame_Click"/>
+        <Button x:Name="btnHome" Content="Home" HorizontalAlignment="Left" Margin="349,725,0,0" VerticalAlignment="Top" Height="57" Width="186" FontSize="20" Click="btnHome_Click" RenderTransformOrigin="-0.199,0.422"/>
+        <Button x:Name="btnExit" Content="Exit" HorizontalAlignment="Left" Margin="550,725,0,0" VerticalAlignment="Top" Height="57" Width="186" FontSize="20" Click="btnExit_Click" RenderTransformOrigin="-0.199,0.422"/>
     </Grid>
 </Window>
