@@ -624,6 +624,8 @@ namespace Cribbage.API.Hubs
 
         //****Problem**** How do we delete games when someone quits the program or disconects before someone joins their game?
         //put them in another "waiting" state as player 1 or send them back to their "Home" page to try again
+        //****Problem**** How do we get games that are resumed i.e they DB already has both playerId's stored
+        //and then one of them wants to resume it later.
 
 
 
