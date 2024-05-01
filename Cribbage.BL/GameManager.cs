@@ -183,6 +183,37 @@ namespace Cribbage.BL
                 throw e;
             }
         }
+        public Game GetAvailableGame()
+        {
+            try
+            {
+                using (CribbageEntities dc = new CribbageEntities(options))
+                {
+                    tblGame row = dc.tblGames.Where(g => g.tblUserGames.Count() == 0).OrderBy(g => g.Date).FirstOrDefault();
+
+                    if (row != null)
+                    {
+                        Game game = new Game
+                        {
+                            Id = row.Id,
+                            Winner = row.Winner,
+                            Date = row.Date,
+                            GameName = row.GameName,
+                            Complete = row.Complete
+                        };
+                        return game;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
 
         #endregion
 
