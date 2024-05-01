@@ -711,10 +711,12 @@ def onClickCancelUser():
 
 def onClick_btnCutPosition():
     cutposition = txtCutPosition.get()
-    messagebox.showinfo('cut position', cutposition)
-    gameToSendJson = getGameJson()
-    print('******Pushed CutCard Button ********')
-    hub_connection.send("CutDeck",[gameToSendJson])
+    if(cutposition.isdigit() and int(cutposition) > 0 and int(cutposition) < 41):
+        gameToSendJson = getGameJson()
+        print('******Pushed CutCard Button ********')
+        hub_connection.send("CutDeck",[gameToSendJson])
+    else:
+        messagebox.showerror("Invalid cut card number", "Enter a number from 1 to 40 to use as the cut card")
     #messagebox.showinfo(message='email: ' + email + ' password: ' + password)
 
 
