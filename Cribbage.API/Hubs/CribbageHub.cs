@@ -598,36 +598,52 @@ namespace Cribbage.API.Hubs
             }
         }
 
-        //        ***** Hub psuedo code for player vs player*****
+            //        ***** Hub psuedo code for player vs player*****
 
 
-        //NewGameVsPlayer(string userJson)
-        ////Purpose is to create a cribbage game in the state of waiting for someone else to join.
-        //	- Check DB available game.
-        //	-if available to join:
-        //		-Caller joins group with Groups.AddToGroupAsync(Context.ConectionId, "GameIDGUid")
-        //		-Update Player2 Id on the game.
-        //		-Update game in DB with you as P2
-        //		-Create new UserGames for both players in DB.
-        //		-Update a CribbageGame with you as P2
-        //		-Update CribbageGame Name P1.UserName Vs.P2.UserName
-        //		-Update WhatToDO = "readytostart" or something similar we agree on. Purpose being both players 
-        //		- make a string message something like "P2.displayName Has joined the game\n 
+            //NewGameVsPlayer(string userJson)
+            ////Purpose is to create a cribbage game in the state of waiting for someone else to join.
+            //	- Check DB available game.
+            //	-if available to join:
+            //		-Caller joins group with Groups.AddToGroupAsync(Context.ConectionId, "GameIDGUid")
+            //		-Update Player2 Id on the game.
+            //		-Update game in DB with you as P2
+            //		-Create new UserGames for both players in DB.
+            //		-Update a CribbageGame with you as P2
+            //		-Update CribbageGame Name P1.UserName Vs.P2.UserName
+            //		-Update WhatToDO = "readytostart" or something similar we agree on. Purpose being both players 
+            //		- make a string message something like "P2.displayName Has joined the game\n 
 
-        //                            cribbageGame.Name\n
-        //                            Click Ready button to start"
-        //		-return msg to Group(groupName which is the gameID).SendAsync("ReadyToStart", cribbageGameJson, message)
+            //                            cribbageGame.Name\n
+            //                            Click Ready button to start"
+            //		-return msg to Group(groupName which is the gameID).SendAsync("ReadyToStart", cribbageGameJson, message)
 		
-        //	-if not available:
-        //		-Create new game with them as P1
-        //		-Update WhatToDo = "waiting"
-        //        - create a message string to send back to player.
-        //		-return msg to Group(groupName which is the gameID).SendAsync("WaitingForPlayer", cribbageGameJson, message)
-	
+            //	-if not available:
+            //		-Create new game with them as P1
+            //		-Update WhatToDo = "waiting"
+            //        - create a message string to send back to player.
+            //		-return msg to Group(groupName which is the gameID).SendAsync("WaitingForPlayer", cribbageGameJson, message)
 
-        //**Additional comments**
-        //May have to add a property to cribbagegame class or Player class. Maybe a bool to indicate if they are ready for things like next hand or play another game.Next hand shouldn't be dealt unless both players are ready in my opinion.
+            //EndGame(string cribbageGameJson)
+            ////Purpose is to check if the game should be deleted from the DB.
+            //// Games and Usergames are saved after someone hits countCards button fyi. Do not need to update games when closing
+            //	-if p2 null:
+            //		-delete from database
+            //		-remove from hub group.
+            //	-if p2 entered and cribbageGame.Computer = true:
+            //		-remove from hub group.	
+            //	-if p2 entered and cribbageGame.Computer = false:
+            //		-send message to hub group saying they left.
+            //		-remove them from the hub group
 
-        //UI's would have to add code obviously to handle all new messages sent back to them and display widgets/controlls properly
+            //**Additional comments**
+            //May have to add a property to cribbagegame class or Player class. Maybe a bool to indicate if they are ready for things like next hand or play another game.Next hand shouldn't be dealt unless both players are ready in my opinion.
+
+            //UI's would have to add code obviously to handle all new messages sent back to them and display widgets/controlls properly
+
+            //May have to change the GetSavedGames Manager Method to filter only vs computer games.
+
+
+
     }
 }
