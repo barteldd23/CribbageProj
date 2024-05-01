@@ -68,7 +68,7 @@ namespace Cribbage.WPFUI
             RemoveSelectedItems();
 
             // Testing button
-            btnEndGame.Visibility = Visibility.Collapsed;
+            //btnEndGame.Visibility = Visibility.Visible;
 
             // Update buttons
             btnRefreshScreen.Visibility = Visibility.Collapsed;
@@ -338,31 +338,6 @@ namespace Cribbage.WPFUI
             _connection.StartAsync();
         }
 
-        //private void ReceivedLoginMessage(bool isLoggedIn, bool isSuccess, string message, string userJson, string userGamesJson)
-        //{
-        //    if (isLoggedIn)
-        //    {
-        //        loggedInUser = JsonConvert.DeserializeObject<User>(userJson);
-
-        //        StaThreadWrapper(() =>
-        //        {
-        //            var landingPage = new LandingPage(loggedInUser, hasSavedGames, strUserGames);
-        //            landingPage.ShowDialog();
-        //        });
-
-        //        Dispatcher.Invoke(() => { this.Close(); });
-        //    }
-        //    else // not logged in
-        //    {
-        //        MessageBox.Show("Failed log in");
-        //        StaThreadWrapper(() =>
-        //        {
-        //            var login = new Login();
-        //            login.ShowDialog();
-        //        });
-        //    }
-        //}
-
         private void GameFinishedMessage(string cribbageGameJson, string message)
         {
             cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
@@ -378,7 +353,7 @@ namespace Cribbage.WPFUI
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                lblMessageToPlayers.Content = ex.Message;
             }
         }
 
@@ -404,6 +379,11 @@ namespace Cribbage.WPFUI
         {
             cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
             signalRMessage = message;
+
+            if(cribbageGame.Player_1.Score >= 121 || cribbageGame.Player_2.Score >= 121)
+            {
+                endGame = true;
+            }
         }
 
         private void StartNewHandMessage(string message, string cribbageGameJson)
@@ -437,11 +417,11 @@ namespace Cribbage.WPFUI
                     _connection.InvokeAsync("PlayCard", cribbageGameJson, cardJson);
                 }
                 else
-                    MessageBox.Show("Select one card to play.");
+                    lblMessageToPlayers.Content = "Select one card to play.";
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                lblMessageToPlayers.Content = ex.Message;
             }
         }
 
@@ -454,15 +434,13 @@ namespace Cribbage.WPFUI
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                lblMessageToPlayers.Content = ex.Message;
             }
         }
 
         private void StartGameVsComputerMessage(string message, string cribbageGameJson)
         {
             cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
-
-            MessageBox.Show(message + " " + cribbageGame.WhatToDo);
 
             StaThreadWrapper(() =>
             {
@@ -480,13 +458,19 @@ namespace Cribbage.WPFUI
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                lblMessageToPlayers.Content = ex.Message;
             }
         }
 
         private void StartGameVsPlayerMessage(string message, string cribbageGameJson)
         {
-            MessageBox.Show(message + " " + cribbageGameJson);
+            cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
+
+            StaThreadWrapper(() =>
+            {
+                var mainWindow = new MainWindow(cribbageGame, loggedInUser);
+                mainWindow.ShowDialog();
+            });
         }
 
         public void NewGameVsComputer(User user)
@@ -498,26 +482,9 @@ namespace Cribbage.WPFUI
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                lblMessageToPlayers.Content = ex.Message;
             }
         }
-
-        //private void UserLandingPage()
-        //{
-        //    try
-        //    {
-        //        string email = loggedInUser.Email;
-        //        // need to work on getting this unhashed
-        //        //string password = loggedInUser.Password;
-        //        string password = "maple";
-
-        //        _connection.InvokeAsync("Login", email, password);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show(ex.Message);
-        //    }
-        //}
 
         private static void StaThreadWrapper(Action action)
         {
@@ -542,6 +509,13 @@ namespace Cribbage.WPFUI
 
         private void NewGame_Click(object sender, RoutedEventArgs e)
         {
+            endGame = false;
+
+            // Reset Cards and Score
+            ResetCards();
+            cribbageGame.Player_1.Score = 0;
+            cribbageGame.Player_2.Score = 0;
+
             if (cribbageGame.Computer)
             {
                 try
@@ -551,7 +525,7 @@ namespace Cribbage.WPFUI
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    lblMessageToPlayers.Content = ex.Message;
                 }
             }
 
@@ -582,12 +556,12 @@ namespace Cribbage.WPFUI
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    lblMessageToPlayers.Content = ex.Message;
                 }
             }
             else
             {
-                MessageBox.Show("Select a total of 2 cards to go to the Crib");
+                lblMessageToPlayers.Content = "Select a total of 2 cards to go to the Crib";
             }
         }
 
@@ -620,12 +594,12 @@ namespace Cribbage.WPFUI
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    lblMessageToPlayers.Content = ex.Message;
                 }
             }
             else
             {
-                MessageBox.Show("Select one card to play to create a current count sum <= 31.");
+                lblMessageToPlayers.Content = "Select one card to play to create a current count sum <= 31.";
             }
         }
 
@@ -634,22 +608,14 @@ namespace Cribbage.WPFUI
             try
             {
                 // Reset the cards
-                cribbageGame.PlayedCards.Clear();
-                cribbageGame.Player_1.Hand.Clear();
-                playerHand.Clear();
-                cribbageGame.Player_2.Hand.Clear();
-                opponentHand.Clear();
-                cribbageGame.Player_1.PlayedCards.Clear();
-                cribbageGame.Player_2.PlayedCards.Clear();
-                cribbageGame.Crib.Clear();
-                cribbageGame.CutCard = null;
+                ResetCards();
 
                 UpdateCutCard(cribbageGame);
                 displayCribCards();
                 displayPlayedCards();
                 displayOpponentHand(opponentHand, true);
                 displayPlayerHand(playerHand);
-                
+
                 // Send a message to the hub
                 string cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
                 _connection.InvokeAsync("NewHand", cribbageGameJson);
@@ -663,8 +629,21 @@ namespace Cribbage.WPFUI
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                lblMessageToPlayers.Content = ex.Message;
             }
+        }
+
+        private void ResetCards()
+        {
+            cribbageGame.PlayedCards.Clear();
+            cribbageGame.Player_1.Hand.Clear();
+            playerHand.Clear();
+            cribbageGame.Player_2.Hand.Clear();
+            opponentHand.Clear();
+            cribbageGame.Player_1.PlayedCards.Clear();
+            cribbageGame.Player_2.PlayedCards.Clear();
+            cribbageGame.Crib.Clear();
+            cribbageGame.CutCard = null;
         }
 
         private void btnCountCards_Click(object sender, RoutedEventArgs e)
@@ -691,7 +670,7 @@ namespace Cribbage.WPFUI
             catch (Exception ex)
             {
 
-                MessageBox.Show(ex.Message);
+                lblMessageToPlayers.Content = ex.Message;
             }
         }
 
@@ -727,31 +706,6 @@ namespace Cribbage.WPFUI
             });
 
             Dispatcher.Invoke(() => { this.Close(); });
-        }
-
-        private void btnNewGame_Click(object sender, RoutedEventArgs e)
-        {
-            if (cribbageGame.Computer)
-            {
-                try
-                {
-                    string strUser = JsonConvert.SerializeObject(loggedInUser);
-                    _connection.InvokeAsync("NewGameVsComputer", strUser);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-            }
-
-            StaThreadWrapper(() =>
-            {
-                var mainWindow = new MainWindow(cribbageGame, loggedInUser);
-                mainWindow.ShowDialog();
-            });
-
-            // need to save prior to closing 
-            this.Hide();
         }
         #endregion
 
@@ -871,13 +825,20 @@ namespace Cribbage.WPFUI
             }
             else if (endGame)
             {
-                endGame = false;
-
                 lblMessageToPlayers.Content = signalRMessage;
                 lstMessages.Items.Add(signalRMessage);
+
+                // Update the Board
+                EndGame();
+
+                // Call to SignalR
+                EndGame(cribbageGame);
             }
             else if (cribbageGame.Player_1.Score >= 121 || cribbageGame.Player_2.Score >= 121)
             {
+                // Update the game state
+                endGame = true;
+
                 // Update the Board
                 EndGame();
 
@@ -913,9 +874,6 @@ namespace Cribbage.WPFUI
 
         private void EndGame()
         {
-            // Update the game state
-            endGame = true;
-
             // Player scores updated
             lblPlayer1Score.Content = cribbageGame.Player_1.Score;
             lblPlayer2Score.Content = cribbageGame.Player_2.Score;
@@ -954,7 +912,7 @@ namespace Cribbage.WPFUI
         private void UpdateButtonSelection()
         {
 
-            if (cribbageGame.GoCount != 2 && (opponentHand.Count >= 1 || playerHand.Count >= 1))
+            if (!endGame && cribbageGame.GoCount != 2 && (opponentHand.Count >= 1 || playerHand.Count >= 1))
             {
                 if (cribbageGame.PlayerTurn.Id == loggedInUser.Id) 
                 {
@@ -1193,7 +1151,9 @@ namespace Cribbage.WPFUI
         private void btnEndGame_Click(object sender, RoutedEventArgs e)
         {
             cribbageGame.Player_1.Score = 121;
+            endGame = true;
 
+            signalRMessage = "Game Over.\nWinner: " + cribbageGame.Player_1.DisplayName;
             EndGame();
             EndGame(cribbageGame);
         }

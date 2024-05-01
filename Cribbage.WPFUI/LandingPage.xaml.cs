@@ -53,7 +53,6 @@ namespace Cribbage.WPFUI
         {
             if (isSuccess)
             {
-                //MessageBox.Show("UserGamesJson: " + userGamesJson);
                List<Game> userGames = JsonConvert.DeserializeObject<List<Game>>(userGamesJson);
 
                foreach(Game game in userGames)
@@ -63,7 +62,7 @@ namespace Cribbage.WPFUI
             }
             else
             {
-                MessageBox.Show("Saved Games Check FALSE");
+                lstSavedGames.Items.Add("No saved games.");
             }
         }
 

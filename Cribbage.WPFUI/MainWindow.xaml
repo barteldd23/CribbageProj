@@ -69,7 +69,7 @@
         <ListBox x:Name="lstMessages" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="765,539,0,0" HorizontalAlignment="Left" Width="380" Height="206" VerticalAlignment="Top" FontSize="16" ScrollViewer.CanContentScroll="False" ScrollViewer.VerticalScrollBarVisibility="Visible"/>
         <Button x:Name="btnCutDeck" Content="Cut Deck" HorizontalAlignment="Right" Margin="0,799,465,0" Width="116" Height="35" VerticalAlignment="Top" FontSize="18" Click="btnCutDeck_Click"/>
         <Button x:Name="btnEndGame" Content="END GAME" HorizontalAlignment="Left" Margin="10,642,0,0" VerticalAlignment="Top" Height="57" Width="186" FontSize="20" Click="btnEndGame_Click"/>
-        <Button x:Name="btnNewGame" Content="New Game" HorizontalAlignment="Left" Margin="148,725,0,0" VerticalAlignment="Top" Height="57" Width="186" FontSize="20" Click="btnNewGame_Click"/>
+        <Button x:Name="btnNewGame" Content="New Game" HorizontalAlignment="Left" Margin="148,725,0,0" VerticalAlignment="Top" Height="57" Width="186" FontSize="20" Click="NewGame_Click"/>
         <Button x:Name="btnHome" Content="Home" HorizontalAlignment="Left" Margin="349,725,0,0" VerticalAlignment="Top" Height="57" Width="186" FontSize="20" Click="btnHome_Click" RenderTransformOrigin="-0.199,0.422"/>
         <Button x:Name="btnExit" Content="Exit" HorizontalAlignment="Left" Margin="550,725,0,0" VerticalAlignment="Top" Height="57" Width="186" FontSize="20" Click="btnExit_Click" RenderTransformOrigin="-0.199,0.422"/>
     </Grid>

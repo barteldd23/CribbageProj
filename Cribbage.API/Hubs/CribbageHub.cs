@@ -66,7 +66,6 @@ namespace Cribbage.API.Hubs
 
                 await Clients.All.SendAsync("ReceiveMessage", message, message);
 
-                //await Clients.Caller.SendAsync("LogInAttempt", isLoggedIn, message);
                 // On success: serialize User into Json
                 userJson = JsonConvert.SerializeObject(user);
                 // Send Back User Json to client only
@@ -403,19 +402,6 @@ namespace Cribbage.API.Hubs
                             cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
                             await Clients.All.SendAsync("Action", cribbageGameJson, message + cribbageGame.PlayerTurn.DisplayName + "'s turn");
                             CheckCompletedGame(cribbageGame);
-
-                            //bool canPlay = CribbageGameManager.CanPlay(cribbageGame);
-                            //if (canPlay)
-                            //{
-                            //   // cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-                            //   // await Clients.All.SendAsync("Action", cribbageGameJson, message + cribbageGame.PlayerTurn.DisplayName + "'s turn");
-                            //}
-                            //else if (cribbageGame.PlayerTurn.Hand.Count > 0)
-                            //{
-                            //    cribbageGame.WhatToDo = "go";
-                            //    //cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-                            //   // await Clients.All.SendAsync("Action", cribbageGameJson, message + cribbageGame.PlayerTurn.DisplayName + "'s turn");
-                            //}
                         }
                         else if (cribbageGame.WhatToDo == "go")
                         {
@@ -425,20 +411,6 @@ namespace Cribbage.API.Hubs
                             cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
                             await Clients.All.SendAsync("Action", cribbageGameJson, message + cribbageGame.PlayerTurn.DisplayName + "'s turn");
                             CheckCompletedGame(cribbageGame);
-
-                            //bool canPlay = CribbageGameManager.CanPlay(cribbageGame);
-
-                            //if (canPlay)
-                            //{
-                            //    cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-                            //    await Clients.All.SendAsync("Action", cribbageGameJson, message + cribbageGame.PlayerTurn.DisplayName + "'s turn");
-                            //}
-                            //else if (cribbageGame.PlayerTurn.Hand.Count > 0)
-                            //{
-                            //    cribbageGame.WhatToDo = "go";
-                            //    cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-                            //    await Clients.All.SendAsync("Action", cribbageGameJson, message + cribbageGame.PlayerTurn.DisplayName + "'s turn");
-                            //}
                         }
                     }
 
@@ -476,21 +448,6 @@ namespace Cribbage.API.Hubs
                 cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
                 await Clients.All.SendAsync("Action", cribbageGameJson, message + cribbageGame.PlayerTurn.DisplayName + "'s turn");
                 CheckCompletedGame(cribbageGame);
-
-                //bool canPlay = CribbageGameManager.CanPlay(cribbageGame);
-
-                //if (canPlay)
-                //{
-                //    cribbageGame.WhatToDo = "playcard";
-                //    cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-                //    await Clients.All.SendAsync("Action", cribbageGameJson, message + cribbageGame.PlayerTurn.DisplayName + "'s turn");
-                //}
-                //else
-                //{
-                //    cribbageGame.WhatToDo = "go";
-                //    cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-                //    await Clients.All.SendAsync("Action", cribbageGameJson, message + cribbageGame.PlayerTurn.DisplayName + "'s turn");
-                //}
 
                 while (!cribbageGame.Complete
                             && cribbageGame.Computer
@@ -615,14 +572,12 @@ namespace Cribbage.API.Hubs
             if (cribbageGame.Player_1.Score > cribbageGame.Player_2.Score)
             {
                 cribbageGame.Winner = cribbageGame.Player_1.Id;
-                message = "Game Over.";
-                message += "Winner: " + cribbageGame.Player_1.DisplayName;
+                message = "Game Over.\nWinner: " + cribbageGame.Player_1.DisplayName;
             }
             else
             {
                 cribbageGame.Winner = cribbageGame.Player_2.Id;
-                message = "Game Over.";
-                message += "Winner: " + cribbageGame.Player_2.DisplayName;
+                message = "Game Over.\nWinner: " + cribbageGame.Player_2.DisplayName;
             }
 
                 cribbageGame.Team1_Score = cribbageGame.Player_1.Score;
