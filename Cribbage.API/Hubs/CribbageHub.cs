@@ -226,7 +226,6 @@ namespace Cribbage.API.Hubs
             }
             catch (Exception)
             {
-
                 throw;
             }
 
@@ -287,7 +286,7 @@ namespace Cribbage.API.Hubs
                         await Clients.All.SendAsync("CutCard", cribbageGameJson, cribbageGame.PlayerTurn.DisplayName + " cut the deck.");
                     }
                 }
-                // Playing vs another pseron
+                // Playing vs another person
                 // only send to crib if they sent 2 cards to hub
                 // check if the other person already sent cards.
                 // if they did, send message to both players to cut the card.
@@ -311,7 +310,6 @@ namespace Cribbage.API.Hubs
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
@@ -534,17 +532,16 @@ namespace Cribbage.API.Hubs
                 string message;
                 //cribbageGame.WhatToDo = "startnewgame";
 
-
-            if (cribbageGame.Player_1.Score > cribbageGame.Player_2.Score)
-            {
-                cribbageGame.Winner = cribbageGame.Player_1.Id;
-                message = "Game Over.\nWinner: " + cribbageGame.Player_1.DisplayName;
-            }
-            else
-            {
-                cribbageGame.Winner = cribbageGame.Player_2.Id;
-                message = "Game Over.\nWinner: " + cribbageGame.Player_2.DisplayName;
-            }
+                if (cribbageGame.Player_1.Score > cribbageGame.Player_2.Score)
+                {
+                    cribbageGame.Winner = cribbageGame.Player_1.Id;
+                    message = "Game Over.\nWinner: " + cribbageGame.Player_1.DisplayName;
+                }
+                else
+                {
+                    cribbageGame.Winner = cribbageGame.Player_2.Id;
+                    message = "Game Over.\nWinner: " + cribbageGame.Player_2.DisplayName;
+                }
 
                 cribbageGame.Team1_Score = cribbageGame.Player_1.Score;
                 cribbageGame.Team2_Score = cribbageGame.Player_2.Score;
@@ -599,26 +596,48 @@ namespace Cribbage.API.Hubs
         //        - create a message string to send back to player.
         //		-return msg to Group(groupName which is the gameID).SendAsync("WaitingForPlayer", cribbageGameJson, message)
 
-        //EndGame(string cribbageGameJson)
-        ////Purpose is to check if the game should be deleted from the DB.
-        //// Games and Usergames are saved after someone hits countCards button fyi. Do not need to update games when closing
-        //	-if p2 null:
-        //		-delete from database
-        //		-remove from hub group.
-        //	-if p2 entered and cribbageGame.Computer = true:
-        //		-remove from hub group.	
-        //	-if p2 entered and cribbageGame.Computer = false:
-        //		-send message to hub group saying they left.
-        //		-remove them from the hub group
+
+
+        //check if the game should be deleted from the DB
+        //Note: Games and Usergames are saved after someone hits countCards button. Do not need to update games when closing
+        public async Task QuitGame(string game)
+        {
+            CribbageGame cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(game);
+            string message = "";
+
+            try
+            {
+                if(!cribbageGame.Computer)
+                {
+                    if (cribbageGame.Player_2 == null)
+                    {
+                        //delete from database
+                        //tblGame -- need id for this game cribbageGame.GameId
+
+                        //remove from hub group
+
+                    }
+                    else //player 1 OR player 2
+                    {
+                        //send message to hub group saying player 1 left
+                        //remove them from the hub group
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
         //**Additional comments**
-        //May have to add a property to cribbagegame class or Player class. Maybe a bool to indicate if they are ready for things like next hand or play another game.Next hand shouldn't be dealt unless both players are ready in my opinion.
+        //May have to add a property to cribbagegame class or Player class. OR have another call to the hub for the below using buttons
+        //Maybe a bool to indicate if they are ready for things like next hand or play another game.
+        //Next hand shouldn't be dealt unless both players are ready.
 
-        //UI's would have to add code obviously to handle all new messages sent back to them and display widgets/controlls properly
-
+        //UI's would have to add code to handle all new messages sent back to them and display widgets/controls properly
         //May have to change the GetSavedGames Manager Method to filter only vs computer games.
 
-
-
+        //SignalR groups: https://learn.microsoft.com/en-us/aspnet/signalr/overview/guide-to-the-api/working-with-groups
     }
 }

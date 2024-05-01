@@ -76,8 +76,7 @@ namespace Cribbage.WPFUI
             btnGo.Visibility = Visibility.Collapsed;
             btnCountCards.Visibility = Visibility.Collapsed;
             btnCutDeck.Visibility = Visibility.Collapsed;
-            btnNewGame.Visibility = Visibility.Collapsed;
-            btnHome.Visibility = Visibility.Collapsed;
+            btnMainMenu.Visibility = Visibility.Collapsed;
             btnExit.Visibility = Visibility.Collapsed;
             btnSendToCrib.Visibility = Visibility.Visible;
 
@@ -530,44 +529,32 @@ namespace Cribbage.WPFUI
 
         private void QuitGame_Click(object sender, RoutedEventArgs e)
         {
-            // need to save prior to closing
-            this.Close();
-        }
+            // call the QuitGame method in the hub
 
-        private void NewGame_Click(object sender, RoutedEventArgs e)
-        {
-            endGame = false;
-
-            // Reset Cards and Score
-            ResetCards();
-            cribbageGame.Player_1.Score = 0;
-            cribbageGame.Player_2.Score = 0;
-
-            if (cribbageGame.Computer)
+            if (cribbageGame.Complete)
             {
-                try
+                // need to save prior to closing
+                this.Close();
+            }
+            else
+            {
+                if (cribbageGame.Computer)
                 {
-                    string strUser = JsonConvert.SerializeObject(loggedInUser);
-                    _connection.InvokeAsync("NewGameVsComputer", strUser);
+                    // need to save prior to closing
+                    this.Close();
                 }
-                catch (Exception ex)
+                else
                 {
-                    lblMessageToPlayers.Content = ex.Message;
+                    //don't need to save if not complete against another player
+                    this.Close();
                 }
             }
-
-            StaThreadWrapper(() =>
-            {
-                var mainWindow = new MainWindow(cribbageGame, loggedInUser);
-                mainWindow.ShowDialog();
-            });
-
-            // need to save prior to closing 
-            Dispatcher.Invoke(() => { this.Close(); });
         }
 
-        private void Home_Click(object sender, RoutedEventArgs e)
+    private void MainMenu_Click(object sender, RoutedEventArgs e)
         {
+            // call the QuitGame method in the hub
+
             StaThreadWrapper(() =>
             {
                 var landingPage = new LandingPage(loggedInUser, hasSavedGames, strUserGames);
@@ -684,18 +671,6 @@ namespace Cribbage.WPFUI
 
                 string cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
                 _connection.InvokeAsync("CountHands", cribbageGameJson);
-
-                //playerHand = cribbageGame.Player_1.PlayedCards;
-                //opponentHand = cribbageGame.Player_2.PlayedCards;
-                //cribbageGame.PlayedCards = new List<Card>();
-
-                //displayOpponentHand(opponentHand, true);
-                //displayPlayerHand(playerHand);
-                //displayCribCards(true);
-                //displayPlayedCards();
-
-                //btnNextHand.Visibility = Visibility.Visible;
-                //btnCountCards.Visibility = Visibility.Collapsed;
             }
             catch (Exception ex)
             {
@@ -944,9 +919,8 @@ namespace Cribbage.WPFUI
                 btnCutDeck.Visibility = Visibility.Collapsed;
                 btnSendToCrib.Visibility = Visibility.Collapsed;
 
-                // New Game, Home, & Exit buttons
-                btnNewGame.Visibility = Visibility.Visible;
-                btnHome.Visibility = Visibility.Visible;
+                // Main Menu & Exit buttons
+                btnMainMenu.Visibility = Visibility.Visible;
                 btnExit.Visibility = Visibility.Visible;
             }
             else
