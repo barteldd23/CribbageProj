@@ -12,6 +12,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using static System.Net.Mime.MediaTypeNames;
 using System.Security.Policy;
 using System.Text.RegularExpressions;
+using System.Numerics;
 
 namespace Cribbage.API.Hubs
 {
@@ -597,62 +598,52 @@ namespace Cribbage.API.Hubs
             }
         }
 
-        // Pseudo Code for Player vs Player
-
-        ////Purpose is to create a cribbage game in the state of waiting for someone else to join.
-
-        //NewGameVsPlayer(string userJson)
-        //	- create a new game with one player
-        //	- create a group with await Groups.AddToGroupAsync(Context.ConectionId, "GameIDGUid")
-        //	- send game back to caller.async("WaitingForPlayer", cribbagegamejson)
+            //        ***** Hub psuedo code for player vs player*****
 
 
-        ////Purpose is to get a list of all available games to join where a player is waiting for someone.
+            //NewGameVsPlayer(string userJson)
+            ////Purpose is to create a cribbage game in the state of waiting for someone else to join.
+            //	- Check DB available game.
+            //	-if available to join:
+            //		-Caller joins group with Groups.AddToGroupAsync(Context.ConectionId, "GameIDGUid")
+            //		-Update Player2 Id on the game.
+            //		-Update game in DB with you as P2
+            //		-Create new UserGames for both players in DB.
+            //		-Update a CribbageGame with you as P2
+            //		-Update CribbageGame Name P1.UserName Vs.P2.UserName
+            //		-Update WhatToDO = "readytostart" or something similar we agree on. Purpose being both players 
+            //		- make a string message something like "P2.displayName Has joined the game\n 
 
-        //GetPlayerGames()
-        //	-Load games from DB where only P1 is set and P2 is null. probably need to create a method on managercode
-        //	-return msg to caller.async("GamesToJoin", json of List<Game> or List<CribbageGame> ??)
-        //  Recommended change: -return msg to caller.async("JoinGame", cribbageGame) -- add them as Player2
-        // - return only the first game and add them to that game (not joining friends, only joining random people currently)
-        //      -Caller joins group with Groups.AddToGroupAsync(Context.ConectionId, "GameIDGUid")
-        //		-Update game in DB with you as P2
-        //		-Create new UserGames for both players in DB.
-        //		-Update a CribbageGame with you as P2
-        //		-Update CribbageGame Name P1.UserName Vs.P2.UserName
-        //		-Update WhatToDO = "readytostart" or something similar we agree on. Purpose being both players should have to click a button on UI indicating they are ready because the host player might not be ready if waiting for awhile.
+            //                            cribbageGame.Name\n
+            //                            Click Ready button to start"
+            //		-return msg to Group(groupName which is the gameID).SendAsync("ReadyToStart", cribbageGameJson, message)
+		
+            //	-if not available:
+            //		-Create new game with them as P1
+            //		-Update WhatToDo = "waiting"
+            //        - create a message string to send back to player.
+            //		-return msg to Group(groupName which is the gameID).SendAsync("WaitingForPlayer", cribbageGameJson, message)
+
+            //EndGame(string cribbageGameJson)
+            ////Purpose is to check if the game should be deleted from the DB.
+            //// Games and Usergames are saved after someone hits countCards button fyi. Do not need to update games when closing
+            //	-if p2 null:
+            //		-delete from database
+            //		-remove from hub group.
+            //	-if p2 entered and cribbageGame.Computer = true:
+            //		-remove from hub group.	
+            //	-if p2 entered and cribbageGame.Computer = false:
+            //		-send message to hub group saying they left.
+            //		-remove them from the hub group
+
+            //**Additional comments**
+            //May have to add a property to cribbagegame class or Player class. Maybe a bool to indicate if they are ready for things like next hand or play another game.Next hand shouldn't be dealt unless both players are ready in my opinion.
+
+            //UI's would have to add code obviously to handle all new messages sent back to them and display widgets/controlls properly
+
+            //May have to change the GetSavedGames Manager Method to filter only vs computer games.
 
 
-        //****Problem**** How do we delete games when someone quits the program or disconects before someone joins their game?
-        //put them in another "waiting" state as player 1 or send them back to their "Home" page to try again
-        //****Problem**** How do we get games that are resumed i.e they DB already has both playerId's stored
-        //and then one of them wants to resume it later.
 
-
-        ////Purpose is to join a game that someone is there and waiting for you to join.
-        /// this would be if we had them join with a code to play with friends --> skip this for now, get random player vs random player working first
-
-        //JoinGameVsPlayer(string game)
-        //	-check DB if some one joined it before you or if the host left and the game was deleted already
-        //	-if not there send back to caller.async("GameNotAvailable", "That game is no longer available.")
-        //	-if available to join:
-        //		-Caller joins group with Groups.AddToGroupAsync(Context.ConectionId, "GameIDGUid")
-        //		-Update game in DB with you as P2
-        //		-Create new UserGames for both players in DB.
-        //		-Update a CribbageGame with you as P2
-        //		-Update CribbageGame Name P1.UserName Vs.P2.UserName
-        //		-Update WhatToDO = "readytostart" or something similar we agree on. Purpose being both players should have to click a button on UI indicating they are ready because the host player might not be ready if waiting for awhile.
-
-        //	- make a string message something like "P2.displayName Has joined the game\n 
-
-        //                        P1.displayName Vs. P2.displyname\n
-        //                        Click Ready button to start"
-        //	-return msg to Group(groupName which is the gameID).SendAsync("ReadyToStart", cribbageGameJson, message)
-
-
-        //**Additional comments**
-
-        //May have to add a property to cribbagegame class or Player class. Maybe a bool to indicate if they are ready for things like next hand or play another game. Next hand shouldn't be dealt unless both players are ready.
-        //We can add a "Ready" button and wait until both click "Ready" to deal, etc.
-        //UI's would have to add code to handle all new messages sent back to them and display widgets/controls properly
     }
 }
