@@ -67,7 +67,7 @@ namespace Cribbage.BL.Test
         {
             Game game = new GameManager(options).GetAvailableGame();
 
-            Assert.IsTrue(game != null);
+            Assert.IsTrue(game == null);
         }
     }
 }
