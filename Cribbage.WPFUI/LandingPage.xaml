@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Cribbage.WPFUI"
         mc:Ignorable="d"
-        Title="Cribbage Game Home" Height="595" Width="1300" Background="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}" SizeToContent="Height" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen">
+        Title="Cribbage Game Home" Height="595" Width="1300" Background="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}" SizeToContent="Height" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen" WindowStyle="None">
     <Grid Height="560" VerticalAlignment="Center" HorizontalAlignment="Center" Width="1279" RenderTransformOrigin="0.5,0.5">
         <Grid.RenderTransform>
             <TransformGroup>
