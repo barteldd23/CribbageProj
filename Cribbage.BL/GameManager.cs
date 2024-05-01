@@ -187,31 +187,38 @@ namespace Cribbage.BL
         {
             try
             {
+                List<Game> games = new List<Game>();
+
                 using (CribbageEntities dc = new CribbageEntities(options))
                 {
-                    tblGame row = dc.tblGames.Where(g => g.tblUserGames.Count() == 0).OrderBy(g => g.Date).FirstOrDefault();
+//                    select* from tblGame g
+//left outer join tblUserGame ug on g.Id = ug.GameId
+//where ug.Id is null
+//order by g.Date desc
+                    games = (from g in dc.tblGames
+                            join ug in dc.tblUserGames on g.Id equals ug.GameId into userGames
+                            from userGame in userGames.DefaultIfEmpty()
+                            where userGame.GameId == null
+                            orderby g.Date
+                            select new Game
+                             {
+                                 Id = g.Id,
+                                 Winner = g.Winner,
+                                 Date = g.Date,
+                                 GameName = g.GameName,
+                                 Complete = g.Complete
+                             }
+                             )
+                             .ToList();
 
-                    if (row != null)
-                    {
-                        Game game = new Game
-                        {
-                            Id = row.Id,
-                            Winner = row.Winner,
-                            Date = row.Date,
-                            GameName = row.GameName,
-                            Complete = row.Complete
-                        };
-                        return game;
-                    }
-                    else
-                    {
-                        return null;
-                    }
+                    
+                    return games.First();
+                    
                 }
             }
             catch (Exception e)
             {
-                throw e;
+                return null;
             }
         }
 
