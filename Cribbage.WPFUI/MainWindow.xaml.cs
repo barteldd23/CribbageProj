@@ -47,92 +47,15 @@ namespace Cribbage.WPFUI
 
             if(cribbageGame.WhatToDo == "readytostart")
             {
-                // Update buttons
-                btnNextHand.Visibility = Visibility.Collapsed;
-                btnPlayCard.Visibility = Visibility.Collapsed;
-                btnGo.Visibility = Visibility.Collapsed;
-                btnCountCards.Visibility = Visibility.Collapsed;
-                btnCutDeck.Visibility = Visibility.Collapsed;
-                btnMainMenu.Visibility = Visibility.Collapsed;
-                btnExit.Visibility = Visibility.Collapsed;
-                btnSendToCrib.Visibility = Visibility.Collapsed;
+                // Update screen
+                btnReadyToStart.Visibility = Visibility.Visible;
 
-                lblPlayer1DisplayName.Content = cribbageGame.Player_1.DisplayName + " Score";
-                lblPlayer1Score.Content = cribbageGame.Player_1.Score;
-                lblPlayerHand.Content = cribbageGame.Player_1.DisplayName + "'s Hand";
-
-                lblPlayer2DisplayName.Content = cribbageGame.Player_2.DisplayName + " Score";
-                lblPlayer2Score.Content = cribbageGame.Player_2.Score;
-                lblOpponentHand.Content = cribbageGame.Player_2.DisplayName + "'s Hand";
-
-                lblPlayersCrib.Content = dealer + "'s Crib";
-
-                imgCribCard1.Source = null;
-                imgCribCard2.Source = null;
-                imgCribCard3.Source = null;
-                imgCribCard4.Source = null;
-
-                imgPlayedCard1.Source = null;
-                imgPlayedCard2.Source = null;
-                imgPlayedCard3.Source = null;
-                imgPlayedCard4.Source = null;
-                imgPlayedCard5.Source = null;
-                imgPlayedCard6.Source = null;
-                imgPlayedCard7.Source = null;
-                imgPlayedCard8.Source = null;
-
-                displayOpponentHand(opponentHand, true);
-                displayPlayerHand(playerHand);
+                ShowVsPlayerStartScreen();
             }
             else if(cribbageGame.WhatToDo == "waitingforplayer2")
             {
-                // Update buttons
-                btnNextHand.Visibility = Visibility.Collapsed;
-                btnPlayCard.Visibility = Visibility.Collapsed;
-                btnGo.Visibility = Visibility.Collapsed;
-                btnCountCards.Visibility = Visibility.Collapsed;
-                btnCutDeck.Visibility = Visibility.Collapsed;
-                btnMainMenu.Visibility = Visibility.Collapsed;
-                btnExit.Visibility = Visibility.Collapsed;
-                btnSendToCrib.Visibility = Visibility.Collapsed;
-
-                lblPlayer1DisplayName.Content = "";
-                lblPlayer1Score.Content = 0;
-                lblPlayerHand.Content = "";
-
-                lblPlayer2DisplayName.Content = "";
-                lblPlayer2Score.Content = 0;
-                lblOpponentHand.Content = "";
-
-                lblPlayersCrib.Content = "";
-
-                imgCribCard1.Source = null;
-                imgCribCard2.Source = null;
-                imgCribCard3.Source = null;
-                imgCribCard4.Source = null;
-
-                imgPlayedCard1.Source = null;
-                imgPlayedCard2.Source = null;
-                imgPlayedCard3.Source = null;
-                imgPlayedCard4.Source = null;
-                imgPlayedCard5.Source = null;
-                imgPlayedCard6.Source = null;
-                imgPlayedCard7.Source = null;
-                imgPlayedCard8.Source = null;
-
-                imgOppenentCard1.Source = null;
-                imgOppenentCard2.Source = null;
-                imgOppenentCard3.Source = null;
-                imgOppenentCard4.Source = null;
-                imgOppenentCard5.Source = null;
-                imgOppenentCard6.Source = null;
-
-                imgPlayerCard1.Source = null;
-                imgPlayerCard2.Source = null;
-                imgPlayerCard3.Source = null;
-                imgPlayerCard4.Source = null;
-                imgPlayerCard5.Source = null;
-                imgPlayerCard6.Source = null;
+                // Update screen
+                ShowVsPlayerStartScreen();
             }
             else SetUpGame();
         }
@@ -148,7 +71,22 @@ namespace Cribbage.WPFUI
             Start();
 
             InitializeComponent();
-            SetUpGame();
+
+            if (cribbageGame.WhatToDo == "readytostart")
+            {
+                // Update screen
+                btnReadyToStart.Visibility = Visibility.Visible;
+                lblMessageToPlayers.Content = "Press 'Ready to Start' to begin game";
+                ShowVsPlayerStartScreen();
+            }
+            else if (cribbageGame.WhatToDo == "waitingforplayer2")
+            {
+                // Update screen
+                btnReadyToStart.Visibility = Visibility.Collapsed;
+                lblMessageToPlayers.Content = "Waiting for Player 2";
+                ShowVsPlayerStartScreen();
+            }
+            else SetUpGame();
         }
 
         #region "GameSetup"
@@ -207,6 +145,60 @@ namespace Cribbage.WPFUI
                 displayOpponentHand(opponentHand, true);
                 displayPlayerHand(playerHand);
             }
+        }
+
+        private void ShowVsPlayerStartScreen()
+        {
+            RemoveSelectedItems();
+
+            btnNextHand.Visibility = Visibility.Collapsed;
+            btnPlayCard.Visibility = Visibility.Collapsed;
+            btnGo.Visibility = Visibility.Collapsed;
+            btnCountCards.Visibility = Visibility.Collapsed;
+            btnCutDeck.Visibility = Visibility.Collapsed;
+            btnMainMenu.Visibility = Visibility.Collapsed;
+            btnExit.Visibility = Visibility.Collapsed;
+            btnSendToCrib.Visibility = Visibility.Collapsed;
+
+            lblPlayer1DisplayName.Content = "Score";
+            lblPlayer1Score.Content = 0;
+            lblPlayerHand.Content = "";
+
+            lblPlayer2DisplayName.Content = "Score";
+            lblPlayer2Score.Content = 0;
+            lblOpponentHand.Content = "";
+
+            lblCurrentCount.Content = 0;
+
+            lblPlayersCrib.Content = "";
+
+            imgCribCard1.Source = null;
+            imgCribCard2.Source = null;
+            imgCribCard3.Source = null;
+            imgCribCard4.Source = null;
+
+            imgPlayedCard1.Source = null;
+            imgPlayedCard2.Source = null;
+            imgPlayedCard3.Source = null;
+            imgPlayedCard4.Source = null;
+            imgPlayedCard5.Source = null;
+            imgPlayedCard6.Source = null;
+            imgPlayedCard7.Source = null;
+            imgPlayedCard8.Source = null;
+
+            imgOppenentCard1.Source = null;
+            imgOppenentCard2.Source = null;
+            imgOppenentCard3.Source = null;
+            imgOppenentCard4.Source = null;
+            imgOppenentCard5.Source = null;
+            imgOppenentCard6.Source = null;
+
+            imgPlayerCard1.Source = null;
+            imgPlayerCard2.Source = null;
+            imgPlayerCard3.Source = null;
+            imgPlayerCard4.Source = null;
+            imgPlayerCard5.Source = null;
+            imgPlayerCard6.Source = null;
         }
 
         private void displayOpponentHand(List<Card> opponentHand, bool isShown = false)
@@ -424,8 +416,14 @@ namespace Cribbage.WPFUI
             _connection.On<string, string>("HandsCounted", (cribbageGameJson, message) => HandsCountedMessage(cribbageGameJson, message));
             _connection.On<string, string>("GameFinished", (cribbageGameJson, message) => GameFinishedMessage(cribbageGameJson, message));
             _connection.On<string>("PlayerLeft", (message) => PlayerLeftMessage(message));
+            _connection.On<string>("QuitGame", (message) => QuitGameMessage(message));
 
             _connection.StartAsync();
+        }
+
+        private void QuitGameMessage(string message)
+        {
+            Dispatcher.Invoke(() => { this.Close(); });
         }
 
         private void WaitingForConfirmationMessage(string cribbageGameJson, string message)
