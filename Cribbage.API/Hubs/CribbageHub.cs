@@ -670,7 +670,7 @@ namespace Cribbage.API.Hubs
                     cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
 
                     // Send CribbageGame back to only that person.
-                    await Clients.Caller.SendAsync("StartGame", cribbageGame.GameName + "\nSelect Crib Cards", cribbageGameJson);
+                    await Clients.Group(roomName).SendAsync("StartGame", cribbageGame.GameName + "\nSelect Crib Cards", cribbageGameJson);
 
                 }
                 else
@@ -678,7 +678,7 @@ namespace Cribbage.API.Hubs
                     
 
                     message = user.DisplayName + " is ready. Waiting for all players to be ready.";
-                    await Clients.Group(cribbageGame.Id.ToString()).SendAsync("WaitingForConfirmation", game, message);
+                    await Clients.Group(roomName).SendAsync("WaitingForConfirmation", game, message);
                     // UI side should check if you are the one that was ready, and hide the button. 
                 }
             }

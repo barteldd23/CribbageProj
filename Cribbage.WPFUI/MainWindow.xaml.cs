@@ -421,6 +421,7 @@ namespace Cribbage.WPFUI
         private void WaitingForPlayerMessage(string cribbageGameJson, string message)
         {
             cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
+            signalRMessage = message;
 
             Dispatcher.Invoke(() =>
             {
@@ -438,6 +439,7 @@ namespace Cribbage.WPFUI
             {
                 // Update screen
                 btnReady.Visibility = Visibility.Visible;
+                lblMessageToPlayers.Content = signalRMessage;
                 ShowVsPlayerStartScreen();
             });
         }
@@ -449,9 +451,8 @@ namespace Cribbage.WPFUI
 
             Dispatcher.Invoke(() =>
             {
-                lstMessages.Items.Add(message);
-                lblMessageToPlayers.Content = message;
-                
+                lstMessages.Items.Add(signalRMessage);
+                lblMessageToPlayers.Content = signalRMessage;
                 SetUpGame();
             });
         }
