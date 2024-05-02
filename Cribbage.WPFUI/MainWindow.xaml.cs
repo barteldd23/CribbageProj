@@ -24,8 +24,10 @@ namespace Cribbage.WPFUI
         string signalRMessage;
         bool newHand = false;
         bool endGame = false;
-        bool hasSavedGames;
-        string strUserGames;
+        bool hasSavedGames = false;
+        string strUserGames = "";
+        bool mainMenuClick = false;
+        bool exitClick = false;
 
         public MainWindow()
         {
@@ -330,9 +332,34 @@ namespace Cribbage.WPFUI
             _connection.On<string, string>("Action", (cribbageGameJson, message) => PlayCardMessage(cribbageGameJson, message));
             _connection.On<string, string>("HandsCounted", (cribbageGameJson, message) => HandsCountedMessage(cribbageGameJson, message));
             _connection.On<string, string>("GameFinished", (cribbageGameJson, message) => GameFinishedMessage(cribbageGameJson, message));
-            
+            _connection.On<string>("PlayerLeft", (message) => PlayerLeftMessage(message));
 
             _connection.StartAsync();
+        }
+
+        private void PlayerLeftMessage(string message)
+        {
+            if(mainMenuClick)
+            {
+                StaThreadWrapper(() =>
+                {
+                    var landingPage = new LandingPage(loggedInUser, hasSavedGames, strUserGames);
+                    landingPage.ShowDialog();
+                });
+
+                Dispatcher.Invoke(() => { this.Close(); });
+            }
+            else if (exitClick)
+            {
+                Dispatcher.Invoke(() => { this.Close(); });
+            }
+            else
+            {
+                cribbageGame.Complete = true;
+                endGame = true;
+                Dispatcher.Invoke(() => { lblMessageToPlayers.Content = message; });
+                RefreshScreen();
+            }
         }
 
         private void GameFinishedMessage(string cribbageGameJson, string message)
@@ -348,7 +375,7 @@ namespace Cribbage.WPFUI
             try
             {
                 string cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-                _connection.InvokeAsync("GameComplete", cribbageGameJson);
+                _connection.InvokeAsync("CheckCompletedGame", cribbageGameJson);
             }
             catch (Exception ex)
             {
@@ -526,42 +553,56 @@ namespace Cribbage.WPFUI
         #endregion
 
         #region "Buttons"
-
-        private void QuitGame_Click(object sender, RoutedEventArgs e)
+        private void Exit_Click(object sender, RoutedEventArgs e)
         {
-            // call the QuitGame method in the hub
-
-            if (cribbageGame.Complete)
+            if (cribbageGame.Complete || cribbageGame.Computer)
             {
-                // need to save prior to closing
                 this.Close();
             }
             else
             {
-                if (cribbageGame.Computer)
+                exitClick = true;
+                try
                 {
-                    // need to save prior to closing
-                    this.Close();
+                    string cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
+                    string strUser = JsonConvert.SerializeObject(loggedInUser);
+                    _connection.InvokeAsync("QuitGame", cribbageGameJson, strUser);
                 }
-                else
+                catch (Exception)
                 {
-                    //don't need to save if not complete against another player
-                    this.Close();
+
+                    throw;
                 }
             }
         }
 
-    private void MainMenu_Click(object sender, RoutedEventArgs e)
+        private void MainMenu_Click(object sender, RoutedEventArgs e)
         {
-            // call the QuitGame method in the hub
-
-            StaThreadWrapper(() =>
+            if (cribbageGame.Complete || cribbageGame.Computer)
             {
-                var landingPage = new LandingPage(loggedInUser, hasSavedGames, strUserGames);
-                landingPage.ShowDialog();
-            });
+                StaThreadWrapper(() =>
+                {
+                    var landingPage = new LandingPage(loggedInUser, hasSavedGames, strUserGames);
+                    landingPage.ShowDialog();
+                });
 
-            Dispatcher.Invoke(() => { this.Close(); });
+                Dispatcher.Invoke(() => { this.Close(); });
+            }
+            else
+            {
+                mainMenuClick = true;
+                try
+                {
+                    string cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
+                    string strUser = JsonConvert.SerializeObject(loggedInUser);
+                    _connection.InvokeAsync("QuitGame", cribbageGameJson, strUser);
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
         }
 
         private void btnSendToCrib_Click(object sender, RoutedEventArgs e)
@@ -693,11 +734,6 @@ namespace Cribbage.WPFUI
 
                 throw;
             }
-        }
-
-        private void btnExit_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
         }
         #endregion
 
