@@ -599,7 +599,7 @@ namespace Cribbage.API.Hubs
 
                     await Groups.AddToGroupAsync(Context.ConnectionId, cribbageGame.Id.ToString());
                     cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-                    message = user.DisplayName + " has joined the game.\n" + cribbageGame.GameName +"\nClick Ready to begin the game.";
+                    message = user.DisplayName + " has joined the game.\n" + cribbageGame.GameName +"\nClick 'Ready' to begin the game.";
                     await Clients.Group(cribbageGame.Id.ToString()).SendAsync("ReadyToStart", cribbageGameJson, message);
                 }
             }
@@ -615,6 +615,7 @@ namespace Cribbage.API.Hubs
             CribbageGame cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(game);
             string message = "";
             string cribbageGameJson;
+            string roomName = cribbageGame.Id.ToString();
 
             try
             {
@@ -640,7 +641,7 @@ namespace Cribbage.API.Hubs
                 else
                 {
                     message = "Waiting for all players to be ready";
-                    await Clients.Group(cribbageGame.Id.ToString()).SendAsync("WaitingForConfirmation", game, message);
+                    await Clients.Group(roomName).SendAsync("WaitingForConfirmation", game, message);
                     // UI side should check if you are the one that was ready, and hide the button. 
                 }
             }
