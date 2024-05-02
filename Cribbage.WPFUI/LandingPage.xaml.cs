@@ -73,10 +73,14 @@ namespace Cribbage.WPFUI
         private void btnNewGameVsComputer_Click(object sender, RoutedEventArgs e)
         {
             cribbageGame.Computer = true;
+
             MainWindow mainWindow = new MainWindow(cribbageGame, loggedInUser, hasSavedGames, strUserGames);
             mainWindow.ShowDialog();
 
-            this.Close();
+            Dispatcher.Invoke(() =>
+            {
+                this.Close();
+            });
         }
 
         private void btnNewGameVsPlayer_Click(object sender, RoutedEventArgs e)
@@ -86,7 +90,10 @@ namespace Cribbage.WPFUI
             MainWindow mainWindow = new MainWindow(cribbageGame, loggedInUser, hasSavedGames, strUserGames);
             mainWindow.ShowDialog();
 
-            this.Close();
+            Dispatcher.Invoke(() =>
+            {
+                this.Close();
+            });
         }
     }
 }
