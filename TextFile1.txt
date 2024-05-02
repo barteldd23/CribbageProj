@@ -117,3 +117,6 @@ DELETE THE TABLES ETC.
     Drop TABLE tblUser;
     Drop procedure spGetMostWins;
     Drop table __EFMigrationsHistory;
+
+select * from tblGame 
+order by Date desc

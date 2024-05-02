@@ -35,31 +35,7 @@ namespace Cribbage.WPFUI
             InitializeComponent();
         }
 
-        public MainWindow(CribbageGame cribbageGameInfo, User user)
-        {
-            cribbageGame = cribbageGameInfo;
-            loggedInUser = user;
-
-            // start the hub connection
-            Start();
-
-            InitializeComponent();
-
-            if(cribbageGame.WhatToDo == "readytostart")
-            {
-                // Update screen
-                btnReadyToStart.Visibility = Visibility.Visible;
-
-                ShowVsPlayerStartScreen();
-            }
-            else if(cribbageGame.WhatToDo == "waitingforplayer2")
-            {
-                // Update screen
-                ShowVsPlayerStartScreen();
-            }
-            else SetUpGame();
-        }
-
+        // Start Game vs Computer
         public MainWindow(CribbageGame cribbageGameInfo, User user, bool isSuccess, string userGamesJson)
         {
             cribbageGame = cribbageGameInfo;
@@ -72,21 +48,35 @@ namespace Cribbage.WPFUI
 
             InitializeComponent();
 
+            SetUpGame();
+        }
+
+        // Start Game vs Player
+        public MainWindow(CribbageGame cribbageGameInfo, User user, bool isSuccess, string userGamesJson, string message)
+        {
+            cribbageGame = cribbageGameInfo;
+            loggedInUser = user;
+            hasSavedGames = isSuccess;
+            strUserGames = userGamesJson;
+            signalRMessage = message;
+
+            // start the hub connection
+            Start();
+
+            InitializeComponent();
+
             if (cribbageGame.WhatToDo == "readytostart")
             {
                 // Update screen
                 btnReadyToStart.Visibility = Visibility.Visible;
-                lblMessageToPlayers.Content = "Press 'Ready to Start' to begin game";
                 ShowVsPlayerStartScreen();
             }
             else if (cribbageGame.WhatToDo == "waitingforplayer2")
             {
                 // Update screen
                 btnReadyToStart.Visibility = Visibility.Collapsed;
-                lblMessageToPlayers.Content = "Waiting for Player 2";
                 ShowVsPlayerStartScreen();
             }
-            else SetUpGame();
         }
 
         #region "GameSetup"
@@ -159,6 +149,9 @@ namespace Cribbage.WPFUI
             btnMainMenu.Visibility = Visibility.Collapsed;
             btnExit.Visibility = Visibility.Collapsed;
             btnSendToCrib.Visibility = Visibility.Collapsed;
+
+            lblMessageToPlayers.Content = "";
+            lstMessages.Items.Add(signalRMessage);
 
             lblPlayer1DisplayName.Content = "Score";
             lblPlayer1Score.Content = 0;
@@ -406,7 +399,6 @@ namespace Cribbage.WPFUI
                 .WithUrl(hubAddress)
                 .Build();
 
-            _connection.On<string, string>("StartGame", (message, cribbageGameJson) => StartGameVsComputerMessage(message, cribbageGameJson));
             _connection.On<string, string>("ReadyToStart", (cribbageGameJson, message) => StartGameVsPlayerMessage(cribbageGameJson, message));
             _connection.On<string, string>("WaitingForConfirmation", (cribbageGameJson, message) => WaitingForConfirmationMessage(cribbageGameJson, message));
             _connection.On<string, string>("StartNewHand", (message, cribbageGameJson) => StartNewHandMessage(message, cribbageGameJson));
@@ -428,6 +420,7 @@ namespace Cribbage.WPFUI
 
         private void WaitingForConfirmationMessage(string cribbageGameJson, string message)
         {
+            MessageBox.Show("Confirmation: " + message);
             Dispatcher.Invoke(() => 
             {
                 lblMessageToPlayers.Content = message;
@@ -542,6 +535,19 @@ namespace Cribbage.WPFUI
             RefreshScreen();
         }
 
+        private void StartGameVsPlayerMessage(string cribbageGameJson, string message)
+        {
+            cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
+            signalRMessage = message;
+
+            Dispatcher.Invoke(() =>
+            {
+                // Update screen
+                btnReadyToStart.Visibility = Visibility.Visible;
+                ShowVsPlayerStartScreen();
+            });
+        }
+
         private void PlayCardMessage(string cribbageGameJson, string message)
         {
             cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
@@ -585,32 +591,6 @@ namespace Cribbage.WPFUI
             }
         }
 
-        private void StartGameVsComputerMessage(string message, string cribbageGameJson)
-        {
-            cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
-
-            StaThreadWrapper(() =>
-            {
-                var mainWindow = new MainWindow(cribbageGame, loggedInUser);
-                mainWindow.Show();
-            });
-
-            Dispatcher.Invoke(() => { this.Close(); });
-        }
-
-        private void StartGameVsPlayerMessage(string cribbageGameJson, string message)
-        {
-            cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
-
-            StaThreadWrapper(() =>
-            {
-                var mainWindow = new MainWindow(cribbageGame, loggedInUser);
-                mainWindow.ShowDialog();
-            });
-
-            Dispatcher.Invoke(() => { this.Close(); });
-        }
-
         private static void StaThreadWrapper(Action action)
         {
             var t = new Thread(o =>
@@ -636,6 +616,16 @@ namespace Cribbage.WPFUI
                 cribbageGame.Player_2.Ready = true;
             }
             btnReadyToStart.Visibility = Visibility.Collapsed;
+
+            try
+            {
+                string cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
+                _connection.InvokeAsync("ReadyToPlay", cribbageGameJson);
+            }
+            catch (Exception ex)
+            {
+                lblMessageToPlayers.Content = ex.Message;
+            }
         }
 
 

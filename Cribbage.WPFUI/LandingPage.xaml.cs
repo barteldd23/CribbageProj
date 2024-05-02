@@ -137,7 +137,7 @@ namespace Cribbage.WPFUI
 
             StaThreadWrapper(() =>
             {
-                var mainWindow = new MainWindow(cribbageGame, loggedInUser, hasSavedGames, strUserGames);
+                var mainWindow = new MainWindow(cribbageGame, loggedInUser, hasSavedGames, strUserGames, message);
                 mainWindow.ShowDialog();
             });
 
@@ -151,7 +151,7 @@ namespace Cribbage.WPFUI
 
             StaThreadWrapper(() =>
             {
-                var mainWindow = new MainWindow(cribbageGame, loggedInUser, hasSavedGames, strUserGames);
+                var mainWindow = new MainWindow(cribbageGame, loggedInUser, hasSavedGames, strUserGames, message);
                 mainWindow.ShowDialog();
             });
 
