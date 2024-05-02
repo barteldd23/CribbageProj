@@ -11,8 +11,8 @@
             <MenuItem Header="Menu" Height="44" Width="80" FontSize="20" FontWeight="Bold">
                 <MenuItem Header="_Main Menu" InputGestureText="Ctrl+M"
               Click="MainMenu_Click"/>
-                <MenuItem Header="_Quit Game" InputGestureText="Ctrl+Q"
-              Click="QuitGame_Click"/>
+                <MenuItem Header="_Exit" InputGestureText="Ctrl+Q"
+              Click="Exit_Click"/>
             </MenuItem>
         </Menu>
         <Label x:Name="lblPlayersCrib" Content="Player's Crib" HorizontalAlignment="Right" Margin="0,193,1101,0" VerticalAlignment="Top" Width="251" FontSize="18" Height="43" FontWeight="Bold"/>
@@ -68,6 +68,6 @@
         <ListBox x:Name="lstMessages" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="765,539,0,0" HorizontalAlignment="Left" Width="380" Height="206" VerticalAlignment="Top" FontSize="16" ScrollViewer.CanContentScroll="False" ScrollViewer.VerticalScrollBarVisibility="Visible"/>
         <Button x:Name="btnCutDeck" Content="Cut Deck" HorizontalAlignment="Right" Margin="0,802,921,0" Width="116" Height="35" VerticalAlignment="Top" FontSize="18" Click="btnCutDeck_Click"/>
         <Button x:Name="btnMainMenu" Content="Main Menu" HorizontalAlignment="Left" Margin="266,725,0,0" VerticalAlignment="Top" Height="57" Width="186" FontSize="20" Click="MainMenu_Click" RenderTransformOrigin="-0.199,0.422"/>
-        <Button x:Name="btnExit" Content="Exit" HorizontalAlignment="Left" Margin="508,725,0,0" VerticalAlignment="Top" Height="57" Width="186" FontSize="20" Click="btnExit_Click" RenderTransformOrigin="-0.199,0.422"/>
+        <Button x:Name="btnExit" Content="Exit" HorizontalAlignment="Left" Margin="508,725,0,0" VerticalAlignment="Top" Height="57" Width="186" FontSize="20" Click="Exit_Click" RenderTransformOrigin="-0.199,0.422"/>
     </Grid>
 </Window>

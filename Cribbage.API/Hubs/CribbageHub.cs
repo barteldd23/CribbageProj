@@ -530,7 +530,6 @@ namespace Cribbage.API.Hubs
             if (cribbageGame.Complete)
             {
                 string message;
-                //cribbageGame.WhatToDo = "startnewgame";
 
                 if (cribbageGame.Player_1.Score > cribbageGame.Player_2.Score)
                 {
@@ -600,27 +599,35 @@ namespace Cribbage.API.Hubs
 
         //check if the game should be deleted from the DB
         //Note: Games and Usergames are saved after someone hits countCards button. Do not need to update games when closing
-        public async Task QuitGame(string game)
+        public async Task QuitGame(string game, string user)
         {
             CribbageGame cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(game);
+            User loggedInUser = JsonConvert.DeserializeObject<User>(user);
             string message = "";
+
+            string roomName = cribbageGame.Id.ToString();
 
             try
             {
                 if(!cribbageGame.Computer)
                 {
+                    // if player 1 leaves BEFORE player 2 joined
                     if (cribbageGame.Player_2 == null)
                     {
-                        //delete from database
-                        //tblGame -- need id for this game cribbageGame.GameId
-
                         //remove from hub group
+                        await Groups.RemoveFromGroupAsync(Context.ConnectionId, roomName);
 
+                        //delete from database
+                        new GameManager(options).Delete(cribbageGame.Id);
                     }
-                    else //player 1 OR player 2
+                    // if a player leaves the game
+                    else
                     {
-                        //send message to hub group saying player 1 left
-                        //remove them from the hub group
+                        //remove from hub group
+                        await Groups.RemoveFromGroupAsync(Context.ConnectionId, roomName);
+
+                        //send message to hub group saying player 2 left
+                        await Clients.Group(roomName).SendAsync("PlayerLeft", $"{loggedInUser.DisplayName} has left the game.");
                     }
                 }
             }
@@ -639,5 +646,6 @@ namespace Cribbage.API.Hubs
         //May have to change the GetSavedGames Manager Method to filter only vs computer games.
 
         //SignalR groups: https://learn.microsoft.com/en-us/aspnet/signalr/overview/guide-to-the-api/working-with-groups
+        //https://learn.microsoft.com/en-us/aspnet/core/signalr/groups?view=aspnetcore-8.0
     }
 }
