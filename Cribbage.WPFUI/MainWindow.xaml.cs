@@ -675,7 +675,8 @@ namespace Cribbage.WPFUI
             try
             {
                 string cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-                _connection.InvokeAsync("ReadyToPlay", cribbageGameJson);
+                string strUser = JsonConvert.SerializeObject(loggedInUser);
+                _connection.InvokeAsync("ReadyToPlay", cribbageGameJson, strUser);
             }
             catch (Exception ex)
             {
