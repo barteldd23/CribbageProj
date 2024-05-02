@@ -44,7 +44,86 @@ namespace Cribbage.WPFUI
             Start();
 
             InitializeComponent();
-            SetUpGame();
+
+            if(cribbageGame.WhatToDo == "readytostart")
+            {
+                // Update buttons
+                btnNextHand.Visibility = Visibility.Collapsed;
+                btnPlayCard.Visibility = Visibility.Collapsed;
+                btnGo.Visibility = Visibility.Collapsed;
+                btnCountCards.Visibility = Visibility.Collapsed;
+                btnCutDeck.Visibility = Visibility.Collapsed;
+                btnMainMenu.Visibility = Visibility.Collapsed;
+                btnExit.Visibility = Visibility.Collapsed;
+                btnSendToCrib.Visibility = Visibility.Collapsed;
+
+                lblPlayer1DisplayName.Content = cribbageGame.Player_1.DisplayName + " Score";
+                lblPlayer1Score.Content = cribbageGame.Player_1.Score;
+                lblPlayerHand.Content = cribbageGame.Player_1.DisplayName + "'s Hand";
+
+                lblPlayer2DisplayName.Content = cribbageGame.Player_2.DisplayName + " Score";
+                lblPlayer2Score.Content = cribbageGame.Player_2.Score;
+                lblOpponentHand.Content = cribbageGame.Player_2.DisplayName + "'s Hand";
+
+                lblPlayersCrib.Content = dealer + "'s Crib";
+
+                imgCribCard1.Source = null;
+                imgCribCard2.Source = null;
+                imgCribCard3.Source = null;
+                imgCribCard4.Source = null;
+
+                imgPlayedCard1.Source = null;
+                imgPlayedCard2.Source = null;
+                imgPlayedCard3.Source = null;
+                imgPlayedCard4.Source = null;
+                imgPlayedCard5.Source = null;
+                imgPlayedCard6.Source = null;
+                imgPlayedCard7.Source = null;
+                imgPlayedCard8.Source = null;
+
+                displayOpponentHand(opponentHand, true);
+                displayPlayerHand(playerHand);
+            }
+            else if(cribbageGame.WhatToDo == "waitingforplayer2")
+            {
+                // Update buttons
+                btnNextHand.Visibility = Visibility.Collapsed;
+                btnPlayCard.Visibility = Visibility.Collapsed;
+                btnGo.Visibility = Visibility.Collapsed;
+                btnCountCards.Visibility = Visibility.Collapsed;
+                btnCutDeck.Visibility = Visibility.Collapsed;
+                btnMainMenu.Visibility = Visibility.Collapsed;
+                btnExit.Visibility = Visibility.Collapsed;
+                btnSendToCrib.Visibility = Visibility.Collapsed;
+
+                lblPlayer1DisplayName.Content = cribbageGame.Player_1.DisplayName + " Score";
+                lblPlayer1Score.Content = cribbageGame.Player_1.Score;
+                lblPlayerHand.Content = cribbageGame.Player_1.DisplayName + "'s Hand";
+
+                lblPlayer2DisplayName.Content = "Player 2 Score";
+                lblPlayer2Score.Content = 0;
+                lblOpponentHand.Content = "Player 2's Hand";
+
+                lblPlayersCrib.Content = "Dealer's Crib";
+
+                imgCribCard1.Source = null;
+                imgCribCard2.Source = null;
+                imgCribCard3.Source = null;
+                imgCribCard4.Source = null;
+
+                imgPlayedCard1.Source = null;
+                imgPlayedCard2.Source = null;
+                imgPlayedCard3.Source = null;
+                imgPlayedCard4.Source = null;
+                imgPlayedCard5.Source = null;
+                imgPlayedCard6.Source = null;
+                imgPlayedCard7.Source = null;
+                imgPlayedCard8.Source = null;
+
+                displayOpponentHand(opponentHand, true);
+                displayPlayerHand(playerHand);
+            }
+            else SetUpGame();
         }
 
         public MainWindow(CribbageGame cribbageGameInfo, User user, bool isSuccess, string userGamesJson)
@@ -325,7 +404,8 @@ namespace Cribbage.WPFUI
                 .Build();
 
             _connection.On<string, string>("StartGame", (message, cribbageGameJson) => StartGameVsComputerMessage(message, cribbageGameJson));
-            _connection.On<string, string>("StartGameVsPlayer", (message, cribbageGameJson) => StartGameVsPlayerMessage(message, cribbageGameJson));
+            _connection.On<string, string>("ReadyToStart", (cribbageGameJson, message) => StartGameVsPlayerMessage(cribbageGameJson, message));
+            _connection.On<string, string>("WaitingForConfirmation", (cribbageGameJson, message) => WaitingForConfirmationMessage(cribbageGameJson, message));
             _connection.On<string, string>("StartNewHand", (message, cribbageGameJson) => StartNewHandMessage(message, cribbageGameJson));
             _connection.On<string, string>("CutCard", (cribbageGameJson, message) => CutCardMessage(cribbageGameJson, message));
             _connection.On<string, string>("CardWasCut", (cribbageGameJson, message) => CardCutMessage(cribbageGameJson, message));
@@ -335,6 +415,15 @@ namespace Cribbage.WPFUI
             _connection.On<string>("PlayerLeft", (message) => PlayerLeftMessage(message));
 
             _connection.StartAsync();
+        }
+
+        private void WaitingForConfirmationMessage(string cribbageGameJson, string message)
+        {
+            Dispatcher.Invoke(() => 
+            {
+                lblMessageToPlayers.Content = message;
+                lstMessages.Items.Add(message);
+            });
         }
 
         private void PlayerLeftMessage(string message)
@@ -494,26 +583,13 @@ namespace Cribbage.WPFUI
             StaThreadWrapper(() =>
             {
                 var mainWindow = new MainWindow(cribbageGame, loggedInUser);
-                mainWindow.ShowDialog();
+                mainWindow.Show();
             });
 
             Dispatcher.Invoke(() => { this.Close(); });
         }
 
-        public void NewGameVsPlayer(User user)
-        {
-            try
-            {
-                string strUser = JsonConvert.SerializeObject(user);
-                _connection.InvokeAsync("NewGameVsPlayer", strUser);
-            }
-            catch (Exception ex)
-            {
-                lblMessageToPlayers.Content = ex.Message;
-            }
-        }
-
-        private void StartGameVsPlayerMessage(string message, string cribbageGameJson)
+        private void StartGameVsPlayerMessage(string cribbageGameJson, string message)
         {
             cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
 
@@ -524,19 +600,6 @@ namespace Cribbage.WPFUI
             });
 
             Dispatcher.Invoke(() => { this.Close(); });
-        }
-
-        public void NewGameVsComputer(User user)
-        {
-            try
-            {
-                string strUser = JsonConvert.SerializeObject(user);
-                _connection.InvokeAsync("NewGameVsComputer", strUser);
-            }
-            catch (Exception ex)
-            {
-                lblMessageToPlayers.Content = ex.Message;
-            }
         }
 
         private static void StaThreadWrapper(Action action)
@@ -553,6 +616,20 @@ namespace Cribbage.WPFUI
         #endregion
 
         #region "Buttons"
+        private void btnReadyToStart_Click(object sender, RoutedEventArgs e)
+        {
+            if(cribbageGame.Player_1.Id == loggedInUser.Id)
+            {
+                cribbageGame.Player_1.Ready = true;
+            }
+            else
+            {
+                cribbageGame.Player_2.Ready = true;
+            }
+            btnReadyToStart.Visibility = Visibility.Collapsed;
+        }
+
+
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
             if (cribbageGame.Complete || cribbageGame.Computer)
@@ -1160,7 +1237,6 @@ namespace Cribbage.WPFUI
                     imgCribCard4.Source = null;
             }
         }
-
         #endregion
 
         //testing button

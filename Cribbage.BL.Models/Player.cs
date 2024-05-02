@@ -8,7 +8,7 @@
         public int CribPoints {  get; set; } = 0;
         public int Score { get; set; } = 0;
         public bool SaidGo { get; set; } = false;
-
+        public bool Ready { get; set; }
 
         public Player(User user)
         {
