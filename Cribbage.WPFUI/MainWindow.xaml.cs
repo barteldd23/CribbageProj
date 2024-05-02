@@ -107,21 +107,21 @@ namespace Cribbage.WPFUI
 
             if(player1)
             {
-                lblPlayerDisplayName.Content = cribbageGame.Player_1.DisplayName + " Score";
+                lblPlayerDisplayName.Content = cribbageGame.Player_1.DisplayName + "'s Score";
                 lblPlayerScore.Content = cribbageGame.Player_1.Score;
                 lblPlayerHand.Content = cribbageGame.Player_1.DisplayName + "'s Hand";
 
-                lblOpponentDisplayName.Content = cribbageGame.Player_2.DisplayName + " Score";
+                lblOpponentDisplayName.Content = cribbageGame.Player_2.DisplayName + "'s Score";
                 lblOpponentScore.Content = cribbageGame.Player_2.Score;
                 lblOpponentHand.Content = cribbageGame.Player_2.DisplayName + "'s Hand";
             }
             else
             {
-                lblPlayerDisplayName.Content = cribbageGame.Player_2.DisplayName + " Score";
+                lblPlayerDisplayName.Content = cribbageGame.Player_2.DisplayName + "'s Score";
                 lblPlayerScore.Content = cribbageGame.Player_2.Score;
                 lblPlayerHand.Content = cribbageGame.Player_2.DisplayName + "'s Hand";
 
-                lblOpponentDisplayName.Content = cribbageGame.Player_1.DisplayName + " Score";
+                lblOpponentDisplayName.Content = cribbageGame.Player_1.DisplayName + "'s Score";
                 lblOpponentScore.Content = cribbageGame.Player_1.Score;
                 lblOpponentHand.Content = cribbageGame.Player_1.DisplayName + "'s Hand";
             }
@@ -148,19 +148,23 @@ namespace Cribbage.WPFUI
 
             if (cribbageGame.WhatToDo.ToString() == "SelectCribCards")
             {
-                if (player1)
-                {
-                    playerHand = cribbageGame.Player_1.Hand;
-                    opponentHand = cribbageGame.Player_2.Hand;
-                }
-                else
-                {
-                    playerHand = cribbageGame.Player_2.Hand;
-                    opponentHand = cribbageGame.Player_1.Hand;
-                }
-
+                UpdatePlayerAndOpponent();
                 displayOpponentHand(opponentHand, true);
                 displayPlayerHand(playerHand);
+            }
+        }
+
+        private void UpdatePlayerAndOpponent()
+        {
+            if (player1)
+            {
+                playerHand = cribbageGame.Player_1.Hand;
+                opponentHand = cribbageGame.Player_2.Hand;
+            }
+            else
+            {
+                playerHand = cribbageGame.Player_2.Hand;
+                opponentHand = cribbageGame.Player_1.Hand;
             }
         }
 
@@ -450,8 +454,9 @@ namespace Cribbage.WPFUI
 
             Dispatcher.Invoke(() =>
             {
-                btnReady.Visibility = Visibility.Collapsed;
                 ShowVsPlayerStartScreen();
+                btnReady.Visibility = Visibility.Collapsed;
+                lblMessageToPlayers.Content = "Waiting for another player.";
             });
         }
 
@@ -463,9 +468,9 @@ namespace Cribbage.WPFUI
             Dispatcher.Invoke(() =>
             {
                 // Update screen
-                btnReady.Visibility = Visibility.Visible;
-                lblMessageToPlayers.Content = signalRMessage;
                 ShowVsPlayerStartScreen();
+                btnReady.Visibility = Visibility.Visible;
+                lblMessageToPlayers.Content = "Click 'Ready' to begin the game.";
             });
         }
 
@@ -548,16 +553,7 @@ namespace Cribbage.WPFUI
         private void CardCutMessage(string cribbageGameJson, string message)
         {
             cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
-            if(player1)
-            {
-                playerHand = cribbageGame.Player_1.Hand;
-                opponentHand = cribbageGame.Player_2.Hand;
-            }
-            else
-            {
-                playerHand = cribbageGame.Player_2.Hand;
-                opponentHand = cribbageGame.Player_1.Hand;
-            }
+            UpdatePlayerAndOpponent();
             currentCount = cribbageGame.CurrentCount.ToString();
             signalRMessage = message;
             RefreshScreen();
@@ -566,16 +562,7 @@ namespace Cribbage.WPFUI
         private void CutCardMessage(string cribbageGameJson, string message)
         {
             cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
-            if (player1)
-            {
-                playerHand = cribbageGame.Player_1.Hand;
-                opponentHand = cribbageGame.Player_2.Hand;
-            }
-            else
-            {
-                playerHand = cribbageGame.Player_2.Hand;
-                opponentHand = cribbageGame.Player_1.Hand;
-            }
+            UpdatePlayerAndOpponent();
             currentCount = cribbageGame.CurrentCount.ToString();
             signalRMessage = message;
             RefreshScreen();
@@ -622,18 +609,7 @@ namespace Cribbage.WPFUI
         private void StartNewHandMessage(string message, string cribbageGameJson)
         {
             cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
-
-            if(player1)
-            {
-                playerHand = cribbageGame.Player_1.Hand;
-                opponentHand = cribbageGame.Player_2.Hand;
-            }
-            else
-            {
-                playerHand = cribbageGame.Player_2.Hand;
-                opponentHand = cribbageGame.Player_1.Hand;
-            }
-
+            UpdatePlayerAndOpponent();
             currentCount = cribbageGame.CurrentCount.ToString();
             signalRMessage = "";
             signalRMessage = message;
@@ -643,16 +619,7 @@ namespace Cribbage.WPFUI
         private void PlayCardMessage(string cribbageGameJson, string message)
         {
             cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
-            if (player1)
-            {
-                playerHand = cribbageGame.Player_1.Hand;
-                opponentHand = cribbageGame.Player_2.Hand;
-            }
-            else
-            {
-                playerHand = cribbageGame.Player_2.Hand;
-                opponentHand = cribbageGame.Player_1.Hand;
-            }
+            UpdatePlayerAndOpponent();
             currentCount = cribbageGame.CurrentCount.ToString();
             signalRMessage = message;
             RefreshScreen();
