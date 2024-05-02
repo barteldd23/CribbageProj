@@ -463,10 +463,13 @@ namespace Cribbage.WPFUI
 
         private void WaitingForConfirmationMessage(string cribbageGameJson, string message)
         {
+            cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
+            signalRMessage = message;
+
             Dispatcher.Invoke(() => 
             {
-                lblMessageToPlayers.Content = message;
-                lstMessages.Items.Add(message);
+                lblMessageToPlayers.Content = signalRMessage;
+                lstMessages.Items.Add(signalRMessage);
             });
         }
 
