@@ -552,16 +552,56 @@ namespace Cribbage.API.Hubs
             }
         }
 
-        public async Task NewGameVsPlayer(string user)
+        public async Task NewGameVsPlayer(string userJson)
         {
             // Send back List of all available games to join to All connected users.
 
             string cribbageGameJson = "";
             int result;
+            Game game;
+            string message = "";
 
             try
             {
-                
+                User user = JsonConvert.DeserializeObject<User>(userJson);
+
+                game = new GameManager(options).GetAvailableGame();
+                if(game == null)
+                {
+                    // Create a Game.
+                    CribbageGame cribbageGame = new CribbageGame(user);
+                    cribbageGame.Computer = false;
+                    cribbageGame.WhatToDo = "waitingforplayer2";
+
+                    // Add Game to DB.
+                    result = new GameManager(options).Insert(cribbageGame);
+
+                    // Serialize CribbageGame into Json
+                    cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
+
+                    // Make a hub group
+                    await Groups.AddToGroupAsync(Context.ConnectionId, cribbageGame.Id.ToString());
+                    message = user.DisplayName + " joined the game.\nWaiting for another player.";
+                    await Clients.Group(cribbageGame.Id.ToString()).SendAsync("WaitingForPlayer", cribbageGameJson, message);
+                }
+                else
+                {
+                    Guid player1Id = Guid.Parse(game.GameName);
+                    User player_1 = new UserManager(options).LoadById(player1Id);
+                    CribbageGame cribbageGame = new CribbageGame(player_1, user);
+
+                    int results = new GameManager(options).Update(cribbageGame);
+                    UserGame userGame1 = new UserGame(cribbageGame.Id, player_1.Id, 0);
+                    UserGame userGame2 = new UserGame(cribbageGame.Id, user.Id, 0);
+                    results = new UserGameManager(options).Insert(userGame1);
+                    results = new UserGameManager(options).Insert(userGame2);
+                    cribbageGame.WhatToDo = "readytostart";
+
+                    await Groups.AddToGroupAsync(Context.ConnectionId, cribbageGame.Id.ToString());
+                    cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
+                    message = user.DisplayName + " has joined the game.\n" + cribbageGame.GameName +"\nClick Ready to begin the game.";
+                    await Clients.Group(cribbageGame.Id.ToString()).SendAsync("ReadyToStart", cribbageGameJson, message);
+                }
             }
             catch (Exception)
             {
