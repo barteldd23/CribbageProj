@@ -254,9 +254,13 @@ def refreshScreen(showOpponent, showCrib):
    # print('unselected cards')
     forgetButtons()
    # print('forgot buttons')
-    if(gameData.data["WhatToDo"] != 'waitingforplayer2' and gameData.data["WhatToDo"] != 'readytostart' and gameData.data['PlayerTurn']['Id'] == pythonUser.Id):
+    print('PlayerTurn')
+    print(gameData.data["PlayerTurn"])
+    print('WhatToDo')
+    print(gameData.data["WhatToDo"])
+    if(gameData.data["WhatToDo"] != 'waitingforplayer2' and gameData.data["WhatToDo"] != 'readytostart' and gameData.data["PlayerTurn"]["Id"] == pythonUser.Id):
         myTurn = True
-    elif (gameData.data["WhatToDo"] != 'waitingforplayer2' and gameData.data["WhatToDo"] != 'readytostart' and gameData.data['PlayerTurn']['Id'] != pythonUser.Id):
+    elif (gameData.data["WhatToDo"] != 'waitingforplayer2' and gameData.data["WhatToDo"] != 'readytostart' and gameData.data["PlayerTurn"]["Id"] != pythonUser.Id):
         myTurn = False
     
     #print('myturn: ' + str(myTurn))
@@ -276,6 +280,9 @@ def refreshScreen(showOpponent, showCrib):
         btnSendToCrib.grid(row=2, column=1, padx=5, pady=5, sticky='news')
     if(gameData.data['WhatToDo'] == 'cutdeck' and myTurn):
         print('Inside cutdeck and myturn')
+        lblCutPosition.grid(row=1, column=2,padx=5, pady=5, sticky='ew')
+        txtCutPosition.grid(row=1, column=3,padx=5, pady=5, sticky='e')
+        btnCutPosition.grid(row=1, column=4,padx=5, pady=5, sticky='ew')
     if(gameData.data['WhatToDo'] == 'playcard' and myTurn):
         btnPlayCard.grid(row=3, column=3, padx=5, pady=5, sticky='news')
     if(gameData.data['WhatToDo'] == 'go' and myTurn):

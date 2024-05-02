@@ -314,6 +314,8 @@ namespace Cribbage.API.Hubs
 
                     if (cribbageGame.Crib.Count == 4)
                     {
+                        cribbageGame.WhatToDo = "cutdeck";
+                        cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
                         await Clients.Group(cribbageGame.Id.ToString()).SendAsync("CutCard", cribbageGameJson, cribbageGame.PlayerTurn.DisplayName + " cut the deck.");
                     }
                 }
