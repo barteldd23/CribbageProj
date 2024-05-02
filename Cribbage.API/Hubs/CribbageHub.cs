@@ -623,7 +623,7 @@ namespace Cribbage.API.Hubs
 
                     await Groups.AddToGroupAsync(Context.ConnectionId, cribbageGame.Id.ToString());
                     cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-                    message = user.DisplayName + " has joined the game.\n" + cribbageGame.GameName +"\nClick Ready to begin the game.";
+                    message = user.DisplayName + " has joined the game.\n" + cribbageGame.GameName +"\nClick 'Ready' to begin the game.";
                     await Clients.Group(cribbageGame.Id.ToString()).SendAsync("ReadyToStart", cribbageGameJson, message);
                 }
             }
@@ -640,6 +640,7 @@ namespace Cribbage.API.Hubs
             User user = JsonConvert.DeserializeObject<User>(userJson);
             string message = "";
             string cribbageGameJson;
+            string roomName = cribbageGame.Id.ToString();
 
             try
             {
