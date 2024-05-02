@@ -12,7 +12,7 @@ namespace Cribbage.WPFUI
     public partial class LandingPage : Window
     {
         User loggedInUser;
-        CribbageGame cribbageGame;
+        CribbageGame cribbageGame = new CribbageGame();
         bool hasSavedGames = false;
         string strUserGames = "";
 
