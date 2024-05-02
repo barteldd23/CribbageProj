@@ -182,6 +182,8 @@ namespace Cribbage.API.Hubs
 
                 cribbageGame.Team1_Score = cribbageGame.Player_1.Score;
                 cribbageGame.Team2_Score = cribbageGame.Player_2.Score;
+                string roomName = cribbageGame.Id.ToString();
+
                 new UserGameManager(options).Update(cribbageGame);
 
                 if (cribbageGame.Computer)
@@ -198,7 +200,7 @@ namespace Cribbage.API.Hubs
                     cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
 
                     // Send CribbageGame back to only that person.
-                    await Clients.Group(cribbageGame.Id.ToString()).SendAsync("StartNewHand", cribbageGame.GameName + "\nSelect Crib Cards", cribbageGameJson);
+                    await Clients.Group(roomName).SendAsync("StartNewHand", cribbageGame.GameName + "\nSelect Crib Cards", cribbageGameJson);
                 }
                 else
                 {
@@ -215,7 +217,7 @@ namespace Cribbage.API.Hubs
                         cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
 
                         // Send CribbageGame back to only that person.
-                        await Clients.Group(cribbageGame.Id.ToString()).SendAsync("StartNewHand", cribbageGame.GameName + "\nSelect Crib Cards", cribbageGameJson);
+                        await Clients.Group(roomName).SendAsync("StartNewHand", cribbageGame.GameName + "\nSelect Crib Cards", cribbageGameJson);
                     }
                     else
                     {

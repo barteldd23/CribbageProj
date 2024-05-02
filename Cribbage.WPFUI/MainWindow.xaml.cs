@@ -126,6 +126,7 @@ namespace Cribbage.WPFUI
                 lblOpponentHand.Content = cribbageGame.Player_1.DisplayName + "'s Hand";
             }
 
+            lblCurrentCount.Content = 0;
 
             lblPlayersCrib.Content = dealer + "'s Crib";
 
@@ -1051,10 +1052,41 @@ namespace Cribbage.WPFUI
                     // Call to SignalR
                     EndGame(cribbageGame);
                 }
-                else
+                else if (cribbageGame.Crib.Count != 4)
                 {
                     //Player scores updated
                     if(player1)
+                    {
+                        lblPlayerScore.Content = cribbageGame.Player_1.Score;
+                        lblPlayerScore.Content = cribbageGame.Player_2.Score;
+                    }
+                    else
+                    {
+                        lblPlayerScore.Content = cribbageGame.Player_2.Score;
+                        lblPlayerScore.Content = cribbageGame.Player_1.Score;
+                    }
+
+                    //Current count updated
+                    lblCurrentCount.Content = cribbageGame.CurrentCount;
+
+                    //Messages to players updated
+                    lstMessages.Items.Add(signalRMessage);
+                    lstMessages.SelectedIndex = lstMessages.Items.Count - 1;
+                    lstMessages.ScrollIntoView(lstMessages.SelectedItem);
+
+                    //Update the cards, buttons, and selections
+                    displayPlayerHand(playerHand);
+                    displayOpponentHand(opponentHand, true);
+                    displayPlayedCards();
+                    displayCribCards(true);
+                    UpdateCutCard(cribbageGame);
+                    RemoveSelectedItems();
+                    UpdateButtonSelection();
+                }
+                else
+                {
+                    //Player scores updated
+                    if (player1)
                     {
                         lblPlayerScore.Content = cribbageGame.Player_1.Score;
                         lblPlayerScore.Content = cribbageGame.Player_2.Score;
