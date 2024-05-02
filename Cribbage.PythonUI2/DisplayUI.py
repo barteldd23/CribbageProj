@@ -79,6 +79,10 @@ def setGameData(dataJson):
 
 ###################### Methods for Received Hub Messages ##############
 
+def receivedPlayerLeftMessage(message):
+    setMessage(message)
+    forgetButtons()
+
 def receivedReadyToStartMessage(gameJson, message):
     pass
 
@@ -86,6 +90,7 @@ def receivedWaitingForPlayerMessage(gameJson, message):
     loggedInFrame.pack_forget()
     gameFrame.pack()
     setMessage(message)
+    setGameOnly(gameJson)
 
 def receivedGameFinishedMessage(gameJson, message):
     setMessage(message)
@@ -171,11 +176,15 @@ def setGameData(gameJson):
     print(playedCards)
     print('*********************************')
     print(currentRallyCards)
+
+def setGameOnly(gameJson):
+    cribbageGame = json.loads(gameJson)
+    gameData.data = cribbageGame
     
 def setHands():
-    if(pythonUser.Id == gameData.data["Player_1"]["Id"]):
+    if(pythonUser.Id == gameData.data["Player_1"]["Id"] and gameData.data["WhatToDo"] != 'waitingforplayer2'):
         return [gameData.data["Player_1"]["Hand"], gameData.data["Player_2"]["Hand"] ]
-    else:
+    elif(pythonUser.Id == gameData.data["Player_2"]["Id"] and gameData.data["WhatToDo"] != 'waitingforplayer2'):
         return [gameData.data["Player_2"]["Hand"], gameData.data["Player_1"]["Hand"] ]
     
 def setStartGameFrame(playerHand, opponentHand):
@@ -736,13 +745,33 @@ def onClick_btnCutPosition():
 
 def onClick_MainMenu():
     print('hit main menu button')
+    pythonUserJson = json.dumps(asdict(pythonUser))
+    gameToSendJson = getGameJson()
+    hub_connection.send("QuitGame",[gameToSendJson, pythonUserJson])
     
 def onClick_FileMainMenu():
     print('hit file main menu')
+    print(gameFrame.winfo_ismapped())
+    if(gameFrame.winfo_ismapped() == 0):
+        pass
+    else:
+        pythonUserJson = json.dumps(asdict(pythonUser))
+        gameToSendJson = getGameJson()
+        hub_connection.send("QuitGame",[gameToSendJson, pythonUserJson])
+        gameFrame.pack_forget()
+        loggedInFrame.pack()
+    
     
 def onClick_Quit():
     print('hit the file quit')
-    window.destroy()
+    print(gameFrame.winfo_ismapped())
+    if(gameFrame.winfo_ismapped() == 0):
+        window.destroy()
+    else:
+        pythonUserJson = json.dumps(asdict(pythonUser))
+        gameToSendJson = getGameJson()
+        hub_connection.send("QuitGame",[gameToSendJson, pythonUserJson])
+        window.destroy()
 
 ############### Hub Connection ###########################
 
@@ -766,6 +795,7 @@ hub_connection.on("StartNewHand", lambda data: receivedStartNewHandMessage(data[
 hub_connection.on("GameFinished", lambda data: receivedGameFinishedMessage(data[0], data[1]))
 hub_connection.on("WaitingForPlayer", lambda data: receivedWaitingForPlayerMessage(data[0], data[1]))
 hub_connection.on("ReadyToStart", lambda data: receivedStartGameMessage(data[0], data[1]))
+hub_connection.on("PlayerLeft", lambda data: receivedPlayerLeftMessage(data[0]))
 
 hub_connection.start()
 
