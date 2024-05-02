@@ -435,6 +435,7 @@ namespace Cribbage.WPFUI
             _connection.On<string, string>("WaitingForConfirmation", (cribbageGameJson, message) => WaitingForConfirmationMessage(cribbageGameJson, message));
             _connection.On<string, string>("StartGame", (message, cribbageGameJson) => StartGameMessage(message, cribbageGameJson));
             _connection.On<string, string>("StartNewHand", (message, cribbageGameJson) => StartNewHandMessage(message, cribbageGameJson));
+            _connection.On<string, string>("CardsSentToCrib", (cribbageGameJson, message) => CardsSentToCribMessage(cribbageGameJson, message));
             _connection.On<string, string>("CutCard", (cribbageGameJson, message) => CutCardMessage(cribbageGameJson, message));
             _connection.On<string, string>("CardWasCut", (cribbageGameJson, message) => CardCutMessage(cribbageGameJson, message));
             _connection.On<string, string>("Action", (cribbageGameJson, message) => PlayCardMessage(cribbageGameJson, message));
@@ -444,6 +445,18 @@ namespace Cribbage.WPFUI
             _connection.On<string>("QuitGame", (message) => QuitGameMessage(message));
 
             _connection.StartAsync();
+        }
+
+        private void CardsSentToCribMessage(string cribbageGameJson, string message)
+        {
+            cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
+            signalRMessage = message;
+
+            Dispatcher.Invoke(() =>
+            {
+                UpdatePlayerAndOpponent();
+                RefreshScreen();
+            });
         }
 
         private void WaitingForPlayerMessage(string cribbageGameJson, string message)

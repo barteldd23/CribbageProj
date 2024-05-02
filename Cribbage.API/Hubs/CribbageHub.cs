@@ -308,14 +308,13 @@ namespace Cribbage.API.Hubs
                         CribbageGameManager.Give_To_Crib(cribbageGame, cardsToCrib, cribbageGame.Player_2);
                         message = cribbageGame.Player_2.DisplayName + " sent cards to crib.";
                     }
+
                     cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
                     await Clients.Group(cribbageGame.Id.ToString()).SendAsync("CardsSentToCrib", cribbageGameJson, message);
 
                     if (cribbageGame.Crib.Count == 4)
                     {
-                        
                         await Clients.Group(cribbageGame.Id.ToString()).SendAsync("CutCard", cribbageGameJson, cribbageGame.PlayerTurn.DisplayName + " cut the deck.");
-                        
                     }
                 }
             }
