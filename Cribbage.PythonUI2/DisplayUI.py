@@ -268,7 +268,6 @@ def refreshScreen(showOpponent, showCrib):
     
     if(gameData.data['WhatToDo'] == 'SelectCribCards' and len(playerHand.cards) > 4):
         btnSendToCrib.grid(row=2, column=1, padx=5, pady=5, sticky='news')
-        setMessage("in the if for selectCribCards")
     if(gameData.data['WhatToDo'] == 'cutdeck' and myTurn):
         print('Inside cutdeck and myturn')
     if(gameData.data['WhatToDo'] == 'playcard' and myTurn):

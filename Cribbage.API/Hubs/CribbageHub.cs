@@ -644,7 +644,15 @@ namespace Cribbage.API.Hubs
 
             try
             {
-                if(cribbageGame.Player_1.Ready && cribbageGame.Player_2.Ready)
+                if (user.Id == cribbageGame.Player_1.Id)
+                {
+                    cribbageGame.Player_1.Ready = true;
+                }
+                else
+                {
+                    cribbageGame.Player_2.Ready = true;
+                }
+                if (cribbageGame.Player_1.Ready && cribbageGame.Player_2.Ready)
                 {
                     cribbageGame.Player_1.GamesStarted += 1;
                     cribbageGame.Player_2.GamesStarted += 1;
@@ -667,14 +675,7 @@ namespace Cribbage.API.Hubs
                 }
                 else
                 {
-                    if(user.Id == cribbageGame.Player_1.Id)
-                    {
-                        cribbageGame.Player_1.Ready = true;
-                    }
-                    else
-                    {
-                        cribbageGame.Player_2.Ready = true;
-                    }
+                    
 
                     message = user.DisplayName + " is ready. Waiting for all players to be ready.";
                     await Clients.Group(cribbageGame.Id.ToString()).SendAsync("WaitingForConfirmation", game, message);
