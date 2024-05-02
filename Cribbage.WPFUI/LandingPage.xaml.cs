@@ -15,6 +15,8 @@ namespace Cribbage.WPFUI
         User loggedInUser;
         HubConnection _connection;
         CribbageGame cribbageGame;
+        bool hasSavedGames = false;
+        string strUserGames = "";
 
         public LandingPage()
         {
@@ -122,7 +124,7 @@ namespace Cribbage.WPFUI
 
             StaThreadWrapper(() =>
             {
-                var mainWindow = new MainWindow(cribbageGame, loggedInUser);
+                var mainWindow = new MainWindow(cribbageGame, loggedInUser, hasSavedGames, strUserGames);
                 mainWindow.Show();
             });
 
@@ -135,7 +137,7 @@ namespace Cribbage.WPFUI
 
             StaThreadWrapper(() =>
             {
-                var mainWindow = new MainWindow(cribbageGame, loggedInUser);
+                var mainWindow = new MainWindow(cribbageGame, loggedInUser, hasSavedGames, strUserGames);
                 mainWindow.ShowDialog();
             });
 
@@ -149,7 +151,7 @@ namespace Cribbage.WPFUI
 
             StaThreadWrapper(() =>
             {
-                var mainWindow = new MainWindow(cribbageGame, loggedInUser);
+                var mainWindow = new MainWindow(cribbageGame, loggedInUser, hasSavedGames, strUserGames);
                 mainWindow.ShowDialog();
             });
 

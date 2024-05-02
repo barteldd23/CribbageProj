@@ -667,13 +667,17 @@ namespace Cribbage.API.Hubs
                 if (!cribbageGame.Computer)
                 {
                     // if player 1 leaves BEFORE player 2 joined
-                    if (cribbageGame.Player_2 == null)
+                    if (cribbageGame.WhatToDo == "waitingforplayer2")
                     {
                         //remove from hub group
                         await Groups.RemoveFromGroupAsync(Context.ConnectionId, roomName);
 
                         //delete from database
                         new GameManager(options).Delete(cribbageGame.Id);
+
+                        //send message to close window
+                        message = "Quit Game";
+                        await Clients.Caller.SendAsync("QuitGame", message);
                     }
                     // if a player leaves the game
                     else
