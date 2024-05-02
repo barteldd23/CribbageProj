@@ -29,7 +29,7 @@
         <Image x:Name="imgCribbageBoard" Margin="1174,235,0,0" Height="558" VerticalAlignment="Top" Source="images/cribbageboard.png" HorizontalAlignment="Left" Width="174"/>
         <Rectangle Margin="1115,0,0,786" Stroke="Black" HorizontalAlignment="Left" Width="246" Height="75" VerticalAlignment="Bottom"/>
         <Label x:Name="lblPlayerDisplayName" Content="Player DisplayName" Margin="872,0,0,820" FontSize="18" FontWeight="Bold" Height="38" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="240"/>
-        <Label x:Name="lblPlayerScore" Content="Player Score" HorizontalAlignment="Left" Margin="872,76,0,0" FontSize="18" Width="120" Height="32" VerticalAlignment="Top" />
+        <Label x:Name="lblPlayerScore" Content="Player Score" HorizontalAlignment="Left" Margin="875,0,0,792" FontSize="18" Width="160" Height="32" VerticalAlignment="Bottom" />
         <Rectangle HorizontalAlignment="Left" Height="75" Margin="869,0,0,786" Stroke="Black" VerticalAlignment="Bottom" Width="246"/>
         <Label x:Name="lblOpponentDisplayName" Content="Opponent DisplayName" Margin="1117,0,0,820" FontSize="18" FontWeight="Bold" Height="38" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="240"/>
         <Label x:Name="lblOpponentScore" Content="Opponent Score" HorizontalAlignment="Left" Margin="1120,0,0,792" FontSize="18" Width="160" Height="32" VerticalAlignment="Bottom"/>
