@@ -96,15 +96,15 @@ namespace Cribbage.WPFUI
                 btnExit.Visibility = Visibility.Collapsed;
                 btnSendToCrib.Visibility = Visibility.Collapsed;
 
-                lblPlayer1DisplayName.Content = cribbageGame.Player_1.DisplayName + " Score";
-                lblPlayer1Score.Content = cribbageGame.Player_1.Score;
-                lblPlayerHand.Content = cribbageGame.Player_1.DisplayName + "'s Hand";
+                lblPlayer1DisplayName.Content = "";
+                lblPlayer1Score.Content = 0;
+                lblPlayerHand.Content = "";
 
-                lblPlayer2DisplayName.Content = "Player 2 Score";
+                lblPlayer2DisplayName.Content = "";
                 lblPlayer2Score.Content = 0;
-                lblOpponentHand.Content = "Player 2's Hand";
+                lblOpponentHand.Content = "";
 
-                lblPlayersCrib.Content = "Dealer's Crib";
+                lblPlayersCrib.Content = "";
 
                 imgCribCard1.Source = null;
                 imgCribCard2.Source = null;
@@ -120,8 +120,19 @@ namespace Cribbage.WPFUI
                 imgPlayedCard7.Source = null;
                 imgPlayedCard8.Source = null;
 
-                displayOpponentHand(opponentHand, true);
-                displayPlayerHand(playerHand);
+                imgOppenentCard1.Source = null;
+                imgOppenentCard2.Source = null;
+                imgOppenentCard3.Source = null;
+                imgOppenentCard4.Source = null;
+                imgOppenentCard5.Source = null;
+                imgOppenentCard6.Source = null;
+
+                imgPlayerCard1.Source = null;
+                imgPlayerCard2.Source = null;
+                imgPlayerCard3.Source = null;
+                imgPlayerCard4.Source = null;
+                imgPlayerCard5.Source = null;
+                imgPlayerCard6.Source = null;
             }
             else SetUpGame();
         }
