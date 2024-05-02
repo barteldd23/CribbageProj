@@ -1,18 +1,9 @@
 ﻿using Cribbage.BL;
 using Cribbage.BL.Models;
 using Cribbage.PL.Data;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.VisualBasic;
 using Newtonsoft.Json;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-using static System.Net.Mime.MediaTypeNames;
-using System.Security.Policy;
-using System.Text.RegularExpressions;
-using System.Numerics;
 
 namespace Cribbage.API.Hubs
 {
@@ -241,26 +232,13 @@ namespace Cribbage.API.Hubs
                         await Clients.Group(cribbageGame.Id.ToString()).SendAsync("WaitingForPlayer", cribbageGameJson, message);
 
                     }
-
-
-
-
                 }
-
             }
             catch (Exception)
             {
                 throw;
             }
 
-        }
-
-        public async Task JoinGame(string game, string user)
-        {
-            // Assign 2nd person to that Game. and hub group
-            // Add Game to DB.
-            // serialize Game into Json
-            // Send Json back to both players using the hub group
         }
 
         public async Task CardsToCrib(string game, string cards, string userJson)
@@ -579,7 +557,6 @@ namespace Cribbage.API.Hubs
         public async Task NewGameVsPlayer(string userJson)
         {
             // Send back List of all available games to join to All connected users.
-
             string cribbageGameJson = "";
             int result;
             Game game;
@@ -659,7 +636,7 @@ namespace Cribbage.API.Hubs
                     new UserManager(options).Update(cribbageGame.Player_1);
                     new UserManager(options).Update(cribbageGame.Player_2);
 
-                    // Initialize Game, shuffle and deal,
+                    // Initialize Game, shuffle, and deal
                     CribbageGameManager.ShuffleDeck(cribbageGame);
                     CribbageGameManager.Deal(cribbageGame);
                     cribbageGame.WhatToDo = "SelectCribCards";
@@ -671,14 +648,13 @@ namespace Cribbage.API.Hubs
 
                     // Send CribbageGame back to only that person.
                     await Clients.Group(roomName).SendAsync("StartGame", cribbageGame.GameName + "\nSelect Crib Cards", cribbageGameJson);
-
                 }
                 else
                 {
+                    // UI side should check if you are the one that was ready, and hide the button. 
                     message = user.DisplayName + " is ready. Waiting for all players to be ready.";
                     cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
                     await Clients.Group(roomName).SendAsync("WaitingForConfirmation", cribbageGameJson, message);
-                    // UI side should check if you are the one that was ready, and hide the button. 
                 }
             }
             catch (Exception)
@@ -687,9 +663,6 @@ namespace Cribbage.API.Hubs
             }
         }
 
-
-
-        //check if the game should be deleted from the DB
         //Note: Games and Usergames are saved after someone hits countCards button. Do not need to update games when closing
         public async Task QuitGame(string game, string user)
         {
@@ -703,6 +676,7 @@ namespace Cribbage.API.Hubs
             {
                 if (!cribbageGame.Computer)
                 {
+                    //check if the game should be deleted from the DB
                     // if player 1 leaves BEFORE player 2 joined
                     if (cribbageGame.WhatToDo == "waitingforplayer2")
                     {
@@ -734,13 +708,6 @@ namespace Cribbage.API.Hubs
         }
 
         //**Additional comments**
-        //May have to add a property to cribbagegame class or Player class. OR have another call to the hub for the below using buttons
-        //Maybe a bool to indicate if they are ready for things like next hand or play another game.
-        //Next hand shouldn't be dealt unless both players are ready.
-
-        //UI's would have to add code to handle all new messages sent back to them and display widgets/controls properly
-        //May have to change the GetSavedGames Manager Method to filter only vs computer games.
-
         //SignalR groups: https://learn.microsoft.com/en-us/aspnet/signalr/overview/guide-to-the-api/working-with-groups
         //https://learn.microsoft.com/en-us/aspnet/core/signalr/groups?view=aspnetcore-8.0
     }
