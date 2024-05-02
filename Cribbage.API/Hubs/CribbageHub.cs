@@ -147,9 +147,11 @@ namespace Cribbage.API.Hubs
                 // Create a Game.
                 CribbageGame cribbageGame = new CribbageGame(player1, computer);
                 cribbageGame.Computer = true;
-
+                
                 // Add Game to DB.
                 result = new GameManager(options).Insert(cribbageGame);
+
+                await Groups.AddToGroupAsync(Context.ConnectionId, cribbageGame.Id.ToString());
 
                 // Add UserGame to DB.
                 UserGame userGame = new UserGame(cribbageGame.Id, player1.Id, cribbageGame.Player_1.Score);
@@ -169,7 +171,7 @@ namespace Cribbage.API.Hubs
                 cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
 
                 // Send CribbageGame back to only that person.
-                await Clients.Caller.SendAsync("StartGame", cribbageGame.GameName + "\nSelect Crib Cards", cribbageGameJson);
+                await Clients.Group(cribbageGame.Id.ToString()).SendAsync("StartGame", cribbageGame.GameName + "\nSelect Crib Cards", cribbageGameJson);
             }
             catch (Exception)
             {
@@ -205,7 +207,7 @@ namespace Cribbage.API.Hubs
                     cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
 
                     // Send CribbageGame back to only that person.
-                    await Clients.Caller.SendAsync("StartNewHand", cribbageGame.GameName + "\nSelect Crib Cards", cribbageGameJson);
+                    await Clients.Group(cribbageGame.Id.ToString()).SendAsync("StartNewHand", cribbageGame.GameName + "\nSelect Crib Cards", cribbageGameJson);
                 }
                 else
                 {
@@ -222,7 +224,7 @@ namespace Cribbage.API.Hubs
                         cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
 
                         // Send CribbageGame back to only that person.
-                        await Clients.Caller.SendAsync("StartNewHand", cribbageGame.GameName + "\nSelect Crib Cards", cribbageGameJson);
+                        await Clients.Group(cribbageGame.Id.ToString()).SendAsync("StartNewHand", cribbageGame.GameName + "\nSelect Crib Cards", cribbageGameJson);
                     }
                     else
                     {
@@ -255,14 +257,6 @@ namespace Cribbage.API.Hubs
 
         }
 
-        public async Task JoinGame(string game, string user)
-        {
-            // Assign 2nd person to that Game. and hub group
-            // Add Game to DB.
-            // serialize Game into Json
-            // Send Json back to both players using the hub group
-        }
-
         public async Task CardsToCrib(string game, string cards, string userJson)
         {
             string cribbageGameJson;
@@ -271,8 +265,9 @@ namespace Cribbage.API.Hubs
                 CribbageGame cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(game);
 
                 List<Card> cardsToCrib = JsonConvert.DeserializeObject<List<Card>>(cards);
-                //User user = JsonConvert.DeserializeObject<User>(userJson);
-                User user = new User();
+                User user = JsonConvert.DeserializeObject<User>(userJson);
+               // User user = new User();
+                string message;
 
                 // Playing vs computer.
                 // Get computer cards to crib, and send them to crib.
@@ -296,7 +291,7 @@ namespace Cribbage.API.Hubs
                         {
                             cribbageGame.WhatToDo = "playcard";
                             Card card = CribbageGameManager.Pick_Card_To_Play(cribbageGame);
-                            string message = cribbageGame.PlayerTurn.DisplayName + " played the " + card.name + "\n";
+                            message = cribbageGame.PlayerTurn.DisplayName + " played the " + card.name + "\n";
                             CribbageGameManager.PlayCard(cribbageGame, card);
                             cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
                             await Clients.All.SendAsync("Action", cribbageGameJson, message + cribbageGame.PlayerTurn.DisplayName + "'s turn");
@@ -314,21 +309,27 @@ namespace Cribbage.API.Hubs
                 // only send to crib if they sent 2 cards to hub
                 // check if the other person already sent cards.
                 // if they did, send message to both players to cut the card.
+                
                 else if (!cribbageGame.Computer && cardsToCrib.Count == 2)
                 {
                     if (user.Id == cribbageGame.Player_1.Id)
                     {
                         CribbageGameManager.Give_To_Crib(cribbageGame, cardsToCrib, cribbageGame.Player_1);
+                        message = cribbageGame.Player_1.DisplayName + " sent cards to crib.";
                     }
                     else
                     {
                         CribbageGameManager.Give_To_Crib(cribbageGame, cardsToCrib, cribbageGame.Player_2);
+                        message = cribbageGame.Player_2.DisplayName + " sent cards to crib.";
                     }
+                    cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
+                    await Clients.Group(cribbageGame.Id.ToString()).SendAsync("CardsSentToCrib", cribbageGameJson, message);
 
                     if (cribbageGame.Crib.Count == 4)
                     {
-                        cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-                        await Clients.All.SendAsync("CutCard", cribbageGameJson, cribbageGame.PlayerTurn.DisplayName + " cut the deck.");
+                        
+                        await Clients.Group(cribbageGame.Id.ToString()).SendAsync("CutCard", cribbageGameJson, cribbageGame.PlayerTurn.DisplayName + " cut the deck.");
+                        
                     }
                 }
             }
@@ -349,7 +350,7 @@ namespace Cribbage.API.Hubs
                 cribbageGame.WhatToDo = "playcard";
 
                 cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-                await Clients.All.SendAsync("CardWasCut", cribbageGameJson, cribbageGame.PlayerTurn.DisplayName + " cut the " + cribbageGame.CutCard.name + "\n" + cribbageGame.PlayerTurn.DisplayName + "'s turn");
+                await Clients.Group(cribbageGame.Id.ToString()).SendAsync("CardWasCut", cribbageGameJson, cribbageGame.PlayerTurn.DisplayName + " cut the " + cribbageGame.CutCard.name + "\n" + cribbageGame.PlayerTurn.DisplayName + "'s turn");
                 CheckCompletedGame(cribbageGame);
             }
             catch (Exception)
@@ -372,7 +373,7 @@ namespace Cribbage.API.Hubs
                 {
                     cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
                     message1 += cribbageGame.PlayerTurn.DisplayName + "'s turn";
-                    await Clients.All.SendAsync("Action", cribbageGameJson, message1);
+                    await Clients.Group(cribbageGame.Id.ToString()).SendAsync("Action", cribbageGameJson, message1);
                     CheckCompletedGame(cribbageGame);
 
                     while (!cribbageGame.Complete 
@@ -388,7 +389,7 @@ namespace Cribbage.API.Hubs
                             CribbageGameManager.PlayCard(cribbageGame, computerCard);
                             
                             cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-                            await Clients.All.SendAsync("Action", cribbageGameJson, message + cribbageGame.PlayerTurn.DisplayName + "'s turn");
+                            Clients.Group(cribbageGame.Id.ToString()).SendAsync("Action", cribbageGameJson, message + cribbageGame.PlayerTurn.DisplayName + "'s turn");
                             CheckCompletedGame(cribbageGame);
                         }
                         else if (cribbageGame.WhatToDo == "go")
@@ -397,7 +398,7 @@ namespace Cribbage.API.Hubs
                             CribbageGameManager.Go(cribbageGame);
 
                             cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-                            await Clients.All.SendAsync("Action", cribbageGameJson, message + cribbageGame.PlayerTurn.DisplayName + "'s turn");
+                            await Clients.Group(cribbageGame.Id.ToString()).SendAsync("Action", cribbageGameJson, message + cribbageGame.PlayerTurn.DisplayName + "'s turn");
                             CheckCompletedGame(cribbageGame);
                         }
                     }
@@ -406,7 +407,7 @@ namespace Cribbage.API.Hubs
                     {
                         string message = "All cards played. Count Hands";
                         cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-                        await Clients.All.SendAsync("RallyOver", cribbageGameJson, message);
+                        await Clients.Group(cribbageGame.Id.ToString()).SendAsync("RallyOver", cribbageGameJson, message);
                     }
                 }
                 else
@@ -434,7 +435,7 @@ namespace Cribbage.API.Hubs
                 CribbageGameManager.Go(cribbageGame);
 
                 cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-                await Clients.All.SendAsync("Action", cribbageGameJson, message + cribbageGame.PlayerTurn.DisplayName + "'s turn");
+                await Clients.Group(cribbageGame.Id.ToString()).SendAsync("Action", cribbageGameJson, message + cribbageGame.PlayerTurn.DisplayName + "'s turn");
                 CheckCompletedGame(cribbageGame);
 
                 while (!cribbageGame.Complete
@@ -449,7 +450,7 @@ namespace Cribbage.API.Hubs
                         message = cribbageGame.PlayerTurn.DisplayName + " played the " + computerCard.name + "\n";
                         CribbageGameManager.PlayCard(cribbageGame, computerCard);
                         cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-                        await Clients.All.SendAsync("Action", cribbageGameJson, message + cribbageGame.PlayerTurn.DisplayName + "'s turn");
+                        await Clients.Group(cribbageGame.Id.ToString()).SendAsync("Action", cribbageGameJson, message + cribbageGame.PlayerTurn.DisplayName + "'s turn");
                         CheckCompletedGame(cribbageGame);
                     }
                     else if (cribbageGame.WhatToDo == "go")
@@ -457,7 +458,7 @@ namespace Cribbage.API.Hubs
                         message = cribbageGame.PlayerTurn.DisplayName + " said go.\n";
                         CribbageGameManager.Go(cribbageGame);
                         cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-                        await Clients.All.SendAsync("Action", cribbageGameJson, message + cribbageGame.PlayerTurn.DisplayName + "'s turn");
+                        await Clients.Group(cribbageGame.Id.ToString()).SendAsync("Action", cribbageGameJson, message + cribbageGame.PlayerTurn.DisplayName + "'s turn");
                         CheckCompletedGame(cribbageGame);
                     }
                 }
@@ -465,7 +466,7 @@ namespace Cribbage.API.Hubs
                 {
                     message = "All cards played. Count Hands";
                     cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-                    await Clients.All.SendAsync("RallyOver", cribbageGameJson, message);
+                    await Clients.Group(cribbageGame.Id.ToString()).SendAsync("RallyOver", cribbageGameJson, message);
                 }
             }
             catch (Exception)
@@ -537,7 +538,7 @@ namespace Cribbage.API.Hubs
                 }
 
                 cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-                await Clients.All.SendAsync("HandsCounted", cribbageGameJson, message);
+                await Clients.Caller.SendAsync("HandsCounted", cribbageGameJson, message);
                 CheckCompletedGame(cribbageGame);
 
             }
@@ -572,7 +573,7 @@ namespace Cribbage.API.Hubs
                 new GameManager(options).Update(cribbageGame);
 
                 string cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-                await Clients.All.SendAsync("GameFinished", cribbageGameJson, message);
+                await Clients.Group(cribbageGame.Id.ToString()).SendAsync("GameFinished", cribbageGameJson, message);
             }
         }
 

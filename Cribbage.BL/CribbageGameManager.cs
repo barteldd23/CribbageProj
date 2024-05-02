@@ -248,13 +248,17 @@ namespace Cribbage.BL
             foreach (Card card in cards)
             {
                 cribbageGame.Crib.Add(card);
-                if (player == cribbageGame.Player_1)
+                if (player.Id == cribbageGame.Player_1.Id)
                 {
                     // .Remove(card) wasn't working properly
                     Card x = cribbageGame.Player_1.Hand.Where(x => x.name == card.name).FirstOrDefault();
                     cribbageGame.Player_1.Hand.Remove(x);
                 }
-                else cribbageGame.Player_2.Hand.Remove(card);
+                else
+                {
+                    Card x = cribbageGame.Player_2.Hand.Where(x => x.name == card.name).FirstOrDefault();
+                    cribbageGame.Player_2.Hand.Remove(x);
+                }
             }
             if(cribbageGame.PlayerTurn.Id == player.Id)
             {
