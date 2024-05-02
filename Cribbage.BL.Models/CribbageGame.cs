@@ -69,5 +69,15 @@ namespace Cribbage.BL.Models
             Deck = new Deck(true);
         }
 
+        public CribbageGame(Guid id, User user1, User user2)
+        {
+            Id = id;
+            Date = DateTime.Now;
+            Player_1 = new Player(user1);
+            Player_2 = new Player(user2);
+            GameName = user1.DisplayName + " Vs. " + user2.DisplayName;
+            Deck = new Deck(true);
+        }
+
     }
 }
