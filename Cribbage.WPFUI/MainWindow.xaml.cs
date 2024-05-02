@@ -463,7 +463,6 @@ namespace Cribbage.WPFUI
 
         private void WaitingForConfirmationMessage(string cribbageGameJson, string message)
         {
-            MessageBox.Show("Confirmation: " + message);
             Dispatcher.Invoke(() => 
             {
                 lblMessageToPlayers.Content = message;
