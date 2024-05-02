@@ -78,6 +78,12 @@ def setGameData(dataJson):
     
 
 ###################### Methods for Received Hub Messages ##############
+
+def receivedCardsSentToCrib(gameJson, message):
+    setMessage(message)
+    setGameData(gameJson)
+    refreshScreen(False, False)
+    
 def receivedWatingForConformation(gameJson, message):
     setMessage(message)
     setGameOnly(gameJson)
@@ -805,6 +811,7 @@ hub_connection.on("WaitingForPlayer", lambda data: receivedWaitingForPlayerMessa
 hub_connection.on("ReadyToStart", lambda data: receivedStartGameMessage(data[1], data[0]))
 hub_connection.on("PlayerLeft", lambda data: receivedPlayerLeftMessage(data[0]))
 hub_connection.on("WaitingForConfirmation", lambda data: receivedWatingForConformation(data[0], data[1]))
+hub_connection.on("CardsSentToCrib", lambda data: receivedCardsSentToCrib(data[0], data[1]))
 
 hub_connection.start()
 
