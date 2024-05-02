@@ -614,17 +614,34 @@ namespace Cribbage.API.Hubs
         {
             CribbageGame cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(game);
             string message = "";
+            string cribbageGameJson;
 
             try
             {
                 if(cribbageGame.Player_1.Ready && cribbageGame.Player_2.Ready)
                 {
-                    NewHand(game);
+                    cribbageGame.Player_1.GamesStarted += 1;
+                    cribbageGame.Player_2.GamesStarted += 1;
+                    new UserManager(options).Update(cribbageGame.Player_1);
+                    new UserManager(options).Update(cribbageGame.Player_2);
+
+                    // Initialize Game, shuffle and deal,
+                    CribbageGameManager.ShuffleDeck(cribbageGame);
+                    CribbageGameManager.Deal(cribbageGame);
+                    cribbageGame.WhatToDo = "SelectCribCards";
+
+                    // Serialize CribbageGame into Json
+                    cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
+
+                    // Send CribbageGame back to only that person.
+                    await Clients.Caller.SendAsync("StartGame", cribbageGame.GameName + "\nSelect Crib Cards", cribbageGameJson);
+
                 }
                 else
                 {
                     message = "Waiting for all players to be ready";
                     await Clients.Group(cribbageGame.Id.ToString()).SendAsync("WaitingForConfirmation", game, message);
+                    // UI side should check if you are the one that was ready, and hide the button. 
                 }
             }
             catch (Exception)
