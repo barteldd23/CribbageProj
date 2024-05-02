@@ -182,10 +182,12 @@ def setGameOnly(gameJson):
     gameData.data = cribbageGame
     
 def setHands():
-    if(pythonUser.Id == gameData.data["Player_1"]["Id"] and gameData.data["WhatToDo"] != 'waitingforplayer2'):
+    if(pythonUser.Id == gameData.data["Player_1"]["Id"] and (gameData.data["WhatToDo"] != 'waitingforplayer2' and gameData.data["WhatToDo"] != 'readytostart')):
         return [gameData.data["Player_1"]["Hand"], gameData.data["Player_2"]["Hand"] ]
-    elif(pythonUser.Id == gameData.data["Player_2"]["Id"] and gameData.data["WhatToDo"] != 'waitingforplayer2'):
+    elif(pythonUser.Id == gameData.data["Player_2"]["Id"] and (gameData.data["WhatToDo"] != 'waitingforplayer2' and gameData.data["WhatToDo"] != 'readytostart')):
         return [gameData.data["Player_2"]["Hand"], gameData.data["Player_1"]["Hand"] ]
+    else:
+        return ['','']
     
 def setStartGameFrame(playerHand, opponentHand):
     if(pythonUser.Id == gameData.data["Player_1"]["Id"]):
@@ -244,9 +246,9 @@ def refreshScreen(showOpponent, showCrib):
    # print('unselected cards')
     forgetButtons()
    # print('forgot buttons')
-    if(gameData.data['PlayerTurn']['Id'] == pythonUser.Id):
+    if(gameData.data["WhatToDo"] != 'waitingforplayer2' and gameData.data["WhatToDo"] != 'readytostart' and gameData.data['PlayerTurn']['Id'] == pythonUser.Id):
         myTurn = True
-    else:
+    elif (gameData.data["WhatToDo"] != 'waitingforplayer2' and gameData.data["WhatToDo"] != 'readytostart' and gameData.data['PlayerTurn']['Id'] != pythonUser.Id):
         myTurn = False
     
     #print('myturn: ' + str(myTurn))
