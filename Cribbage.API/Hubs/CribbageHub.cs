@@ -588,7 +588,7 @@ namespace Cribbage.API.Hubs
                 {
                     Guid player1Id = Guid.Parse(game.GameName);
                     User player_1 = new UserManager(options).LoadById(player1Id);
-                    CribbageGame cribbageGame = new CribbageGame(player_1, user);
+                    CribbageGame cribbageGame = new CribbageGame(game.Id,player_1, user);
 
                     int results = new GameManager(options).Update(cribbageGame);
                     UserGame userGame1 = new UserGame(cribbageGame.Id, player_1.Id, 0);

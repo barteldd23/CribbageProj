@@ -794,7 +794,7 @@ hub_connection.on("HandsCounted", lambda data: receivedHandsCountedMessage(data[
 hub_connection.on("StartNewHand", lambda data: receivedStartNewHandMessage(data[0],data[1]))
 hub_connection.on("GameFinished", lambda data: receivedGameFinishedMessage(data[0], data[1]))
 hub_connection.on("WaitingForPlayer", lambda data: receivedWaitingForPlayerMessage(data[0], data[1]))
-hub_connection.on("ReadyToStart", lambda data: receivedStartGameMessage(data[0], data[1]))
+hub_connection.on("ReadyToStart", lambda data: receivedStartGameMessage(data[1], data[0]))
 hub_connection.on("PlayerLeft", lambda data: receivedPlayerLeftMessage(data[0]))
 
 hub_connection.start()
