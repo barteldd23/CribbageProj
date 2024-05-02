@@ -79,6 +79,14 @@ def setGameData(dataJson):
 
 ###################### Methods for Received Hub Messages ##############
 
+def receivedReadyToStartMessage(gameJson, message):
+    pass
+
+def receivedWaitingForPlayerMessage(gameJson, message):
+    loggedInFrame.pack_forget()
+    gameFrame.pack()
+    setMessage(message)
+
 def receivedGameFinishedMessage(gameJson, message):
     setMessage(message)
     setGameData(gameJson)
@@ -190,6 +198,7 @@ def setStartGameFrame(playerHand, opponentHand):
     lblP1Score.grid(row=1, column=1, padx=5, pady=5, sticky='news')
     lblP2DisplayName.grid(row=2, column=0, padx=5, pady=5, sticky='news')
     lblP2Score.grid(row=2, column=1, padx=5, pady=5, sticky='news')
+    btnBackToMenu.grid(row=3, column=1, columnspan=2, padx=5, pady=5, sticky='news')
     
     
 
@@ -218,6 +227,7 @@ def forgetButtons():
     btnCutPosition.grid_forget()
     txtCutPosition.grid_forget()
     lblCutPosition.grid_forget()
+    btnReadyToStart.grid_forget()
 
 def refreshScreen(showOpponent, showCrib):
    # print('refresh start')
@@ -262,6 +272,8 @@ def refreshScreen(showOpponent, showCrib):
         btnNextHand.grid(row=3, column=3, padx=5, pady=5, sticky='news' )
     if(gameData.data['WhatToDo'] == 'startnewgame'):
         btnNewGame.grid(row=3, column=0, columnspan=10, padx=5, pady=5, sticky='news')
+    if(gameData.data['WhatToDo'] == 'readytostart'):
+        btnReadyToStart.grid(row=3, column=0, columnspan=10, padx=5, pady=5, sticky='news')
     
 def displayCurrentCount():
     currentCountMsg = 'Current Count: ' + str(gameData.data["CurrentCount"])
@@ -641,8 +653,11 @@ def newVsComputer():
     hub_connection.send("NewGameVsComputer",[pythonUserJson])
 
 def newVsPlayer():
-    pass
+    pythonUserJson = json.dumps(asdict(pythonUser))
+    hub_connection.send("NewGameVsPlayer",[pythonUserJson])
 
+def onClick_ReadyToStart():
+    print("hit ready to start")
     
 def onClickNewUser():
     loginFrame.pack_forget()
@@ -719,6 +734,15 @@ def onClick_btnCutPosition():
         messagebox.showerror("Invalid cut card number", "Enter a number from 1 to 40 to use as the cut card")
     #messagebox.showinfo(message='email: ' + email + ' password: ' + password)
 
+def onClick_MainMenu():
+    print('hit main menu button')
+    
+def onClick_FileMainMenu():
+    print('hit file main menu')
+    
+def onClick_Quit():
+    print('hit the file quit')
+    window.destroy()
 
 ############### Hub Connection ###########################
 
@@ -740,6 +764,9 @@ hub_connection.on("CutCard", lambda data: receivedCutCardMessage(data[0],data[1]
 hub_connection.on("HandsCounted", lambda data: receivedHandsCountedMessage(data[0],data[1]))
 hub_connection.on("StartNewHand", lambda data: receivedStartNewHandMessage(data[0],data[1]))
 hub_connection.on("GameFinished", lambda data: receivedGameFinishedMessage(data[0], data[1]))
+hub_connection.on("WaitingForPlayer", lambda data: receivedWaitingForPlayerMessage(data[0], data[1]))
+hub_connection.on("ReadyToStart", lambda data: receivedStartGameMessage(data[0], data[1]))
+
 hub_connection.start()
 
 
@@ -748,6 +775,9 @@ window = Tk()
 window.option_add('*tearOff', False)
 window.geometry('1400x900')
 window.title('Cribbage Game App')
+window.resizable(0,0)
+window.protocol('WM_DELETE_WINDOW', onClick_Quit)
+#window.overrideredirect(1)
 
 #window.columnconfigure(0,weight=1)
 # window.columnconfigure(1,weight=4)
@@ -761,8 +791,8 @@ file = Menu(menuBar)
     
 menuBar.add_cascade(menu=file, label="File")
     
-file.add_command(label='New Game', command = lambda: print('NewGame'))
-file.add_command(label = 'Quit', command = quit)
+file.add_command(label='Main Menu', command = onClick_FileMainMenu)
+file.add_command(label = 'Quit', command = onClick_Quit)
 
 
 ############ Main Frames ###############
@@ -866,6 +896,8 @@ cribCard3.config(image = cribCard3.img);
 cribCard4 = tkinter.Label(cribFrame, width=50);
 cribCard4.img = smallCardBack;
 cribCard4.config(image = cribCard4.img);
+
+btnBackToMenu = tkinter.Button(cribFrame, text='Main Menu', command=onClick_MainMenu)
 
 #     # Setting the image this way should prevent garbage collection of the image.
 opponentCard1 = tkinter.Label(opponentFrame);
@@ -977,6 +1009,7 @@ btnNextHand = tkinter.Button(usersFrame, text="Next Hand", command=onClick_NextH
 btnPlayCard = tkinter.Button(usersFrame, text="Play Card", command=onClick_PlayCard)
 btnGo = tkinter.Button(usersFrame, text="Go", width=100, command=onClick_Go);
 btnNewGame = tkinter.Button(usersFrame, text="Another Game", command=onClick_NewGame)
+btnReadyToStart = tkinter.Button(usersFrame, text="Ready", command = onClick_ReadyToStart)
 
 opponentFrame.grid_propagate(0)
 rallyFrame.grid_propagate(0)
