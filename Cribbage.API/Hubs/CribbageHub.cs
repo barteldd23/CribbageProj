@@ -676,10 +676,9 @@ namespace Cribbage.API.Hubs
                 }
                 else
                 {
-                    
-
                     message = user.DisplayName + " is ready. Waiting for all players to be ready.";
-                    await Clients.Group(roomName).SendAsync("WaitingForConfirmation", game, message);
+                    cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
+                    await Clients.Group(roomName).SendAsync("WaitingForConfirmation", cribbageGameJson, message);
                     // UI side should check if you are the one that was ready, and hide the button. 
                 }
             }
@@ -734,38 +733,6 @@ namespace Cribbage.API.Hubs
                 throw;
             }
         }
-
-
-
-        //        ***** Hub psuedo code for player vs player*****
-
-
-        //NewGameVsPlayer(string userJson)
-        ////Purpose is to create a cribbage game in the state of waiting for someone else to join.
-        //	- Check DB available game.
-        //	-if available to join:
-        //		-Caller joins group with Groups.AddToGroupAsync(Context.ConectionId, "GameIDGUid")
-        //		-Update Player2 Id on the game.
-        //		-Update game in DB with you as P2
-        //		-Create new UserGames for both players in DB.
-        //		-Update a CribbageGame with you as P2
-        //		-Update CribbageGame Name P1.UserName Vs.P2.UserName
-        //		-Update WhatToDO = "readytostart" or something similar we agree on. Purpose being both players 
-        //		- make a string message something like "P2.displayName Has joined the game\n 
-
-        //                            cribbageGame.Name\n
-        //                            Click Ready button to start"
-        //		-return msg to Group(groupName which is the gameID).SendAsync("ReadyToStart", cribbageGameJson, message)
-
-        //	-if not available:
-        //		-Create new game with them as P1
-        //		-Update WhatToDo = "waiting"
-        //        - create a message string to send back to player.
-        //		-return msg to Group(groupName which is the gameID).SendAsync("WaitingForPlayer", cribbageGameJson, message)
-
-
-
-
 
         //**Additional comments**
         //May have to add a property to cribbagegame class or Player class. OR have another call to the hub for the below using buttons
