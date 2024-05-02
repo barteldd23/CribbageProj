@@ -178,13 +178,14 @@ namespace Cribbage.API.Hubs
             }
         }
 
-        public async Task NewHand(string game)
+        public async Task NewHand(string game, string userJson)
         {
             string cribbageGameJson;
 
             try
             {
                 CribbageGame cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(game);
+                User user = JsonConvert.DeserializeObject<User>(userJson);
 
                 cribbageGame.Team1_Score = cribbageGame.Player_1.Score;
                 cribbageGame.Team2_Score = cribbageGame.Player_2.Score;
@@ -209,18 +210,41 @@ namespace Cribbage.API.Hubs
                 else
                 {
                     //need to wait for 2nd player / only update screen after they are all set 
+                    if (cribbageGame.Player_1.Ready && cribbageGame.Player_2.Ready)
+                    {
+                        // Initialize Game, shuffle and deal,
+                        CribbageGameManager.NextDealer(cribbageGame);
+                        CribbageGameManager.ShuffleDeck(cribbageGame);
+                        CribbageGameManager.Deal(cribbageGame);
+                        cribbageGame.WhatToDo = "SelectCribCards";
 
-                    // Initialize Game, shuffle and deal,
-                    CribbageGameManager.NextDealer(cribbageGame);
-                    CribbageGameManager.ShuffleDeck(cribbageGame);
-                    CribbageGameManager.Deal(cribbageGame);
-                    cribbageGame.WhatToDo = "SelectCribCards";
+                        // Serialize CribbageGame into Json
+                        cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
 
-                    // Serialize CribbageGame into Json
-                    cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
+                        // Send CribbageGame back to only that person.
+                        await Clients.Caller.SendAsync("StartNewHand", cribbageGame.GameName + "\nSelect Crib Cards", cribbageGameJson);
+                    }
+                    else
+                    {
+                        //need to figure out who called this and change their ready state.
+                        if(user.Id == cribbageGame.Player_1.Id)
+                        {
+                            cribbageGame.Player_1.Ready = true;
+                        }
+                        else
+                        {
+                            cribbageGame.Player_2.Ready = true;
+                        }
 
-                    // Send CribbageGame back to only that person.
-                    await Clients.Caller.SendAsync("StartNewHand", cribbageGame.GameName + "\nSelect Crib Cards", cribbageGameJson);
+                        cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
+                        string message = user.DisplayName + " is waiting to start the next hand.\nWaiting for another player.";
+                        await Clients.Group(cribbageGame.Id.ToString()).SendAsync("WaitingForPlayer", cribbageGameJson, message);
+
+                    }
+
+
+
+
                 }
 
             }
@@ -610,9 +634,10 @@ namespace Cribbage.API.Hubs
             }
         }
 
-        public async Task ReadyToPlay(string game)
+        public async Task ReadyToPlay(string game, string userJson)
         {
             CribbageGame cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(game);
+            User user = JsonConvert.DeserializeObject<User>(userJson);
             string message = "";
             string cribbageGameJson;
             string roomName = cribbageGame.Id.ToString();
@@ -630,6 +655,8 @@ namespace Cribbage.API.Hubs
                     CribbageGameManager.ShuffleDeck(cribbageGame);
                     CribbageGameManager.Deal(cribbageGame);
                     cribbageGame.WhatToDo = "SelectCribCards";
+                    cribbageGame.Player_1.Ready = false;
+                    cribbageGame.Player_2.Ready = false;
 
                     // Serialize CribbageGame into Json
                     cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
@@ -640,8 +667,17 @@ namespace Cribbage.API.Hubs
                 }
                 else
                 {
-                    message = "Waiting for all players to be ready";
-                    await Clients.Group(roomName).SendAsync("WaitingForConfirmation", game, message);
+                    if(user.Id == cribbageGame.Player_1.Id)
+                    {
+                        cribbageGame.Player_1.Ready = true;
+                    }
+                    else
+                    {
+                        cribbageGame.Player_2.Ready = true;
+                    }
+
+                    message = user.DisplayName + "is ready. Waiting for all players to be ready";
+                    await Clients.Group(cribbageGame.Id.ToString()).SendAsync("WaitingForConfirmation", game, message);
                     // UI side should check if you are the one that was ready, and hide the button. 
                 }
             }
