@@ -100,6 +100,7 @@ namespace Cribbage.WPFUI
             btnCutDeck.Visibility = Visibility.Collapsed;
             btnMainMenu.Visibility = Visibility.Collapsed;
             btnExit.Visibility = Visibility.Collapsed;
+            btnReady.Visibility = Visibility.Collapsed;
             btnSendToCrib.Visibility = Visibility.Visible;
 
             lblPlayer1DisplayName.Content = cribbageGame.Player_1.DisplayName + " Score";
@@ -446,10 +447,13 @@ namespace Cribbage.WPFUI
             cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
             signalRMessage = message;
 
-            lstMessages.Items.Add(message);
-            lblMessageToPlayers.Content = message;
-
-            SetUpGame();
+            Dispatcher.Invoke(() =>
+            {
+                lstMessages.Items.Add(message);
+                lblMessageToPlayers.Content = message;
+                
+                SetUpGame();
+            });
         }
 
         private void QuitGameMessage(string message)

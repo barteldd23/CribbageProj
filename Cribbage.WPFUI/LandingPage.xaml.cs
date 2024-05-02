@@ -76,16 +76,17 @@ namespace Cribbage.WPFUI
             MainWindow mainWindow = new MainWindow(cribbageGame, loggedInUser, hasSavedGames, strUserGames);
             mainWindow.ShowDialog();
 
-            this.Hide();
+            this.Close();
         }
 
         private void btnNewGameVsPlayer_Click(object sender, RoutedEventArgs e)
         {
             cribbageGame.Computer = false;
+
             MainWindow mainWindow = new MainWindow(cribbageGame, loggedInUser, hasSavedGames, strUserGames);
             mainWindow.ShowDialog();
 
-            this.Hide();
+            this.Close();
         }
     }
 }
