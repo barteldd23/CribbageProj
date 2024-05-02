@@ -690,9 +690,17 @@ namespace Cribbage.WPFUI
             {
                 this.Close();
             }
+            else if (exitClick)
+            {
+                Dispatcher.Invoke(() => { this.Close(); });
+            }
             else
             {
                 exitClick = true;
+                signalRMessage = "Please click 'Exit' again to close the window";
+                lblMessageToPlayers.Content = signalRMessage;
+                lstMessages.Items.Add(signalRMessage);
+
                 try
                 {
                     string cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
