@@ -78,7 +78,9 @@ def setGameData(dataJson):
     
 
 ###################### Methods for Received Hub Messages ##############
-
+def receivedWatingForConformation(gameJson, message):
+    setMessage(message)
+    setGameOnly(gameJson)
 def receivedPlayerLeftMessage(message):
     setMessage(message)
     forgetButtons()
@@ -657,8 +659,9 @@ def onClickSendToCrib():
    
 def onClick_NextHand():
     gameToSendJson = getGameJson()
+    pythonUserJson = json.dumps(asdict(pythonUser))
     print('******Pushed NextHand Button ********')
-    hub_connection.send("NewHand",[gameToSendJson])
+    hub_connection.send("NewHand",[gameToSendJson], pythonUserJson)
 def newVsComputer():
     pythonUserJson = json.dumps(asdict(pythonUser))
     hub_connection.send("NewGameVsComputer",[pythonUserJson])
@@ -668,7 +671,11 @@ def newVsPlayer():
     hub_connection.send("NewGameVsPlayer",[pythonUserJson])
 
 def onClick_ReadyToStart():
-    print("hit ready to start")
+    gameToSendJson = getGameJson()
+    pythonUserJson = json.dumps(asdict(pythonUser))
+    print('****** Clicked Ready to start Button ********')
+    hub_connection.send("ReadyToPlay",[gameToSendJson], pythonUserJson)
+    btnReadyToStart.grid_forget()
     
 def onClickNewUser():
     loginFrame.pack_forget()
@@ -798,6 +805,7 @@ hub_connection.on("GameFinished", lambda data: receivedGameFinishedMessage(data[
 hub_connection.on("WaitingForPlayer", lambda data: receivedWaitingForPlayerMessage(data[0], data[1]))
 hub_connection.on("ReadyToStart", lambda data: receivedStartGameMessage(data[1], data[0]))
 hub_connection.on("PlayerLeft", lambda data: receivedPlayerLeftMessage(data[0]))
+hub_connection.on("WaitingForConfirmation", lambda data: receivedWatingForConformation(data[0], data[1]))
 
 hub_connection.start()
 
