@@ -674,7 +674,7 @@ def onClick_ReadyToStart():
     gameToSendJson = getGameJson()
     pythonUserJson = json.dumps(asdict(pythonUser))
     print('****** Clicked Ready to start Button ********')
-    hub_connection.send("ReadyToPlay",[gameToSendJson], pythonUserJson)
+    hub_connection.send("ReadyToPlay",[gameToSendJson, pythonUserJson])
     btnReadyToStart.grid_forget()
     
 def onClickNewUser():
