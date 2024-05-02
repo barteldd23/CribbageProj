@@ -183,6 +183,44 @@ namespace Cribbage.BL
                 throw e;
             }
         }
+        public Game GetAvailableGame()
+        {
+            try
+            {
+                List<Game> games = new List<Game>();
+
+                using (CribbageEntities dc = new CribbageEntities(options))
+                {
+//                    select* from tblGame g
+//left outer join tblUserGame ug on g.Id = ug.GameId
+//where ug.Id is null
+//order by g.Date desc
+                    games = (from g in dc.tblGames
+                            join ug in dc.tblUserGames on g.Id equals ug.GameId into userGames
+                            from userGame in userGames.DefaultIfEmpty()
+                            where userGame.GameId == null
+                            orderby g.Date
+                            select new Game
+                             {
+                                 Id = g.Id,
+                                 Winner = g.Winner,
+                                 Date = g.Date,
+                                 GameName = g.GameName,
+                                 Complete = g.Complete
+                             }
+                             )
+                             .ToList();
+
+                    
+                    return games.First();
+                    
+                }
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
 
         #endregion
 

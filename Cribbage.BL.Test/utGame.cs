@@ -62,5 +62,12 @@ namespace Cribbage.BL.Test
 
             Assert.IsTrue(new GameManager(options).Delete(game.Id, true) > 0);
         }
+        [TestMethod]
+        public void GetAvailableGameTest()
+        {
+            Game game = new GameManager(options).GetAvailableGame();
+
+            Assert.IsTrue(game == null);
+        }
     }
 }
