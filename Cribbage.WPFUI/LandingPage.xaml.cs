@@ -14,6 +14,7 @@ namespace Cribbage.WPFUI
         string hubAddress = "https://localhost:7186/CribbageHub";
         User loggedInUser;
         HubConnection _connection;
+        CribbageGame cribbageGame;
 
         public LandingPage()
         {
@@ -109,20 +110,50 @@ namespace Cribbage.WPFUI
                 .Build();
 
             _connection.On<string, string>("StartGame", (message, cribbageGameJson) => StartGameVsComputerMessage(message, cribbageGameJson));
-            _connection.On<string, string>("StartGameVsPlayer", (message, cribbageGameJson) => StartGameVsPlayerMessage(message, cribbageGameJson));
+            _connection.On<string, string>("WaitingForPlayer", (cribbageGameJson, message) => WaitingForPlayerMessage(cribbageGameJson, message));
+            _connection.On<string, string>("ReadyToStart", (cribbageGameJson, message) => StartGameVsPlayerMessage(cribbageGameJson, message));
 
             _connection.StartAsync();
         }
 
         private void StartGameVsComputerMessage(string message, string cribbageGameJson)
         {
-            CribbageGame cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
+            cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
 
             StaThreadWrapper(() =>
             {
                 var mainWindow = new MainWindow(cribbageGame, loggedInUser);
                 mainWindow.Show();
             });
+
+            Dispatcher.Invoke(() => { this.Close(); });
+        }
+
+        private void StartGameVsPlayerMessage(string cribbageGameJson, string message)
+        {
+            cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
+
+            StaThreadWrapper(() =>
+            {
+                var mainWindow = new MainWindow(cribbageGame, loggedInUser);
+                mainWindow.ShowDialog();
+            });
+
+            Dispatcher.Invoke(() => { this.Close(); });
+        }
+
+
+        private void WaitingForPlayerMessage(string cribbageGameJson, string message)
+        {
+            cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
+
+            StaThreadWrapper(() =>
+            {
+                var mainWindow = new MainWindow(cribbageGame, loggedInUser);
+                mainWindow.ShowDialog();
+            });
+
+            Dispatcher.Invoke(() => { this.Hide(); });
         }
 
         public void NewGameVsPlayer(User user)
@@ -136,11 +167,6 @@ namespace Cribbage.WPFUI
             {
                 MessageBox.Show(ex.Message);
             }
-        }
-
-        private void StartGameVsPlayerMessage(string message, string cribbageGameJson)
-        {
-            MessageBox.Show(message + " " + cribbageGameJson);
         }
 
         public void NewGameVsComputer(User user)

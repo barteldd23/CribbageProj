@@ -609,6 +609,74 @@ namespace Cribbage.API.Hubs
                 throw;
             }
         }
+
+        public async Task ReadyToPlay(string game)
+        {
+            CribbageGame cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(game);
+            string message = "";
+
+            try
+            {
+                if(cribbageGame.Player_1.Ready && cribbageGame.Player_2.Ready)
+                {
+                    NewHand(game);
+                }
+                else
+                {
+                    message = "Waiting for all players to be ready";
+                    await Clients.Group(cribbageGame.Id.ToString()).SendAsync("WaitingForConfirmation", game, message);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+
+
+        //check if the game should be deleted from the DB
+        //Note: Games and Usergames are saved after someone hits countCards button. Do not need to update games when closing
+        public async Task QuitGame(string game, string user)
+        {
+            CribbageGame cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(game);
+            User loggedInUser = JsonConvert.DeserializeObject<User>(user);
+            string message = "";
+
+            string roomName = cribbageGame.Id.ToString();
+
+            try
+            {
+                if (!cribbageGame.Computer)
+                {
+                    // if player 1 leaves BEFORE player 2 joined
+                    if (cribbageGame.Player_2 == null)
+                    {
+                        //remove from hub group
+                        await Groups.RemoveFromGroupAsync(Context.ConnectionId, roomName);
+
+                        //delete from database
+                        new GameManager(options).Delete(cribbageGame.Id);
+                    }
+                    // if a player leaves the game
+                    else
+                    {
+                        //remove from hub group
+                        await Groups.RemoveFromGroupAsync(Context.ConnectionId, roomName);
+
+                        //send message to hub group saying player 2 left
+                        await Clients.Group(roomName).SendAsync("PlayerLeft", $"{loggedInUser.DisplayName} has left the game.");
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+
+
         //        ***** Hub psuedo code for player vs player*****
 
 
@@ -637,45 +705,7 @@ namespace Cribbage.API.Hubs
 
 
 
-        //check if the game should be deleted from the DB
-        //Note: Games and Usergames are saved after someone hits countCards button. Do not need to update games when closing
-        public async Task QuitGame(string game, string user)
-        {
-            CribbageGame cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(game);
-            User loggedInUser = JsonConvert.DeserializeObject<User>(user);
-            string message = "";
 
-            string roomName = cribbageGame.Id.ToString();
-
-            try
-            {
-                if(!cribbageGame.Computer)
-                {
-                    // if player 1 leaves BEFORE player 2 joined
-                    if (cribbageGame.Player_2 == null)
-                    {
-                        //remove from hub group
-                        await Groups.RemoveFromGroupAsync(Context.ConnectionId, roomName);
-
-                        //delete from database
-                        new GameManager(options).Delete(cribbageGame.Id);
-                    }
-                    // if a player leaves the game
-                    else
-                    {
-                        //remove from hub group
-                        await Groups.RemoveFromGroupAsync(Context.ConnectionId, roomName);
-
-                        //send message to hub group saying player 2 left
-                        await Clients.Group(roomName).SendAsync("PlayerLeft", $"{loggedInUser.DisplayName} has left the game.");
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
 
         //**Additional comments**
         //May have to add a property to cribbagegame class or Player class. OR have another call to the hub for the below using buttons
