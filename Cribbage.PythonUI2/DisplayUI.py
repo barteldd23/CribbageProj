@@ -648,6 +648,7 @@ def onClickSendToCrib():
         cardsToSend= [playerHand.cards[selectedCards[0]],playerHand.cards[selectedCards[1]]]
         cardsToSendJson = json.dumps(cardsToSend)
         gameToSendJson = getGameJson()
+        pythonUserJson = json.dumps(asdict(pythonUser))
        # print(cardsToSendJson)
         print('*********')
         hub_connection.send("CardsToCrib",[gameToSendJson, cardsToSendJson, pythonUserJson])
