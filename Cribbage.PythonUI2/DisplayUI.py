@@ -292,10 +292,6 @@ def refreshScreen(showOpponent, showCrib):
         btnGo.grid(row=3, column=4, padx=5, pady=5, sticky='news')
     if(gameData.data['WhatToDo'] == 'counthands'):
         btnCountHand.grid(row=3, column=10, padx=5, pady=5, sticky='news')
-    if(gameData.data['WhatToDo'] == 'cutdeck'):
-        lblCutPosition.grid(row=1, column=2,padx=5, pady=5, sticky='ew')
-        txtCutPosition.grid(row=1, column=3,padx=5, pady=5, sticky='e')
-        btnCutPosition.grid(row=1, column=4,padx=5, pady=5, sticky='ew')
     if(gameData.data['WhatToDo'] == 'startnewhand'):
         btnNextHand.grid(row=3, column=3, padx=5, pady=5, sticky='news' )
     if(gameData.data['WhatToDo'] == 'startnewgame'):
@@ -677,6 +673,7 @@ def onClick_NextHand():
     gameToSendJson = getGameJson()
     pythonUserJson = json.dumps(asdict(pythonUser))
     print('******Pushed NextHand Button ********')
+    btnNextHand.grid_forget()
     hub_connection.send("NewHand",[gameToSendJson, pythonUserJson])
 def newVsComputer():
     pythonUserJson = json.dumps(asdict(pythonUser))

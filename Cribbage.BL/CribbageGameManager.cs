@@ -47,10 +47,12 @@ namespace Cribbage.BL
             if (cribbageGame.PlayerTurn.Id == cribbageGame.Player_1.Id)
             {
                 otherPlayer = cribbageGame.Player_2;
+                cribbageGame.PlayerTurn = cribbageGame.Player_1;
             }
             else
             {
                 otherPlayer = cribbageGame.Player_1;
+                cribbageGame.PlayerTurn = cribbageGame.Player_2;
             }
             // scenario p1 played a card, p2 has not said go and has cards. Needs to play a card or say go.
             if (!otherPlayer.SaidGo && otherPlayer.Hand.Count > 0)
