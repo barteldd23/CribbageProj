@@ -12,7 +12,7 @@ namespace Cribbage.WPFUI
     public partial class LandingPage : Window
     {
         User loggedInUser;
-        CribbageGame cribbageGame = new CribbageGame();
+        CribbageGame cribbageGame;
         bool hasSavedGames = false;
         string strUserGames = "";
 
@@ -33,6 +33,7 @@ namespace Cribbage.WPFUI
             InitializeComponent();
             hasSavedGames = isSuccess;
             strUserGames = userGamesJson;
+            cribbageGame = new CribbageGame();
 
             this.MouseLeftButtonDown += delegate { DragMove(); };
 
