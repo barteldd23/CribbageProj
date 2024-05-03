@@ -34,6 +34,7 @@ namespace Cribbage.WPFUI
         {
             Start();
             InitializeComponent();
+            this.MouseLeftButtonDown += delegate { DragMove(); };
         }
 
         // Start Game vs Computer
@@ -48,33 +49,11 @@ namespace Cribbage.WPFUI
             Start();
 
             InitializeComponent();
+            this.MouseLeftButtonDown += delegate { DragMove(); };
 
             if (cribbageGame.Computer)
             {
                 player1 = true;
-                NewGameVsComputer(loggedInUser);
-            }
-            else
-            {
-                NewGameVsPlayer(loggedInUser);
-            }
-        }
-
-        public MainWindow(CribbageGame cribbageGameInfo, User user, bool isSuccess, string userGamesJson, string message)
-        {
-            cribbageGame = cribbageGameInfo;
-            loggedInUser = user;
-            hasSavedGames = isSuccess;
-            strUserGames = userGamesJson;
-            signalRMessage = message;
-
-            // start the hub connection
-            Start();
-
-            InitializeComponent();
-            
-            if (cribbageGame.Computer)
-            {
                 NewGameVsComputer(loggedInUser);
             }
             else
@@ -560,7 +539,20 @@ namespace Cribbage.WPFUI
 
         private void QuitGameMessage(string message)
         {
-            Dispatcher.Invoke(() => { this.Close(); });
+            if (mainMenuClick)
+            {
+                StaThreadWrapper(() =>
+                {
+                    var landingPage = new LandingPage(loggedInUser, hasSavedGames, strUserGames);
+                    landingPage.ShowDialog();
+                });
+
+                Dispatcher.Invoke(() => { this.Close(); });
+            }
+            else if (exitClick)
+            {
+                Dispatcher.Invoke(() => { this.Close(); });
+            }
         }
 
         private void WaitingForConfirmationMessage(string cribbageGameJson, string message)

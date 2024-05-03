@@ -31,8 +31,12 @@ namespace Cribbage.WPFUI
         public LandingPage(User user, bool isSuccess, string userGamesJson)
         {
             InitializeComponent();
-            lblWelcomeUser.Content = "Welcome " + user.FirstName + "!";
+            hasSavedGames = isSuccess;
+            strUserGames = userGamesJson;
 
+            this.MouseLeftButtonDown += delegate { DragMove(); };
+
+            lblWelcomeUser.Content = "Welcome " + user.FirstName + "!";
             loggedInUser = user;
 
             ShowStats();
