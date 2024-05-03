@@ -283,7 +283,7 @@ namespace Cribbage.API.Hubs
                             message = cribbageGame.PlayerTurn.DisplayName + " played the " + card.name + "\n";
                             CribbageGameManager.PlayCard(cribbageGame, card);
                             cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-                            await Clients.All.SendAsync("Action", cribbageGameJson, message + cribbageGame.PlayerTurn.DisplayName + "'s turn");
+                            await Clients.Group(cribbageGame.Id.ToString()).SendAsync("Action", cribbageGameJson, message + cribbageGame.PlayerTurn.DisplayName + "'s turn");
                         }
                     }
                     else
@@ -291,7 +291,7 @@ namespace Cribbage.API.Hubs
                         // The users Turn and they need to cut a card
                         cribbageGame.WhatToDo = "cutdeck";
                         cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-                        await Clients.All.SendAsync("CutCard", cribbageGameJson, cribbageGame.PlayerTurn.DisplayName + " cut the deck.");
+                        await Clients.Group(cribbageGame.Id.ToString()).SendAsync("CutCard", cribbageGameJson, cribbageGame.PlayerTurn.DisplayName + " cut the deck.");
                     }
                 }
                 // Playing vs another person
