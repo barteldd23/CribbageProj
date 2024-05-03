@@ -461,7 +461,10 @@ namespace Cribbage.WPFUI
             cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
             signalRMessage = message;
 
-            RefreshScreen();
+            Dispatcher.Invoke(() =>
+            {
+                RefreshScreen();
+            });
         }
 
         private void CardsSentToCribMessage(string cribbageGameJson, string message)
@@ -584,8 +587,12 @@ namespace Cribbage.WPFUI
             {
                 cribbageGame.Complete = true;
                 endGame = true;
-                Dispatcher.Invoke(() => { lblMessageToPlayers.Content = message; });
-                RefreshScreen();
+                
+                Dispatcher.Invoke(() => 
+                { 
+                    lblMessageToPlayers.Content = message;
+                    RefreshScreen();
+                });
             }
         }
 
@@ -594,7 +601,10 @@ namespace Cribbage.WPFUI
             cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
             signalRMessage = message;
 
-            RefreshScreen();
+            Dispatcher.Invoke(() =>
+            {
+                RefreshScreen();
+            });
         }
 
         private void EndGame(CribbageGame cribbageGame)
@@ -613,19 +623,28 @@ namespace Cribbage.WPFUI
         private void CardCutMessage(string cribbageGameJson, string message)
         {
             cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
-            UpdatePlayerAndOpponent();
             currentCount = cribbageGame.CurrentCount.ToString();
             signalRMessage = message;
-            RefreshScreen();
+
+
+            Dispatcher.Invoke(() =>
+            {
+                UpdatePlayerAndOpponent();
+                RefreshScreen();
+            });
         }
 
         private void CutCardMessage(string cribbageGameJson, string message)
         {
             cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
-            UpdatePlayerAndOpponent();
             currentCount = cribbageGame.CurrentCount.ToString();
             signalRMessage = message;
-            RefreshScreen();
+
+            Dispatcher.Invoke(() =>
+            {
+                UpdatePlayerAndOpponent();
+                RefreshScreen();
+            });
         }
 
         private void HandsCountedMessage(string cribbageGameJson, string message)
@@ -669,21 +688,29 @@ namespace Cribbage.WPFUI
         private void StartNewHandMessage(string message, string cribbageGameJson)
         {
             cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
-            UpdatePlayerAndOpponent();
             currentCount = cribbageGame.CurrentCount.ToString();
             signalRMessage = "";
             signalRMessage = message;
-            RefreshScreen();
-            btnGo.Visibility = Visibility.Collapsed;
+
+            Dispatcher.Invoke(() =>
+            {
+                UpdatePlayerAndOpponent();
+                RefreshScreen();
+                btnGo.Visibility = Visibility.Collapsed;
+            });
         }
 
         private void PlayCardMessage(string cribbageGameJson, string message)
         {
             cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
-            UpdatePlayerAndOpponent();
             currentCount = cribbageGame.CurrentCount.ToString();
             signalRMessage = message;
-            RefreshScreen();
+
+            Dispatcher.Invoke(() =>
+            {
+                UpdatePlayerAndOpponent();
+                RefreshScreen();
+            });
         }
 
         public void PlayCard(CribbageGame cribbageGame, Card card)
