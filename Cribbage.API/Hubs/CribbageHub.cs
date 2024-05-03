@@ -218,6 +218,9 @@ namespace Cribbage.API.Hubs
                     //need to wait for 2nd player / only update screen after they are all set 
                     if (cribbageGame.Player_1.Ready && cribbageGame.Player_2.Ready)
                     {
+                        cribbageGame.Player_2.Ready = false;
+                        cribbageGame.Player_1.Ready = false;
+
                         // Initialize Game, shuffle and deal,
                         CribbageGameManager.NextDealer(cribbageGame);
                         CribbageGameManager.ShuffleDeck(cribbageGame);

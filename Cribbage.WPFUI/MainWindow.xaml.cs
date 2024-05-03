@@ -173,57 +173,64 @@ namespace Cribbage.WPFUI
         {
             RemoveSelectedItems();
 
-            btnNextHand.Visibility = Visibility.Collapsed;
-            btnPlayCard.Visibility = Visibility.Collapsed;
-            btnGo.Visibility = Visibility.Collapsed;
-            btnCountCards.Visibility = Visibility.Collapsed;
-            btnCutDeck.Visibility = Visibility.Collapsed;
-            btnMainMenu.Visibility = Visibility.Collapsed;
-            btnExit.Visibility = Visibility.Collapsed;
-            btnSendToCrib.Visibility = Visibility.Collapsed;
+            if (cribbageGame.WhatToDo != "startnewhand")
+            {
+                btnNextHand.Visibility = Visibility.Collapsed;
+                btnPlayCard.Visibility = Visibility.Collapsed;
+                btnGo.Visibility = Visibility.Collapsed;
+                btnCountCards.Visibility = Visibility.Collapsed;
+                btnCutDeck.Visibility = Visibility.Collapsed;
+                btnMainMenu.Visibility = Visibility.Collapsed;
+                btnExit.Visibility = Visibility.Collapsed;
+                btnSendToCrib.Visibility = Visibility.Collapsed;
 
-            lblMessageToPlayers.Content = "";
-            lstMessages.Items.Add(signalRMessage);
+                lblMessageToPlayers.Content = "";
+                lstMessages.Items.Add(signalRMessage);
 
-            lblPlayerDisplayName.Content = "Score";
-            lblPlayerScore.Content = 0;
-            lblPlayerHand.Content = "";
+                lblPlayerDisplayName.Content = "Score";
+                lblPlayerScore.Content = 0;
+                lblPlayerHand.Content = "";
 
-            lblOpponentDisplayName.Content = "Score";
-            lblOpponentScore.Content = 0;
-            lblOpponentHand.Content = "";
+                lblOpponentDisplayName.Content = "Score";
+                lblOpponentScore.Content = 0;
+                lblOpponentHand.Content = "";
 
-            lblCurrentCount.Content = 0;
+                lblCurrentCount.Content = 0;
 
-            lblPlayersCrib.Content = "";
+                lblPlayersCrib.Content = "";
 
-            imgCribCard1.Source = null;
-            imgCribCard2.Source = null;
-            imgCribCard3.Source = null;
-            imgCribCard4.Source = null;
+                imgCribCard1.Source = null;
+                imgCribCard2.Source = null;
+                imgCribCard3.Source = null;
+                imgCribCard4.Source = null;
 
-            imgPlayedCard1.Source = null;
-            imgPlayedCard2.Source = null;
-            imgPlayedCard3.Source = null;
-            imgPlayedCard4.Source = null;
-            imgPlayedCard5.Source = null;
-            imgPlayedCard6.Source = null;
-            imgPlayedCard7.Source = null;
-            imgPlayedCard8.Source = null;
+                imgPlayedCard1.Source = null;
+                imgPlayedCard2.Source = null;
+                imgPlayedCard3.Source = null;
+                imgPlayedCard4.Source = null;
+                imgPlayedCard5.Source = null;
+                imgPlayedCard6.Source = null;
+                imgPlayedCard7.Source = null;
+                imgPlayedCard8.Source = null;
 
-            imgOppenentCard1.Source = null;
-            imgOppenentCard2.Source = null;
-            imgOppenentCard3.Source = null;
-            imgOppenentCard4.Source = null;
-            imgOppenentCard5.Source = null;
-            imgOppenentCard6.Source = null;
+                imgOppenentCard1.Source = null;
+                imgOppenentCard2.Source = null;
+                imgOppenentCard3.Source = null;
+                imgOppenentCard4.Source = null;
+                imgOppenentCard5.Source = null;
+                imgOppenentCard6.Source = null;
 
-            imgPlayerCard1.Source = null;
-            imgPlayerCard2.Source = null;
-            imgPlayerCard3.Source = null;
-            imgPlayerCard4.Source = null;
-            imgPlayerCard5.Source = null;
-            imgPlayerCard6.Source = null;
+                imgPlayerCard1.Source = null;
+                imgPlayerCard2.Source = null;
+                imgPlayerCard3.Source = null;
+                imgPlayerCard4.Source = null;
+                imgPlayerCard5.Source = null;
+                imgPlayerCard6.Source = null; 
+            }
+            else
+            {
+
+            }
         }
 
         private void displayOpponentHand(List<Card> opponentHand, bool isShown = false)
@@ -440,12 +447,21 @@ namespace Cribbage.WPFUI
             _connection.On<string, string>("CutCard", (cribbageGameJson, message) => CutCardMessage(cribbageGameJson, message));
             _connection.On<string, string>("CardWasCut", (cribbageGameJson, message) => CardCutMessage(cribbageGameJson, message));
             _connection.On<string, string>("Action", (cribbageGameJson, message) => PlayCardMessage(cribbageGameJson, message));
+            _connection.On<string, string>("RallyOver", (cribbageGameJson, message) => RallyOverMessage(cribbageGameJson, message));
             _connection.On<string, string>("HandsCounted", (cribbageGameJson, message) => HandsCountedMessage(cribbageGameJson, message));
             _connection.On<string, string>("GameFinished", (cribbageGameJson, message) => GameFinishedMessage(cribbageGameJson, message));
             _connection.On<string>("PlayerLeft", (message) => PlayerLeftMessage(message));
             _connection.On<string>("QuitGame", (message) => QuitGameMessage(message));
 
             _connection.StartAsync();
+        }
+
+        private void RallyOverMessage(string cribbageGameJson, string message)
+        {
+            cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
+            signalRMessage = message;
+
+            RefreshScreen();
         }
 
         private void CardsSentToCribMessage(string cribbageGameJson, string message)
@@ -474,6 +490,7 @@ namespace Cribbage.WPFUI
             {
                 ShowVsPlayerStartScreen();
                 btnReady.Visibility = Visibility.Collapsed;
+                btnNextHand.Visibility = Visibility.Collapsed;
                 lblMessageToPlayers.Content = "Waiting for another player.";
             });
         }
@@ -601,8 +618,6 @@ namespace Cribbage.WPFUI
                 endGame = true;
             }
 
-            RefreshScreen();
-
             Dispatcher.Invoke(() =>
             {
                 if (player1)
@@ -621,9 +636,11 @@ namespace Cribbage.WPFUI
                 displayPlayerHand(playerHand);
                 displayCribCards(true);
                 displayPlayedCards();
+                RefreshScreen();
 
                 btnNextHand.Visibility = Visibility.Visible;
                 btnCountCards.Visibility = Visibility.Collapsed;
+                btnCutDeck.Visibility = Visibility.Collapsed;
                 btnGo.Visibility = Visibility.Collapsed;
                 lblMessageToPlayers.Content = "Click 'Next Hand' to deal next hand.";
             });
@@ -808,6 +825,8 @@ namespace Cribbage.WPFUI
 
         private void btnSendToCrib_Click(object sender, RoutedEventArgs e)
         {
+            btnGo.Visibility = Visibility.Collapsed;
+
             if (selectedCards.Count == 2)
             {
                 try
@@ -909,6 +928,7 @@ namespace Cribbage.WPFUI
         {
             try
             {
+                btnCutDeck.Visibility = Visibility.Collapsed;
                 btnGo.Visibility = Visibility.Collapsed;
                 lblMessageToPlayers.Content = "Click 'Next Hand' to deal next hand.";
 
@@ -1044,6 +1064,10 @@ namespace Cribbage.WPFUI
                 }
                 else if (cribbageGame.WhatToDo == "cutdeck")
                 {
+                    if(cribbageGame.PlayerTurn.Id == loggedInUser.Id)
+                    {
+                        btnCutDeck.Visibility = Visibility.Visible;
+                    }
                     RemoveSelectedItems();
                     displayPlayerHand(playerHand);
                     displayOpponentHand(opponentHand, true);
@@ -1051,8 +1075,6 @@ namespace Cribbage.WPFUI
 
                     lstMessages.Items.Add(signalRMessage);
                     lblMessageToPlayers.Content = signalRMessage;
-
-                    btnCutDeck.Visibility = Visibility.Visible;
                 }
                 else if (endGame || cribbageGame.Player_1.Score >= 121 || cribbageGame.Player_2.Score >= 121)
                 {
