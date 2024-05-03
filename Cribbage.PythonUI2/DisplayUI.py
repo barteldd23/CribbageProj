@@ -79,6 +79,9 @@ def setGameData(dataJson):
 
 ###################### Methods for Received Hub Messages ##############
 
+def receivedRallyOverMessage(gameJson, message):
+    setMessage(message)
+    setGameOnly(gameJson)
 def receivedCardsSentToCrib(gameJson, message):
     setMessage(message)
     setGameData(gameJson)
@@ -820,6 +823,7 @@ hub_connection.on("ReadyToStart", lambda data: receivedStartGameMessage(data[1],
 hub_connection.on("PlayerLeft", lambda data: receivedPlayerLeftMessage(data[0]))
 hub_connection.on("WaitingForConfirmation", lambda data: receivedWatingForConformation(data[0], data[1]))
 hub_connection.on("CardsSentToCrib", lambda data: receivedCardsSentToCrib(data[0], data[1]))
+hub_connection.on("RallyOver", lambda data: receivedRallyOverMessage(data[0], data[1]))
 
 hub_connection.start()
 
