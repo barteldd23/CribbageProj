@@ -870,7 +870,8 @@ namespace Cribbage.WPFUI
 
                 // Send a message to the hub
                 string cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-                _connection.InvokeAsync("NewHand", cribbageGameJson);
+                string userJson = JsonConvert.SerializeObject(loggedInUser);
+                _connection.InvokeAsync("NewHand", cribbageGameJson, userJson);
 
                 // Fix the screen
                 newHand = true;

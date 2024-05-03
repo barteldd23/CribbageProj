@@ -674,7 +674,7 @@ def onClick_NextHand():
     gameToSendJson = getGameJson()
     pythonUserJson = json.dumps(asdict(pythonUser))
     print('******Pushed NextHand Button ********')
-    hub_connection.send("NewHand",[gameToSendJson], pythonUserJson)
+    hub_connection.send("NewHand",[gameToSendJson, pythonUserJson])
 def newVsComputer():
     pythonUserJson = json.dumps(asdict(pythonUser))
     hub_connection.send("NewGameVsComputer",[pythonUserJson])

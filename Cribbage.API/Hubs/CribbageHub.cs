@@ -204,6 +204,16 @@ namespace Cribbage.API.Hubs
                 }
                 else
                 {
+                    //need to figure out who called this and change their ready state.
+                    if (user.Id == cribbageGame.Player_1.Id)
+                    {
+                        cribbageGame.Player_1.Ready = true;
+                    }
+                    else
+                    {
+                        cribbageGame.Player_2.Ready = true;
+                    }
+
                     //need to wait for 2nd player / only update screen after they are all set 
                     if (cribbageGame.Player_1.Ready && cribbageGame.Player_2.Ready)
                     {
@@ -221,15 +231,6 @@ namespace Cribbage.API.Hubs
                     }
                     else
                     {
-                        //need to figure out who called this and change their ready state.
-                        if(user.Id == cribbageGame.Player_1.Id)
-                        {
-                            cribbageGame.Player_1.Ready = true;
-                        }
-                        else
-                        {
-                            cribbageGame.Player_2.Ready = true;
-                        }
 
                         cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
                         string message = user.DisplayName + " is waiting to start the next hand.\nWaiting for another player.";
