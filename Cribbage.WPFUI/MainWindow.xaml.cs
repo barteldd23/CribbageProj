@@ -488,7 +488,13 @@ namespace Cribbage.WPFUI
 
             Dispatcher.Invoke(() =>
             {
-                if((cribbageGame.Player_1.Id == loggedInUser.Id && cribbageGame.Player_1.Ready) || 
+                if(cribbageGame.WhatToDo == "waitingforplayer2")
+                {
+                    ShowVsPlayerStartScreen();
+                    btnReady.Visibility = Visibility.Collapsed;
+                    btnNextHand.Visibility = Visibility.Collapsed;
+                }
+                else if((cribbageGame.Player_1.Id == loggedInUser.Id && cribbageGame.Player_1.Ready) || 
                     (cribbageGame.Player_2.Id == loggedInUser.Id && cribbageGame.Player_2.Ready))
                 {
                     ShowVsPlayerStartScreen();
@@ -1235,6 +1241,7 @@ namespace Cribbage.WPFUI
             else
             {
                 btnCountCards.Visibility = Visibility.Visible;
+                btnGo.Visibility = Visibility.Collapsed;
                 lblMessageToPlayers.Content = "Click 'Count Cards' to count the cards.";
             }
         }
