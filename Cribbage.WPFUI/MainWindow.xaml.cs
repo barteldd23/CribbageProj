@@ -488,10 +488,23 @@ namespace Cribbage.WPFUI
 
             Dispatcher.Invoke(() =>
             {
-                ShowVsPlayerStartScreen();
-                btnReady.Visibility = Visibility.Collapsed;
-                btnNextHand.Visibility = Visibility.Collapsed;
-                lblMessageToPlayers.Content = "Waiting for another player.";
+                if((cribbageGame.Player_1.Id == loggedInUser.Id && cribbageGame.Player_1.Ready) || 
+                    (cribbageGame.Player_2.Id == loggedInUser.Id && cribbageGame.Player_2.Ready))
+                {
+                    ShowVsPlayerStartScreen();
+                    btnReady.Visibility = Visibility.Collapsed;
+                    btnNextHand.Visibility = Visibility.Collapsed;
+                    btnGo.Visibility = Visibility.Collapsed;
+                    lstMessages.Items.Add(signalRMessage);
+                    lblMessageToPlayers.Content = "Waiting for the other player";
+                }
+                else
+                {
+                    ShowVsPlayerStartScreen();
+                    btnGo.Visibility = Visibility.Collapsed;
+                    lblMessageToPlayers.Content = "Waiting for you to be ready.";
+                    lstMessages.Items.Add(signalRMessage);
+                }
             });
         }
 
@@ -509,6 +522,7 @@ namespace Cribbage.WPFUI
             {
                 // Update screen
                 ShowVsPlayerStartScreen();
+                btnGo.Visibility = Visibility.Collapsed;
                 btnReady.Visibility = Visibility.Visible;
                 lblMessageToPlayers.Content = "Click 'Ready' to begin the game.";
             });
@@ -654,6 +668,7 @@ namespace Cribbage.WPFUI
             signalRMessage = "";
             signalRMessage = message;
             RefreshScreen();
+            btnGo.Visibility = Visibility.Collapsed;
         }
 
         private void PlayCardMessage(string cribbageGameJson, string message)

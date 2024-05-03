@@ -237,7 +237,7 @@ namespace Cribbage.API.Hubs
                     {
 
                         cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-                        string message = user.DisplayName + " is waiting to start the next hand.\nWaiting for another player.";
+                        string message = user.DisplayName + " is waiting to start the next hand.";
                         await Clients.Group(roomName).SendAsync("WaitingForPlayer", cribbageGameJson, message);
                     }
                 }
