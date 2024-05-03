@@ -464,7 +464,11 @@ namespace Cribbage.WPFUI
         {
             cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
             signalRMessage = message;
-            player1 = true;
+            
+            if(cribbageGame.Player_1.Id == loggedInUser.Id)
+            {
+                player1 = true;
+            }
 
             Dispatcher.Invoke(() =>
             {
@@ -478,6 +482,11 @@ namespace Cribbage.WPFUI
         {
             cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
             signalRMessage = message;
+
+            if (cribbageGame.Player_1.Id == loggedInUser.Id)
+            {
+                player1 = true;
+            }
 
             Dispatcher.Invoke(() =>
             {
@@ -1056,16 +1065,7 @@ namespace Cribbage.WPFUI
                 else if (cribbageGame.Crib.Count != 4)
                 {
                     //Player scores updated
-                    if(player1)
-                    {
-                        lblPlayerScore.Content = cribbageGame.Player_1.Score;
-                        lblPlayerScore.Content = cribbageGame.Player_2.Score;
-                    }
-                    else
-                    {
-                        lblPlayerScore.Content = cribbageGame.Player_2.Score;
-                        lblPlayerScore.Content = cribbageGame.Player_1.Score;
-                    }
+                    RefreshScore();
 
                     //Current count updated
                     lblCurrentCount.Content = cribbageGame.CurrentCount;
@@ -1087,16 +1087,7 @@ namespace Cribbage.WPFUI
                 else
                 {
                     //Player scores updated
-                    if (player1)
-                    {
-                        lblPlayerScore.Content = cribbageGame.Player_1.Score;
-                        lblPlayerScore.Content = cribbageGame.Player_2.Score;
-                    }
-                    else
-                    {
-                        lblPlayerScore.Content = cribbageGame.Player_2.Score;
-                        lblPlayerScore.Content = cribbageGame.Player_1.Score;
-                    }
+                    RefreshScore();
 
                     //Current count updated
                     lblCurrentCount.Content = cribbageGame.CurrentCount;
@@ -1123,16 +1114,7 @@ namespace Cribbage.WPFUI
         private void EndGame()
         {
             // Player scores updated
-            if (player1)
-            {
-                lblPlayerScore.Content = cribbageGame.Player_1.Score;
-                lblPlayerScore.Content = cribbageGame.Player_2.Score;
-            }
-            else
-            {
-                lblPlayerScore.Content = cribbageGame.Player_2.Score;
-                lblPlayerScore.Content = cribbageGame.Player_1.Score;
-            }
+            RefreshScore();
 
             // Current count updated
             lblCurrentCount.Content = cribbageGame.CurrentCount;
@@ -1151,6 +1133,20 @@ namespace Cribbage.WPFUI
             displayCribCards(true);
             RemoveSelectedItems();
             UpdateButtonSelection();
+        }
+
+        private void RefreshScore()
+        {
+            if (player1)
+            {
+                lblPlayerScore.Content = cribbageGame.Player_1.Score;
+                lblOpponentScore.Content = cribbageGame.Player_2.Score;
+            }
+            else
+            {
+                lblPlayerScore.Content = cribbageGame.Player_2.Score;
+                lblOpponentScore.Content = cribbageGame.Player_1.Score;
+            }
         }
 
         private void RemoveSelectedItems()
