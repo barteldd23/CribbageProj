@@ -163,7 +163,7 @@ namespace Cribbage.API.Hubs
                 cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
 
                 // Send CribbageGame back to only that person.
-                await Clients.Group(roomName).SendAsync("StartGame", cribbageGame.GameName + "\nSelect Crib Cards", cribbageGameJson);
+                await Clients.Group(cribbageGame.Id.ToString()).SendAsync("StartGame", cribbageGame.GameName + "\nSelect Crib Cards", cribbageGameJson);
             }
             catch (Exception)
             {
