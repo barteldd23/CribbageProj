@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.SignalR.Client;
 using Newtonsoft.Json;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Media;
 
 namespace Cribbage.WPFUI
@@ -37,8 +38,8 @@ namespace Cribbage.WPFUI
             try
             {
                 string email = txtLoginEmail.Text.Trim();
-                //string password = pbxPasswordBox.Password.ToString().Trim();
-                string password = "maple";
+                string password = pbxPasswordBox.Password.ToString().Trim();
+                lblError.Content = "";
 
                 User user = new User();
 
@@ -54,7 +55,7 @@ namespace Cribbage.WPFUI
                 else
                 {
                     lblError.Foreground = new SolidColorBrush(Colors.DarkMagenta);
-                    lblError.Content = "Please enter an email and password.";
+                    lblError.Content = "Please enter an email and password";
                 }
             }
             catch (Exception ex)
@@ -77,6 +78,7 @@ namespace Cribbage.WPFUI
 
         private void btnRegister_Click(object sender, RoutedEventArgs e)
         {
+            lblError.Content = "";
             Register register = new Register();
             register.ShowDialog();
         }
@@ -102,7 +104,11 @@ namespace Cribbage.WPFUI
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                Dispatcher.Invoke(() =>
+                {
+                    lblError.Foreground = new SolidColorBrush(Colors.DarkMagenta);
+                    lblError.Content = ex.Message;
+                });
             }
         }
 
@@ -122,11 +128,10 @@ namespace Cribbage.WPFUI
             }
             else // not logged in
             {
-                MessageBox.Show("Failed log in");
-                StaThreadWrapper(() =>
+                Dispatcher.Invoke(() =>
                 {
-                    var login = new Login();
-                    login.ShowDialog();
+                    lblError.Foreground = new SolidColorBrush(Colors.DarkMagenta);
+                    lblError.Content = message;
                 });
             }
         }

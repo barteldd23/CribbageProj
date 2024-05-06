@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 using Newtonsoft.Json;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace Cribbage.WPFUI
 {
@@ -19,6 +20,7 @@ namespace Cribbage.WPFUI
         {
             Start();
             InitializeComponent();
+            this.MouseLeftButtonDown += delegate { DragMove(); };
             txtFirstName.Focus();
         }
 
@@ -43,30 +45,30 @@ namespace Cribbage.WPFUI
                 if (setPassword == checkPassword)
                 {
                     user.Password = setPassword;
+
+                    if (firstName != string.Empty && lastName != string.Empty
+                        && displayName != string.Empty && email != string.Empty
+                        && user.Password != string.Empty)
+                    {
+                        RegisterUser(user);
+                    }
+                    else
+                    {
+                        lblRegisterError.Foreground = new SolidColorBrush(Colors.DarkMagenta);
+                        lblRegisterError.Content = "Please complete all of the fields";
+                    }
                 }
                 else
                 {
                     user.Password = string.Empty;
-                }
-
-                if (firstName != string.Empty && lastName != string.Empty
-                    && displayName != string.Empty && email != string.Empty
-                    && user.Password != string.Empty)
-                {
-                    RegisterUser(user);
-                }
-                else
-                {
                     lblRegisterError.Foreground = new SolidColorBrush(Colors.DarkMagenta);
-                    lblRegisterError.Content = "Unable to register.";
+                    lblRegisterError.Content = "Passwords do not match";
                 }
             }
             catch (Exception ex)
             {
                 lblRegisterError.Foreground = new SolidColorBrush(Colors.DarkMagenta);
                 lblRegisterError.Content = ex.Message;
-
-                throw;
             }
         }
 
@@ -89,15 +91,22 @@ namespace Cribbage.WPFUI
         }
 
 
-        public static void CreateUserMessage(bool isSuccess, string message)
+        public void CreateUserMessage(bool isSuccess, string message)
         {
             if (isSuccess)
             {
-                MessageBox.Show("User created");               
+                Dispatcher.Invoke(() =>
+                {
+                    this.Close();
+                });
             }
             else
             {
-                MessageBox.Show("Cannot create user");
+                Dispatcher.Invoke(() =>
+                {
+                    lblRegisterError.Foreground = new SolidColorBrush(Colors.DarkMagenta);
+                    lblRegisterError.Content = message;
+                });
             }
         }
 
@@ -110,7 +119,9 @@ namespace Cribbage.WPFUI
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+
+                lblRegisterError.Foreground = new SolidColorBrush(Colors.DarkMagenta);
+                lblRegisterError.Content = ex.Message;
             }
         }
         #endregion

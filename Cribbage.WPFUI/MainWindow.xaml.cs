@@ -29,6 +29,7 @@ namespace Cribbage.WPFUI
         bool mainMenuClick = false;
         bool exitClick = false;
         bool player1 = false;
+        bool computerOpponent;
 
         public MainWindow()
         {
@@ -38,12 +39,13 @@ namespace Cribbage.WPFUI
         }
 
         // Start Game vs Computer
-        public MainWindow(CribbageGame cribbageGameInfo, User user, bool isSuccess, string userGamesJson)
+        public MainWindow(CribbageGame cribbageGameInfo, User user, bool computer, bool isSuccess, string userGamesJson)
         {
             cribbageGame = cribbageGameInfo;
             loggedInUser = user;
             hasSavedGames = isSuccess;
             strUserGames = userGamesJson;
+            computerOpponent = computer;
 
             // start the hub connection
             Start();
@@ -51,7 +53,7 @@ namespace Cribbage.WPFUI
             InitializeComponent();
             this.MouseLeftButtonDown += delegate { DragMove(); };
 
-            if (cribbageGame.Computer)
+            if (computerOpponent)
             {
                 player1 = true;
                 NewGameVsComputer(loggedInUser);
@@ -124,7 +126,7 @@ namespace Cribbage.WPFUI
             imgPlayedCard8.Source = null;
 
 
-            lblMessageToPlayers.Content = "Pick 2 cards to send to the Crib.";
+            lblMessageToPlayers.Content = "Pick 2 cards to send to the Crib";
 
             if (cribbageGame.WhatToDo.ToString() == "SelectCribCards")
             {
@@ -494,7 +496,7 @@ namespace Cribbage.WPFUI
                 {
                     ShowVsPlayerStartScreen();
                     btnGo.Visibility = Visibility.Collapsed;
-                    lblMessageToPlayers.Content = "Waiting for you to be ready.";
+                    lblMessageToPlayers.Content = "Waiting for you to be ready";
                     lstMessages.Items.Add(signalRMessage);
                     lstMessages.SelectedIndex = lstMessages.Items.Count - 1;
                     lstMessages.ScrollIntoView(lstMessages.SelectedItem);
@@ -518,7 +520,7 @@ namespace Cribbage.WPFUI
                 ShowVsPlayerStartScreen();
                 btnGo.Visibility = Visibility.Collapsed;
                 btnReady.Visibility = Visibility.Visible;
-                lblMessageToPlayers.Content = "Click 'Ready' to begin the game.";
+                lblMessageToPlayers.Content = "Click 'Ready' to begin the game";
             });
         }
 
@@ -684,7 +686,7 @@ namespace Cribbage.WPFUI
                 btnCountCards.Visibility = Visibility.Collapsed;
                 btnCutDeck.Visibility = Visibility.Collapsed;
                 btnGo.Visibility = Visibility.Collapsed;
-                lblMessageToPlayers.Content = "Click 'Next Hand' to deal next hand.";
+                lblMessageToPlayers.Content = "Click 'Next Hand' to deal next hand";
             });
         }
 
@@ -728,7 +730,7 @@ namespace Cribbage.WPFUI
                     _connection.InvokeAsync("PlayCard", cribbageGameJson, cardJson);
                 }
                 else
-                    lblMessageToPlayers.Content = "Select one card to play.";
+                    lblMessageToPlayers.Content = "Select one card to play";
             }
             catch (Exception ex)
             {
@@ -758,7 +760,7 @@ namespace Cribbage.WPFUI
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                lblMessageToPlayers.Content = ex.Message;
             }
         }
 
@@ -771,7 +773,7 @@ namespace Cribbage.WPFUI
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                lblMessageToPlayers.Content = ex.Message;
             }
         }
 
@@ -932,7 +934,7 @@ namespace Cribbage.WPFUI
             }
             else
             {
-                lblMessageToPlayers.Content = "Select one card to play to create a current count sum <= 31.";
+                lblMessageToPlayers.Content = "Select one card to play to create a current count sum <= 31";
             }
         }
 
@@ -983,7 +985,7 @@ namespace Cribbage.WPFUI
             {
                 btnCutDeck.Visibility = Visibility.Collapsed;
                 btnGo.Visibility = Visibility.Collapsed;
-                lblMessageToPlayers.Content = "Click 'Next Hand' to deal next hand.";
+                lblMessageToPlayers.Content = "Click 'Next Hand' to deal next hand";
 
                 string cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
                 _connection.InvokeAsync("CountHands", cribbageGameJson);
@@ -1278,7 +1280,7 @@ namespace Cribbage.WPFUI
             {
                 btnCountCards.Visibility = Visibility.Visible;
                 btnGo.Visibility = Visibility.Collapsed;
-                lblMessageToPlayers.Content = "Click 'Count Cards' to count the cards.";
+                lblMessageToPlayers.Content = "Click 'Count Cards' to count the cards";
             }
         }
 
