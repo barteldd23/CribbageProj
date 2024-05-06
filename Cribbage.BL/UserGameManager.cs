@@ -236,6 +236,36 @@ namespace Cribbage.BL
                 throw e;
             }
         }
+        public UserGame LoadByIds(Guid userId, Guid gameId)
+        {
+            try
+            {
+                using (CribbageEntities dc = new CribbageEntities(options))
+                {
+                    tblUserGame row = dc.tblUserGames.FirstOrDefault(ug => ug.PlayerId == userId && ug.GameId == gameId);
+
+                    if (row != null)
+                    {
+                        UserGame userGame = new UserGame
+                        {
+                            Id = row.Id,
+                            GameId = row.GameId,
+                            PlayerId = row.PlayerId,
+                            PlayerScore = row.PlayerScore
+                        };
+                        return userGame;
+                    }
+                    else
+                    {
+                        throw new Exception("Row not found");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
 
         public List<UserGame> Load()
         {
