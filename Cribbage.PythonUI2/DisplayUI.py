@@ -16,7 +16,9 @@ from signalrcore.hub_connection_builder import HubConnectionBuilder
 #
 ################################# Classes ##############
 
-
+@dataclass
+class SavedGames:
+    data:[]
 @dataclass
 class CribbageGame:
     data: [] 
@@ -70,6 +72,7 @@ selectedCards = []
 playedCards = Hand([])
 currentRallyCards = Hand([])
 cribCards = Hand([])
+savedGames = SavedGames([])
 
 def setGameData(dataJson):
     cribbageGame = json.loads(dataJson)
@@ -142,13 +145,30 @@ def receivedCreateUserMessage(isCreated, messageInfo):
     else:
         lblCreateUserError.config(text=messageInfo)
 
-def receivedLogInMessage(isLoggedIn, messageInfo, userJson):
+def receivedLogInMessage(isLoggedIn, messageInfo, userJson, hasSavedGames, savedGamesJson):
     if(isLoggedIn):
         loginFrame.pack_forget()
         welcomeString = 'Welcome' + userJson
         print(userJson)
         pythonUser.insertJson(userJson)
         lblWelcomMessage.config(text=pythonUser.DisplayName )
+        
+        txtgamesStarted.config(text=pythonUser.GamesStarted)
+        txtGamesWon.config(text=pythonUser.GamesWon)
+        txtGamesLost.config(text=pythonUser.GamesLost)
+        txtWinStreak.config(text=pythonUser.WinStreak)
+        txtAvgPtsPerGame.config(text=pythonUser.AvgPtsPerGame)
+        
+        if(hasSavedGames):
+            games = json.loads(savedGamesJson)
+            savedGames.data = games
+            for game in savedGames.data:
+                gameDate = game["Date"][5:7] + '/' + game["Date"][8:10] + '/' + game["Date"][:4]
+                gameString = gameDate + ' ' + game["GameName"] 
+                #print(gameString)
+                lbxSavedGames.insert(tkinter.END, gameString)
+                
+
         loggedInFrame.pack()
     else:
         lblErrorMessage.config(text=messageInfo)
@@ -715,6 +735,12 @@ def newVsComputer():
 def newVsPlayer():
     pythonUserJson = json.dumps(asdict(pythonUser))
     hub_connection.send("NewGameVsPlayer",[pythonUserJson])
+    
+def startSavedGame():
+    print(lbxSavedGames.curselection())
+    if(lbxSavedGames.curselection()):
+        print(savedGames.data[lbxSavedGames.curselection()[0]])
+        # convert to json and call hub method to start a saved game.
 
 def onClick_ReadyToStart():
     gameToSendJson = getGameJson()
@@ -841,7 +867,7 @@ hub_connection = HubConnectionBuilder()\
     
 hub_connection.on("ReceiveMessage", lambda msg: print("received message back from hub." + msg[0]))
 # book isloggedin, bool issuccess (savedgames), string message, string userJson, string userGames Json
-hub_connection.on("LogInAttempt", lambda data: receivedLogInMessage(data[0],data[2],data[3]))
+hub_connection.on("LogInAttempt", lambda data: receivedLogInMessage(data[0],data[2],data[3],data[1],data[4]))
 hub_connection.on("CreateUserAttempt", lambda data: receivedCreateUserMessage(data[0],data[1]))
 hub_connection.on("StartGame", lambda data: receivedStartGameMessage(data[0],data[1]))
 hub_connection.on("CardWasCut", lambda data: receivedCardWasCutMessage(data[0], data[1]))
@@ -876,7 +902,7 @@ window.protocol('WM_DELETE_WINDOW', onClick_Quit)
 #window.rowconfigure(0, weight=1)
 
 menuBar = Menu(window)
-window.config(menu = menuBar)
+window.config(menu = menuBar, bg='green')
 file = Menu(menuBar)
     
 menuBar.add_cascade(menu=file, label="File")
@@ -886,10 +912,10 @@ file.add_command(label = 'Quit', command = onClick_Quit)
 
 
 ############ Main Frames ###############
-loginFrame = tkinter.Frame(bg='blue')
+loginFrame = tkinter.Frame(bg='#3fcc1f')
 gameFrame = tkinter.Frame(bg='green', height=900, width=1400)
-loggedInFrame = tkinter.Frame(bg='blue')
-newPlayerFrame = tkinter.Frame(bg='blue')
+loggedInFrame = tkinter.Frame(bg='#3fcc1f', height=900, width=1400)
+newPlayerFrame = tkinter.Frame(bg='#3fcc1f')
 
 #################### gameFrame Frames
 cribFrame = tkinter.Frame(gameFrame, width=200, height=900, relief=RIDGE, bg='green')
@@ -918,6 +944,7 @@ loginFrame.columnconfigure(0,weight=1)
 cribFrame.grid_propagate(0)
 playFrame.grid_propagate(0)
 scoreFrame.grid_propagate(0)
+loggedInFrame.grid_propagate(0)
 availableGamesFrame.grid_propagate(0)
 
 cribFrame.grid(row=0, column=0, sticky='news')
@@ -1210,9 +1237,9 @@ cribbageBoard.img = boardImg;
 cribbageBoard.config(image=cribbageBoard.img);
 
 ################ Login Widgets ###############################
-lblLogin = tkinter.Label(loginFrame, text="Login to Play", font=('Arial',30))
-lblEmail = tkinter.Label(loginFrame, text="Email: ", font=('Arial',16))
-lblPassword = tkinter.Label(loginFrame, text="Password: ", font=('Arial',16))
+lblLogin = tkinter.Label(loginFrame, text="Login to Play", font=('Arial',30), bg='#3fcc1f')
+lblEmail = tkinter.Label(loginFrame, text="Email: ", font=('Arial',16), bg='#3fcc1f')
+lblPassword = tkinter.Label(loginFrame, text="Password: ", font=('Arial',16), bg='#3fcc1f')
 
 ###Change default values after development
 txtEmail = tkinter.Entry(loginFrame, font=('Arial',16))
@@ -1222,7 +1249,7 @@ txtPassword.insert(END,'password')
 
 btnLogin = tkinter.Button(loginFrame, text='Login', font=('Arial',16), command=onClickLogin)
 btnNewUser = tkinter.Button(loginFrame, text='New Player', font=('Arial',16), command=onClickNewUser)
-lblErrorMessage = tkinter.Label(loginFrame, font=('Arial',30), fg='red')
+lblErrorMessage = tkinter.Label(loginFrame, font=('Arial',30), fg='red', bg='#3fcc1f')
 
 lblLogin.grid(row=0, column=0, columnspan=2, sticky='news', pady=20, padx=20)
 lblEmail.grid(row=1, column=0, sticky=W, pady=5, padx=5)
@@ -1239,29 +1266,82 @@ lblErrorMessage.grid(row=4, column=0, columnspan=2, pady=5, padx=5)
 lblAvailableGames.pack()
 
 ############## LoggedInFrame Widgets ###################
-lblWelcomMessage = tkinter.Label(loggedInFrame ,text='Welcome ',font=('Arial',40))
-lblPlayCribbageMessage = tkinter.Label(loggedInFrame, text='Start Playing a Cribbage Game!', font=('Arial', 20))
-btnVsComputer = tkinter.Button(loggedInFrame, text='New Game against a Computer', command = newVsComputer, font=('Arial',16))
-btnVsPlayer = tkinter.Button(loggedInFrame, text='New Game against a Person', command = newVsPlayer, font=('Arial',16))
+
+welcomeFrame = tkinter.Frame(loggedInFrame, height=900, width=200, bg='#3fcc1f')
 
 
-lblWelcomMessage.grid(row=0, column=0, sticky='news', pady=20, padx=20)
-lblPlayCribbageMessage.grid(row=1, column=0, sticky='news', pady=20, padx=20)
-btnVsComputer.grid(row=2, column=0, sticky='news', pady=20, padx=20)
-btnVsPlayer.grid(row=3, column=0, sticky='news', pady=20, padx=20)
+savedgamesFrame = tkinter.Frame(loggedInFrame, height=900, width=575, bg='green')
+
+
+userStatsFrame = tkinter.Frame(loggedInFrame, height=900, width=575, bg='#3fcc1f')
+# welcomeFrame.grid_propagate(0)
+# savedgamesFrame.grid_propagate(0)
+# userStatsFrame.grid_propagate(0)
+
+welcomeFrame.grid(row=0, column=0, sticky = 'new')
+savedgamesFrame.grid(row=0, column=1, sticky = 'new')
+userStatsFrame.grid(row=0, column=2, sticky = 'new')
+
+lblWelcomMessage = tkinter.Label(welcomeFrame ,text='Welcome ',font=('Arial',40), bg='#3fcc1f')
+lblPlayCribbageMessage = tkinter.Label(welcomeFrame, text='Start Playing a Cribbage Game!', font=('Arial', 20), bg='#3fcc1f')
+btnVsComputer = tkinter.Button(welcomeFrame, text='New Game Vs. a Computer', width=25, command = newVsComputer, font=('Arial',16))
+btnVsPlayer = tkinter.Button(welcomeFrame, text='New Game Vs. a Person', width=25, command = newVsPlayer, font=('Arial',16))
+btnPlaySavedGame = tkinter.Button(welcomeFrame, text='Start a Saved Game', width=25, command = startSavedGame, font=('Arial',16))
+
+# lblWelcomMessage.grid(row=0, column=0, sticky='news', pady=20, padx=20)
+# lblPlayCribbageMessage.grid(row=1, column=0, sticky='news', pady=20, padx=20)
+# btnVsComputer.grid(row=2, column=0, sticky='news', pady=20, padx=20)
+# btnVsPlayer.grid(row=3, column=0, sticky='news', pady=20, padx=20)
+lblWelcomMessage.pack(pady=20, padx=20)
+lblPlayCribbageMessage.pack(pady=20, padx=20)
+btnVsComputer.pack(pady=20, padx=20)
+btnVsPlayer.pack(pady=20, padx=20)
+btnPlaySavedGame.pack(pady=20, padx=20)
+
+savedGamesList=('')
+lblSavedGames = tkinter.Label(savedgamesFrame, text='Saved Games', font=('Arial', 20))
+lbxSavedGames = tkinter.Listbox(savedgamesFrame,listvariable=savedGamesList,height=24,selectmode=tkinter.SINGLE, width=75)
+
+lblSavedGames.pack()
+lbxSavedGames.pack()
+
+lblUserStats = tkinter.Label(userStatsFrame, text='User\'s Stats', font=('Arial', 20), bg='#3fcc1f')
+lblgamesStarted = tkinter.Label(userStatsFrame, text='Games Started: ', font=('Arial', 16), bg='#3fcc1f')
+lblGamesWon = tkinter.Label(userStatsFrame, text='Games Won: ', font=('Arial', 16), bg='#3fcc1f')
+lblGamesLost = tkinter.Label(userStatsFrame, text='Games Lost: ', font=('Arial', 16), bg='#3fcc1f')
+lblWinStreak = tkinter.Label(userStatsFrame, text='Win Streak: ', font=('Arial', 16), bg='#3fcc1f')
+lblAvgPtsPerGame = tkinter.Label(userStatsFrame, text='Avg Pts Per Game: ', font=('Arial', 16), bg='#3fcc1f')
+txtgamesStarted = tkinter.Label(userStatsFrame, text='0', font=('Arial', 16), bg='#3fcc1f')
+txtGamesWon = tkinter.Label(userStatsFrame, text='0', font=('Arial', 16), bg='#3fcc1f')
+txtGamesLost = tkinter.Label(userStatsFrame, text='0', font=('Arial', 16), bg='#3fcc1f')
+txtWinStreak = tkinter.Label(userStatsFrame, text='0', font=('Arial', 16), bg='#3fcc1f')
+txtAvgPtsPerGame = tkinter.Label(userStatsFrame, text='0', font=('Arial', 16), bg='#3fcc1f')
+
+lblUserStats.grid(row=0, column=0, columnspan=2, sticky='news')
+lblgamesStarted.grid(row=1, column=0, sticky='w')
+lblGamesWon.grid(row=2, column=0, sticky='w')
+lblGamesLost.grid(row=3, column=0, sticky='w')
+lblWinStreak.grid(row=4, column=0, sticky='w')
+lblAvgPtsPerGame.grid(row=5, column=0, sticky='w')
+
+txtgamesStarted.grid(row=1, column=1, sticky='w')
+txtGamesWon.grid(row=2, column=1, sticky='w')
+txtGamesLost.grid(row=3, column=1, sticky='w')
+txtWinStreak.grid(row=4, column=1, sticky='w')
+txtAvgPtsPerGame.grid(row=5, column=1, sticky='w')
 
 ######################### New Player Frame ######################
 
-lblCreatePlayer = tkinter.Label(newPlayerFrame, text="New Player Info", font=('Arial',30))
-lblFirstName = tkinter.Label(newPlayerFrame, text="First Name:", font=('Arial',16))
-lblLastName = tkinter.Label(newPlayerFrame, text="Last Name:", font=('Arial',16))
-lblDisplayName = tkinter.Label(newPlayerFrame, text="Display Name:", font=('Arial',16))
-lblEmail = tkinter.Label(newPlayerFrame, text="Email:", font=('Arial',16))
-lblNewPlayerPassword = tkinter.Label(newPlayerFrame, text="Password", font=('Arial',16))
-lblNewPlayerVerifyPassword = tkinter.Label(newPlayerFrame, text="Verify Password", font=('Arial',16))
+lblCreatePlayer = tkinter.Label(newPlayerFrame, text="New Player Info", font=('Arial',30), bg='#3fcc1f')
+lblFirstName = tkinter.Label(newPlayerFrame, text="First Name:", font=('Arial',16), bg='#3fcc1f')
+lblLastName = tkinter.Label(newPlayerFrame, text="Last Name:", font=('Arial',16), bg='#3fcc1f')
+lblDisplayName = tkinter.Label(newPlayerFrame, text="Display Name:", font=('Arial',16), bg='#3fcc1f')
+lblEmail = tkinter.Label(newPlayerFrame, text="Email:", font=('Arial',16), bg='#3fcc1f')
+lblNewPlayerPassword = tkinter.Label(newPlayerFrame, text="Password", font=('Arial',16), bg='#3fcc1f')
+lblNewPlayerVerifyPassword = tkinter.Label(newPlayerFrame, text="Verify Password", font=('Arial',16), bg='#3fcc1f')
 btnCreateUser = tkinter.Button(newPlayerFrame,text="Create", command=onClickCreateUser, font=('Arial',16))
 btnCancel = tkinter.Button(newPlayerFrame,text="Cancel", command=onClickCancelUser, font=('Arial',16))
-lblCreateUserError = tkinter.Label(newPlayerFrame, font=('Arial',16), fg='red')
+lblCreateUserError = tkinter.Label(newPlayerFrame, font=('Arial',16), fg='red', bg='#3fcc1f')
 
 txtFirstName = tkinter.Entry(newPlayerFrame, font=('Arial',16))
 txtLastName = tkinter.Entry(newPlayerFrame, font=('Arial',16))
