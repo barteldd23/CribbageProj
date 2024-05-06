@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Cribbage.WPFUI"
         mc:Ignorable="d"
         Title="Cribbage Game Home" Height="595" Width="1300" Background="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}" SizeToContent="Height" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen" WindowStyle="None">
-    <Grid Height="560" VerticalAlignment="Center" HorizontalAlignment="Center" Width="1279" RenderTransformOrigin="0.5,0.5">
+    <Grid Height="589" VerticalAlignment="Center" HorizontalAlignment="Center" Width="1280" RenderTransformOrigin="0.5,0.5">
         <Grid.RenderTransform>
             <TransformGroup>
                 <ScaleTransform/>
@@ -15,13 +15,23 @@
                 <TranslateTransform/>
             </TransformGroup>
         </Grid.RenderTransform>
-        <Label x:Name="lblWelcomeUser" Content="Welcome &quot;USER&quot;!" HorizontalAlignment="Right" Margin="0,0,1026,497" VerticalAlignment="Bottom" FontSize="24" FontWeight="Bold"/>
-        <Button x:Name="btnNewGameVsComputer" Content="New Game vs Computer" HorizontalAlignment="Right" Margin="0,0,1021,416" VerticalAlignment="Bottom" Width="210" Height="60" FontSize="18" Click="btnNewGameVsComputer_Click"/>
-        <Button x:Name="btnExit" Content="Exit" HorizontalAlignment="Right" Margin="0,0,1041,142" Width="197" FontSize="18" Click="btnExit_Click" Height="70" VerticalAlignment="Bottom"/>
-        <Button x:Name="btnNewGameVsPlayer" Content="New Game vs Player" HorizontalAlignment="Right" Margin="0,0,1026,335" VerticalAlignment="Bottom" Width="205" Height="60" FontSize="18" Click="btnNewGameVsPlayer_Click"/>
-        <ListBox x:Name="lstStats" SelectedValue="" Margin="0,0,71,27" HorizontalAlignment="Right" Width="440" Height="431" VerticalAlignment="Bottom" FontSize="18"/>
-        <ListBox x:Name="lstSavedGames" Margin="0,0,539,27" HorizontalAlignment="Right" Width="460" Height="431" VerticalAlignment="Bottom" FontSize="18"/>
-        <Label x:Name="lblGameStats" Content="Game Stats" HorizontalAlignment="Right" Margin="0,0,241,466" VerticalAlignment="Bottom" FontSize="20" FontWeight="Bold"/>
-        <Label x:Name="lblOpenASavedGame" Content="Open a Saved Game" HorizontalAlignment="Right" Margin="0,0,670,466" VerticalAlignment="Bottom" FontSize="20" FontWeight="Bold"/>
+        <Label x:Name="lblWelcomeUser" Content="Welcome &quot;USER&quot;!" HorizontalAlignment="Right" Margin="0,0,1041,535" VerticalAlignment="Bottom" FontSize="24" FontWeight="Bold"/>
+        <Button x:Name="btnNewGameVsComputer" Content="New Game vs Computer" HorizontalAlignment="Right" Margin="0,0,1036,454" VerticalAlignment="Bottom" Width="210" Height="60" FontSize="18" Click="btnNewGameVsComputer_Click"/>
+        <Button x:Name="btnExit" Content="Exit" HorizontalAlignment="Right" Margin="0,0,1056,180" Width="197" FontSize="18" Click="btnExit_Click" Height="70" VerticalAlignment="Bottom"/>
+        <Button x:Name="btnNewGameVsPlayer" Content="New Game vs Player" HorizontalAlignment="Right" Margin="0,0,1041,373" VerticalAlignment="Bottom" Width="205" Height="60" FontSize="18" Click="btnNewGameVsPlayer_Click"/>
+        <ListBox x:Name="lstStats" SelectedValue="" Margin="0,0,86,65" HorizontalAlignment="Right" Width="440" Height="431" VerticalAlignment="Bottom" FontSize="18"/>
+        <ListBox x:Name="lstSavedGames" Margin="0,0,554,65" HorizontalAlignment="Right" Width="460" Height="431" VerticalAlignment="Bottom" FontSize="18"/>
+        <Label x:Name="lblGameStats" Content="Game Stats" HorizontalAlignment="Right" Margin="0,0,256,504" VerticalAlignment="Bottom" FontSize="20" FontWeight="Bold"/>
+        <Label x:Name="lblOpenASavedGame" Content="Open a Saved Game" HorizontalAlignment="Right" Margin="0,0,685,504" VerticalAlignment="Bottom" FontSize="20" FontWeight="Bold"/>
+        <Label Content="*Note: Saved Games and Stats Only Update On Initial Login" HorizontalAlignment="Left" Margin="465,536,0,0" VerticalAlignment="Top" Width="568" RenderTransformOrigin="0.5,0.5" Height="39" FontWeight="Bold" FontSize="20">
+            <Label.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-0.084"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Label.RenderTransform>
+        </Label>
     </Grid>
 </Window>
