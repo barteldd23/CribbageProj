@@ -118,5 +118,11 @@ DELETE THE TABLES ETC.
     Drop procedure spGetMostWins;
     Drop table __EFMigrationsHistory;
 
-select * from tblGame 
-order by Date desc
+check for games that are vs empty slot
+    select * from tblGame 
+    order by Date desc
+
+check for the nubmer of games vs computer
+    select * from tblUserGame ug
+    join tblGame g on ug.GameId = g.Id
+    where PlayerId = 'e3ba195c-68e8-44ae-8c35-1175c3803ba6' and GameName like '%Computer' and Complete = 0
