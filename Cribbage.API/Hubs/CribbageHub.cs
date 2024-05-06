@@ -174,7 +174,7 @@ namespace Cribbage.API.Hubs
             }
         }
 
-        public async Task ContinueSavedGameVsComputer(string game, string userJson)
+        public async Task ContinueSavedGameVsComputer(string gameJson, string userJson)
         {
             string cribbageGameJson;
             string computerEmail = "computer@computer.com";
@@ -184,8 +184,41 @@ namespace Cribbage.API.Hubs
 
             try
             {
-                CribbageGame cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(game);
+                Game game = JsonConvert.DeserializeObject<CribbageGame>(gameJson);
                 User user = JsonConvert.DeserializeObject<User>(userJson);
+
+                UserGame playerUserGame = new UserGameManager(options).LoadByIds(user.Id, game.Id);
+                UserGame computerUserGame = new UserGameManager(options).LoadByIds(computer.Id, game.Id);
+
+                CribbageGame cribbageGame = new CribbageGame(game.Id, user, computer);
+
+                cribbageGame.Computer = true;
+                // Initialize Game, shuffle and deal,
+                //Random dealer? We had a flaw in storing staved game in the db. Didn't keep track of last dealer
+                Random rnd = new Random();
+                int dealer = rnd.Next(2) + 1;
+                cribbageGame.Dealer = dealer;
+
+                CribbageGameManager.ShuffleDeck(cribbageGame);
+                CribbageGameManager.Deal(cribbageGame);
+                cribbageGame.WhatToDo = "SelectCribCards";
+
+                //Set scores from the userGames
+                cribbageGame.Player_1.Score = playerUserGame.PlayerScore;
+                cribbageGame.Player_2.Score = computerUserGame.PlayerScore;
+
+                // Serialize CribbageGame into Json
+                cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
+
+                // Send CribbageGame back to only that person.
+                message = "Continue Game";
+                message += "\n" + cribbageGame.GameName;
+                message += "\nSelect Crib Cards";
+
+                await Groups.AddToGroupAsync(Context.ConnectionId, cribbageGame.Id.ToString());
+                await Clients.Caller.SendAsync("StartGame", message, cribbageGameJson);
+
+
                 //    User player1 = JsonConvert.DeserializeObject<User>(user);
 
                 //    // Create a Game.
@@ -212,11 +245,11 @@ namespace Cribbage.API.Hubs
                 //    cribbageGame.WhatToDo = "SelectCribCards";
 
                 //    // Serialize CribbageGame into Json
-                cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
+               // cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
 
-                message = "continue game";
+              //  message = "continue game";
                 // Send CribbageGame back to only that person.
-                await Clients.Caller.SendAsync("ContinueGame", cribbageGameJson, message);
+              //  await Clients.Caller.SendAsync("ContinueGame", cribbageGameJson, message);
             }
             catch (Exception)
             {
