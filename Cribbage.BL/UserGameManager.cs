@@ -57,8 +57,8 @@ namespace Cribbage.BL
                     }
                     else
                     {
+                        // no games for the user
                         return list;
-                       // throw new Exception("No games found for this player.");
                     }
                 }
             }
@@ -67,57 +67,6 @@ namespace Cribbage.BL
                 throw;
             }
         }
-
-        //public List<Game> GetGamesVsComputer(Guid playerId)
-        //{
-        //    try
-        //    {
-        //        List<Guid> list = new List<Guid>();
-        //        using (CribbageEntities dc = new CribbageEntities(options))
-        //        {
-        //            tblUserGame entity = dc.tblUserGames.Where(ug => ug.PlayerId == playerId).FirstOrDefault();
-        //            if (entity != null)
-        //            {
-        //                List<tblUserGame> entities = dc.tblUserGames.Where(ug => ug.PlayerId == playerId).ToList();
-        //                foreach (tblUserGame userGame in entities)
-        //                {
-        //                    list.Add(userGame.GameId);
-        //                }
-
-        //                List<Game> savedGames = new List<Game>();
-        //                Game game;
-
-        //                foreach (Guid savedGameId in list)
-        //                {
-        //                    game = new GameManager(options).LoadById(savedGameId);
-        //                    savedGames.Add(game);
-        //                }
-
-        //                List<Game> savedGamesVsComputer = new List<Game>();
-
-        //                foreach (Game savedGame in savedGames)
-        //                {
-        //                    if(savedGame.GameName.Contains("Computer"))
-        //                    {
-        //                        savedGamesVsComputer.Add(savedGame);
-        //                    }
-        //                }
-        //                return savedGamesVsComputer;
-        //            }
-        //            else
-        //            {
-        //                List<Game> savedGamesVsComputer = new List<Game>();
-        //                return savedGamesVsComputer;
-        //                // throw new Exception("No games found for this player.");
-        //            }
-        //        }
-        //    }
-        //    catch (Exception)
-        //    {
-        //        throw;
-        //    }
-        //}
-
 
         public List<UserGame> GetGamesVsComputer(Guid playerId)
         {

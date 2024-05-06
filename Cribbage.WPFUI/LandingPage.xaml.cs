@@ -1,9 +1,11 @@
 ﻿using Cribbage.BL.Models;
 using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Data.SqlClient;
 using Microsoft.VisualBasic.Devices;
 using Newtonsoft.Json;
 using System.DirectoryServices.ActiveDirectory;
 using System.Windows;
+using System.Windows.Media;
 
 namespace Cribbage.WPFUI
 {
@@ -17,6 +19,7 @@ namespace Cribbage.WPFUI
         bool hasSavedGames = false;
         string strUserGames = "";
         bool computer;
+        bool openingSavedGame = false;
 
         public LandingPage()
         {
@@ -66,7 +69,7 @@ namespace Cribbage.WPFUI
             {
                 foreach (Game game in userGames)
                 {
-                    lstSavedGames.Items.Add(game.Date.ToShortDateString() + " " + game.GameName);
+                    lstSavedGames.Items.Add(game.Date.ToShortDateString() + " " + game.Id);
                 }
             }
             else
@@ -85,7 +88,7 @@ namespace Cribbage.WPFUI
         {
             computer = true;
 
-            MainWindow mainWindow = new MainWindow(cribbageGame, loggedInUser, computer, hasSavedGames, strUserGames);
+            MainWindow mainWindow = new MainWindow(openingSavedGame, cribbageGame, loggedInUser, computer, hasSavedGames, strUserGames);
             mainWindow.ShowDialog();
 
             Dispatcher.Invoke(() =>
@@ -98,13 +101,38 @@ namespace Cribbage.WPFUI
         {
             computer = false;
 
-            MainWindow mainWindow = new MainWindow(cribbageGame, loggedInUser, computer, hasSavedGames, strUserGames);
+            MainWindow mainWindow = new MainWindow(openingSavedGame, cribbageGame, loggedInUser, computer, hasSavedGames, strUserGames);
             mainWindow.ShowDialog();
 
             Dispatcher.Invoke(() =>
             {
                 this.Close();
             });
+        }
+
+        private void ListBoxItem_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            try
+            {
+                openingSavedGame = true;
+                
+                string cribbageString = lstSavedGames.SelectedItem.ToString();
+                string[] cribbageArray = cribbageString.Split(' ');
+                cribbageGame.Id = new Guid(cribbageArray[1]);
+
+                MainWindow mainWindow = new MainWindow(openingSavedGame, cribbageGame, loggedInUser, computer, hasSavedGames, strUserGames);
+                mainWindow.ShowDialog();
+
+                Dispatcher.Invoke(() =>
+                {
+                    this.Close();
+                });
+            }
+            catch (Exception ex)
+            {
+                lblLandingPageError.Foreground = new SolidColorBrush(Colors.DarkMagenta);
+                lblLandingPageError.Content = "Error opening game: " + ex.Message;
+            }
         }
     }
 }

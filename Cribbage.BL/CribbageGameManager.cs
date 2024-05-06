@@ -2,11 +2,48 @@
 using System.Numerics;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace Cribbage.BL
 {
     public static class CribbageGameManager
-    {
+    { 
+        public static List<CribbageGame> LoadById(Guid id)
+        {
+            try
+            {
+                List<CribbageGame> cribbageGame = new List<CribbageGame>();
+
+                using (CribbageEntities dc = new CribbageEntities())
+                {
+                    tblGame row = dc.tblGames.FirstOrDefault(g => g.Id == id);
+
+                    if (row != null)
+                    {
+                        cribbageGame = (from g in dc.tblGames
+                                        join ug in dc.tblUserGames on g.Id equals ug.GameId
+                                        select new CribbageGame
+                                        {
+                                            Id = g.Id,
+                                            Winner = g.Winner,
+                                            Date = g.Date,
+                                            GameName = g.GameName,
+                                            Complete = g.Complete,
+                                        }).ToList();
+                        return cribbageGame;
+                    }
+                    else
+                    {
+                        throw new Exception("Cribbage Game not found");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         #region Play CribbageGame Methods
         public static void NextDealer(CribbageGame cribbageGame)
         {

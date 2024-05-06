@@ -31,6 +31,7 @@ namespace Cribbage.WPFUI
         bool player1 = false;
         bool computerOpponent;
         bool handsCounted;
+        bool openingSavedGame;
 
         public MainWindow()
         {
@@ -39,13 +40,14 @@ namespace Cribbage.WPFUI
             this.MouseLeftButtonDown += delegate { DragMove(); };
         }
 
-        public MainWindow(CribbageGame cribbageGameInfo, User user, bool computer, bool isSuccess, string userGamesJson)
+        public MainWindow(bool savedGame, CribbageGame cribbageGameInfo, User user, bool computer, bool isSuccess, string userGamesJson)
         {
             cribbageGame = cribbageGameInfo;
             loggedInUser = user;
             hasSavedGames = isSuccess;
             strUserGames = userGamesJson;
             computerOpponent = computer;
+            openingSavedGame = savedGame;
 
             // start the hub connection
             Start();
@@ -53,7 +55,12 @@ namespace Cribbage.WPFUI
             InitializeComponent();
             this.MouseLeftButtonDown += delegate { DragMove(); };
 
-            if (computerOpponent)
+            if (openingSavedGame)
+            {
+                player1 = true;
+                ContinueSavedGameVsComputer(cribbageGame, loggedInUser);
+            }
+            else if (computerOpponent)
             {
                 player1 = true;
                 NewGameVsComputer(loggedInUser);
@@ -425,6 +432,7 @@ namespace Cribbage.WPFUI
             _connection.On<string, string>("ReadyToStart", (cribbageGameJson, message) => ReadyToStartMessage(cribbageGameJson, message));
             _connection.On<string, string>("WaitingForConfirmation", (cribbageGameJson, message) => WaitingForConfirmationMessage(cribbageGameJson, message));
             _connection.On<string, string>("StartGame", (message, cribbageGameJson) => StartGameMessage(message, cribbageGameJson));
+            _connection.On<string, string>("ContinueGame", (cribbageGameJson, message) => ContinueGameMessage(cribbageGameJson, message));
             _connection.On<string, string>("StartNewHand", (message, cribbageGameJson) => StartNewHandMessage(message, cribbageGameJson));
             _connection.On<string, string>("CardsSentToCrib", (cribbageGameJson, message) => CardsSentToCribMessage(cribbageGameJson, message));
             _connection.On<string, string>("CutCard", (cribbageGameJson, message) => CutCardMessage(cribbageGameJson, message));
@@ -437,6 +445,19 @@ namespace Cribbage.WPFUI
             _connection.On<string>("QuitGame", (message) => QuitGameMessage(message));
 
             _connection.StartAsync();
+        }
+
+        private void ContinueGameMessage(string cribbageGameJson, string message)
+        {
+            cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
+            signalRMessage = message;
+
+            Dispatcher.Invoke(() =>
+            {
+                UpdatePlayerAndOpponent();
+                RefreshScreen();
+                btnGo.Visibility = Visibility.Collapsed;
+            });
         }
 
         private void RallyOverMessage(string cribbageGameJson, string message)
@@ -723,6 +744,20 @@ namespace Cribbage.WPFUI
             {
                 string cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
                 _connection.InvokeAsync("PickCardToPlay", cribbageGameJson);
+            }
+            catch (Exception ex)
+            {
+                lblMessageToPlayers.Content = ex.Message;
+            }
+        }
+
+        public void ContinueSavedGameVsComputer(CribbageGame cribbageGame, User user)
+        {
+            try
+            {
+                string cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
+                string strUser = JsonConvert.SerializeObject(user);
+                _connection.InvokeAsync("ContinueSavedGameVsComputer", cribbageGameJson, strUser);
             }
             catch (Exception ex)
             {

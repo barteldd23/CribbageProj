@@ -20,10 +20,10 @@
         <Button x:Name="btnExit" Content="Exit" HorizontalAlignment="Right" Margin="0,0,1056,180" Width="197" FontSize="18" Click="btnExit_Click" Height="70" VerticalAlignment="Bottom"/>
         <Button x:Name="btnNewGameVsPlayer" Content="New Game vs Player" HorizontalAlignment="Right" Margin="0,0,1041,373" VerticalAlignment="Bottom" Width="205" Height="60" FontSize="18" Click="btnNewGameVsPlayer_Click"/>
         <ListBox x:Name="lstStats" SelectedValue="" Margin="0,0,86,65" HorizontalAlignment="Right" Width="440" Height="431" VerticalAlignment="Bottom" FontSize="18"/>
-        <ListBox x:Name="lstSavedGames" Margin="0,0,554,65" HorizontalAlignment="Right" Width="460" Height="431" VerticalAlignment="Bottom" FontSize="18"/>
+        <ListBox x:Name="lstSavedGames" Margin="0,0,554,65" HorizontalAlignment="Right" Width="460" Height="431" VerticalAlignment="Bottom" FontSize="18" MouseDoubleClick="ListBoxItem_MouseDoubleClick"/>
         <Label x:Name="lblGameStats" Content="Game Stats" HorizontalAlignment="Right" Margin="0,0,256,504" VerticalAlignment="Bottom" FontSize="20" FontWeight="Bold"/>
-        <Label x:Name="lblOpenASavedGame" Content="Open a Saved Game" HorizontalAlignment="Right" Margin="0,0,685,504" VerticalAlignment="Bottom" FontSize="20" FontWeight="Bold"/>
-        <Label Content="*Note: Saved Games and Stats Only Update On Initial Login" HorizontalAlignment="Left" Margin="465,536,0,0" VerticalAlignment="Top" Width="568" RenderTransformOrigin="0.5,0.5" Height="39" FontWeight="Bold" FontSize="20">
+        <Label x:Name="lblOpenASavedGame" Content="Open an Incomplete Game Vs. Computer" HorizontalAlignment="Right" Margin="0,0,580,500" VerticalAlignment="Bottom" FontSize="20" FontWeight="Bold"/>
+        <Label Content="*Note: Incomplete Games and Stats Only Update On Initial Login" HorizontalAlignment="Left" Margin="10,535,0,0" VerticalAlignment="Top" Width="623" RenderTransformOrigin="0.5,0.5" Height="39" FontWeight="Bold" FontSize="20">
             <Label.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -33,5 +33,6 @@
                 </TransformGroup>
             </Label.RenderTransform>
         </Label>
+        <Label x:Name="lblLandingPageError" Content="" HorizontalAlignment="Left" Margin="650,536,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="20"/>
     </Grid>
 </Window>

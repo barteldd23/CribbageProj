@@ -165,7 +165,58 @@ namespace Cribbage.API.Hubs
                 cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
 
                 // Send CribbageGame back to only that person.
-                await Clients.Group(cribbageGame.Id.ToString()).SendAsync("StartGame", cribbageGame.GameName + "\nSelect Crib Cards", cribbageGameJson);
+                await Clients.Caller.SendAsync("StartGame", cribbageGame.GameName + "\nSelect Crib Cards", cribbageGameJson);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task ContinueSavedGameVsComputer(string game, string userJson)
+        {
+            string cribbageGameJson;
+            string computerEmail = "computer@computer.com";
+            User computer = new UserManager(options).LoadByEmail(computerEmail);
+            //int result;
+            string message;
+
+            try
+            {
+                CribbageGame cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(game);
+                User user = JsonConvert.DeserializeObject<User>(userJson);
+                //    User player1 = JsonConvert.DeserializeObject<User>(user);
+
+                //    // Create a Game.
+                //    CribbageGame cribbageGame = new CribbageGame(player1, computer);
+                //    cribbageGame.Computer = true;
+
+                //    // Add Game to DB.
+                //    result = new GameManager(options).Insert(cribbageGame);
+
+                //    await Groups.AddToGroupAsync(Context.ConnectionId, cribbageGame.Id.ToString());
+
+                //    // Add UserGame to DB.
+                //    UserGame userGame = new UserGame(cribbageGame.Id, player1.Id, cribbageGame.Player_1.Score);
+                //    result = new UserGameManager(options).Insert(userGame);
+                //    userGame = new UserGame(cribbageGame.Id, cribbageGame.Player_2.Id, cribbageGame.Player_2.Score);
+                //    result = new UserGameManager(options).Insert(userGame);
+                //    player1.GamesStarted++;
+                //    result = new UserManager(options).Update(player1);
+                //    cribbageGame.Player_1.GamesStarted = player1.GamesStarted;
+
+                //    // Initialize Game, shuffle and deal,
+                //    CribbageGameManager.ShuffleDeck(cribbageGame);
+                //    CribbageGameManager.Deal(cribbageGame);
+                //    cribbageGame.WhatToDo = "SelectCribCards";
+
+                //    // Serialize CribbageGame into Json
+                cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
+
+                message = "continue game";
+                // Send CribbageGame back to only that person.
+                await Clients.Caller.SendAsync("ContinueGame", cribbageGameJson, message);
             }
             catch (Exception)
             {
