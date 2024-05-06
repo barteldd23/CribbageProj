@@ -30,6 +30,7 @@ namespace Cribbage.WPFUI
         bool exitClick = false;
         bool player1 = false;
         bool computerOpponent;
+        bool handsCounted;
 
         public MainWindow()
         {
@@ -130,7 +131,7 @@ namespace Cribbage.WPFUI
             if (cribbageGame.WhatToDo.ToString() == "SelectCribCards")
             {
                 UpdatePlayerAndOpponent();
-                displayOpponentHand(opponentHand, true);
+                displayOpponentHand(opponentHand, false);
                 displayPlayerHand(playerHand);
             }
         }
@@ -606,8 +607,8 @@ namespace Cribbage.WPFUI
 
             Dispatcher.Invoke(() =>
             {
-                endGame = true;
-                RefreshScreen();
+                // Refresh Screen
+                EndGame();
             });
         }
 
@@ -655,6 +656,7 @@ namespace Cribbage.WPFUI
         {
             cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
             signalRMessage = message;
+            handsCounted = true;
 
             if (cribbageGame.Player_1.Score >= 121 || cribbageGame.Player_2.Score >= 121)
             {
@@ -663,29 +665,7 @@ namespace Cribbage.WPFUI
 
             Dispatcher.Invoke(() =>
             {
-                if (player1)
-                {
-                    playerHand = cribbageGame.Player_1.PlayedCards;
-                    opponentHand = cribbageGame.Player_2.PlayedCards;
-                }
-                else
-                {
-                    playerHand = cribbageGame.Player_2.PlayedCards;
-                    opponentHand = cribbageGame.Player_1.PlayedCards;
-                }
-                cribbageGame.PlayedCards = new List<Card>();
-
-                displayOpponentHand(opponentHand, true);
-                displayPlayerHand(playerHand);
-                displayCribCards(true);
-                displayPlayedCards();
                 RefreshScreen();
-
-                btnNextHand.Visibility = Visibility.Visible;
-                btnCountCards.Visibility = Visibility.Collapsed;
-                btnCutDeck.Visibility = Visibility.Collapsed;
-                btnGo.Visibility = Visibility.Collapsed;
-                lblMessageToPlayers.Content = "Click 'Next Hand' to deal next hand";
             });
         }
 
@@ -947,7 +927,7 @@ namespace Cribbage.WPFUI
                 UpdateCutCard(cribbageGame);
                 displayCribCards();
                 displayPlayedCards();
-                displayOpponentHand(opponentHand, true);
+                displayOpponentHand(opponentHand, false);
                 displayPlayerHand(playerHand);
 
                 // Send a message to the hub
@@ -1118,6 +1098,45 @@ namespace Cribbage.WPFUI
                     lstMessages.ScrollIntoView(lstMessages.SelectedItem);
                     newHand = false;
                 }
+                else if (handsCounted && !endGame)
+                {
+                    handsCounted = false;
+
+                    if (player1)
+                    {
+                        playerHand = cribbageGame.Player_1.PlayedCards;
+                        opponentHand = cribbageGame.Player_2.PlayedCards;
+                    }
+                    else
+                    {
+                        playerHand = cribbageGame.Player_2.PlayedCards;
+                        opponentHand = cribbageGame.Player_1.PlayedCards;
+                    }
+                    cribbageGame.PlayedCards = new List<Card>();
+
+                    //Player scores updated
+                    RefreshScore();
+
+                    //Current count updated
+                    lblCurrentCount.Content = cribbageGame.CurrentCount;
+
+                    //Messages to players updated
+                    lstMessages.Items.Add(signalRMessage);
+                    lstMessages.SelectedIndex = lstMessages.Items.Count - 1;
+                    lstMessages.ScrollIntoView(lstMessages.SelectedItem);
+
+                    displayOpponentHand(opponentHand, true);
+                    displayPlayerHand(playerHand);
+                    displayCribCards(true);
+                    displayPlayedCards();
+                    RemoveSelectedItems();
+
+                    btnNextHand.Visibility = Visibility.Visible;
+                    btnCountCards.Visibility = Visibility.Collapsed;
+                    btnCutDeck.Visibility = Visibility.Collapsed;
+                    btnGo.Visibility = Visibility.Collapsed;
+                    lblMessageToPlayers.Content = "Click 'Next Hand' to deal next hand";
+                }
                 else if (cribbageGame.Crib.Count != 4)
                 {
                     //Player scores updated
@@ -1133,9 +1152,9 @@ namespace Cribbage.WPFUI
 
                     //Update the cards, buttons, and selections
                     displayPlayerHand(playerHand);
-                    displayOpponentHand(opponentHand, true);
+                    displayOpponentHand(opponentHand, false);
                     displayPlayedCards();
-                    displayCribCards(true);
+                    displayCribCards(false);
                     UpdateCutCard(cribbageGame);
                     RemoveSelectedItems();
                     UpdateButtonSelection();
@@ -1148,8 +1167,8 @@ namespace Cribbage.WPFUI
                     }
                     RemoveSelectedItems();
                     displayPlayerHand(playerHand);
-                    displayOpponentHand(opponentHand, true);
-                    displayCribCards(true);
+                    displayOpponentHand(opponentHand, false);
+                    displayCribCards(false);
 
                     lstMessages.Items.Add(signalRMessage);
                     lstMessages.SelectedIndex = lstMessages.Items.Count - 1;
@@ -1158,9 +1177,6 @@ namespace Cribbage.WPFUI
                 }
                 else if (endGame || cribbageGame.Player_1.Score >= 121 || cribbageGame.Player_2.Score >= 121)
                 {
-                    // Update the Board
-                    EndGame();
-
                     // Call to SignalR
                     EndGame(cribbageGame);
                 }
@@ -1181,9 +1197,9 @@ namespace Cribbage.WPFUI
 
                     //Update the cards, buttons, and selections
                     displayPlayerHand(playerHand);
-                    displayOpponentHand(opponentHand, true);
+                    displayOpponentHand(opponentHand, false);
                     displayPlayedCards();
-                    displayCribCards(true);
+                    displayCribCards(false);
                     UpdateCutCard(cribbageGame);
                     RemoveSelectedItems();
                     UpdateButtonSelection();
@@ -1193,6 +1209,18 @@ namespace Cribbage.WPFUI
 
         private void EndGame()
         {
+            if (player1)
+            {
+                playerHand = cribbageGame.Player_1.PlayedCards;
+                opponentHand = cribbageGame.Player_2.PlayedCards;
+            }
+            else
+            {
+                playerHand = cribbageGame.Player_2.PlayedCards;
+                opponentHand = cribbageGame.Player_1.PlayedCards;
+            }
+            cribbageGame.PlayedCards = new List<Card>();
+
             // Player scores updated
             RefreshScore();
 
