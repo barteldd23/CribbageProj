@@ -1,5 +1,6 @@
 ﻿using Cribbage.BL.Models;
 using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.VisualBasic.Devices;
 using Newtonsoft.Json;
 using System.DirectoryServices.ActiveDirectory;
 using System.Windows;
@@ -15,6 +16,7 @@ namespace Cribbage.WPFUI
         CribbageGame cribbageGame;
         bool hasSavedGames = false;
         string strUserGames = "";
+        bool computer;
 
         public LandingPage()
         {
@@ -33,6 +35,9 @@ namespace Cribbage.WPFUI
             InitializeComponent();
             hasSavedGames = isSuccess;
             strUserGames = userGamesJson;
+
+            if (strUserGames == "[]") hasSavedGames = false;
+
             cribbageGame = new CribbageGame();
 
             this.MouseLeftButtonDown += delegate { DragMove(); };
@@ -55,10 +60,10 @@ namespace Cribbage.WPFUI
 
         public void SavedGamesCheck(bool isSuccess, string userGamesJson)
         {
-            if (isSuccess)
-            {
-                List<Game> userGames = JsonConvert.DeserializeObject<List<Game>>(userGamesJson);
+            List<Game> userGames = JsonConvert.DeserializeObject<List<Game>>(userGamesJson);
 
+            if (isSuccess && userGames.Count > 0)
+            {
                 foreach (Game game in userGames)
                 {
                     lstSavedGames.Items.Add(game.Date.ToShortDateString() + " " + game.GameName);
@@ -66,7 +71,8 @@ namespace Cribbage.WPFUI
             }
             else
             {
-                lstSavedGames.Items.Add("No saved games.");
+                hasSavedGames = false;
+                lstSavedGames.Items.Add("No saved games");
             }
         }
 
@@ -77,9 +83,9 @@ namespace Cribbage.WPFUI
 
         private void btnNewGameVsComputer_Click(object sender, RoutedEventArgs e)
         {
-            cribbageGame.Computer = true;
+            computer = true;
 
-            MainWindow mainWindow = new MainWindow(cribbageGame, loggedInUser, hasSavedGames, strUserGames);
+            MainWindow mainWindow = new MainWindow(cribbageGame, loggedInUser, computer, hasSavedGames, strUserGames);
             mainWindow.ShowDialog();
 
             Dispatcher.Invoke(() =>
@@ -90,9 +96,9 @@ namespace Cribbage.WPFUI
 
         private void btnNewGameVsPlayer_Click(object sender, RoutedEventArgs e)
         {
-            cribbageGame.Computer = false;
+            computer = false;
 
-            MainWindow mainWindow = new MainWindow(cribbageGame, loggedInUser, hasSavedGames, strUserGames);
+            MainWindow mainWindow = new MainWindow(cribbageGame, loggedInUser, computer, hasSavedGames, strUserGames);
             mainWindow.ShowDialog();
 
             Dispatcher.Invoke(() =>
