@@ -138,7 +138,6 @@ namespace Cribbage.API.Hubs
                 // Create a Game.
                 CribbageGame cribbageGame = new CribbageGame(player1, computer);
                 cribbageGame.Computer = true;
-                string roomName = cribbageGame.Id.ToString();
                 
                 // Add Game to DB.
                 result = new GameManager(options).Insert(cribbageGame);
@@ -163,7 +162,7 @@ namespace Cribbage.API.Hubs
                 cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
 
                 // Send CribbageGame back to only that person.
-                await Clients.Group(roomName).SendAsync("StartGame", cribbageGame.GameName + "\nSelect Crib Cards", cribbageGameJson);
+                await Clients.Caller.SendAsync("StartGame", cribbageGame.GameName + "\nSelect Crib Cards", cribbageGameJson);
             }
             catch (Exception)
             {

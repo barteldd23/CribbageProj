@@ -38,7 +38,6 @@ namespace Cribbage.WPFUI
             this.MouseLeftButtonDown += delegate { DragMove(); };
         }
 
-        // Start Game vs Computer
         public MainWindow(CribbageGame cribbageGameInfo, User user, bool computer, bool isSuccess, string userGamesJson)
         {
             cribbageGame = cribbageGameInfo;
