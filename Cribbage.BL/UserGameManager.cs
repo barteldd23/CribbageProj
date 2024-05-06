@@ -68,6 +68,84 @@ namespace Cribbage.BL
             }
         }
 
+        //public List<Game> GetGamesVsComputer(Guid playerId)
+        //{
+        //    try
+        //    {
+        //        List<Guid> list = new List<Guid>();
+        //        using (CribbageEntities dc = new CribbageEntities(options))
+        //        {
+        //            tblUserGame entity = dc.tblUserGames.Where(ug => ug.PlayerId == playerId).FirstOrDefault();
+        //            if (entity != null)
+        //            {
+        //                List<tblUserGame> entities = dc.tblUserGames.Where(ug => ug.PlayerId == playerId).ToList();
+        //                foreach (tblUserGame userGame in entities)
+        //                {
+        //                    list.Add(userGame.GameId);
+        //                }
+
+        //                List<Game> savedGames = new List<Game>();
+        //                Game game;
+
+        //                foreach (Guid savedGameId in list)
+        //                {
+        //                    game = new GameManager(options).LoadById(savedGameId);
+        //                    savedGames.Add(game);
+        //                }
+
+        //                List<Game> savedGamesVsComputer = new List<Game>();
+
+        //                foreach (Game savedGame in savedGames)
+        //                {
+        //                    if(savedGame.GameName.Contains("Computer"))
+        //                    {
+        //                        savedGamesVsComputer.Add(savedGame);
+        //                    }
+        //                }
+        //                return savedGamesVsComputer;
+        //            }
+        //            else
+        //            {
+        //                List<Game> savedGamesVsComputer = new List<Game>();
+        //                return savedGamesVsComputer;
+        //                // throw new Exception("No games found for this player.");
+        //            }
+        //        }
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+        //}
+
+
+        public List<UserGame> GetGamesVsComputer(Guid playerId)
+        {
+            try
+            {
+                List<UserGame> savedGamesVsComputer = new List<UserGame>();
+
+                using (CribbageEntities dc = new CribbageEntities(options))
+                {
+                    savedGamesVsComputer = (from ug in dc.tblUserGames
+                                            join g in dc.tblGames on ug.GameId equals g.Id
+                                            where ug.PlayerId == playerId && g.GameName.Contains("Computer") && !g.Complete
+                                            select new UserGame
+                                            {
+                                                Id = ug.Id,
+                                                GameId = ug.GameId,
+                                                PlayerId = playerId,
+                                                PlayerScore = ug.PlayerScore
+                                            }).ToList();
+
+                    return savedGamesVsComputer;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
         public int Update(UserGame userGame, bool rollback = false)
         {

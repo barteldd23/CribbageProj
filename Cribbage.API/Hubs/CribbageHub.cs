@@ -3,6 +3,7 @@ using Cribbage.BL.Models;
 using Cribbage.PL.Data;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 
 namespace Cribbage.API.Hubs
@@ -46,17 +47,19 @@ namespace Cribbage.API.Hubs
                 { 
                     message = "Logged in as: " + user.DisplayName;
 
-                    List<Guid> savedGameIds = new UserGameManager(options).GetGames(user.Id);
+                    //List<Guid> savedGameIds = new UserGameManager(options).GetGames(user.Id);
+
+                    List<UserGame> savedGamesVsComputer = new UserGameManager(options).GetGamesVsComputer(user.Id);
                     Game game;
                     List<Game> savedGames = new List<Game>();
 
-                    foreach (Guid savedGameId in savedGameIds)
+                    foreach (UserGame savedGame in savedGamesVsComputer)
                     {
-                        game = new GameManager(options).LoadById(savedGameId);
+                        game = new GameManager(options).LoadById(savedGame.GameId);
                         savedGames.Add(game);
                     }
 
-                    if (savedGames != null) isSuccess = true; // what happens if they don't have any games?
+                    if (!savedGames.IsNullOrEmpty()) isSuccess = true; // what happens if they don't have any games?
                     else isSuccess = false;
 
                     userGamesJson = JsonConvert.SerializeObject(savedGames);

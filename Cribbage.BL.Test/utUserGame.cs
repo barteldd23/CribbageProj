@@ -54,6 +54,15 @@ namespace Cribbage.BL.Test
         }
 
         [TestMethod]
+        public void GetGamesVsComputer()
+        {
+            //Guid playerId = new UserManager(options).Load().FirstOrDefault().Id;
+
+            Guid playerId = new Guid("e3ba195c-68e8-44ae-8c35-1175c3803ba6");
+            Assert.IsTrue(new UserGameManager(options).GetGamesVsComputer(playerId).Count() > 0);
+        }
+
+        [TestMethod]
         public void UpdateCribbageGameTest()
         {
 
