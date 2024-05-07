@@ -432,7 +432,6 @@ namespace Cribbage.WPFUI
             _connection.On<string, string>("ReadyToStart", (cribbageGameJson, message) => ReadyToStartMessage(cribbageGameJson, message));
             _connection.On<string, string>("WaitingForConfirmation", (cribbageGameJson, message) => WaitingForConfirmationMessage(cribbageGameJson, message));
             _connection.On<string, string>("StartGame", (message, cribbageGameJson) => StartGameMessage(message, cribbageGameJson));
-            _connection.On<string, string>("ContinueGame", (cribbageGameJson, message) => ContinueGameMessage(cribbageGameJson, message));
             _connection.On<string, string>("StartNewHand", (message, cribbageGameJson) => StartNewHandMessage(message, cribbageGameJson));
             _connection.On<string, string>("CardsSentToCrib", (cribbageGameJson, message) => CardsSentToCribMessage(cribbageGameJson, message));
             _connection.On<string, string>("CutCard", (cribbageGameJson, message) => CutCardMessage(cribbageGameJson, message));
@@ -445,19 +444,6 @@ namespace Cribbage.WPFUI
             _connection.On<string>("QuitGame", (message) => QuitGameMessage(message));
 
             _connection.StartAsync();
-        }
-
-        private void ContinueGameMessage(string cribbageGameJson, string message)
-        {
-            cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
-            signalRMessage = message;
-
-            Dispatcher.Invoke(() =>
-            {
-                UpdatePlayerAndOpponent();
-                RefreshScreen();
-                btnGo.Visibility = Visibility.Collapsed;
-            });
         }
 
         private void RallyOverMessage(string cribbageGameJson, string message)

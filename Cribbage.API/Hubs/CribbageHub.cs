@@ -179,7 +179,6 @@ namespace Cribbage.API.Hubs
             string cribbageGameJson;
             string computerEmail = "computer@computer.com";
             User computer = new UserManager(options).LoadByEmail(computerEmail);
-            //int result;
             string message;
 
             try
@@ -193,8 +192,8 @@ namespace Cribbage.API.Hubs
                 CribbageGame cribbageGame = new CribbageGame(game.Id, user, computer);
 
                 cribbageGame.Computer = true;
-                // Initialize Game, shuffle and deal,
-                //Random dealer? We had a flaw in storing staved game in the db. Didn't keep track of last dealer
+                // Initialize Game, shuffle and deal
+                // Random dealer - last dealer not saved.
                 Random rnd = new Random();
                 int dealer = rnd.Next(2) + 1;
                 cribbageGame.Dealer = dealer;
@@ -217,43 +216,9 @@ namespace Cribbage.API.Hubs
 
                 await Groups.AddToGroupAsync(Context.ConnectionId, cribbageGame.Id.ToString());
                 await Clients.Caller.SendAsync("StartGame", message, cribbageGameJson);
-
-
-                //    User player1 = JsonConvert.DeserializeObject<User>(user);
-
-                //    // Create a Game.
-                //    CribbageGame cribbageGame = new CribbageGame(player1, computer);
-                //    cribbageGame.Computer = true;
-
-                //    // Add Game to DB.
-                //    result = new GameManager(options).Insert(cribbageGame);
-
-                //    await Groups.AddToGroupAsync(Context.ConnectionId, cribbageGame.Id.ToString());
-
-                //    // Add UserGame to DB.
-                //    UserGame userGame = new UserGame(cribbageGame.Id, player1.Id, cribbageGame.Player_1.Score);
-                //    result = new UserGameManager(options).Insert(userGame);
-                //    userGame = new UserGame(cribbageGame.Id, cribbageGame.Player_2.Id, cribbageGame.Player_2.Score);
-                //    result = new UserGameManager(options).Insert(userGame);
-                //    player1.GamesStarted++;
-                //    result = new UserManager(options).Update(player1);
-                //    cribbageGame.Player_1.GamesStarted = player1.GamesStarted;
-
-                //    // Initialize Game, shuffle and deal,
-                //    CribbageGameManager.ShuffleDeck(cribbageGame);
-                //    CribbageGameManager.Deal(cribbageGame);
-                //    cribbageGame.WhatToDo = "SelectCribCards";
-
-                //    // Serialize CribbageGame into Json
-               // cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-
-              //  message = "continue game";
-                // Send CribbageGame back to only that person.
-              //  await Clients.Caller.SendAsync("ContinueGame", cribbageGameJson, message);
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
