@@ -842,6 +842,8 @@ def onClick_MainMenu():
     pythonUserJson = json.dumps(asdict(pythonUser))
     gameToSendJson = getGameJson()
     hub_connection.send("QuitGame",[gameToSendJson, pythonUserJson])
+    gameFrame.pack_forget()
+    loggedInFrame.pack()
     
 def onClick_FileMainMenu():
     print('hit file main menu')
