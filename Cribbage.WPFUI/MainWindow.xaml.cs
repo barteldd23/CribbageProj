@@ -1179,6 +1179,7 @@ namespace Cribbage.WPFUI
                     lblCurrentCount.Content = cribbageGame.CurrentCount;
 
                     //Messages to players updated
+                    lblMessageToPlayers.Content = signalRMessage;
                     lstMessages.Items.Add(signalRMessage);
                     lstMessages.SelectedIndex = lstMessages.Items.Count - 1;
                     lstMessages.ScrollIntoView(lstMessages.SelectedItem);

@@ -42,9 +42,6 @@
     <None Include="Properties\PublishProfiles\bigprojectapi-300089145 - FTP.pubxml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\PublishProfiles\bigprojectapi-300089145 - Web Deploy.pubxml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="images\background_1.png" />
     <Content Include="images\background_2.png" />
     <Content Include="images\background_3.png" />
