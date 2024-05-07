@@ -606,16 +606,40 @@ namespace Cribbage.API.Hubs
             {
                 string roomName = cribbageGame.Id.ToString();
                 string message;
+                User player1 = cribbageGame.Player_1;
+                User player2 = cribbageGame.Player_2;
 
                 if (cribbageGame.Player_1.Score > cribbageGame.Player_2.Score)
                 {
                     cribbageGame.Winner = cribbageGame.Player_1.Id;
                     message = "Game Over.\nWinner: " + cribbageGame.Player_1.DisplayName;
+
+                    // Update DB
+                    player1.GamesWon++;
+                    player1.WinStreak++;
+                    player1.AvgPtsPerGame = new UserGameManager(options).CalculateAvgPtsPerGame(player1);
+
+                    player2.GamesLost++;
+                    player2.WinStreak = 0;
+                    player2.AvgPtsPerGame = new UserGameManager(options).CalculateAvgPtsPerGame(player2);
+                    new UserManager(options).Update(player1);
+                    new UserManager(options).Update(player2);
                 }
                 else
                 {
                     cribbageGame.Winner = cribbageGame.Player_2.Id;
                     message = "Game Over.\nWinner: " + cribbageGame.Player_2.DisplayName;
+
+                    // Update DB
+                    player2.GamesWon++;
+                    player2.WinStreak++;
+                    player2.AvgPtsPerGame = new UserGameManager(options).CalculateAvgPtsPerGame(player2);
+
+                    player1.GamesLost++;
+                    player1.WinStreak = 0;
+                    player1.AvgPtsPerGame = new UserGameManager(options).CalculateAvgPtsPerGame(player1);
+                    new UserManager(options).Update(player1);
+                    new UserManager(options).Update(player2);
                 }
 
                 cribbageGame.Team1_Score = cribbageGame.Player_1.Score;
@@ -651,6 +675,8 @@ namespace Cribbage.API.Hubs
 
                     // Add Game to DB.
                     result = new GameManager(options).Insert(cribbageGame);
+                    user.GamesStarted++;
+                    new UserManager(options).Update(user);
 
                     // Serialize CribbageGame into Json
                     cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
@@ -666,6 +692,10 @@ namespace Cribbage.API.Hubs
                     Guid player1Id = Guid.Parse(game.GameName);
                     User player_1 = new UserManager(options).LoadById(player1Id);
                     CribbageGame cribbageGame = new CribbageGame(game.Id,player_1, user);
+
+                    // Add Game to DB.
+                    user.GamesStarted++;
+                    new UserManager(options).Update(user);
 
                     int results = new GameManager(options).Update(cribbageGame);
                     UserGame userGame1 = new UserGame(cribbageGame.Id, player_1.Id, 0);

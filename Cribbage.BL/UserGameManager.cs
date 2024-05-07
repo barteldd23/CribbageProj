@@ -96,6 +96,46 @@ namespace Cribbage.BL
             }
         }
 
+        public float CalculateAvgPtsPerGame(User user)
+        {
+            try
+            {
+                int numRows = 0;
+                int points = 0;
+                float avgPtsPerGame = 0;
+
+                List<UserGame> games = new List<UserGame>();
+
+                using (CribbageEntities dc = new CribbageEntities(options))
+                {
+                    games = (from ug in dc.tblUserGames
+                             join g in dc.tblGames on ug.GameId equals g.Id
+                             where ug.PlayerId == user.Id && g.Complete 
+                             select new UserGame
+                             {
+                                 Id = ug.Id,
+                                 GameId = ug.GameId,
+                                 PlayerId = ug.PlayerId,
+                                 PlayerScore = ug.PlayerScore
+                             }).ToList();
+
+                    foreach(UserGame game in games) 
+                    {
+                        numRows++;
+                        points += game.PlayerScore;
+                    }
+
+                    avgPtsPerGame = points / numRows;
+
+                    return avgPtsPerGame;
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public int Update(UserGame userGame, bool rollback = false)
         {
             try

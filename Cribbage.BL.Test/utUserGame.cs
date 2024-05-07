@@ -63,6 +63,16 @@ namespace Cribbage.BL.Test
         }
 
         [TestMethod]
+        public void CalculateAvgPtsPerGame()
+        {
+            Guid playerId = new Guid("e3ba195c-68e8-44ae-8c35-1175c3803ba6");
+
+            User user = new UserManager(options).LoadById(playerId);
+            //Assert.IsTrue(new UserGameManager(options).CalculateAvgPtsPerGame(user) == 122);
+            Assert.IsTrue(new UserGameManager(options).CalculateAvgPtsPerGame(user) > 0);
+        }
+
+        [TestMethod]
         public void UpdateCribbageGameTest()
         {
 
