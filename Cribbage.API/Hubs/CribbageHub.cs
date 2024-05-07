@@ -328,7 +328,7 @@ namespace Cribbage.API.Hubs
                     {
                         CribbageGameManager.Cut(cribbageGame);
                         cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
-                        await Clients.All.SendAsync("CardWasCut", cribbageGameJson, cribbageGame.PlayerTurn.DisplayName + " cut the " + cribbageGame.CutCard.name + "\n" + cribbageGame.PlayerTurn.DisplayName + "'s turn");
+                        await Clients.Group(cribbageGame.Id.ToString()).SendAsync("CardWasCut", cribbageGameJson, cribbageGame.PlayerTurn.DisplayName + " cut the " + cribbageGame.CutCard.name + "\n" + cribbageGame.PlayerTurn.DisplayName + "'s turn");
                         await Task.Delay(1000);
                         // Game could technically end on a cut. Need to check for a winner.
                         CheckCompletedGame(cribbageGame);

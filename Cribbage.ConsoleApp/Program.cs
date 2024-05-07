@@ -54,8 +54,8 @@ internal class Program
     {
         string user = "CribbageUser";
         //string hubAddress = "https://fvtcdp.azurewebsites.net/GameHub";
-        //string hubAddress = "https://bigprojectapi-300089145.azurewebsites.net/CribbageHub";
-        string hubAddress = "https://localhost:7186/CribbageHub";
+        string hubAddress = "https://bigprojectapi-300089145.azurewebsites.net/CribbageHub";
+        //string hubAddress = "https://localhost:7186/CribbageHub";
 
         string operation = DrawMenu();
 
