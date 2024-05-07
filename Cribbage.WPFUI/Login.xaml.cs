@@ -12,8 +12,8 @@ namespace Cribbage.WPFUI
     /// </summary> 
     public partial class Login : Window
     {
-        //string hubAddress = "https://bigprojectapi-300089145.azurewebsites.net/CribbageHub";
-        string hubAddress = "https://localhost:7186/CribbageHub";
+        string hubAddress = "https://bigprojectapi-300089145.azurewebsites.net/CribbageHub";
+        //string hubAddress = "https://localhost:7186/CribbageHub";
         HubConnection _connection;
         User loggedInUser = new User();
 
