@@ -141,11 +141,12 @@ namespace Cribbage.API.Hubs
                 // Create a Game.
                 CribbageGame cribbageGame = new CribbageGame(player1, computer);
                 cribbageGame.Computer = true;
-                
+                string roomName = cribbageGame.Id.ToString();
+
                 // Add Game to DB.
                 result = new GameManager(options).Insert(cribbageGame);
 
-                await Groups.AddToGroupAsync(Context.ConnectionId, cribbageGame.Id.ToString());
+                await Groups.AddToGroupAsync(Context.ConnectionId, roomName);
 
                 // Add UserGame to DB.
                 UserGame userGame = new UserGame(cribbageGame.Id, player1.Id, cribbageGame.Player_1.Score);
@@ -165,7 +166,7 @@ namespace Cribbage.API.Hubs
                 cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
 
                 // Send CribbageGame back to only that person.
-                await Clients.Caller.SendAsync("StartGame", cribbageGame.GameName + "\nSelect Crib Cards", cribbageGameJson);
+                await Clients.Group(roomName).SendAsync("StartGame", cribbageGame.GameName + "\nSelect Crib Cards", cribbageGameJson);
             }
             catch (Exception)
             {
@@ -201,6 +202,7 @@ namespace Cribbage.API.Hubs
                 CribbageGameManager.ShuffleDeck(cribbageGame);
                 CribbageGameManager.Deal(cribbageGame);
                 cribbageGame.WhatToDo = "SelectCribCards";
+                string roomName = cribbageGame.Id.ToString();
 
                 //Set scores from the userGames
                 cribbageGame.Player_1.Score = playerUserGame.PlayerScore;
@@ -214,8 +216,8 @@ namespace Cribbage.API.Hubs
                 message += "\n" + cribbageGame.GameName;
                 message += "\nSelect Crib Cards";
 
-                await Groups.AddToGroupAsync(Context.ConnectionId, cribbageGame.Id.ToString());
-                await Clients.Caller.SendAsync("StartGame", message, cribbageGameJson);
+                await Groups.AddToGroupAsync(Context.ConnectionId, roomName);
+                await Clients.Group(roomName).SendAsync("StartGame", message, cribbageGameJson);
             }
             catch (Exception)
             {
