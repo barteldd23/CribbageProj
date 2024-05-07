@@ -103,6 +103,8 @@ def receivedReadyToStartMessage(gameJson, message):
 def receivedWaitingForPlayerMessage(gameJson, message):
     loggedInFrame.pack_forget()
     gameFrame.pack()
+    lblCurrentPlayerTurn.config(text='')
+    txtCrib.config(text='')
     setMessage(message)
     setGameOnly(gameJson)
 
@@ -341,10 +343,10 @@ def refreshScreen(showOpponent, showCrib):
     if(gameData.data['WhatToDo'] == 'startnewhand'):
         #btnNextHand.grid(row=3, column=3, padx=5, pady=5, sticky='news' )
         btnNextHand.pack(fill=BOTH)
-    if(gameData.data['WhatToDo'] == 'startnewgame' and gameData.data['Computer'] == True):
+    if(gameData.data['WhatToDo'] == 'startnewgame' and gameData.data['Computer']):
         #btnNewGame.grid(row=3, column=0, columnspan=10, padx=5, pady=5, sticky='news')
         btnNewGame.pack(fill=BOTH)
-    else:
+    elif (gameData.data['WhatToDo'] == 'startnewgame'):
         btnBackToMenu.pack(fill=BOTH)
     if(gameData.data['WhatToDo'] == 'readytostart'):
         #btnReadyToStart.grid(row=3, column=0, columnspan=10, padx=5, pady=5, sticky='news')
@@ -1045,7 +1047,7 @@ cribCard4 = tkinter.Label(fourCribCardsFrame, bg='#35654d');
 cribCard4.img = smallCardBack;
 cribCard4.config(image = cribCard4.img);
 
-btnBackToMenu = tkinter.Button(cribFrame, text='Main Menu', command=onClick_MainMenu)
+
 
 
 
@@ -1215,6 +1217,7 @@ btnNewGame = tkinter.Button(playerButtonsFrame, text="Another Game", width=15, c
 btnReadyToStart = tkinter.Button(playerButtonsFrame, text="Ready", width=15, command = onClick_ReadyToStart, font=('Arial',14), relief=RAISED)
 btnCountHand = tkinter.Button(playerButtonsFrame, text='Count Hands', width=15, font=('Arial',14), command=onClick_CountHand, relief=RAISED)
 btnCutPosition = tkinter.Button(playerButtonsFrame, text='Cut Deck', font=('Arial',14), command=onClick_btnCutPosition, relief=RAISED)
+btnBackToMenu = tkinter.Button(playerButtonsFrame, text='Main Menu', font=('Arial',14), command=onClick_MainMenu, relief=RAISED)
 opponentFrame.grid_propagate(0)
 rallyFrame.grid_propagate(0)
 usersFrame.grid_propagate(0)
