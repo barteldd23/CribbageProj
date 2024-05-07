@@ -20,6 +20,7 @@ namespace Cribbage.WPFUI
         string strUserGames = "";
         bool computer;
         bool openingSavedGame = false;
+        List<Game> userGames;
 
         public LandingPage()
         {
@@ -63,13 +64,13 @@ namespace Cribbage.WPFUI
 
         public void SavedGamesCheck(bool isSuccess, string userGamesJson)
         {
-            List<Game> userGames = JsonConvert.DeserializeObject<List<Game>>(userGamesJson);
+            userGames = JsonConvert.DeserializeObject<List<Game>>(userGamesJson);
 
             if (isSuccess && userGames.Count > 0)
             {
                 foreach (Game game in userGames)
                 {
-                    lstSavedGames.Items.Add(game.Date.ToShortDateString() + " " + game.Id);
+                    lstSavedGames.Items.Add(game.Date.ToShortDateString() + " " + game.GameName);
                 }
             }
             else
@@ -115,10 +116,12 @@ namespace Cribbage.WPFUI
             try
             {
                 openingSavedGame = true;
-                
-                string cribbageString = lstSavedGames.SelectedItem.ToString();
-                string[] cribbageArray = cribbageString.Split(' ');
-                cribbageGame.Id = new Guid(cribbageArray[1]);
+
+                int index = lstSavedGames.SelectedIndex;
+                Game selectedGame = userGames[index];
+
+                cribbageGame.Id = selectedGame.Id;
+
 
                 MainWindow mainWindow = new MainWindow(openingSavedGame, cribbageGame, loggedInUser, computer, hasSavedGames, strUserGames);
                 mainWindow.ShowDialog();

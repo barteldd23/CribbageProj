@@ -1198,6 +1198,9 @@ namespace Cribbage.WPFUI
                 }
                 else if (endGame || cribbageGame.Player_1.Score >= 121 || cribbageGame.Player_2.Score >= 121)
                 {
+                    //Refresh Screen
+                    EndGame();
+
                     // Call to SignalR
                     EndGame(cribbageGame);
                 }
