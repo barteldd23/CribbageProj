@@ -548,6 +548,8 @@ namespace Cribbage.WPFUI
 
         private void QuitGameMessage(string message)
         {
+            signalRMessage = message;
+
             if (mainMenuClick)
             {
                 StaThreadWrapper(() =>
@@ -561,6 +563,16 @@ namespace Cribbage.WPFUI
             else if (exitClick)
             {
                 Dispatcher.Invoke(() => { this.Close(); });
+            }
+            else
+            {
+                Dispatcher.Invoke(() => 
+                {
+                    lblMessageToPlayers.Content = signalRMessage;
+                    lstMessages.Items.Add(signalRMessage);
+                    lstMessages.SelectedIndex = lstMessages.Items.Count - 1;
+                    lstMessages.ScrollIntoView(lstMessages.SelectedItem);
+                });
             }
         }
 
