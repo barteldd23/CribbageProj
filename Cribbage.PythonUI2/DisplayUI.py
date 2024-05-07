@@ -309,15 +309,17 @@ def refreshScreen(showOpponent, showCrib):
     print('******************************')
     print('Refresh Screen')
     print('******************************')
-    displayCurrentCount()
-    displayCurrentPlayerTurn()
-    displayOpponentHand(showOpponent)
-    #displayOpponentHand(True) 
-    displayPlayerHand()
-    displayPlayedCads()
-    displayPlayerScores()
-    displayCribCards(showCrib)
-    #displayCribCards(True)
+    
+    if(gameData.data['WhatToDo'] != 'readytostart'):
+        displayCurrentCount()
+        displayCurrentPlayerTurn()
+        displayOpponentHand(showOpponent)
+        #displayOpponentHand(True) 
+        displayPlayerHand()
+        displayPlayedCads()
+        displayPlayerScores()
+        displayCribCards(showCrib)
+        #displayCribCards(True)
     
     if(gameData.data['WhatToDo'] == 'SelectCribCards' and len(playerHand.cards) > 4):
         btnSendToCrib.pack(fill=BOTH)
@@ -339,9 +341,11 @@ def refreshScreen(showOpponent, showCrib):
     if(gameData.data['WhatToDo'] == 'startnewhand'):
         #btnNextHand.grid(row=3, column=3, padx=5, pady=5, sticky='news' )
         btnNextHand.pack(fill=BOTH)
-    if(gameData.data['WhatToDo'] == 'startnewgame'):
+    if(gameData.data['WhatToDo'] == 'startnewgame' and gameData.data['Computer'] == True):
         #btnNewGame.grid(row=3, column=0, columnspan=10, padx=5, pady=5, sticky='news')
         btnNewGame.pack(fill=BOTH)
+    else:
+        btnBackToMenu.pack(fill=BOTH)
     if(gameData.data['WhatToDo'] == 'readytostart'):
         #btnReadyToStart.grid(row=3, column=0, columnspan=10, padx=5, pady=5, sticky='news')
         btnReadyToStart.pack(fill=BOTH)
@@ -614,13 +618,13 @@ def displayPlayerScores():
     lblP2Score.config(text = gameData.data["Player_2"]["Score"])
     
 def displayCutCard(isShowing):
-    cutCardLabel.grid(row=0, column=10, sticky='s')
+    cutCardLabel.grid(row=0, column=10, sticky='sw')
     if(isShowing):
         print('in display cut card true')
         card = PhotoImage(file="./images/" + gameData.data["CutCard"]["imgPath"])
         cutCard.img = card.subsample(5,5)
         cutCard.config(image= cutCard.img)
-        cutCard.grid(row=1, column=10, sticky='ne')
+        cutCard.grid(row=1, column=10, sticky='n')
     else:
         print('in display cut card false')
         cutCard.img = cardBack.subsample(5,5)
@@ -685,10 +689,11 @@ def getUserJson():
 
 def onClick_NewGame():
     if(gameData.data["Computer"]):
-        messagebox.showinfo('','Start Game vs Computer')
+        #messagebox.showinfo('','Start Game vs Computer')
         newVsComputer()
     else:
-        messagebox.showinfo('','Start Game vs Player')
+        pass
+        #messagebox.showinfo('','Start Game vs Player')
 
 def onClick_CountHand():
     gameToSendJson = getGameJson()
@@ -739,8 +744,12 @@ def newVsPlayer():
 def startSavedGame():
     print(lbxSavedGames.curselection())
     if(lbxSavedGames.curselection()):
-        print(savedGames.data[lbxSavedGames.curselection()[0]])
+       
+        savedGameJson = json.dumps(savedGames.data[lbxSavedGames.curselection()[0]])
+        pythonUserJson = json.dumps(asdict(pythonUser))
+        print(savedGameJson)
         # convert to json and call hub method to start a saved game.
+        hub_connection.send("ContinueSavedGameVsComputer",[savedGameJson,pythonUserJson])
 
 def onClick_ReadyToStart():
     gameToSendJson = getGameJson()
@@ -902,7 +911,7 @@ window.protocol('WM_DELETE_WINDOW', onClick_Quit)
 #window.rowconfigure(0, weight=1)
 
 menuBar = Menu(window)
-window.config(menu = menuBar, bg='green')
+window.config(menu = menuBar, bg='#35654d')
 file = Menu(menuBar)
     
 menuBar.add_cascade(menu=file, label="File")
@@ -912,16 +921,16 @@ file.add_command(label = 'Quit', command = onClick_Quit)
 
 
 ############ Main Frames ###############
-loginFrame = tkinter.Frame(bg='#3fcc1f')
-gameFrame = tkinter.Frame(bg='green', height=900, width=1400)
-loggedInFrame = tkinter.Frame(bg='#3fcc1f', height=900, width=1400)
-newPlayerFrame = tkinter.Frame(bg='#3fcc1f')
+loginFrame = tkinter.Frame(bg='#35654d')
+gameFrame = tkinter.Frame(bg='#35654d', height=900, width=1400)
+loggedInFrame = tkinter.Frame(bg='#35654d', height=900, width=1400)
+newPlayerFrame = tkinter.Frame(bg='#35654d')
 
 #################### gameFrame Frames
-cribFrame = tkinter.Frame(gameFrame, width=200, height=900, relief=RIDGE, bg='green')
-playFrame = tkinter.Frame(gameFrame, width=900, height=900, relief=RIDGE, bg='green')
-scoreFrame = tkinter.Frame(gameFrame, width=300, height=900, relief=RIDGE, bg='green')
-availableGamesFrame = tkinter.Frame(gameFrame, width=200, height=900, relief=RIDGE, bg='red')
+cribFrame = tkinter.Frame(gameFrame, width=200, height=900, relief=RIDGE, bg='#35654d')
+playFrame = tkinter.Frame(gameFrame, width=900, height=900,borderwidth=2, relief=RIDGE, bg='#35654d')
+scoreFrame = tkinter.Frame(gameFrame, width=300, height=900, relief=RIDGE, bg='#35654d')
+availableGamesFrame = tkinter.Frame(gameFrame, width=200, height=900, relief=RIDGE, bg='#35654d')
 
 
 playFrame.columnconfigure(0,weight=1)
@@ -960,9 +969,9 @@ scoreFrame.grid(row=0, column=2, sticky='news')
 
 
 ##################### playFrame Frames #####################
-opponentFrame = tkinter.Frame(playFrame, height=200, width=900, relief=RIDGE, bg='green')
-rallyFrame = tkinter.Frame(playFrame, height=350, width=900, relief=RIDGE, bg='#3fcc1f')
-usersFrame = tkinter.Frame(playFrame, height=350, width=900, relief=RIDGE, bg='green')
+opponentFrame = tkinter.Frame(playFrame, height=200, width=900, relief=RIDGE, bg='#35654d')
+rallyFrame = tkinter.Frame(playFrame, height=350, width=900, borderwidth=3, relief=RIDGE, bg='#35654d')
+usersFrame = tkinter.Frame(playFrame, height=350, width=900, relief=RIDGE, bg='#35654d')
 
 # opponentFrame.columnconfigure(0, weight=1)
 # opponentFrame.columnconfigure(1, weight=1)
@@ -999,23 +1008,23 @@ usersFrame = tkinter.Frame(playFrame, height=350, width=900, relief=RIDGE, bg='g
 cardBack = PhotoImage(file="./images/cardBackBlue.png")
 smallCardBack = cardBack.subsample(5,5);
 
-cribSpacerFrame = tkinter.Frame(cribFrame, height=200, width=200, bg='green')
+cribSpacerFrame = tkinter.Frame(cribFrame, height=200, width=200, bg='#35654d')
 cribSpacerFrame.grid_propagate(0)
 
 
-cribCardsContainer_in_cribFrame = tkinter.Frame(cribFrame, height=350, width=200, bg='green')
+cribCardsContainer_in_cribFrame = tkinter.Frame(cribFrame, height=350, width=200, bg='#35654d')
 cribCardsContainer_in_cribFrame.grid_propagate(0)
 
 cribSpacerFrame.grid(row=0,column=0)
 cribCardsContainer_in_cribFrame.grid(row=1,column=0)
 
-cribLabelFrame = tkinter.Frame(cribCardsContainer_in_cribFrame, height=50, width=200, bg='green')
+cribLabelFrame = tkinter.Frame(cribCardsContainer_in_cribFrame, height=50, width=200, bg='#35654d')
 cribLabelFrame.propagate(0)
-txtCrib = tkinter.Label(cribLabelFrame, text="Player1's Crib:", font=('Arial',16))
+txtCrib = tkinter.Label(cribLabelFrame, text="Player1's Crib:", font=('Arial',16), bg='#35654d', fg='white')
 txtCrib.place(in_=cribLabelFrame, anchor="c", relx=.5, rely=.5 )
 
-cribCardsFrame = tkinter.Frame(cribCardsContainer_in_cribFrame, height=300, width=200, bg='green')
-fourCribCardsFrame = tkinter.Frame(cribCardsFrame, bg='green')
+cribCardsFrame = tkinter.Frame(cribCardsContainer_in_cribFrame, height=300, width=200, bg='#35654d')
+fourCribCardsFrame = tkinter.Frame(cribCardsFrame, bg='#35654d')
 fourCribCardsFrame.place(in_=cribCardsFrame, anchor="c", relx=.5, rely=.5)
 cribCardsFrame.propagate(0)
 
@@ -1023,16 +1032,16 @@ cribLabelFrame.grid(row=0, column=0)
 cribCardsFrame.grid(row=1, column=0)
 
 
-cribCard1 = tkinter.Label(fourCribCardsFrame);
+cribCard1 = tkinter.Label(fourCribCardsFrame, bg='#35654d');
 cribCard1.img = smallCardBack;
 cribCard1.config(image = cribCard1.img);
-cribCard2 = tkinter.Label(fourCribCardsFrame);
+cribCard2 = tkinter.Label(fourCribCardsFrame, bg='#35654d');
 cribCard2.img = smallCardBack;
 cribCard2.config(image = cribCard2.img);
-cribCard3 = tkinter.Label(fourCribCardsFrame);
+cribCard3 = tkinter.Label(fourCribCardsFrame, bg='#35654d');
 cribCard3.img = smallCardBack;
 cribCard3.config(image = cribCard3.img);
-cribCard4 = tkinter.Label(fourCribCardsFrame);
+cribCard4 = tkinter.Label(fourCribCardsFrame, bg='#35654d');
 cribCard4.img = smallCardBack;
 cribCard4.config(image = cribCard4.img);
 
@@ -1041,8 +1050,8 @@ btnBackToMenu = tkinter.Button(cribFrame, text='Main Menu', command=onClick_Main
 
 
 opponentLabelFrame = tkinter.Frame(opponentFrame, height=50, width=900)
-opponentCardsFrame = tkinter.Frame(opponentFrame, height=150, width=900, bg='green')
-opponentLabel = tkinter.Label(opponentLabelFrame, text="Oppenents Hand", font=('Arial',16));
+opponentCardsFrame = tkinter.Frame(opponentFrame, height=150, width=900, bg='#35654d')
+opponentLabel = tkinter.Label(opponentLabelFrame, text="Oppenents Hand", font=('Arial',16), bg='#35654d', fg='white');
 opponentLabel.pack(fill=BOTH)
 
 opponentLabelFrame.grid_propagate(0)
@@ -1051,22 +1060,22 @@ opponentLabelFrame.grid(row=0, column=0)
 opponentCardsFrame.grid(row=1, column=0)
 
 #     # Setting the image this way should prevent garbage collection of the image.
-opponentCard1 = tkinter.Label(opponentCardsFrame);
+opponentCard1 = tkinter.Label(opponentCardsFrame, bg='#35654d');
 opponentCard1.img = cardBack.subsample(5,5);
 opponentCard1.config(image= opponentCard1.img)
-opponentCard2 = tkinter.Label(opponentCardsFrame);
+opponentCard2 = tkinter.Label(opponentCardsFrame, bg='#35654d');
 opponentCard2.img = cardBack.subsample(5,5);
 opponentCard2.config(image= opponentCard2.img)
-opponentCard3 = tkinter.Label(opponentCardsFrame);
+opponentCard3 = tkinter.Label(opponentCardsFrame, bg='#35654d');
 opponentCard3.img = cardBack.subsample(5,5);
 opponentCard3.config(image= opponentCard3.img)
-opponentCard4 = tkinter.Label(opponentCardsFrame);
+opponentCard4 = tkinter.Label(opponentCardsFrame, bg='#35654d');
 opponentCard4.img = cardBack.subsample(5,5);
 opponentCard4.config(image= opponentCard4.img)
-opponentCard5 = tkinter.Label(opponentCardsFrame);
+opponentCard5 = tkinter.Label(opponentCardsFrame, bg='#35654d');
 opponentCard5.img = cardBack.subsample(5,5);
 opponentCard5.config(image= opponentCard5.img)
-opponentCard6 = tkinter.Label(opponentCardsFrame);
+opponentCard6 = tkinter.Label(opponentCardsFrame, bg='#35654d');
 opponentCard6.img = cardBack.subsample(5,5);
 opponentCard6.config(image= opponentCard6.img)
 
@@ -1075,67 +1084,67 @@ opponentCard6.config(image= opponentCard6.img)
 
 ############## Rally Frame##################
 
-headerFrame_in_rallyFrame = tkinter.Frame(rallyFrame, height=50, width=900, bg='#3fcc1f')
+headerFrame_in_rallyFrame = tkinter.Frame(rallyFrame, height=50, width=900, bg='#35654d')
 headerFrame_in_rallyFrame.grid_propagate(0)
 
-cardsFrame_in_rallyFrame = tkinter.Frame(rallyFrame, height=200, width=900, bg='#3fcc1f')
+cardsFrame_in_rallyFrame = tkinter.Frame(rallyFrame, height=200, width=900, bg='#35654d')
 cardsFrame_in_rallyFrame.grid_propagate(0)
 
-messageFrame_in_rallyFrame = tkinter.Frame(rallyFrame, height=100, width=900, bg='#3fcc1f')
+messageFrame_in_rallyFrame = tkinter.Frame(rallyFrame, height=90, width=890, bg='#35654d')
 messageFrame_in_rallyFrame.grid_propagate(0)
 
 headerFrame_in_rallyFrame.grid(row=0, column=0)
 cardsFrame_in_rallyFrame.grid(row=1, column=0)
 messageFrame_in_rallyFrame.grid(row=2, column=0)
 
-playedFrame_in_CardsFrame = tkinter.Frame(cardsFrame_in_rallyFrame, height=200, width=800, bg='#3fcc1f')
-cutcardFrame_in_CardsFrame = tkinter.Frame(cardsFrame_in_rallyFrame, height=200, width=100, bg='#3fcc1f')
+playedFrame_in_CardsFrame = tkinter.Frame(cardsFrame_in_rallyFrame, height=200, width=800, bg='#35654d')
+cutcardFrame_in_CardsFrame = tkinter.Frame(cardsFrame_in_rallyFrame, height=200, width=100, bg='#35654d')
 playedFrame_in_CardsFrame.grid_propagate(0)
 cutcardFrame_in_CardsFrame.grid_propagate(0)
 
 playedFrame_in_CardsFrame.grid(row=0,column=0)
 cutcardFrame_in_CardsFrame.grid(row=0, column=1)
 
-playedCard1 = tkinter.Label(playedFrame_in_CardsFrame);
+playedCard1 = tkinter.Label(playedFrame_in_CardsFrame, bg='#35654d');
 playedCard1.img = smallCardBack;
 playedCard1.config(image = playedCard1.img);
-playedCard2 = tkinter.Label(playedFrame_in_CardsFrame);
+playedCard2 = tkinter.Label(playedFrame_in_CardsFrame, bg='#35654d');
 playedCard2.img = smallCardBack;
 playedCard2.config(image = playedCard2.img);
-playedCard3 = tkinter.Label(playedFrame_in_CardsFrame);
+playedCard3 = tkinter.Label(playedFrame_in_CardsFrame, bg='#35654d');
 playedCard3.img = smallCardBack;
 playedCard3.config(image = playedCard3.img);
-playedCard4 = tkinter.Label(playedFrame_in_CardsFrame);
+playedCard4 = tkinter.Label(playedFrame_in_CardsFrame, bg='#35654d');
 playedCard4.img = smallCardBack;
 playedCard4.config(image = playedCard4.img);
-playedCard5 = tkinter.Label(playedFrame_in_CardsFrame);
+playedCard5 = tkinter.Label(playedFrame_in_CardsFrame, bg='#35654d');
 playedCard5.img = smallCardBack;
 playedCard5.config(image = playedCard5.img);
-playedCard6 = tkinter.Label(playedFrame_in_CardsFrame);
+playedCard6 = tkinter.Label(playedFrame_in_CardsFrame, bg='#35654d');
 playedCard6.img = smallCardBack;
 playedCard6.config(image = playedCard6.img);
-playedCard7 = tkinter.Label(playedFrame_in_CardsFrame);
+playedCard7 = tkinter.Label(playedFrame_in_CardsFrame, bg='#35654d');
 playedCard7.img = smallCardBack;
 playedCard7.config(image = playedCard7.img);
-playedCard8 = tkinter.Label(playedFrame_in_CardsFrame);
+playedCard8 = tkinter.Label(playedFrame_in_CardsFrame, bg='#35654d');
 playedCard8.img = smallCardBack;
 playedCard8.config(image = playedCard8.img);
 
-headerLabelFrame = tkinter.Frame(headerFrame_in_rallyFrame, width=900, height=50)
+headerLabelFrame = tkinter.Frame(headerFrame_in_rallyFrame, width=900, height=50, bg='#35654d')
 headerLabelFrame.place(in_=headerFrame_in_rallyFrame, anchor="c", relx=.5, rely=.5)
-lblCurrentCount = tkinter.Label(headerLabelFrame, text='Current Count:', font=('Arial',14))
-lblCurrentPlayerTurn = tkinter.Label(headerLabelFrame, text='Player\'s Turn', font=('Arial',14))
+lblCurrentCount = tkinter.Label(headerLabelFrame, text='Current Count:', font=('Arial',14), bg='#35654d', fg='white')
+lblCurrentPlayerTurn = tkinter.Label(headerLabelFrame, text='Player\'s Turn', font=('Arial',14), bg='#35654d', fg='white')
 
 lblCurrentPlayerTurn.grid(row=0, column=0,)
 lblCurrentCount.grid(row=0, column=1,)
 
 
-msgBoxFrame = tkinter.Frame(messageFrame_in_rallyFrame, bg='green', width=900, height=100)
+msgBoxFrame = tkinter.Frame(messageFrame_in_rallyFrame, bg='#35654d', width=890, height=90)
 msgBoxFrame.place(in_=messageFrame_in_rallyFrame, anchor="c", relx=.5, rely=.5)
 txtGameMessages = tkinter.Text(msgBoxFrame, width=60, height=6, state='disabled')
 txtGameMessages.config(state='normal')
 txtGameMessages.config(state='disabled')
-txtGameMessages.grid(row=0, column=0, sticky='nes')
+txtGameMessages.grid(row=0, column=0, sticky='nes', pady=5)
 scrollbar = tkinter.Scrollbar(msgBoxFrame, orient=VERTICAL, command=txtGameMessages.yview)
 scrollbar.grid(row=0, column=1, sticky='nsw')
 txtGameMessages.config(yscrollcommand = scrollbar.set)
@@ -1151,16 +1160,16 @@ def validateNumerical(P):
 txtCutPosition = Entry(cutcardFrame_in_CardsFrame, validate='all', validatecommand=(validateNumerical, '%P'), font=('Arial',14))
 
 
-cutCardLabel = tkinter.Label(cutcardFrame_in_CardsFrame, text='Cut Card', font=('Arial',18))
-cutCard = tkinter.Label(cutcardFrame_in_CardsFrame)
+cutCardLabel = tkinter.Label(cutcardFrame_in_CardsFrame, text='Cut Card', font=('Arial',16),bg='#35654d', fg='white')
+cutCard = tkinter.Label(cutcardFrame_in_CardsFrame, bg='#35654d')
 cutCardImg = PhotoImage(file="./images/cardClubs_Jack.png")
 cutCard.img = cutCardImg.subsample(5,5);
 cutCard.config(image = cutCard.img);
 
 
 playerLabelFrame = tkinter.Frame(usersFrame, height=50, width=900)
-playerCardsFrame = tkinter.Frame(usersFrame, height=150, width=900, bg='green')
-playerButtonsFrame = tkinter.Frame(usersFrame,height= 50, width=900)
+playerCardsFrame = tkinter.Frame(usersFrame, height=150, width=900, bg='#35654d')
+playerButtonsFrame = tkinter.Frame(usersFrame,height= 50, width=900, bg='#35654d')
 
 playerLabelFrame.grid_propagate(0)
 playerCardsFrame.grid_propagate(0)
@@ -1170,30 +1179,30 @@ playerLabelFrame.grid(row=0, column=0)
 playerCardsFrame.grid(row=1, column=0)
 playerButtonsFrame.grid(row=2, column=0)
 
-playerLabel = tkinter.Label(playerLabelFrame, text="User's Hand", font=('Arial',16))
+playerLabel = tkinter.Label(playerLabelFrame, text="User's Hand", font=('Arial',16), bg='#35654d', fg='white')
 playerLabel.pack(fill=BOTH)
 
-myCard1 = tkinter.Label(playerCardsFrame, borderwidth=5, relief=FLAT);
+myCard1 = tkinter.Label(playerCardsFrame, borderwidth=5, relief=FLAT, bg='#35654d');
 myCard1.img = cardBack.subsample(5,5);
 myCard1.config(image= myCard1.img)
 myCard1.bind("<Button-1>", onclick_Card1)
-myCard2 = tkinter.Label(playerCardsFrame, borderwidth=5, relief=FLAT);
+myCard2 = tkinter.Label(playerCardsFrame, borderwidth=5, relief=FLAT, bg='#35654d');
 myCard2.img = cardBack.subsample(5,5);
 myCard2.config(image= myCard2.img)
 myCard2.bind("<Button-1>", onclick_Card2)
-myCard3 = tkinter.Label(playerCardsFrame, borderwidth=5, relief=FLAT);
+myCard3 = tkinter.Label(playerCardsFrame, borderwidth=5, relief=FLAT, bg='#35654d');
 myCard3.img = cardBack.subsample(5,5);
 myCard3.config(image= myCard3.img)
 myCard3.bind("<Button-1>", onclick_Card3)
-myCard4 = tkinter.Label(playerCardsFrame, borderwidth=5, relief=FLAT);
+myCard4 = tkinter.Label(playerCardsFrame, borderwidth=5, relief=FLAT, bg='#35654d');
 myCard4.img = cardBack.subsample(5,5);
 myCard4.config(image= myCard4.img)
 myCard4.bind("<Button-1>", onclick_Card4)
-myCard5 = tkinter.Label(playerCardsFrame, borderwidth=5, relief=FLAT);
+myCard5 = tkinter.Label(playerCardsFrame, borderwidth=5, relief=FLAT, bg='#35654d');
 myCard5.img = cardBack.subsample(5,5);
 myCard5.config(image= myCard5.img)
 myCard5.bind("<Button-1>", onclick_Card5)
-myCard6 = tkinter.Label(playerCardsFrame, borderwidth=5, relief=FLAT);
+myCard6 = tkinter.Label(playerCardsFrame, borderwidth=5, relief=FLAT, bg='#35654d');
 myCard6.img = cardBack.subsample(5,5);
 myCard6.config(image= myCard6.img)
 myCard6.bind("<Button-1>", onclick_Card6)
@@ -1225,11 +1234,11 @@ lblAvailableGames = tkinter.Label(availableGamesFrame, text="AvailableGamesFrame
 lblAvailableGames.grid(row=0, column=0, sticky='news')
 
 ############## Score Frame ###################################
-lblP1DisplayName = tkinter.Label(scoreFrame, font=('Arial',14))
-lblP1Score = tkinter.Label(scoreFrame, font=('Arial',14))
+lblP1DisplayName = tkinter.Label(scoreFrame, font=('Arial',14), bg='#35654d', fg='white')
+lblP1Score = tkinter.Label(scoreFrame, font=('Arial',14), bg='#35654d', fg='white')
 
-lblP2DisplayName = tkinter.Label(scoreFrame, font=('Arial',14))
-lblP2Score = tkinter.Label(scoreFrame, font=('Arial',14))
+lblP2DisplayName = tkinter.Label(scoreFrame, font=('Arial',14), bg='#35654d', fg='white')
+lblP2Score = tkinter.Label(scoreFrame, font=('Arial',14), bg='#35654d', fg='white')
 
 cribbageBoard = tkinter.Label(scoreFrame);
 boardImg = PhotoImage(file="../images/cribbageboard.png");
@@ -1237,9 +1246,9 @@ cribbageBoard.img = boardImg;
 cribbageBoard.config(image=cribbageBoard.img);
 
 ################ Login Widgets ###############################
-lblLogin = tkinter.Label(loginFrame, text="Login to Play", font=('Arial',30), bg='#3fcc1f')
-lblEmail = tkinter.Label(loginFrame, text="Email: ", font=('Arial',16), bg='#3fcc1f')
-lblPassword = tkinter.Label(loginFrame, text="Password: ", font=('Arial',16), bg='#3fcc1f')
+lblLogin = tkinter.Label(loginFrame, text="Login to Play", font=('Arial',30), bg='#35654d', fg='white')
+lblEmail = tkinter.Label(loginFrame, text="Email: ", font=('Arial',16), bg='#35654d', fg='white')
+lblPassword = tkinter.Label(loginFrame, text="Password: ", font=('Arial',16), bg='#35654d', fg='white')
 
 ###Change default values after development
 txtEmail = tkinter.Entry(loginFrame, font=('Arial',16))
@@ -1249,7 +1258,7 @@ txtPassword.insert(END,'password')
 
 btnLogin = tkinter.Button(loginFrame, text='Login', font=('Arial',16), command=onClickLogin)
 btnNewUser = tkinter.Button(loginFrame, text='New Player', font=('Arial',16), command=onClickNewUser)
-lblErrorMessage = tkinter.Label(loginFrame, font=('Arial',30), fg='red', bg='#3fcc1f')
+lblErrorMessage = tkinter.Label(loginFrame, font=('Arial',30), fg='red', bg='#35654d')
 
 lblLogin.grid(row=0, column=0, columnspan=2, sticky='news', pady=20, padx=20)
 lblEmail.grid(row=1, column=0, sticky=W, pady=5, padx=5)
@@ -1267,13 +1276,13 @@ lblAvailableGames.pack()
 
 ############## LoggedInFrame Widgets ###################
 
-welcomeFrame = tkinter.Frame(loggedInFrame, height=900, width=200, bg='#3fcc1f')
+welcomeFrame = tkinter.Frame(loggedInFrame, height=900, width=200, bg='#35654d')
 
 
-savedgamesFrame = tkinter.Frame(loggedInFrame, height=900, width=575, bg='green')
+savedgamesFrame = tkinter.Frame(loggedInFrame, height=900, width=575, bg='#35654d')
 
 
-userStatsFrame = tkinter.Frame(loggedInFrame, height=900, width=575, bg='#3fcc1f')
+userStatsFrame = tkinter.Frame(loggedInFrame, height=900, width=575, bg='#35654d')
 # welcomeFrame.grid_propagate(0)
 # savedgamesFrame.grid_propagate(0)
 # userStatsFrame.grid_propagate(0)
@@ -1282,8 +1291,8 @@ welcomeFrame.grid(row=0, column=0, sticky = 'new')
 savedgamesFrame.grid(row=0, column=1, sticky = 'new')
 userStatsFrame.grid(row=0, column=2, sticky = 'new')
 
-lblWelcomMessage = tkinter.Label(welcomeFrame ,text='Welcome ',font=('Arial',40), bg='#3fcc1f')
-lblPlayCribbageMessage = tkinter.Label(welcomeFrame, text='Start Playing a Cribbage Game!', font=('Arial', 20), bg='#3fcc1f')
+lblWelcomMessage = tkinter.Label(welcomeFrame ,text='Welcome ',font=('Arial',40), bg='#35654d', fg='white')
+lblPlayCribbageMessage = tkinter.Label(welcomeFrame, text='Start Playing a Cribbage Game!', font=('Arial', 20), bg='#35654d', fg='white')
 btnVsComputer = tkinter.Button(welcomeFrame, text='New Game Vs. a Computer', width=25, command = newVsComputer, font=('Arial',16))
 btnVsPlayer = tkinter.Button(welcomeFrame, text='New Game Vs. a Person', width=25, command = newVsPlayer, font=('Arial',16))
 btnPlaySavedGame = tkinter.Button(welcomeFrame, text='Start a Saved Game', width=25, command = startSavedGame, font=('Arial',16))
@@ -1299,23 +1308,23 @@ btnVsPlayer.pack(pady=20, padx=20)
 btnPlaySavedGame.pack(pady=20, padx=20)
 
 savedGamesList=('')
-lblSavedGames = tkinter.Label(savedgamesFrame, text='Saved Games', font=('Arial', 20))
+lblSavedGames = tkinter.Label(savedgamesFrame, text='Saved Games', font=('Arial', 20), fg='white', bg='#35654d')
 lbxSavedGames = tkinter.Listbox(savedgamesFrame,listvariable=savedGamesList,height=24,selectmode=tkinter.SINGLE, width=75)
 
 lblSavedGames.pack()
 lbxSavedGames.pack()
 
-lblUserStats = tkinter.Label(userStatsFrame, text='User\'s Stats', font=('Arial', 20), bg='#3fcc1f')
-lblgamesStarted = tkinter.Label(userStatsFrame, text='Games Started: ', font=('Arial', 16), bg='#3fcc1f')
-lblGamesWon = tkinter.Label(userStatsFrame, text='Games Won: ', font=('Arial', 16), bg='#3fcc1f')
-lblGamesLost = tkinter.Label(userStatsFrame, text='Games Lost: ', font=('Arial', 16), bg='#3fcc1f')
-lblWinStreak = tkinter.Label(userStatsFrame, text='Win Streak: ', font=('Arial', 16), bg='#3fcc1f')
-lblAvgPtsPerGame = tkinter.Label(userStatsFrame, text='Avg Pts Per Game: ', font=('Arial', 16), bg='#3fcc1f')
-txtgamesStarted = tkinter.Label(userStatsFrame, text='0', font=('Arial', 16), bg='#3fcc1f')
-txtGamesWon = tkinter.Label(userStatsFrame, text='0', font=('Arial', 16), bg='#3fcc1f')
-txtGamesLost = tkinter.Label(userStatsFrame, text='0', font=('Arial', 16), bg='#3fcc1f')
-txtWinStreak = tkinter.Label(userStatsFrame, text='0', font=('Arial', 16), bg='#3fcc1f')
-txtAvgPtsPerGame = tkinter.Label(userStatsFrame, text='0', font=('Arial', 16), bg='#3fcc1f')
+lblUserStats = tkinter.Label(userStatsFrame, text='User\'s Stats', font=('Arial', 20), bg='#35654d', fg='white')
+lblgamesStarted = tkinter.Label(userStatsFrame, text='Games Started: ', font=('Arial', 16), bg='#35654d', fg='white')
+lblGamesWon = tkinter.Label(userStatsFrame, text='Games Won: ', font=('Arial', 16), bg='#35654d', fg='white')
+lblGamesLost = tkinter.Label(userStatsFrame, text='Games Lost: ', font=('Arial', 16), bg='#35654d', fg='white')
+lblWinStreak = tkinter.Label(userStatsFrame, text='Win Streak: ', font=('Arial', 16), bg='#35654d', fg='white')
+lblAvgPtsPerGame = tkinter.Label(userStatsFrame, text='Avg Pts Per Game: ', font=('Arial', 16), bg='#35654d', fg='white')
+txtgamesStarted = tkinter.Label(userStatsFrame, text='0', font=('Arial', 16), bg='#35654d', fg='white')
+txtGamesWon = tkinter.Label(userStatsFrame, text='0', font=('Arial', 16), bg='#35654d', fg='white')
+txtGamesLost = tkinter.Label(userStatsFrame, text='0', font=('Arial', 16), bg='#35654d', fg='white')
+txtWinStreak = tkinter.Label(userStatsFrame, text='0', font=('Arial', 16), bg='#35654d', fg='white')
+txtAvgPtsPerGame = tkinter.Label(userStatsFrame, text='0', font=('Arial', 16), bg='#35654d', fg='white')
 
 lblUserStats.grid(row=0, column=0, columnspan=2, sticky='news')
 lblgamesStarted.grid(row=1, column=0, sticky='w')
@@ -1332,16 +1341,16 @@ txtAvgPtsPerGame.grid(row=5, column=1, sticky='w')
 
 ######################### New Player Frame ######################
 
-lblCreatePlayer = tkinter.Label(newPlayerFrame, text="New Player Info", font=('Arial',30), bg='#3fcc1f')
-lblFirstName = tkinter.Label(newPlayerFrame, text="First Name:", font=('Arial',16), bg='#3fcc1f')
-lblLastName = tkinter.Label(newPlayerFrame, text="Last Name:", font=('Arial',16), bg='#3fcc1f')
-lblDisplayName = tkinter.Label(newPlayerFrame, text="Display Name:", font=('Arial',16), bg='#3fcc1f')
-lblEmail = tkinter.Label(newPlayerFrame, text="Email:", font=('Arial',16), bg='#3fcc1f')
-lblNewPlayerPassword = tkinter.Label(newPlayerFrame, text="Password", font=('Arial',16), bg='#3fcc1f')
-lblNewPlayerVerifyPassword = tkinter.Label(newPlayerFrame, text="Verify Password", font=('Arial',16), bg='#3fcc1f')
+lblCreatePlayer = tkinter.Label(newPlayerFrame, text="New Player Info", font=('Arial',30), bg='#35654d', fg='white')
+lblFirstName = tkinter.Label(newPlayerFrame, text="First Name:", font=('Arial',16), bg='#35654d', fg='white')
+lblLastName = tkinter.Label(newPlayerFrame, text="Last Name:", font=('Arial',16), bg='#35654d', fg='white')
+lblDisplayName = tkinter.Label(newPlayerFrame, text="Display Name:", font=('Arial',16), bg='#35654d', fg='white')
+lblEmail = tkinter.Label(newPlayerFrame, text="Email:", font=('Arial',16), bg='#35654d', fg='white')
+lblNewPlayerPassword = tkinter.Label(newPlayerFrame, text="Password", font=('Arial',16), bg='#35654d', fg='white')
+lblNewPlayerVerifyPassword = tkinter.Label(newPlayerFrame, text="Verify Password", font=('Arial',16), bg='#35654d', fg='white')
 btnCreateUser = tkinter.Button(newPlayerFrame,text="Create", command=onClickCreateUser, font=('Arial',16))
 btnCancel = tkinter.Button(newPlayerFrame,text="Cancel", command=onClickCancelUser, font=('Arial',16))
-lblCreateUserError = tkinter.Label(newPlayerFrame, font=('Arial',16), fg='red', bg='#3fcc1f')
+lblCreateUserError = tkinter.Label(newPlayerFrame, font=('Arial',16), fg='red', bg='#35654d')
 
 txtFirstName = tkinter.Entry(newPlayerFrame, font=('Arial',16))
 txtLastName = tkinter.Entry(newPlayerFrame, font=('Arial',16))
