@@ -54,20 +54,20 @@ namespace Cribbage.WPFUI
                     }
                     else
                     {
-                        lblRegisterError.Foreground = new SolidColorBrush(Colors.DarkMagenta);
+                        lblRegisterError.Foreground = new SolidColorBrush(Colors.Red);
                         lblRegisterError.Content = "Please complete all of the fields";
                     }
                 }
                 else
                 {
                     user.Password = string.Empty;
-                    lblRegisterError.Foreground = new SolidColorBrush(Colors.DarkMagenta);
+                    lblRegisterError.Foreground = new SolidColorBrush(Colors.Red);
                     lblRegisterError.Content = "Passwords do not match";
                 }
             }
             catch (Exception ex)
             {
-                lblRegisterError.Foreground = new SolidColorBrush(Colors.DarkMagenta);
+                lblRegisterError.Foreground = new SolidColorBrush(Colors.Red);
                 lblRegisterError.Content = ex.Message;
             }
         }
@@ -104,7 +104,7 @@ namespace Cribbage.WPFUI
             {
                 Dispatcher.Invoke(() =>
                 {
-                    lblRegisterError.Foreground = new SolidColorBrush(Colors.DarkMagenta);
+                    lblRegisterError.Foreground = new SolidColorBrush(Colors.Red);
                     lblRegisterError.Content = message;
                 });
             }
@@ -120,7 +120,7 @@ namespace Cribbage.WPFUI
             catch (Exception ex)
             {
 
-                lblRegisterError.Foreground = new SolidColorBrush(Colors.DarkMagenta);
+                lblRegisterError.Foreground = new SolidColorBrush(Colors.Red);
                 lblRegisterError.Content = ex.Message;
             }
         }

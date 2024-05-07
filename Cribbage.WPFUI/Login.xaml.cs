@@ -54,7 +54,7 @@ namespace Cribbage.WPFUI
                 }
                 else
                 {
-                    lblError.Foreground = new SolidColorBrush(Colors.DarkMagenta);
+                    lblError.Foreground = new SolidColorBrush(Colors.Red);
                     lblError.Content = "Please enter an email and password";
                 }
             }
@@ -106,7 +106,7 @@ namespace Cribbage.WPFUI
             {
                 Dispatcher.Invoke(() =>
                 {
-                    lblError.Foreground = new SolidColorBrush(Colors.DarkMagenta);
+                    lblError.Foreground = new SolidColorBrush(Colors.Red);
                     lblError.Content = ex.Message;
                 });
             }
@@ -128,11 +128,12 @@ namespace Cribbage.WPFUI
             }
             else // not logged in
             {
-                Dispatcher.Invoke(() =>
+                StaThreadWrapper(() =>
                 {
-                    lblError.Foreground = new SolidColorBrush(Colors.DarkMagenta);
-                    lblError.Content = message;
+                    var login = new Login();
+                    login.ShowDialog();
                 });
+                System.Windows.Forms.MessageBox.Show(message);
             }
         }
         #endregion

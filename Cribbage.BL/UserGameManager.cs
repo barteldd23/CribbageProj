@@ -125,7 +125,9 @@ namespace Cribbage.BL
                         points += game.PlayerScore;
                     }
 
-                    avgPtsPerGame = points / numRows;
+                    if (numRows == 0) avgPtsPerGame = points;
+
+                    else avgPtsPerGame = points / numRows;
 
                     return avgPtsPerGame;
                 }

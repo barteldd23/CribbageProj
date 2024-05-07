@@ -130,7 +130,7 @@ namespace Cribbage.WPFUI
             }
             catch (Exception ex)
             {
-                lblLandingPageError.Foreground = new SolidColorBrush(Colors.DarkMagenta);
+                lblLandingPageError.Foreground = new SolidColorBrush(Colors.Red);
                 lblLandingPageError.Content = "Error opening game: " + ex.Message;
             }
         }
