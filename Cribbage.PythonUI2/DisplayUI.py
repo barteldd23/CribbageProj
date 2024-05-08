@@ -718,7 +718,7 @@ def onClick_PlayCard():
     else:
         messagebox.showerror('Select Cards To Send To The Crib', 'Please select exactly two cards to send to the crib')
 def onClickSendToCrib():
-    if(len(selectedCards) == 2):
+    if(len(selectedCards) == 2 and len(playerHand.cards) ==6):
         cardsToSend= [playerHand.cards[selectedCards[0]],playerHand.cards[selectedCards[1]]]
         cardsToSendJson = json.dumps(cardsToSend)
         gameToSendJson = getGameJson()
