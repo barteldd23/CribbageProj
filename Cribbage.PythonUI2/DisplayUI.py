@@ -871,8 +871,8 @@ def onClick_Quit():
 
 ############### Hub Connection ###########################
 
-hubAddress = "https://bigprojectapi-300089145.azurewebsites.net/CribbageHub"
-#hubAddress = "https://localhost:7186/CribbageHub"
+#hubAddress = "https://bigprojectapi-300089145.azurewebsites.net/CribbageHub"
+hubAddress = "https://localhost:7186/CribbageHub"
 
 hub_connection = HubConnectionBuilder()\
 .with_url(hubAddress, options={"verify_ssl": False})\
