@@ -50,6 +50,8 @@ namespace Cribbage.API.Hubs
                     //List<Guid> savedGameIds = new UserGameManager(options).GetGames(user.Id);
 
                     List<UserGame> savedGamesVsComputer = new UserGameManager(options).GetGamesVsComputer(user.Id);
+                    CribbageGame cribbageGame = new CribbageGame();
+                    user.AvgPtsPerGame = new UserGameManager(options).CalculateAvgPtsPerGame(user, cribbageGame);
                     Game game;
                     List<Game> savedGames = new List<Game>();
 
@@ -619,11 +621,11 @@ namespace Cribbage.API.Hubs
                     // Update DB
                     player1.GamesWon++;
                     player1.WinStreak++;
-                    player1.AvgPtsPerGame = new UserGameManager(options).CalculateAvgPtsPerGame(player1);
+                    player1.AvgPtsPerGame = new UserGameManager(options).CalculateAvgPtsPerGame(player1, cribbageGame);
 
                     player2.GamesLost++;
                     player2.WinStreak = 0;
-                    player2.AvgPtsPerGame = new UserGameManager(options).CalculateAvgPtsPerGame(player2);
+                    player2.AvgPtsPerGame = new UserGameManager(options).CalculateAvgPtsPerGame(player2, cribbageGame);
                     new UserManager(options).Update(player1);
                     new UserManager(options).Update(player2);
                 }
@@ -635,11 +637,11 @@ namespace Cribbage.API.Hubs
                     // Update DB
                     player2.GamesWon++;
                     player2.WinStreak++;
-                    player2.AvgPtsPerGame = new UserGameManager(options).CalculateAvgPtsPerGame(player2);
+                    player2.AvgPtsPerGame = new UserGameManager(options).CalculateAvgPtsPerGame(player2, cribbageGame);
 
                     player1.GamesLost++;
                     player1.WinStreak = 0;
-                    player1.AvgPtsPerGame = new UserGameManager(options).CalculateAvgPtsPerGame(player1);
+                    player1.AvgPtsPerGame = new UserGameManager(options).CalculateAvgPtsPerGame(player1, cribbageGame);
                     new UserManager(options).Update(player1);
                     new UserManager(options).Update(player2);
                 }

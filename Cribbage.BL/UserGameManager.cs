@@ -96,7 +96,7 @@ namespace Cribbage.BL
             }
         }
 
-        public float CalculateAvgPtsPerGame(User user)
+        public float CalculateAvgPtsPerGame(User user, CribbageGame cribbageGame)
         {
             try
             {
@@ -125,9 +125,22 @@ namespace Cribbage.BL
                         points += game.PlayerScore;
                     }
 
-                    if (numRows == 0) avgPtsPerGame = points;
-
-                    else avgPtsPerGame = points / numRows;
+                    if (numRows == 0) // new player
+                    {
+                        if (cribbageGame.Player_1.Id == user.Id)
+                        {
+                            points += cribbageGame.Player_1.Score;
+                        }
+                        else
+                        {
+                            points += cribbageGame.Player_2.Score;
+                        }
+                        avgPtsPerGame = points; // new players may have 0 rows, causing a dividing error
+                    }
+                    else  // returning player
+                    {
+                        avgPtsPerGame = points / numRows;
+                    }
 
                     return avgPtsPerGame;
                 }
