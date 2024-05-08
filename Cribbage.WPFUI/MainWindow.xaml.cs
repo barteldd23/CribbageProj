@@ -536,6 +536,7 @@ namespace Cribbage.WPFUI
 
             Dispatcher.Invoke(() =>
             {
+                btnReady.Visibility = Visibility.Collapsed;
                 AddSignalRMessagetoLstMessages();
                 lblMessageToPlayers.Content = signalRMessage;
                 SetUpGame();
@@ -586,15 +587,15 @@ namespace Cribbage.WPFUI
         {
             signalRMessage = message;
 
-            if (signalRMessage.Contains("has left the game"))
-            {
-                Dispatcher.Invoke(() =>
-                {
-                    lblMessageToPlayers.Content = signalRMessage;
-                    RefreshScreen();
-                });
-            }
-            else if(mainMenuClick)
+            //if (signalRMessage.Contains("has left the game"))
+            //{
+            //    Dispatcher.Invoke(() =>
+            //    {
+            //        lblMessageToPlayers.Content = signalRMessage;
+            //        RefreshScreen();
+            //    });
+            //}
+            if(mainMenuClick)
             {
                 StaThreadWrapper(() =>
                 {
@@ -665,6 +666,7 @@ namespace Cribbage.WPFUI
             cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
             currentCount = cribbageGame.CurrentCount.ToString();
             signalRMessage = message;
+            btnSendToCrib.Visibility = Visibility.Collapsed;
 
             Dispatcher.Invoke(() =>
             {
@@ -713,6 +715,7 @@ namespace Cribbage.WPFUI
 
             Dispatcher.Invoke(() =>
             {
+                btnSendToCrib.Visibility = Visibility.Collapsed;
                 UpdatePlayerAndOpponent();
                 RefreshScreen();
             });
@@ -815,7 +818,6 @@ namespace Cribbage.WPFUI
             {
                 cribbageGame.Player_2.Ready = true;
             }
-            btnReady.Visibility = Visibility.Collapsed;
 
             try
             {
@@ -901,7 +903,7 @@ namespace Cribbage.WPFUI
         {
             btnGo.Visibility = Visibility.Collapsed;
 
-            if (selectedCards.Count == 2)
+            if (selectedCards.Count == 2 && playerHand.Count == 6)
             {
                 try
                 {
@@ -909,8 +911,6 @@ namespace Cribbage.WPFUI
                     string strSelectedCards = JsonConvert.SerializeObject(selectedCards);
                     string userJson = JsonConvert.SerializeObject(loggedInUser);
                     _connection.InvokeAsync("CardsToCrib", cribbageGameJson, strSelectedCards, userJson);
-
-                    btnSendToCrib.Visibility = Visibility.Collapsed;
                 }
                 catch (Exception ex)
                 {
