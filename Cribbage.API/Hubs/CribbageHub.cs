@@ -146,7 +146,8 @@ namespace Cribbage.API.Hubs
                 // Add Game to DB.
                 result = new GameManager(options).Insert(cribbageGame);
 
-                await Groups.AddToGroupAsync(Context.ConnectionId, roomName);
+               // await Groups.AddToGroupAsync(Context.ConnectionId, roomName);
+                await Groups.AddToGroupAsync(Context.ConnectionId, cribbageGame.Id.ToString());
 
                 // Add UserGame to DB.
                 UserGame userGame = new UserGame(cribbageGame.Id, player1.Id, cribbageGame.Player_1.Score);
@@ -166,7 +167,8 @@ namespace Cribbage.API.Hubs
                 cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
 
                 // Send CribbageGame back to only that person.
-                await Clients.Group(roomName).SendAsync("StartGame", cribbageGame.GameName + "\nSelect Crib Cards", cribbageGameJson);
+                //await Clients.Group(roomName).SendAsync("StartGame", cribbageGame.GameName + "\nSelect Crib Cards", cribbageGameJson);
+                await Clients.Group(cribbageGame.Id.ToString()).SendAsync("StartGame", cribbageGame.GameName + "\nSelect Crib Cards", cribbageGameJson);
             }
             catch (Exception)
             {
@@ -619,13 +621,13 @@ namespace Cribbage.API.Hubs
                     // Update DB
                     player1.GamesWon++;
                     player1.WinStreak++;
-                    player1.AvgPtsPerGame = new UserGameManager(options).CalculateAvgPtsPerGame(player1);
+                    //player1.AvgPtsPerGame = new UserGameManager(options).CalculateAvgPtsPerGame(player1);
+                    
 
                     player2.GamesLost++;
                     player2.WinStreak = 0;
-                    player2.AvgPtsPerGame = new UserGameManager(options).CalculateAvgPtsPerGame(player2);
-                    new UserManager(options).Update(player1);
-                    new UserManager(options).Update(player2);
+                    // player2.AvgPtsPerGame = new UserGameManager(options).CalculateAvgPtsPerGame(player2);
+                    
                 }
                 else
                 {
@@ -635,14 +637,28 @@ namespace Cribbage.API.Hubs
                     // Update DB
                     player2.GamesWon++;
                     player2.WinStreak++;
-                    player2.AvgPtsPerGame = new UserGameManager(options).CalculateAvgPtsPerGame(player2);
+                   // player2.AvgPtsPerGame = new UserGameManager(options).CalculateAvgPtsPerGame(player2);
 
                     player1.GamesLost++;
                     player1.WinStreak = 0;
-                    player1.AvgPtsPerGame = new UserGameManager(options).CalculateAvgPtsPerGame(player1);
-                    new UserManager(options).Update(player1);
-                    new UserManager(options).Update(player2);
+                  //  player1.AvgPtsPerGame = new UserGameManager(options).CalculateAvgPtsPerGame(player1);
+                 //   new UserManager(options).Update(player1);
+                  //  new UserManager(options).Update(player2);
                 }
+
+                int totalGames = player1.GamesWon + player1.GamesLost;
+                double totalPoints = player1.AvgPtsPerGame * (totalGames - 1);
+                totalPoints += cribbageGame.Player_1.Score;
+                player1.AvgPtsPerGame = totalPoints / totalGames;
+
+                totalGames = player2.GamesWon + player2.GamesLost;
+                totalPoints = player2.AvgPtsPerGame * (totalGames - 1);
+                totalPoints += cribbageGame.Player_2.Score;
+                player2.AvgPtsPerGame = totalPoints / totalGames;
+
+                new UserManager(options).Update(player1);
+                new UserManager(options).Update(player2);
+
 
                 cribbageGame.Team1_Score = cribbageGame.Player_1.Score;
                 cribbageGame.Team2_Score = cribbageGame.Player_2.Score;

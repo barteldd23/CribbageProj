@@ -11,8 +11,8 @@ namespace Cribbage.WPFUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        string hubAddress = "https://bigprojectapi-300089145.azurewebsites.net/CribbageHub";
-        //string hubAddress = "https://localhost:7186/CribbageHub";
+        //string hubAddress = "https://bigprojectapi-300089145.azurewebsites.net/CribbageHub";
+        string hubAddress = "https://localhost:7186/CribbageHub";
         CribbageGame cribbageGame = new CribbageGame();
         HubConnection _connection;
         List<Card> opponentHand;
