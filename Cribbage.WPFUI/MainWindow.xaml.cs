@@ -11,8 +11,8 @@ namespace Cribbage.WPFUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        //string hubAddress = "https://bigprojectapi-300089145.azurewebsites.net/CribbageHub";
-        string hubAddress = "https://localhost:7186/CribbageHub";
+        string hubAddress = "https://bigprojectapi-300089145.azurewebsites.net/CribbageHub";
+        //string hubAddress = "https://localhost:7186/CribbageHub";
         CribbageGame cribbageGame = new CribbageGame();
         HubConnection _connection;
         List<Card> opponentHand;
@@ -177,9 +177,7 @@ namespace Cribbage.WPFUI
                 btnSendToCrib.Visibility = Visibility.Collapsed;
 
                 lblMessageToPlayers.Content = "";
-                lstMessages.Items.Add(signalRMessage);
-                lstMessages.SelectedIndex = lstMessages.Items.Count - 1;
-                lstMessages.ScrollIntoView(lstMessages.SelectedItem);
+                AddSignalRMessagetoLstMessages();
 
                 lblPlayerDisplayName.Content = "Score";
                 lblPlayerScore.Content = 0;
@@ -498,9 +496,7 @@ namespace Cribbage.WPFUI
                     btnReady.Visibility = Visibility.Collapsed;
                     btnNextHand.Visibility = Visibility.Collapsed;
                     btnGo.Visibility = Visibility.Collapsed;
-                    lstMessages.Items.Add(signalRMessage);
-                    lstMessages.SelectedIndex = lstMessages.Items.Count - 1;
-                    lstMessages.ScrollIntoView(lstMessages.SelectedItem);
+                    AddSignalRMessagetoLstMessages();
                     lblMessageToPlayers.Content = "Waiting for the other player";
                 }
                 else
@@ -508,9 +504,7 @@ namespace Cribbage.WPFUI
                     ShowVsPlayerStartScreen();
                     btnGo.Visibility = Visibility.Collapsed;
                     lblMessageToPlayers.Content = "Waiting for you to be ready";
-                    lstMessages.Items.Add(signalRMessage);
-                    lstMessages.SelectedIndex = lstMessages.Items.Count - 1;
-                    lstMessages.ScrollIntoView(lstMessages.SelectedItem);
+                    AddSignalRMessagetoLstMessages();
                 }
             });
         }
@@ -542,9 +536,7 @@ namespace Cribbage.WPFUI
 
             Dispatcher.Invoke(() =>
             {
-                lstMessages.Items.Add(signalRMessage);
-                lstMessages.SelectedIndex = lstMessages.Items.Count - 1;
-                lstMessages.ScrollIntoView(lstMessages.SelectedItem);
+                AddSignalRMessagetoLstMessages();
                 lblMessageToPlayers.Content = signalRMessage;
                 SetUpGame();
             });
@@ -573,9 +565,7 @@ namespace Cribbage.WPFUI
                 Dispatcher.Invoke(() => 
                 {
                     lblMessageToPlayers.Content = signalRMessage;
-                    lstMessages.Items.Add(signalRMessage);
-                    lstMessages.SelectedIndex = lstMessages.Items.Count - 1;
-                    lstMessages.ScrollIntoView(lstMessages.SelectedItem);
+                    AddSignalRMessagetoLstMessages();
                 });
             }
         }
@@ -588,9 +578,7 @@ namespace Cribbage.WPFUI
             Dispatcher.Invoke(() => 
             {
                 lblMessageToPlayers.Content = signalRMessage;
-                lstMessages.Items.Add(signalRMessage);
-                lstMessages.SelectedIndex = lstMessages.Items.Count - 1;
-                lstMessages.ScrollIntoView(lstMessages.SelectedItem);
+                AddSignalRMessagetoLstMessages();
             });
         }
 
@@ -844,22 +832,16 @@ namespace Cribbage.WPFUI
 
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
-            if (cribbageGame.Complete || cribbageGame.Computer)
+            if (cribbageGame.Complete || cribbageGame.Computer || exitClick)
             {
                 this.Close();
-            }
-            else if (exitClick)
-            {
-                Dispatcher.Invoke(() => { this.Close(); });
             }
             else
             {
                 exitClick = true;
                 signalRMessage = "Please click 'Exit' again to close the window";
                 lblMessageToPlayers.Content = signalRMessage;
-                lstMessages.Items.Add(signalRMessage);
-                lstMessages.SelectedIndex = lstMessages.Items.Count - 1;
-                lstMessages.ScrollIntoView(lstMessages.SelectedItem);
+                AddSignalRMessagetoLstMessages();
 
                 try
                 {
@@ -877,8 +859,9 @@ namespace Cribbage.WPFUI
 
         private void MainMenu_Click(object sender, RoutedEventArgs e)
         {
-            if (cribbageGame.Complete || cribbageGame.Computer)
+            if (cribbageGame.Complete || cribbageGame.Computer || mainMenuClick)
             {
+                mainMenuClick = false;
                 StaThreadWrapper(() =>
                 {
                     var landingPage = new LandingPage(loggedInUser, hasSavedGames, strUserGames);
@@ -890,6 +873,9 @@ namespace Cribbage.WPFUI
             else
             {
                 mainMenuClick = true;
+                signalRMessage = "Please click 'Main Menu' again to close the window";
+                lblMessageToPlayers.Content = signalRMessage;
+                AddSignalRMessagetoLstMessages();
                 try
                 {
                     string cribbageGameJson = JsonConvert.SerializeObject(cribbageGame);
@@ -902,6 +888,13 @@ namespace Cribbage.WPFUI
                     throw;
                 }
             }
+        }
+
+        private void AddSignalRMessagetoLstMessages()
+        {
+            lstMessages.Items.Add(signalRMessage);
+            lstMessages.SelectedIndex = lstMessages.Items.Count - 1;
+            lstMessages.ScrollIntoView(lstMessages.SelectedItem);
         }
 
         private void btnSendToCrib_Click(object sender, RoutedEventArgs e)
@@ -1140,9 +1133,7 @@ namespace Cribbage.WPFUI
                     SetUpGame();
 
                     UpdateCutCard(cribbageGame);
-                    lstMessages.Items.Add(signalRMessage);
-                    lstMessages.SelectedIndex = lstMessages.Items.Count - 1;
-                    lstMessages.ScrollIntoView(lstMessages.SelectedItem);
+                    AddSignalRMessagetoLstMessages();
                     newHand = false;
                 }
                 else if (handsCounted && !endGame)
@@ -1168,9 +1159,7 @@ namespace Cribbage.WPFUI
                     lblCurrentCount.Content = cribbageGame.CurrentCount;
 
                     //Messages to players updated
-                    lstMessages.Items.Add(signalRMessage);
-                    lstMessages.SelectedIndex = lstMessages.Items.Count - 1;
-                    lstMessages.ScrollIntoView(lstMessages.SelectedItem);
+                    AddSignalRMessagetoLstMessages();
 
                     displayOpponentHand(opponentHand, true);
                     displayPlayerHand(playerHand);
@@ -1194,9 +1183,7 @@ namespace Cribbage.WPFUI
 
                     //Messages to players updated
                     lblMessageToPlayers.Content = signalRMessage;
-                    lstMessages.Items.Add(signalRMessage);
-                    lstMessages.SelectedIndex = lstMessages.Items.Count - 1;
-                    lstMessages.ScrollIntoView(lstMessages.SelectedItem);
+                    AddSignalRMessagetoLstMessages();
 
                     //Update the cards, buttons, and selections
                     displayPlayerHand(playerHand);
@@ -1218,9 +1205,7 @@ namespace Cribbage.WPFUI
                     displayOpponentHand(opponentHand, false);
                     displayCribCards(false);
 
-                    lstMessages.Items.Add(signalRMessage);
-                    lstMessages.SelectedIndex = lstMessages.Items.Count - 1;
-                    lstMessages.ScrollIntoView(lstMessages.SelectedItem);
+                    AddSignalRMessagetoLstMessages();
                     lblMessageToPlayers.Content = signalRMessage;
                 }
                 else if (endGame || cribbageGame.Player_1.Score >= 121 || cribbageGame.Player_2.Score >= 121)
@@ -1240,9 +1225,7 @@ namespace Cribbage.WPFUI
                     lblCurrentCount.Content = cribbageGame.CurrentCount;
 
                     //Messages to players updated
-                    lstMessages.Items.Add(signalRMessage);
-                    lstMessages.SelectedIndex = lstMessages.Items.Count - 1;
-                    lstMessages.ScrollIntoView(lstMessages.SelectedItem);
+                    AddSignalRMessagetoLstMessages();
 
                     lblMessageToPlayers.Content = signalRMessage;
 
@@ -1263,9 +1246,7 @@ namespace Cribbage.WPFUI
                     lblCurrentCount.Content = cribbageGame.CurrentCount;
 
                     //Messages to players updated
-                    lstMessages.Items.Add(signalRMessage);
-                    lstMessages.SelectedIndex = lstMessages.Items.Count - 1;
-                    lstMessages.ScrollIntoView(lstMessages.SelectedItem);
+                    AddSignalRMessagetoLstMessages();
 
                     lblMessageToPlayers.Content = "Player's Turn: " + cribbageGame.PlayerTurn.DisplayName;
 
@@ -1302,9 +1283,7 @@ namespace Cribbage.WPFUI
             lblCurrentCount.Content = cribbageGame.CurrentCount;
 
             // Messages to players updated
-            lstMessages.Items.Add(signalRMessage);
-            lstMessages.SelectedIndex = lstMessages.Items.Count - 1;
-            lstMessages.ScrollIntoView(lstMessages.SelectedItem);
+            AddSignalRMessagetoLstMessages();
 
             lblMessageToPlayers.Content = "Game Over";
 
