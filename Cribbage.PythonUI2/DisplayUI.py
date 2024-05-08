@@ -1260,8 +1260,8 @@ lblPassword = tkinter.Label(loginFrame, text="Password: ", font=('Arial',16), bg
 ###Change default values after development
 txtEmail = tkinter.Entry(loginFrame, font=('Arial',16))
 txtPassword = tkinter.Entry(loginFrame, show='*', font=('Arial',16))
-txtEmail.insert(END,'dean@dean.com')
-txtPassword.insert(END,'password')
+#txtEmail.insert(END,'dean@dean.com')
+#txtPassword.insert(END,'password')
 
 btnLogin = tkinter.Button(loginFrame, text='Login', font=('Arial',16), command=onClickLogin)
 btnNewUser = tkinter.Button(loginFrame, text='New Player', font=('Arial',16), command=onClickNewUser)
