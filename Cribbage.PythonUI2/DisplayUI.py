@@ -96,6 +96,7 @@ def receivedWatingForConformation(gameJson, message):
 def receivedPlayerLeftMessage(message):
     setMessage(message)
     forgetButtons()
+    btnBackToMenu.pack(fill=BOTH)
 
 def receivedReadyToStartMessage(gameJson, message):
     pass
