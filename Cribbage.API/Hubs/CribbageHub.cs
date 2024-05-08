@@ -115,7 +115,6 @@ namespace Cribbage.API.Hubs
                 message = "User already exists for that email";
                 await Clients.Caller.SendAsync("CreateUserAttempt", isSuccess, message);
             }
-
         }
 
         public async Task SendMessage(string user, string message)
