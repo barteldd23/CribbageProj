@@ -24,8 +24,8 @@ namespace Cribbage.WPFUI
             InitializeComponent();
             this.MouseLeftButtonDown += delegate { DragMove(); };
             txtLoginEmail.Focus();
-            txtLoginEmail.Text = "tester@gmail.com";
-            pbxPasswordBox.Password = "maple";
+            //txtLoginEmail.Text = "tester@gmail.com";
+            //pbxPasswordBox.Password = "maple";
         }
 
         private void btnExit_Click(object sender, RoutedEventArgs e)

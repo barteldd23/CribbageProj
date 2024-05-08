@@ -653,7 +653,6 @@ namespace Cribbage.WPFUI
             currentCount = cribbageGame.CurrentCount.ToString();
             signalRMessage = message;
 
-
             Dispatcher.Invoke(() =>
             {
                 UpdatePlayerAndOpponent();
@@ -666,10 +665,10 @@ namespace Cribbage.WPFUI
             cribbageGame = JsonConvert.DeserializeObject<CribbageGame>(cribbageGameJson);
             currentCount = cribbageGame.CurrentCount.ToString();
             signalRMessage = message;
-            btnSendToCrib.Visibility = Visibility.Collapsed;
-
+            
             Dispatcher.Invoke(() =>
             {
+                btnSendToCrib.Visibility = Visibility.Collapsed;
                 UpdatePlayerAndOpponent();
                 RefreshScreen();
             });
