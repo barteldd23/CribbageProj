@@ -50,8 +50,8 @@ namespace Cribbage.API.Hubs
                     //List<Guid> savedGameIds = new UserGameManager(options).GetGames(user.Id);
 
                     List<UserGame> savedGamesVsComputer = new UserGameManager(options).GetGamesVsComputer(user.Id);
-                    CribbageGame cribbageGame = new CribbageGame();
-                    user.AvgPtsPerGame = new UserGameManager(options).CalculateAvgPtsPerGame(user, cribbageGame);
+                    //CribbageGame cribbageGame = new CribbageGame();
+                    //user.AvgPtsPerGame = new UserGameManager(options).CalculateAvgPtsPerGame(user, cribbageGame);
                     Game game;
                     List<Game> savedGames = new List<Game>();
 
