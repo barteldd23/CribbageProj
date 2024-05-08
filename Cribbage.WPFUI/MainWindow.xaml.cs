@@ -493,13 +493,13 @@ namespace Cribbage.WPFUI
                     (cribbageGame.Player_2.Id == loggedInUser.Id && cribbageGame.Player_2.Ready))
                 {
                     ShowVsPlayerStartScreen();
-                    btnReady.Visibility = Visibility.Visible;
+                    btnReady.Visibility = Visibility.Collapsed;
                     btnNextHand.Visibility = Visibility.Collapsed;
                     btnGo.Visibility = Visibility.Collapsed;
                     AddSignalRMessagetoLstMessages();
                     lblMessageToPlayers.Content = "Waiting for the other player";
                 }
-                else
+                else //if (cribbageGame.WhatToDo == "readytostart")
                 {
                     ShowVsPlayerStartScreen();
                     btnGo.Visibility = Visibility.Collapsed;

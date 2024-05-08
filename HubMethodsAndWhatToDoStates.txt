@@ -49,3 +49,7 @@
 	startnewgame
 
 	startnewhand
+
+	SelectCribCards
+
+	readytostart
