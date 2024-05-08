@@ -324,7 +324,8 @@ def refreshScreen(showOpponent, showCrib):
         displayCribCards(showCrib)
         #displayCribCards(True)
     
-    if(gameData.data['WhatToDo'] == 'SelectCribCards' and len(playerHand.cards) > 4):
+        # and len(playerHand.cards) > 4
+    if(gameData.data['WhatToDo'] == 'SelectCribCards'):
         btnSendToCrib.pack(fill=BOTH)
         #btnSendToCrib.grid(row=2, column=1, padx=5, pady=5, sticky='news')
     if(gameData.data['WhatToDo'] == 'cutdeck' and myTurn):

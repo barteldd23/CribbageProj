@@ -316,7 +316,7 @@ namespace Cribbage.API.Hubs
                 List<Card> cardsToCrib = JsonConvert.DeserializeObject<List<Card>>(cards);
                 User user = JsonConvert.DeserializeObject<User>(userJson);
                // User user = new User();
-                string message;
+                string message ="";
 
                 // Playing vs computer.
                 // Get computer cards to crib, and send them to crib.
@@ -362,12 +362,12 @@ namespace Cribbage.API.Hubs
                 else if (!cribbageGame.Computer && cardsToCrib.Count == 2)
                 {
                     string roomName = cribbageGame.Id.ToString();
-                    if (user.Id == cribbageGame.Player_1.Id)
+                    if (user.Id == cribbageGame.Player_1.Id && cribbageGame.Player_1.Hand.Count == 6)
                     {
                         CribbageGameManager.Give_To_Crib(cribbageGame, cardsToCrib, cribbageGame.Player_1);
                         message = cribbageGame.Player_1.DisplayName + " sent cards to crib";
                     }
-                    else
+                    else if(user.Id == cribbageGame.Player_2.Id && cribbageGame.Player_2.Hand.Count == 6)
                     {
                         CribbageGameManager.Give_To_Crib(cribbageGame, cardsToCrib, cribbageGame.Player_2);
                         message = cribbageGame.Player_2.DisplayName + " sent cards to crib";
