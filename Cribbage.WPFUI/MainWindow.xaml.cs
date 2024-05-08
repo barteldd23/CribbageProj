@@ -55,7 +55,11 @@ namespace Cribbage.WPFUI
             InitializeComponent();
             this.MouseLeftButtonDown += delegate { DragMove(); };
 
-            if (openingSavedGame)
+            if (cribbageGame.Complete)
+            {
+                EndGame();
+            }
+            else if (openingSavedGame)
             {
                 player1 = true;
                 ContinueSavedGameVsComputer(cribbageGame, loggedInUser);
@@ -592,7 +596,17 @@ namespace Cribbage.WPFUI
 
         private void PlayerLeftMessage(string message)
         {
-            if(mainMenuClick)
+            signalRMessage = message;
+
+            if (signalRMessage.Contains("has left the game"))
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    lblMessageToPlayers.Content = signalRMessage;
+                    RefreshScreen();
+                });
+            }
+            else if(mainMenuClick)
             {
                 StaThreadWrapper(() =>
                 {
@@ -613,7 +627,7 @@ namespace Cribbage.WPFUI
                 
                 Dispatcher.Invoke(() => 
                 { 
-                    lblMessageToPlayers.Content = message;
+                    lblMessageToPlayers.Content = signalRMessage;
                     RefreshScreen();
                 });
             }
@@ -1217,7 +1231,30 @@ namespace Cribbage.WPFUI
                     // Call to SignalR
                     EndGame(cribbageGame);
                 }
-                else
+                else if (signalRMessage.Contains("has left the game"))
+                {
+                    //Player scores updated
+                    RefreshScore();
+
+                    //Current count updated
+                    lblCurrentCount.Content = cribbageGame.CurrentCount;
+
+                    //Messages to players updated
+                    lstMessages.Items.Add(signalRMessage);
+                    lstMessages.SelectedIndex = lstMessages.Items.Count - 1;
+                    lstMessages.ScrollIntoView(lstMessages.SelectedItem);
+
+                    lblMessageToPlayers.Content = signalRMessage;
+
+                    //Update the cards, buttons, and selections
+                    displayPlayerHand(playerHand);
+                    displayOpponentHand(opponentHand, true);
+                    displayPlayedCards();
+                    displayCribCards(true);
+                    RemoveSelectedItems();
+                    UpdateButtonSelection();
+                }
+                else 
                 {
                     //Player scores updated
                     RefreshScore();
@@ -1327,7 +1364,7 @@ namespace Cribbage.WPFUI
                     }
                 } 
             }
-            else if (endGame)
+            else if (endGame || signalRMessage.Contains("has left the game"))
             {
                 btnNextHand.Visibility = Visibility.Collapsed;
                 btnPlayCard.Visibility = Visibility.Collapsed;
@@ -1340,7 +1377,7 @@ namespace Cribbage.WPFUI
                 btnMainMenu.Visibility = Visibility.Visible;
                 btnExit.Visibility = Visibility.Visible;
             }
-            else
+            else 
             {
                 btnCountCards.Visibility = Visibility.Visible;
                 btnGo.Visibility = Visibility.Collapsed;
